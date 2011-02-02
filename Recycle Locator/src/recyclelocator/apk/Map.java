@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.google.android.maps.*;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.location.*;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
@@ -34,7 +36,25 @@ public class Map extends MapActivity {
         
         itemizedOverlay.addOverlay(overlayItem);
         mapOverlays.add(itemizedOverlay);
+        
+        // Acquire a reference to the system Location Manager
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        // Define a listener that responds to location updates
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {}
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+          };
+        
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
+ 
 
     @Override
 	protected boolean isRouteDisplayed() {
