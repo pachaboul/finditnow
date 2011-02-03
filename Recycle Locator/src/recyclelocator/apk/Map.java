@@ -3,10 +3,8 @@ package recyclelocator.apk;
 import java.util.List;
 
 import com.google.android.maps.*;
-import android.app.Activity;
-import android.content.Context;
+
 import android.graphics.drawable.Drawable;
-import android.location.*;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
@@ -14,6 +12,7 @@ public class Map extends MapActivity {
 	
 	LinearLayout linearLayout;
 	MapView mapView;
+	MapController mapController;
 	
 	List<Overlay> mapOverlays;
 	Drawable drawable;
@@ -22,40 +21,33 @@ public class Map extends MapActivity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	
+    	// Restore the saved instance and generate the primary (main) layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        // Initialize our MapView and MapController
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
+        mapController = mapView.getController();
         
+        // Build up our overlays and initialize our "UWOverlay" class
         mapOverlays = mapView.getOverlays();
-        drawable = this.getResources().getDrawable(R.drawable.recyclebin);
-        itemizedOverlay = new UWOverlay(drawable);
+        drawable = this.getResources().getDrawable(R.drawable.recycle_bin);
+        itemizedOverlay = new UWOverlay(drawable, this);
         
-        GeoPoint point = new GeoPoint(19240000,-99120000);
-        OverlayItem overlayItem = new OverlayItem(point, "", "");
+        // Create a GeoPoint location on Drumheller Fountain and animate to it
+        GeoPoint point = new GeoPoint(47653800,-122307792);
+        mapController.animateTo(point);
+        mapController.zoomToSpan(2500, 2500);
+        OverlayItem overlayItem = new OverlayItem(point, "Welcome to", "Drumheller Fountain");
         
+        // Add our overlay to the list
         itemizedOverlay.addOverlay(overlayItem);
         mapOverlays.add(itemizedOverlay);
-        
-        // Acquire a reference to the system Location Manager
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        // Define a listener that responds to location updates
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {}
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-            public void onProviderEnabled(String provider) {}
-
-            public void onProviderDisabled(String provider) {}
-          };
-        
-        // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
+    
  
-
     @Override
 	protected boolean isRouteDisplayed() {
 		return false;
