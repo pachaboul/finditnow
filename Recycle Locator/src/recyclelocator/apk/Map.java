@@ -36,11 +36,11 @@ public class Map extends MapActivity {
         drawable = this.getResources().getDrawable(R.drawable.recycle_bin);
         itemizedOverlay = new UWOverlay(drawable, this);
         
-        // Create a GeoPoint location on Drumheller Fountain and animate to it
-        GeoPoint point = new GeoPoint(47653800,-122307792);
+        // Create a GeoPoint location on the Paul Allen Center and animate to it
+        GeoPoint point = new GeoPoint(47653286,-122305850);
         mapController.animateTo(point);
         mapController.zoomToSpan(2500, 2500);
-        OverlayItem overlayItem = new OverlayItem(point, "Welcome to", "Drumheller Fountain");
+        OverlayItem overlayItem = new OverlayItem(point, "CSE Building", "Coffee Stand (Floor 1)");
         
         // Add our overlay to the list
         itemizedOverlay.addOverlay(overlayItem);
