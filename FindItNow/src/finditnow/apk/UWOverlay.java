@@ -107,12 +107,21 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	} catch(JSONException e){
 	        Log.e("log_tag", "Error parsing data "+e.toString());
 	}
-	*/
+	*/	  
 	  
 	  dialog.setTitle(item.getTitle());
 	  //dialog.setMessage(item.getSnippet());
 	  dialog.setMessage(result);
 	  dialog.show();
+	  
+	  //This is how you use a PopUpDialog
+	  String[] floor = {"Level 6", "Level 5", "Level 4", "Level 3","Level 2","Level 1","Levev B"};
+	  String buildingName = "CSE Building";
+      String categoryType = "recycle";
+      PopUpDialog popUp = new PopUpDialog(mContext, floor, categoryType, buildingName);
+	  
+	  popUp.show();
+	  
 	  return true;
 	}
 
