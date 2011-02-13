@@ -2,6 +2,7 @@ package finditnow.apk;
 
 import java.util.List;
 import com.google.android.maps.*;
+import com.google.gson.Gson;
 
 import android.content.Context;
 import android.graphics.Canvas;
