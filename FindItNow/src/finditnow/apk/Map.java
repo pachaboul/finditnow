@@ -26,6 +26,18 @@ public class Map extends MapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+        /*
+        -- by Mai
+        
+        // To get the category type:
+        Bundle extras = getIntent().getExtras(); 
+        String category = extras.getString("category");
+        
+        // And to get the item name for buildings, supplies:
+        String itemName = extras.getString("itemName");
+        
+        */
+        
         // Initialize our MapView and MapController
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
