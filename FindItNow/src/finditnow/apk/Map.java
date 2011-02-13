@@ -1,22 +1,24 @@
 package finditnow.apk;
 
 import java.util.List;
-
 import com.google.android.maps.*;
 
+import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.*;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
 public class Map extends MapActivity {
 	
-	LinearLayout linearLayout;
-	MapView mapView;
-	MapController mapController;
+	private MapView mapView;
+	private MapController mapController;
+	private MyLocationOverlay locOverlay;
 	
-	List<Overlay> mapOverlays;
-	Drawable drawable;
-	UWOverlay itemizedOverlay;
+	private List<Overlay> mapOverlays;
+	private Drawable drawable;
+	private UWOverlay itemizedOverlay;
 	
     /** Called when the activity is first created. */
     @Override
@@ -38,6 +40,11 @@ public class Map extends MapActivity {
         
         */
         
+        createMap();
+        locateUser();
+    }
+    
+    private void createMap() {
         // Initialize our MapView and MapController
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
@@ -57,6 +64,22 @@ public class Map extends MapActivity {
         // Add our overlay to the list
         itemizedOverlay.addOverlay(overlayItem);
         mapOverlays.add(itemizedOverlay);
+    }
+    
+    private void locateUser() {
+    	// Define a new LocationOverlay and enable it
+        locOverlay = new MyLocationOverlay(this, mapView);
+        locOverlay.enableMyLocation();
+        mapOverlays.add(locOverlay);
+        
+        // Run this ONLY once we get a fix on the location
+		Runnable runnable = new Runnable() {
+			public void run() {
+				mapController.animateTo(locOverlay.getMyLocation());
+				mapController.zoomToSpan(2500, 2500);
+			}
+		};
+		locOverlay.runOnFirstFix(runnable);
     }
     
  

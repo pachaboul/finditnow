@@ -24,6 +24,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.google.android.maps.ItemizedOverlay;
+import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.OverlayItem;
 
 public class UWOverlay extends ItemizedOverlay<OverlayItem> {
