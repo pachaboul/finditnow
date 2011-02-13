@@ -1,15 +1,10 @@
 package finditnow.apk;
 
+import java.util.HashMap;
 import java.util.List;
 import com.google.android.maps.*;
-import com.google.gson.Gson;
-
-import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.location.*;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 
 public class Map extends MapActivity {
 	
@@ -20,29 +15,33 @@ public class Map extends MapActivity {
 	private List<Overlay> mapOverlays;
 	private Drawable drawable;
 	private UWOverlay itemizedOverlay;
+	private static HashMap<String, Integer> icons;
+	private static String category;
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	
     	// Restore the saved instance and generate the primary (main) layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        /*
-        -- by Mai
-        
-        // To get the category type:
-        Bundle extras = getIntent().getExtras(); 
-        String category = extras.getString("category");
-        
         // And to get the item name for buildings, supplies:
-        String itemName = extras.getString("itemName");
+        // String itemName = extras.getString("itemName");
+        Bundle extras = getIntent().getExtras(); 
+        category = extras.getString("category");
         
-        */
+        icons = createIconsList();
         
         createMap();
         locateUser();
+    }
+    
+    private HashMap<String, Integer> createIconsList() {
+    	HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
+    	for (String str : Menu.categories) {
+			iconsMap.put(str.toLowerCase(), getResources().getIdentifier("drawable/"+str.toLowerCase(), null, getPackageName()));
+		}
+		return iconsMap;
     }
     
     private void createMap() {
@@ -53,7 +52,7 @@ public class Map extends MapActivity {
         
         // Build up our overlays and initialize our "UWOverlay" class
         mapOverlays = mapView.getOverlays();
-        drawable = this.getResources().getDrawable(R.drawable.recycle_bin);
+        drawable = this.getResources().getDrawable(getIcons().get(getCategory()));
         itemizedOverlay = new UWOverlay(drawable, this);
         
         // Create a GeoPoint location on the Paul Allen Center and animate to it
@@ -80,6 +79,7 @@ public class Map extends MapActivity {
 				mapController.zoomToSpan(2500, 2500);
 			}
 		};
+		
 		locOverlay.runOnFirstFix(runnable);
     }
     
@@ -88,4 +88,12 @@ public class Map extends MapActivity {
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
+    
+    public static HashMap<String, Integer> getIcons() {
+    	return icons;
+    }
+    
+    public static String getCategory() {
+    	return category;
+    }
 }

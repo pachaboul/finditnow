@@ -1,6 +1,5 @@
 package finditnow.apk;
 
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Dialog;
 import android.content.Context;
@@ -12,7 +11,6 @@ import android.view.View;
 public class PopUpDialog extends Dialog{
 
 	private String[] floor;
-	private String category;
 	private String buildName;
 	
 	//creates a PopUpDialog
@@ -20,11 +18,11 @@ public class PopUpDialog extends Dialog{
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
-	public PopUpDialog(Context context,String[] floor, String category, String building)
+	
+	public PopUpDialog(Context context,String[] floor, String building)
 	{
 		super(context);
 		this.floor = floor;
-		this.category = category;
 		this.buildName = building;
 	}
 	
@@ -36,7 +34,7 @@ public class PopUpDialog extends Dialog{
     	setTitle(buildName);
 
     	TextView cate = (TextView) findViewById(R.id.category);
-    	cate.setText(category);
+    	cate.setText(Map.getCategory());
 
     	/*TextView seeflr = (TextView) findViewById(R.id.seefloor);
     	seeflr.on*/
@@ -48,7 +46,7 @@ public class PopUpDialog extends Dialog{
     		public void onClick(View v)
     		{
     		//	PopUpDialog.this.dismiss();
-        		Dialog dialog = new FloorDetailDialog(PopUpDialog.this.getContext(),floor,category);
+        		Dialog dialog = new FloorDetailDialog(PopUpDialog.this.getContext(),floor);
         		dialog.show();
     		}
     	});

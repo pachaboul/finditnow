@@ -4,28 +4,16 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-
-import com.google.android.maps.ItemizedOverlay;
-import com.google.android.maps.MyLocationOverlay;
-import com.google.android.maps.OverlayItem;
+import com.google.android.maps.*;
 
 public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	
@@ -109,16 +97,15 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	}
 	*/	  
 	  
-	  dialog.setTitle(item.getTitle());
+	  //dialog.setTitle(item.getTitle());
 	  //dialog.setMessage(item.getSnippet());
-	  dialog.setMessage(result);
-	  dialog.show();
+	  //dialog.setMessage(result);
+	  //dialog.show();
 	  
 	  //This is how you use a PopUpDialog
 	  String[] floor = {"Level 6", "Level 5", "Level 4", "Level 3","Level 2","Level 1","Levev B"};
 	  String buildingName = "CSE Building";
-      String categoryType = "recycle";
-      PopUpDialog popUp = new PopUpDialog(mContext, floor, categoryType, buildingName);
+      PopUpDialog popUp = new PopUpDialog(mContext, floor, buildingName);
 	  
 	  popUp.show();
 	  

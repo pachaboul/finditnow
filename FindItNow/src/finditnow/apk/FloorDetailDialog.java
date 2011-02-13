@@ -19,18 +19,16 @@ public class FloorDetailDialog extends Dialog {
 	private final int IMG_DIFF = 30;
 	
 	private String[] floor;
-	private String category;
 	
 	//Creates a FloorDetailDialog
 	public FloorDetailDialog(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
-	public FloorDetailDialog(Context context,String[] flr, String cat)
+	public FloorDetailDialog(Context context,String[] flr)
 	{
 		super(context);
 		floor = flr;
-		category = cat;
 	}
 	//Sets the information on this Dialog
 	public void onCreate(Bundle savedInstanceState)
@@ -55,18 +53,11 @@ public class FloorDetailDialog extends Dialog {
 			layout.addView(text2);
 			
 			ImageView img2 = new ImageView(this.getContext());
-			setImgResource(img2,category);
+			img2.setImageResource(Map.getIcons().get(Map.getCategory()));
 			img2.setPadding(IMG_LEFT, IMG_TOP+IMG_DIFF*i, IMG_RIGHT,0);
 			layout.addView(img2);
 		}
 		this.setContentView(layout);
 		setTitle("Floor Dialog");
-	}
-	//This will contain a list of hard coded image file resource
-	// and set it depending on the category being displayed.
-	private void setImgResource(ImageView img, String imgName)
-	{
-		if (imgName.equals("recycle"))
-			img.setImageResource(R.drawable.recycle_bin);
 	}
 }

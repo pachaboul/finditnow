@@ -28,7 +28,7 @@ public class Menu extends Activity {
     	private Context mContext;
     	
     	public ButtonAdapter(Context c) {
-    		mContext = c;
+    		setmContext(c);
     	}
 
     	public int getCount() {
@@ -83,9 +83,17 @@ public class Menu extends Activity {
     		}
     		return myView;
     	}
+
+		public void setmContext(Context mContext) {
+			this.mContext = mContext;
+		}
+
+		public Context getmContext() {
+			return mContext;
+		}
     }
 	
-    private String[] categories = {
+    protected static String[] categories = {
         "ATMs",
         "Buildings",
         "Coffee",
