@@ -34,7 +34,9 @@ public class PopUpDialog extends Dialog{
     	setTitle(buildName);
 
     	TextView cate = (TextView) findViewById(R.id.category);
-    	cate.setText(Map.getCategory());
+    	char[] cateName = Map.getCategory().toCharArray();
+    	cateName[0] = Character.toUpperCase(cateName[0]);
+    	cate.setText(String.copyValueOf(cateName));
 
     	/*TextView seeflr = (TextView) findViewById(R.id.seefloor);
     	seeflr.on*/
