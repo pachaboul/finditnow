@@ -52,7 +52,7 @@ public class Menu extends Activity {
     			
     			// add image button
     			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
-    			ib.setImageResource(R.drawable.android);
+    			ib.setImageResource(icons[position]);
     			
     			 // for some reason it's gotta be 'final' to be passed to the listener ...
     			final String category = categories[position];
@@ -102,5 +102,16 @@ public class Menu extends Activity {
         "Restrooms",
         "Supplies",
         "Vending"
+    };
+    
+    protected static Integer[] icons = {
+        R.drawable.atms,
+        R.drawable.buildings,
+        R.drawable.coffee,
+        R.drawable.dining,
+        R.drawable.mailboxes,
+        R.drawable.restrooms,
+        R.drawable.supplies,
+        R.drawable.vending
     };
 }
