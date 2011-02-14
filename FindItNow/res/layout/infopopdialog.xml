@@ -15,7 +15,7 @@
     <Button android:id="@+id/flrButton"
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
-    		android:text="see which floor"
+    		android:text="See Which Floors"
     		android:layout_below="@id/category"
     		android:layout_marginTop="20px"
     		/>
