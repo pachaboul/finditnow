@@ -42,6 +42,7 @@ public class Map extends MapActivity {
 	
 	// Shared static variables that the other modules can access
 	private static HashMap<String, Integer> icons;
+	private static HashMap<GeoPoint, String> buildings;
 	private static String category;
 	
 	private JSONArray listOfLocations;
@@ -63,6 +64,7 @@ public class Map extends MapActivity {
         
         // Store a map from categories to icons so that other modules can use it
         icons = createIconsList();
+        buildings = createBuildingsList();
         
         // Create the map and detect the user's location
         createMap();
@@ -81,6 +83,15 @@ public class Map extends MapActivity {
 		}
     	
 		return iconsMap;
+    }
+    
+    private HashMap<GeoPoint, String> createBuildingsList() {
+    	HashMap<GeoPoint, String> buildingsMap = new HashMap<GeoPoint, String>();
+    	
+    	buildingsMap.put(new GeoPoint(47653286, -122305850), "CSE Building");
+    	buildingsMap.put(new GeoPoint(47653701, -122304759), "ME Building");
+    	
+    	return buildingsMap;
     }
     
     /** This method creates the map and displays the overlays on top of it */
@@ -109,7 +120,6 @@ public class Map extends MapActivity {
 		Runnable runnable = new Runnable() {
 			public void run() {
 				mapController.animateTo(locOverlay.getMyLocation());
-				mapController.zoomToSpan(2500, 2500);
 			}
 		};
 		
@@ -132,7 +142,13 @@ public class Map extends MapActivity {
   			List nameValuePairs = new ArrayList();
   			
   			nameValuePairs.add(new BasicNameValuePair("cat", category));
+  			
+  			// Try to get the current location, otherwise set a default
   			GeoPoint location = locOverlay.getMyLocation();
+  			if (location == null) {
+  				location = new GeoPoint(47653631,-122305025);
+  			}
+  			
   			nameValuePairs.add(new BasicNameValuePair("lat", location.getLatitudeE6()+""));
   			nameValuePairs.add(new BasicNameValuePair("lon", location.getLongitudeE6()+""));
   	        
@@ -166,21 +182,15 @@ public class Map extends MapActivity {
     }
     
     private void placeOverlays(JSONArray listOfLocations) {
-    	// Create a GeoPoint location on the Paul Allen Center and animate to it
-        GeoPoint cse = new GeoPoint(47653286,-122305850);
-        mapController.animateTo(cse);
-        mapController.zoomToSpan(2500, 2500);
-        OverlayItem cseItem = new OverlayItem(cse, "CSE Building", "Coffee Stand (Floor 1)");
-        
-        /*java.util.Map<GeoPoint, String[]> geopointMap = JsonParser.parseJson(listOfLocations.toString());
+        java.util.Map<GeoPoint, String[]> geopointMap = JsonParser.parseJson(listOfLocations.toString());
         for (GeoPoint point : geopointMap.keySet()) {
         	OverlayItem overlayItem = new OverlayItem(point, "blah", "blah");
         	itemizedOverlay.addOverlay(overlayItem);
-        }*/
+        }
         
         // Add our overlay to the list
-        itemizedOverlay.addOverlay(cseItem);
         mapOverlays.add(itemizedOverlay);
+        mapController.zoomToSpan(itemizedOverlay.getLatSpanE6(), itemizedOverlay.getLonSpanE6());
     }
  
     /** Required for Android Maps API compatibility */
@@ -198,4 +208,12 @@ public class Map extends MapActivity {
     public static String getCategory() {
     	return category;
     }
+
+	public static HashMap<GeoPoint, String> getBuildings() {
+		return buildings;
+	}
+	
+	public static String getBuilding(GeoPoint p) {
+		return buildings.get(p);
+	}
 }
