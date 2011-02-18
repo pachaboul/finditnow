@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.google.android.maps.*;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,6 +68,7 @@ public class Map extends MapActivity {
         createMap();
         locateUser();
         listOfLocations = requestLocations();
+        placeOverlays(listOfLocations);
     }
     
     /** This method returns a map from categories to icons (icons must be the same name as the category, in lowercase */
@@ -93,16 +95,6 @@ public class Map extends MapActivity {
         mapOverlays = mapView.getOverlays();
         drawable = this.getResources().getDrawable(getIcons().get(getCategory()));
         itemizedOverlay = new UWOverlay(drawable, this);
-        
-        // Create a GeoPoint location on the Paul Allen Center and animate to it
-        GeoPoint point = new GeoPoint(47653286,-122305850);
-        mapController.animateTo(point);
-        mapController.zoomToSpan(2500, 2500);
-        OverlayItem overlayItem = new OverlayItem(point, "CSE Building", "Coffee Stand (Floor 1)");
-        
-        // Add our overlay to the list
-        itemizedOverlay.addOverlay(overlayItem);
-        mapOverlays.add(itemizedOverlay);
     }
     
     /** This method locates the user and displays the user's location in an overlay icon */
@@ -171,6 +163,24 @@ public class Map extends MapActivity {
 			Log.e("log_tag", "Error converting response to JSON "+e.toString());
 		}
 	  	return infoArray;
+    }
+    
+    private void placeOverlays(JSONArray listOfLocations) {
+    	// Create a GeoPoint location on the Paul Allen Center and animate to it
+        GeoPoint cse = new GeoPoint(47653286,-122305850);
+        mapController.animateTo(cse);
+        mapController.zoomToSpan(2500, 2500);
+        OverlayItem cseItem = new OverlayItem(cse, "CSE Building", "Coffee Stand (Floor 1)");
+        
+        /*java.util.Map<GeoPoint, String[]> geopointMap = JsonParser.parseJson(listOfLocations.toString());
+        for (GeoPoint point : geopointMap.keySet()) {
+        	OverlayItem overlayItem = new OverlayItem(point, "blah", "blah");
+        	itemizedOverlay.addOverlay(overlayItem);
+        }*/
+        
+        // Add our overlay to the list
+        itemizedOverlay.addOverlay(cseItem);
+        mapOverlays.add(itemizedOverlay);
     }
  
     /** Required for Android Maps API compatibility */
