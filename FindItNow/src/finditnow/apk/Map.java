@@ -1,3 +1,8 @@
+/** Map.java
+ *  This is MapView class which uses the Google Maps API
+ *  It draws the overlay, communicates with the database, and detects user location
+ */
+
 package finditnow.apk;
 
 import java.io.BufferedReader;
@@ -24,45 +29,61 @@ import android.util.Log;
 
 public class Map extends MapActivity {
 	
+	// Map and Location Variables
 	private MapView mapView;
 	private MapController mapController;
 	private MyLocationOverlay locOverlay;
 	
+	// Overlay Variables
 	private List<Overlay> mapOverlays;
 	private Drawable drawable;
 	private UWOverlay itemizedOverlay;
+	
+	// Shared static variables that the other modules can access
 	private static HashMap<String, Integer> icons;
 	private static String category;
+	
 	private JSONArray listOfLocations;
 	
-    /** Called when the activity is first created. */
+	/** Called when the activity is first created.
+     * 	It initializes the map layout, detects the user's category, and builds the map
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	
     	// Restore the saved instance and generate the primary (main) layout
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.map);
         
         // And to get the item name for buildings, supplies:
         // String itemName = extras.getString("itemName");
         Bundle extras = getIntent().getExtras(); 
         category = extras.getString("category");
         
+        // Store a map from categories to icons so that other modules can use it
         icons = createIconsList();
         
+        // Create the map and detect the user's location
         createMap();
         locateUser();
         listOfLocations = requestLocations();
     }
     
+    /** This method returns a map from categories to icons (icons must be the same name as the category, in lowercase */
     private HashMap<String, Integer> createIconsList() {
     	HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
+
+    	// Loop over each category and map it to the icon file associated with it
     	for (String str : Menu.categories) {
 			iconsMap.put(str.toLowerCase(), getResources().getIdentifier("drawable/"+str.toLowerCase(), null, getPackageName()));
 		}
+    	
 		return iconsMap;
     }
     
+    /** This method creates the map and displays the overlays on top of it */
     private void createMap() {
+    	
         // Initialize our MapView and MapController
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
@@ -84,7 +105,9 @@ public class Map extends MapActivity {
         mapOverlays.add(itemizedOverlay);
     }
     
+    /** This method locates the user and displays the user's location in an overlay icon */
     private void locateUser() {
+    	
     	// Define a new LocationOverlay and enable it
         locOverlay = new MyLocationOverlay(this, mapView);
         locOverlay.enableMyLocation();
@@ -101,9 +124,9 @@ public class Map extends MapActivity {
 		locOverlay.runOnFirstFix(runnable);
     }
     
-    //This method makes a request across the network to the database sending
-    //the current location and category
-    //Returns: a JSONArray if item locations sent from the database
+    /**This method makes a request across the network to the database sending
+    	the current location and category
+    	@return: a JSONArray if item locations sent from the database */
     private JSONArray requestLocations() {
     	/*
   	   * HTTP Post request
@@ -150,15 +173,18 @@ public class Map extends MapActivity {
 	  	return infoArray;
     }
  
+    /** Required for Android Maps API compatibility */
     @Override
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
     
+    /** This method returns the icons map */
     public static HashMap<String, Integer> getIcons() {
     	return icons;
     }
     
+    /** This method returns the current category */
     public static String getCategory() {
     	return category;
     }
