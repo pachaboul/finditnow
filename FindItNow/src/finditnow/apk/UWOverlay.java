@@ -15,11 +15,12 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import com.google.android.maps.*;
 
+
 public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	private Context mContext;
-
+	
 	public UWOverlay(Drawable defaultMarker) {
 		super(boundCenterBottom(defaultMarker));
 		// TODO Auto-generated constructor stub
@@ -50,9 +51,14 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		OverlayItem item = mOverlays.get(index);
 		GeoPoint itemLocation = item.getPoint();
 	    //This is how you use a PopUpDialog
-	    String[] floor = {"Level 6", "Level 5", "Level 4", "Level 3","Level 2","Level 1","Levev B"};
-	  
-	    String buildingName = Map.getBuilding(itemLocation);
+	    String[] floor = Map.getFloors(itemLocation);
+	    
+	    if (floor == null)
+	    {
+	    	floor = new String[]{"Level 6", "Level 5", "Level 4", "Level 3","Level 2","Level 1","Levev B"};
+	    }
+	    
+		String buildingName = Map.getBuilding(itemLocation);
 	    if (buildingName == null) {
 	  	    buildingName = "Unknown Building";
 	    }
