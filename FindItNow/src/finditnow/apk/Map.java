@@ -46,7 +46,8 @@ public class Map extends MapActivity {
 	private static String category;
 	
 	private JSONArray listOfLocations;
-	
+	private static java.util.Map<GeoPoint, String[]> geopointMap;
+
 	/** Called when the activity is first created.
      * 	It initializes the map layout, detects the user's category, and builds the map
      */
@@ -70,6 +71,7 @@ public class Map extends MapActivity {
         createMap();
         locateUser();
         listOfLocations = requestLocations();
+        geopointMap = JsonParser.parseJson(listOfLocations.toString());
         placeOverlays(listOfLocations);
     }
     
@@ -182,7 +184,6 @@ public class Map extends MapActivity {
     }
     
     private void placeOverlays(JSONArray listOfLocations) {
-        java.util.Map<GeoPoint, String[]> geopointMap = JsonParser.parseJson(listOfLocations.toString());
         for (GeoPoint point : geopointMap.keySet()) {
         	OverlayItem overlayItem = new OverlayItem(point, "blah", "blah");
         	itemizedOverlay.addOverlay(overlayItem);
@@ -215,5 +216,9 @@ public class Map extends MapActivity {
 	
 	public static String getBuilding(GeoPoint p) {
 		return buildings.get(p);
+	}
+	public static String[] getFloors(GeoPoint p)
+	{
+		return geopointMap.get(p);
 	}
 }
