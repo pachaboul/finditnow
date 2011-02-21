@@ -140,7 +140,7 @@ public class Map extends MapActivity {
 	  	JSONArray infoArray = null;
 	  	try{
   	        HttpClient httpclient = new DefaultHttpClient();
-  	        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/~johnsj8/testJSON.php");
+  	        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/~johnsj8/getLocations.php");
   			List nameValuePairs = new ArrayList();
   			
   			nameValuePairs.add(new BasicNameValuePair("cat", category));
