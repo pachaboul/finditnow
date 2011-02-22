@@ -176,7 +176,10 @@ public class Map extends MapActivity {
 	  	    Log.e("log_tag", "Error converting result "+e.toString());
 	  	}
 	  	try {
-			infoArray = new JSONArray(data);
+	  		if (!data.startsWith("[")) {
+	  			infoArray = new JSONArray("[]");
+	  		} else 
+	  			infoArray = new JSONArray(data);
 		} catch (JSONException e) {
 			Log.e("log_tag", "Error converting response to JSON "+e.toString());
 		}
