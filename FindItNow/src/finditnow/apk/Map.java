@@ -112,6 +112,9 @@ public class Map extends MapActivity {
         mapOverlays = mapView.getOverlays();
         drawable = this.getResources().getDrawable(getIcons().get(getCategory()));
         itemizedOverlay = new UWOverlay(drawable, this);
+        
+        // Zoom out enough
+        mapController.setZoom(17);
     }
     
     /** This method locates the user and displays the user's location in an overlay icon */
@@ -195,7 +198,6 @@ public class Map extends MapActivity {
         
         // Add our overlay to the list
         mapOverlays.add(itemizedOverlay);
-        mapController.zoomToSpan(itemizedOverlay.getLatSpanE6()*4, itemizedOverlay.getLonSpanE6()*4);
     }
  
     /** Required for Android Maps API compatibility */
