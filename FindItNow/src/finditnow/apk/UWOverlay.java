@@ -55,7 +55,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	    
 	    if (floor == null)
 	    {
-	    	floor = new String[]{"Level 6", "Level 5", "Level 4", "Level 3","Level 2","Level 1","Levev B"};
+	    	floor = new String[]{"Level 6", "Level 5", "Level 4", "Level 3","Level 2","Level 1","Level B"};
 	    }
 	    
 		String buildingName = Map.getBuilding(itemLocation);

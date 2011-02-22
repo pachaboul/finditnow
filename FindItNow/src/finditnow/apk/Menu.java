@@ -95,13 +95,13 @@ public class Menu extends Activity {
 	
     protected static String[] categories = {
         "ATMs",
-        "Buildings",
-        "Coffee",
-        "Dining",
-        "Mailboxes",
-        "Restrooms",
-        "Supplies",
-        "Vending"
+        "BUILDINGS",
+        "COFFEE",
+        "DINING",
+        "MAILBOXES",
+        "RESTROOMS",
+        "SUPPLIES",
+        "VENDING"
     };
     
     protected static Integer[] icons = {
