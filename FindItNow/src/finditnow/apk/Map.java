@@ -140,7 +140,7 @@ public class Map extends MapActivity {
 	  	JSONArray infoArray = null;
 	  	try{
   	        HttpClient httpclient = new DefaultHttpClient();
-  	        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/~johnsj8/testJSON.php");
+  	        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/~johnsj8/getLocations.php");
   			List nameValuePairs = new ArrayList();
   			
   			nameValuePairs.add(new BasicNameValuePair("cat", category));
@@ -152,7 +152,7 @@ public class Map extends MapActivity {
   			}
   			
   			nameValuePairs.add(new BasicNameValuePair("lat", location.getLatitudeE6()+""));
-  			nameValuePairs.add(new BasicNameValuePair("lon", location.getLongitudeE6()+""));
+  			nameValuePairs.add(new BasicNameValuePair("long", location.getLongitudeE6()+""));
   	        
   			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
   	        HttpResponse response = httpclient.execute(httppost);
