@@ -63,7 +63,7 @@ public class Map extends MapActivity {
      * 	It initializes the map layout, detects the user's category, and builds the map
      */
     @Override
-public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
     	
     	// Restore the saved instance and generate the primary (main) layout
         super.onCreate(savedInstanceState);
@@ -186,7 +186,7 @@ public void onCreate(Bundle savedInstanceState) {
   				String item = itemName;
   				if (item == "Blue books") {
   					item = "blue_book";
-  				} else if (item == "scantrons") {
+  				} else if (item == "Scantrons") {
   					item = "scantron";
   				}
   				nameValuePairs.add(new BasicNameValuePair("item", item));
