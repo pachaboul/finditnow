@@ -46,29 +46,34 @@ public class JsonParser {
 			
 			//place the information in the map with GeoPoint as key
 			GeoPoint point = new GeoPoint( ob.get(NAMES[0]).getAsInt(),ob.get(NAMES[1]).getAsInt());
-			JsonArray s = ob.get(NAMES[2]).getAsJsonArray();
-			//the floor names associated with this point
-			String[] flrNames = gson.fromJson(s,String[].class);
-			
-			//if the point is not added before, we add it
-			if (map.get(point) == null)
-				map.put(point,flrNames);
-			else
+			if (ob.has(NAMES[2]))
 			{
-				//if the point already has entries in map, we append it to the end.
-				String[] temp = map.get(point);
-				String[] newS = new String[temp.length+flrNames.length];
-				int c = 0;
-				for (; c < temp.length; c++)
-					newS[c] = temp[c];
-								
-				for (int k = 0; k < flrNames.length; k++, c++)
+				JsonArray s = ob.get(NAMES[2]).getAsJsonArray();
+				//the floor names associated with this point
+				String[] flrNames = gson.fromJson(s,String[].class);
+				
+				//if the point is not added before, we add it
+				if (map.get(point) == null)
+					map.put(point,flrNames);
+				else
 				{
-					newS[c] = flrNames[k];
-					                   
+					//if the point already has entries in map, we append it to the end.
+					String[] temp = map.get(point);
+					String[] newS = new String[temp.length+flrNames.length];
+					int c = 0;
+					for (; c < temp.length; c++)
+						newS[c] = temp[c];
+									
+					for (int k = 0; k < flrNames.length; k++, c++)
+					{
+						newS[c] = flrNames[k];
+						                   
+					}
+					map.put(point, newS);
 				}
-				map.put(point, newS);
 			}
+			else
+				map.put(point, new String[]{"n/a"});
 		}
 		
 		return map;
