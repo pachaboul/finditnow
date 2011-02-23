@@ -184,9 +184,9 @@ public class Map extends MapActivity {
   			nameValuePairs.add(new BasicNameValuePair("cat", category));
   			if (itemName != null) {
   				String item = itemName;
-  				if (item == "Blue books") {
+  				if (item.equals("Blue books")) {
   					item = "blue_book";
-  				} else if (item == "Scantrons") {
+  				} else if (item.equals("Scantrons")) {
   					item = "scantron";
   				}
   				nameValuePairs.add(new BasicNameValuePair("item", item));
