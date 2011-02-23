@@ -171,7 +171,13 @@ public class Map extends MapActivity {
   			
   			nameValuePairs.add(new BasicNameValuePair("cat", category));
   			if (itemName != null) {
-  				nameValuePairs.add(new BasicNameValuePair("cat", category));
+  				String item = itemName;
+  				if (item == "Blue books") {
+  					item = "blue_book";
+  				} else if (item == "scantrons") {
+  					item = "scantron";
+  				}
+  				nameValuePairs.add(new BasicNameValuePair("item", item));
   			}
   			nameValuePairs.add(new BasicNameValuePair("lat", location.getLatitudeE6()+""));
   			nameValuePairs.add(new BasicNameValuePair("long", location.getLongitudeE6()+""));
