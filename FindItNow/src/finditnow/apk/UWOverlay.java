@@ -52,6 +52,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		GeoPoint itemLocation = item.getPoint();
 	    //This is how you use a PopUpDialog
 	    String[] floor = Map.getFloors(itemLocation);
+	    String name = Map.getLocationName(itemLocation);
 	    
 	    if (floor == null)
 	    {
@@ -62,7 +63,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	    if (buildingName == null) {
 	  	    buildingName = "Unknown Building";
 	    }
-	    PopUpDialog popUp = new PopUpDialog(mContext, floor, buildingName);
+	    PopUpDialog popUp = new PopUpDialog(mContext, floor, buildingName, name);
 	  
 	    popUp.show();
 	    return true;

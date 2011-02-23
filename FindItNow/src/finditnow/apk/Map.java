@@ -49,6 +49,7 @@ public class Map extends MapActivity {
 	private JSONArray listOfLocations;
 	private static GeoPoint location;
 	private static java.util.Map<GeoPoint, String[]> geopointMap;
+	private static java.util.Map<GeoPoint,String> geopointNameMap;
 
 	/** Called when the activity is first created.
      * 	It initializes the map layout, detects the user's category, and builds the map
@@ -75,6 +76,8 @@ public class Map extends MapActivity {
         listOfLocations = requestLocations();
         geopointMap = JsonParser.parseJson(listOfLocations.toString());
         placeOverlays(listOfLocations);
+        
+        geopointNameMap = JsonParser.parseNameJson(listOfLocations.toString());
     }
     
     /** This method returns a map from categories to icons (icons must be the same name as the category, in lowercase */
@@ -182,6 +185,8 @@ public class Map extends MapActivity {
 	  	}catch(Exception e){
 	  	    Log.e("log_tag", "Error converting result "+e.toString());
 	  	}
+	  	
+	  	//Log.i("log_tag", "the output of request is : "+data);
 	  	try {
 			infoArray = new JSONArray(data);
 		} catch (JSONException e) {
@@ -226,5 +231,8 @@ public class Map extends MapActivity {
 	public static String[] getFloors(GeoPoint p)
 	{
 		return geopointMap.get(p);
+	}
+	public static String getLocationName(GeoPoint p){
+		return geopointNameMap.get(p);
 	}
 }
