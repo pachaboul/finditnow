@@ -63,16 +63,16 @@ public class Map extends MapActivity {
      * 	It initializes the map layout, detects the user's category, and builds the map
      */
     @Override
-public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
     	
     	// Restore the saved instance and generate the primary (main) layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
         
         // And to get the item name for buildings, supplies:
+        // String itemName = extras.getString("itemName");
         Bundle extras = getIntent().getExtras(); 
         category = extras.getString("category");
-        itemName = extras.getString("itemName");
         
         // Store a map from categories to icons so that other modules can use it
         icons = createIconsList();
@@ -81,19 +81,12 @@ public void onCreate(Bundle savedInstanceState) {
         // Create the map and detect the user's location
         createMap();
         locateUser();
-        if (getCategory().equals("buildings")) {
-        	for (GeoPoint p : buildings.keySet()) {
-        		if (buildings.get(p).equals(itemName)) {
-        			itemizedOverlay.addOverlay(new OverlayItem(p, "blah", "blah"));
-        	        mapOverlays.add(itemizedOverlay);
-        		}
-        	}
-        } else {
-	        listOfLocations = requestLocations();
-	        geopointMap = JsonParser.parseJson(listOfLocations.toString());
-	        placeOverlays();
-	        geopointNameMap = JsonParser.parseNameJson(listOfLocations.toString());
-        }
+        listOfLocations = requestLocations();
+        geopointMap = JsonParser.parseJson(listOfLocations.toString());
+        placeOverlays(listOfLocations);
+        
+        // 
+        geopointNameMap = JsonParser.parseNameJson(listOfLocations.toString());
     }
     
     /** This method returns a map from categories to icons (icons must be the same name as the category, in lowercase */
@@ -108,18 +101,13 @@ public void onCreate(Bundle savedInstanceState) {
 		return iconsMap;
     }
     
-    /** This method creates a map from GeoPoint coordinates to building names */
     private HashMap<GeoPoint, String> createBuildingsList() {
     	HashMap<GeoPoint, String> buildingsMap = new HashMap<GeoPoint, String>();
     	
+    	buildingsMap.put(new GeoPoint(47653286, -122305850), "CSE Building");
+    	buildingsMap.put(new GeoPoint(47653701, -122304759), "ME Building");
     	buildingsMap.put(new GeoPoint(47654799, -122307776), "Mary Gates Hall");
     	buildingsMap.put(new GeoPoint(47653613, -122306380), "EE Building");
-    	buildingsMap.put(new GeoPoint(47654244, -122306348), "Guggenheim Hall");
-    	buildingsMap.put(new GeoPoint(47654860, -122306558), "Sieg Hall");
-    	buildingsMap.put(new GeoPoint(47657123, -122308101), "Savery Hall");
-    	buildingsMap.put(new GeoPoint(47656629, -122307181), "Smith Hall");
-    	buildingsMap.put(new GeoPoint(47656582, -122309098), "Kane Hall");
-    	buildingsMap.put(new GeoPoint(47656465, -122310287), "Odegaard Undergraduate Library");
     	
     	return buildingsMap;
     }
@@ -183,7 +171,13 @@ public void onCreate(Bundle savedInstanceState) {
   			
   			nameValuePairs.add(new BasicNameValuePair("cat", category));
   			if (itemName != null) {
-  				nameValuePairs.add(new BasicNameValuePair("cat", category));
+  				String item = itemName;
+  				if (item == "Blue books") {
+  					item = "blue_book";
+  				} else if (item == "scantrons") {
+  					item = "scantron";
+  				}
+  				nameValuePairs.add(new BasicNameValuePair("item", item));
   			}
   			nameValuePairs.add(new BasicNameValuePair("lat", location.getLatitudeE6()+""));
   			nameValuePairs.add(new BasicNameValuePair("long", location.getLongitudeE6()+""));
@@ -220,7 +214,7 @@ public void onCreate(Bundle savedInstanceState) {
     }
     
     /** This method places the locations retrieved from the database onto the map */
-    private void placeOverlays() {
+    private void placeOverlays(JSONArray listOfLocations) {
         for (GeoPoint point : geopointMap.keySet()) {
         	OverlayItem overlayItem = new OverlayItem(point, "blah", "blah");
         	itemizedOverlay.addOverlay(overlayItem);
