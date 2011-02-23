@@ -1,3 +1,12 @@
+/*
+ * This class displays the menu of buttons
+ * each corresponding to the eight categories
+ * Simple options will launch the Map; options
+ * with sub-categories will launch CategoryList.
+ * 
+ * This is the class that is first shown when FIN is
+ * launched.
+ */
 package finditnow.apk;
 
 import android.app.Activity;
@@ -15,6 +24,7 @@ import android.widget.TextView;
 
 public class Menu extends Activity {
 	
+	// On launch, show menu.xml layout, set up grid.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
@@ -32,7 +42,7 @@ public class Menu extends Activity {
     	}
 
     	public int getCount() {
-    		return 8;
+    		return categories.length;
     	}
 
     	public Object getItem(int position) {
@@ -43,22 +53,23 @@ public class Menu extends Activity {
     		return 0;
     	}
 
+    	// Sets up the view shown within each grid cell.
     	public View getView(int position, View convertView, ViewGroup parent) {
     		View myView = convertView;
-			// Define the view that appears in each grid cell.
+			
+    		// If not created yet, initialize it.
     		if (convertView == null) {	
     			LayoutInflater li = getLayoutInflater();
     			myView = li.inflate(R.layout.grid_item, null);
     			
-    			// add image button
+    			// Add image button
     			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
     			ib.setImageResource(icons[position]);
     			
-    			 // for some reason it's gotta be 'final' to be passed to the listener ...
     			final String category = categories[position];
     			
     			if (position == 1 || position == 6) {
-    				// jump to CategoryList
+    				// Jump to CategoryList
     				ib.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							Intent myIntent = new Intent(v.getContext(), CategoryList.class);
@@ -67,7 +78,7 @@ public class Menu extends Activity {
 						}
 	    			});
     			} else {
-    				// otherwise jump to map
+    				// Otherwise, jump to map
 	    			ib.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							Intent myIntent = new Intent(v.getContext(), Map.class);
@@ -77,7 +88,7 @@ public class Menu extends Activity {
 	    			});
     			}
     			
-    			// add text
+    			// Add text above button.
     			TextView tv = (TextView) myView.findViewById(R.id.grid_item_text);
     			tv.setText(categories[position]);
     		}
@@ -93,6 +104,7 @@ public class Menu extends Activity {
 		}
     }
 	
+	// Category selections.
     protected static String[] categories = {
         "ATMs",
         "BUILDINGS",
@@ -104,6 +116,7 @@ public class Menu extends Activity {
         "VENDING"
     };
     
+    // Icon assets
     protected static Integer[] icons = {
         R.drawable.atms,
         R.drawable.buildings,
