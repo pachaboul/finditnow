@@ -51,6 +51,7 @@ public class Map extends MapActivity {
 	private static HashMap<String, Integer> icons;
 	private static HashMap<GeoPoint, String> buildings;
 	private static String category;
+	private static String itemName;
 	
 	// Location and GeoPoint Variables
 	private JSONArray listOfLocations;
@@ -169,7 +170,9 @@ public class Map extends MapActivity {
   			List nameValuePairs = new ArrayList();
   			
   			nameValuePairs.add(new BasicNameValuePair("cat", category));
-  			
+  			if (itemName != null) {
+  				nameValuePairs.add(new BasicNameValuePair("cat", category));
+  			}
   			nameValuePairs.add(new BasicNameValuePair("lat", location.getLatitudeE6()+""));
   			nameValuePairs.add(new BasicNameValuePair("long", location.getLongitudeE6()+""));
   	        
