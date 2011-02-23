@@ -6,12 +6,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
+import java.lang.StringBuffer;
 
 
 public class PopUpDialog extends Dialog{
 
 	private String[] floor;
 	private String buildName;
+	private String name;
 	
 	//creates a PopUpDialog
 	public PopUpDialog(Context context) {
@@ -19,11 +21,12 @@ public class PopUpDialog extends Dialog{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public PopUpDialog(Context context,String[] floor, String building)
+	public PopUpDialog(Context context,String[] floor, String building, String name)
 	{
 		super(context);
 		this.floor = floor;
 		this.buildName = building;
+		this.name = name;
 	}
 	
 	//Sets the information on this dialog
@@ -34,9 +37,15 @@ public class PopUpDialog extends Dialog{
     	setTitle(buildName);
 
     	TextView cate = (TextView) findViewById(R.id.category);
-    	char[] cateName = Map.getCategory().toCharArray();
-    	cateName[0] = Character.toUpperCase(cateName[0]);
-    	cate.setText(String.copyValueOf(cateName));
+    	
+    	StringBuffer buffer = new StringBuffer();
+    	buffer.append(Map.getCategory());    	
+    	//char cateName = Character.toUpperCase(buffer.charAt(0));
+    	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
+    	if (!(name == null) && !name.equals(""))
+    		buffer.append(" : "+ name);
+    	
+    	cate.setText(buffer.toString());
 
     	/*TextView seeflr = (TextView) findViewById(R.id.seefloor);
     	seeflr.on*/

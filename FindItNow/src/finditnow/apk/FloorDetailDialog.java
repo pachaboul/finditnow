@@ -37,6 +37,7 @@ public class FloorDetailDialog extends Dialog {
     	super.setContentView(R.layout.floordialog);
 
     	TextView smptext = (TextView) super.findViewById(R.id.floorDetailText);
+    	ImageView smpimg = (ImageView) super.findViewById(R.id.floorDetailImg);
     	
 		RelativeLayout layout = new RelativeLayout(this.getContext());
 		layout.setLayoutParams( ((RelativeLayout)findViewById(R.id.layout_rootflr)).getLayoutParams() );
@@ -54,7 +55,9 @@ public class FloorDetailDialog extends Dialog {
 			
 			ImageView img2 = new ImageView(this.getContext());
 			img2.setImageResource(Map.getIcons().get(Map.getCategory()));
-			img2.setPadding(IMG_LEFT, IMG_TOP+IMG_DIFF*i, IMG_RIGHT,0);
+			img2.setAdjustViewBounds(true);
+			img2.setMaxHeight(IMG_TOP+IMG_DIFF*(i+1));
+			img2.setPadding(IMG_LEFT,IMG_TOP+IMG_DIFF*i , IMG_RIGHT,0);
 			layout.addView(img2);
 		}
 		this.setContentView(layout);

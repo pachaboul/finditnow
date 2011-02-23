@@ -52,17 +52,18 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		GeoPoint itemLocation = item.getPoint();
 	    //This is how you use a PopUpDialog
 	    String[] floor = Map.getFloors(itemLocation);
+	    String name = Map.getLocationName(itemLocation);
 	    
 	    if (floor == null)
 	    {
-	    	floor = new String[]{"Level 6", "Level 5", "Level 4", "Level 3","Level 2","Level 1","Levev B"};
+	    	floor = new String[]{"Level 6", "Level 5", "Level 4", "Level 3","Level 2","Level 1","Level B"};
 	    }
 	    
 		String buildingName = Map.getBuilding(itemLocation);
 	    if (buildingName == null) {
 	  	    buildingName = "Unknown Building";
 	    }
-	    PopUpDialog popUp = new PopUpDialog(mContext, floor, buildingName);
+	    PopUpDialog popUp = new PopUpDialog(mContext, floor, buildingName, name);
 	  
 	    popUp.show();
 	    return true;

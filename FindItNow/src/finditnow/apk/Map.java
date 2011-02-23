@@ -25,6 +25,7 @@ import org.json.JSONException;
 import com.google.android.maps.*;
 
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -46,7 +47,9 @@ public class Map extends MapActivity {
 	private static String category;
 	
 	private JSONArray listOfLocations;
+	private static GeoPoint location;
 	private static java.util.Map<GeoPoint, String[]> geopointMap;
+	private static java.util.Map<GeoPoint,String> geopointNameMap;
 
 	/** Called when the activity is first created.
      * 	It initializes the map layout, detects the user's category, and builds the map
@@ -73,6 +76,8 @@ public class Map extends MapActivity {
         listOfLocations = requestLocations();
         geopointMap = JsonParser.parseJson(listOfLocations.toString());
         placeOverlays(listOfLocations);
+        
+        geopointNameMap = JsonParser.parseNameJson(listOfLocations.toString());
     }
     
     /** This method returns a map from categories to icons (icons must be the same name as the category, in lowercase */
@@ -92,6 +97,8 @@ public class Map extends MapActivity {
     	
     	buildingsMap.put(new GeoPoint(47653286, -122305850), "CSE Building");
     	buildingsMap.put(new GeoPoint(47653701, -122304759), "ME Building");
+    	buildingsMap.put(new GeoPoint(47654799, -122307776), "Mary Gates Hall");
+    	buildingsMap.put(new GeoPoint(47653613, -122306380), "EE Building");
     	
     	return buildingsMap;
     }
@@ -108,24 +115,33 @@ public class Map extends MapActivity {
         mapOverlays = mapView.getOverlays();
         drawable = this.getResources().getDrawable(getIcons().get(getCategory()));
         itemizedOverlay = new UWOverlay(drawable, this);
+        
+        // Zoom out enough
+        mapController.setZoom(17);
     }
     
     /** This method locates the user and displays the user's location in an overlay icon */
     private void locateUser() {
     	
     	// Define a new LocationOverlay and enable it
-        locOverlay = new MyLocationOverlay(this, mapView);
+        locOverlay = new MyLocationOverlay(this, mapView) {
+        	public void onLocationChanged(Location loc) {
+        		// Run this ONLY once we get a fix on the location
+        		super.onLocationChanged(loc);
+				location = new GeoPoint((int)(loc.getLatitude()*1000000), (int)(loc.getLongitude()*1000000));
+				mapController.animateTo(location);
+    	    }
+        };
+        
         locOverlay.enableMyLocation();
         mapOverlays.add(locOverlay);
         
-        // Run this ONLY once we get a fix on the location
-		Runnable runnable = new Runnable() {
-			public void run() {
-				mapController.animateTo(locOverlay.getMyLocation());
-			}
-		};
-		
-		locOverlay.runOnFirstFix(runnable);
+        // Try to get the current location, otherwise set a default
+		location = locOverlay.getMyLocation();
+		if (location == null) {
+			location = new GeoPoint(47654799,-122307776);
+			mapController.animateTo(location);
+		}
     }
     
     /**This method makes a request across the network to the database sending
@@ -144,12 +160,6 @@ public class Map extends MapActivity {
   			List nameValuePairs = new ArrayList();
   			
   			nameValuePairs.add(new BasicNameValuePair("cat", category));
-  			
-  			// Try to get the current location, otherwise set a default
-  			GeoPoint location = locOverlay.getMyLocation();
-  			if (location == null) {
-  				location = new GeoPoint(47653631,-122305025);
-  			}
   			
   			nameValuePairs.add(new BasicNameValuePair("lat", location.getLatitudeE6()+""));
   			nameValuePairs.add(new BasicNameValuePair("long", location.getLongitudeE6()+""));
@@ -175,11 +185,10 @@ public class Map extends MapActivity {
 	  	}catch(Exception e){
 	  	    Log.e("log_tag", "Error converting result "+e.toString());
 	  	}
+	  	
+	  	//Log.i("log_tag", "the output of request is : "+data);
 	  	try {
-	  		if (!data.startsWith("[")) {
-	  			infoArray = new JSONArray("[]");
-	  		} else 
-	  			infoArray = new JSONArray(data);
+			infoArray = new JSONArray(data);
 		} catch (JSONException e) {
 			Log.e("log_tag", "Error converting response to JSON "+e.toString());
 		}
@@ -194,7 +203,6 @@ public class Map extends MapActivity {
         
         // Add our overlay to the list
         mapOverlays.add(itemizedOverlay);
-        mapController.zoomToSpan(itemizedOverlay.getLatSpanE6(), itemizedOverlay.getLonSpanE6());
     }
  
     /** Required for Android Maps API compatibility */
@@ -223,5 +231,8 @@ public class Map extends MapActivity {
 	public static String[] getFloors(GeoPoint p)
 	{
 		return geopointMap.get(p);
+	}
+	public static String getLocationName(GeoPoint p){
+		return geopointNameMap.get(p);
 	}
 }
