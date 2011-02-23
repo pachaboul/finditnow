@@ -29,6 +29,12 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
+/**
+ * This is the Map class, which integrates the Google Maps API and itemized overlays
+ * It also includes location-awareness and houses most of the shared data in the front-end
+ * @author EricHare
+ *
+ */
 public class Map extends MapActivity {
 	
 	// Map and Location Variables
@@ -46,6 +52,7 @@ public class Map extends MapActivity {
 	private static HashMap<GeoPoint, String> buildings;
 	private static String category;
 	
+	// Location and GeoPoint Variables
 	private JSONArray listOfLocations;
 	private static GeoPoint location;
 	private static java.util.Map<GeoPoint, String[]> geopointMap;
@@ -77,6 +84,7 @@ public class Map extends MapActivity {
         geopointMap = JsonParser.parseJson(listOfLocations.toString());
         placeOverlays(listOfLocations);
         
+        // 
         geopointNameMap = JsonParser.parseNameJson(listOfLocations.toString());
     }
     
@@ -133,6 +141,7 @@ public class Map extends MapActivity {
     	    }
         };
         
+        // Enable the overlay
         locOverlay.enableMyLocation();
         mapOverlays.add(locOverlay);
         
@@ -195,6 +204,7 @@ public class Map extends MapActivity {
 	  	return infoArray;
     }
     
+    /** This method places the locations retrieved from the database onto the map */
     private void placeOverlays(JSONArray listOfLocations) {
         for (GeoPoint point : geopointMap.keySet()) {
         	OverlayItem overlayItem = new OverlayItem(point, "blah", "blah");
@@ -222,18 +232,19 @@ public class Map extends MapActivity {
     public static String getCategory() {
     	return category;
     }
-
-	public static HashMap<GeoPoint, String> getBuildings() {
-		return buildings;
-	}
 	
+    /** This method returns the building associated with the location p */
 	public static String getBuilding(GeoPoint p) {
 		return buildings.get(p);
 	}
+	
+	/** This method returns the floors associated with the location p */
 	public static String[] getFloors(GeoPoint p)
 	{
 		return geopointMap.get(p);
 	}
+	
+	/** This method returns the location name associated with the location p */
 	public static String getLocationName(GeoPoint p){
 		return geopointNameMap.get(p);
 	}
