@@ -12,11 +12,14 @@ package finditnow.apk;
 import com.google.gson.*;
 import com.google.android.maps.GeoPoint;
 import java.util.Map;
-import java.util.HashMap;//	{\"buildingName\":\"MEB\",\"category\":\"BLAH\",\"floorNum\":100}]"
+import android.util.Log;
+
+import java.util.HashMap;
 public class JsonParser {
 	private static final String[] names = { "lat",
 								   "long",
-								   "floor_names"};
+								   "floor_names",
+								   "name"};
 	//maybe?
 	/*
 	private static final String[] types = { "int",
@@ -29,6 +32,7 @@ public class JsonParser {
 		
 	 */
 	
+	//parses a Json Array into a map of locations and its floor names
 	public static Map<GeoPoint,String[]> parseJson(String json)
 	{
 		Gson gson = new Gson();
@@ -57,4 +61,34 @@ public class JsonParser {
 		
 		return map;
 	}
+	//a Json Array into a map of locations and its cat names
+	public static Map<GeoPoint,String> parseNameJson(String json)
+	{
+	//	Gson gson = new Gson();
+
+		JsonStreamParser parser = new JsonStreamParser(json);
+		JsonArray arr = parser.next().getAsJsonArray();
+		//Log.i("log_tag","this is the string i'm trying to parse: " + arr);
+
+		
+		Map<GeoPoint,String> map = new HashMap<GeoPoint,String>();
+		
+		//System.out.println("obj.length: "+arr.size());
+		for (int i = 0; i < arr.size(); i++)
+		{
+			JsonObject ob = arr.get(i).getAsJsonObject();
+			//System.out.println("obj: " + ob);
+			
+			/*System.out.println("Building Name: "+ob.get("buildingName").getAsString());
+			System.out.println("category Name: "+ob.get("category").getAsString());
+			System.out.println("floor Num: "+ob.get("floorNum").getAsInt());
+			System.out.println();*/
+			
+			//TO DO: build a container with GeoPoints as key for the map.
+			GeoPoint point = new GeoPoint( ob.get(names[0]).getAsInt(),ob.get(names[1]).getAsInt());
+			map.put(point,ob.get(names[3]).getAsString());
+		}
+		
+		return map;
+	}	
 }
