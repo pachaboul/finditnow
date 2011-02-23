@@ -202,7 +202,9 @@ public class Map extends MapActivity {
         }
         
         // Add our overlay to the list
-        mapOverlays.add(itemizedOverlay);
+        if (!geopointMap.keySet().isEmpty()) {
+        	mapOverlays.add(itemizedOverlay);
+        }
     }
  
     /** Required for Android Maps API compatibility */
