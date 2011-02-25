@@ -8,6 +8,8 @@ package finditnow.apk;
  * TODO: need to have a map for the radius of a building for final release.
  * 
  */
+import android.util.Log;
+
 import com.google.gson.*;
 import com.google.android.maps.GeoPoint;
 import java.util.Map;
@@ -25,7 +27,7 @@ public class JsonParser {
 								   "lat",
 								   "long",
 								   "name",
-								   "floor_id",
+								   "fid",
 								   "floor_names"};
 	
 	//parses a Json Array into a map of locations and its floor names
@@ -110,7 +112,7 @@ public class JsonParser {
 		return map;
 	}
 	
-	public static HashMap<GeoPoint, Building> parseBuildingJson(String json)
+	public static Map<GeoPoint,Building> parseBuildingJson(String json)
 	{
 		//used for parsing the JSON object
 		Gson gson = new Gson();
@@ -118,7 +120,7 @@ public class JsonParser {
 		JsonArray arr = parser.next().getAsJsonArray();
 		
 		//creates the map for information to be stored in
-		HashMap<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
+		Map<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
 		
 
 		for (int i = 0; i < arr.size(); i++)
@@ -133,13 +135,19 @@ public class JsonParser {
 			System.out.println();*/
 			
 			//place the information in the map with BuildingID as key
-			int bid = ob.get(BUILDING_NAMES[0]).getAsInt();
+			//int bid = ob.get(BUILDING_NAMES[0]).getAsInt();
 			GeoPoint point = new GeoPoint( ob.get(BUILDING_NAMES[1]).getAsInt(),ob.get(BUILDING_NAMES[2]).getAsInt());
-			String name = ob.get(BUILDING_NAMES[3]).getAsString();
+		//	String name = ob.get(BUILDING_NAMES[3]).getAsString();
+			ob.remove(BUILDING_NAMES[1]);
+			ob.remove(BUILDING_NAMES[2]);
+			
+			//Log.i("log_tag", ob.toString());
+			
+			Building build = gson.fromJson(ob,Building.class);
 			//JsonArray floor_ids_raw = ob.get(BUILDING_NAMES[4]).getAsJsonArray();
 			//JsonArray floor_names = ob.get(BUILDING_NAMES[5]).getAsJsonArray();
-			Building build = new Building(bid, name);
-			
+			//Building build = new Building(bid, name);
+			//Log.i("log_tag", point.toString() + "   " + build.toString());
 			map.put(point, build);
 		}
 		

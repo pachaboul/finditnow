@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,7 +51,7 @@ import android.widget.TextView;
 
 public class Menu extends Activity {
 	
-	private static HashMap<GeoPoint, Building> buildings;
+	private static Map<GeoPoint, Building> buildings;
 	private static HashMap<String, Integer> icons;
 	
 	// On launch, show menu.xml layout, set up grid.
