@@ -16,10 +16,17 @@ import java.util.HashMap;
 public class JsonParser {
 	//This is a string to keep track of the names of each piece of information in the
 	//JSON array.
-	private static final String[] NAMES = { "lat",
+	private static final String[] LOCATION_NAMES = { "lat",
 								   "long",
 								   "floor_names",
 								   "name"};
+	
+	private static final String[] BUILDING_NAMES = { "bid",
+								   "lat",
+								   "long",
+								   "name",
+								   "floor_id",
+								   "floor_names"};
 	
 	//parses a Json Array into a map of locations and its floor names
 	public static Map<GeoPoint,String[]> parseJson(String json)
@@ -45,10 +52,10 @@ public class JsonParser {
 			System.out.println();*/
 			
 			//place the information in the map with GeoPoint as key
-			GeoPoint point = new GeoPoint( ob.get(NAMES[0]).getAsInt(),ob.get(NAMES[1]).getAsInt());
-			if (ob.has(NAMES[2]))
+			GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
+			if (ob.has(LOCATION_NAMES[2]))
 			{
-				JsonArray s = ob.get(NAMES[2]).getAsJsonArray();
+				JsonArray s = ob.get(LOCATION_NAMES[2]).getAsJsonArray();
 				//the floor names associated with this point
 				String[] flrNames = gson.fromJson(s,String[].class);
 				
@@ -96,10 +103,46 @@ public class JsonParser {
 			JsonObject ob = arr.get(i).getAsJsonObject();
 			
 			//get the Geopoint and the name to put in map.
-			GeoPoint point = new GeoPoint( ob.get(NAMES[0]).getAsInt(),ob.get(NAMES[1]).getAsInt());
-			map.put(point,ob.get(NAMES[3]).getAsString());
+			GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
+			map.put(point,ob.get(LOCATION_NAMES[3]).getAsString());
 		}
 		
 		return map;
-	}	
+	}
+	
+	public static Map<Integer,Building> parseBuildingJson(String json)
+	{
+		//used for parsing the JSON object
+		Gson gson = new Gson();
+		JsonStreamParser parser = new JsonStreamParser(json);
+		JsonArray arr = parser.next().getAsJsonArray();
+		
+		//creates the map for information to be stored in
+		Map<Integer,Building> map = new HashMap<Integer,Building>();
+		
+
+		for (int i = 0; i < arr.size(); i++)
+		{
+			//Since the JsonArray contains whole bunch json array, we can get each one out
+			JsonObject ob = arr.get(i).getAsJsonObject();
+			
+			//some ways to get things out of a Json Object
+			/*System.out.println("Building Name: "+ob.get("buildingName").getAsString());
+			System.out.println("category Name: "+ob.get("category").getAsString());
+			System.out.println("floor Num: "+ob.get("floorNum").getAsInt());
+			System.out.println();*/
+			
+			//place the information in the map with BuildingID as key
+			int bid = ob.get(BUILDING_NAMES[0]).getAsInt();
+			GeoPoint point = new GeoPoint( ob.get(BUILDING_NAMES[1]).getAsInt(),ob.get(BUILDING_NAMES[2]).getAsInt());
+			String name = ob.get(BUILDING_NAMES[3]).getAsString();
+			//JsonArray floor_ids_raw = ob.get(BUILDING_NAMES[4]).getAsJsonArray();
+			//JsonArray floor_names = ob.get(BUILDING_NAMES[5]).getAsJsonArray();
+			Building build = new Building(point, name);
+			
+			map.put(bid, build);
+		}
+		
+		return map;
+	}
 }

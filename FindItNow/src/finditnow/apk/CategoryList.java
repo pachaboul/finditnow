@@ -8,6 +8,11 @@
 
 package finditnow.apk;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,16 +33,20 @@ public class CategoryList extends ListActivity {
     	
     	Bundle extras = getIntent().getExtras(); 
     	final String category = extras.getString("category");
-    	String[] data;
+    	List<String> list = new ArrayList<String>();
     	
     	// Grab the correct list to show.
     	if (category.equals("buildings")) {
-    		data = BUILDINGS;
+    		Map<Integer, Building> map = Menu.getBuildings();
+    		for (Integer bid : map.keySet()) {
+    			list.add(map.get(bid).getName());
+    		}
+    		Collections.sort(list);
     	} else {
-    		data = SUPPLIES;
+    		list = supplies();
     	}
     	
-    	setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, data));
+    	setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, list));
     	
     	ListView lv = getListView();
     	lv.setTextFilterEnabled(true);
@@ -65,8 +74,10 @@ public class CategoryList extends ListActivity {
 	};
 	 
     // List of supplies item types.
-	private static final String[] SUPPLIES = {
-		"Blue books",
-		"Scantrons"
-	};
+	private static ArrayList<String> supplies() {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("Blue books");
+		list.add("Scantrons");
+		return list;
+	}
 }
