@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FindItNow</string>
+    <string name="my_location">My Location</string>
+    <string name="help">Help</string>
 </resources>

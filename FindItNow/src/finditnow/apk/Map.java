@@ -31,6 +31,8 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 /**
  * This is the Map class, which integrates the Google Maps API and itemized overlays
@@ -99,6 +101,32 @@ public class Map extends MapActivity {
         }
     }
     
+    public void onPause() {
+    	super.onPause();
+    	locOverlay.disableMyLocation();
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.android_menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.my_location:
+        	centerOnLocation();
+            return true;
+        case R.id.help:
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+    
     /** This method returns a map from categories to icons (icons must be the same name as the category, in lowercase */
     private HashMap<String, Integer> createIconsList() {
     	HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
@@ -148,25 +176,28 @@ public class Map extends MapActivity {
     private void locateUser() {
     	
     	// Define a new LocationOverlay and enable it
-        locOverlay = new MyLocationOverlay(this, mapView) {
-        	public void onLocationChanged(Location loc) {
-        		// Run this ONLY once we get a fix on the location
-        		super.onLocationChanged(loc);
-				location = new GeoPoint((int)(loc.getLatitude()*1000000), (int)(loc.getLongitude()*1000000));
-				mapController.animateTo(location);
-    	    }
-        };
+        locOverlay = new MyLocationOverlay(this, mapView);
         
         // Enable the overlay
         locOverlay.enableMyLocation();
         mapOverlays.add(locOverlay);
         
-        // Try to get the current location, otherwise set a default
+        Runnable runnable = new Runnable() {
+			public void run() {
+				centerOnLocation();
+			}
+        };
+        
+        locOverlay.runOnFirstFix(runnable);
+    }
+    
+    private void centerOnLocation() {
+    	// Try to get the current location, otherwise set a default
 		location = locOverlay.getMyLocation();
 		if (location == null) {
 			location = new GeoPoint(47654799,-122307776);
-			mapController.animateTo(location);
 		}
+		mapController.animateTo(location);
     }
     
     /**This method makes a request across the network to the database sending
