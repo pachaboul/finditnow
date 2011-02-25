@@ -10,14 +10,21 @@
 package finditnow.apk;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -29,8 +36,31 @@ public class Menu extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
 		
-        GridView buttonGrid = (GridView) findViewById(R.id.gridview);
+		checkConnection();
+		
+		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
         buttonGrid.setAdapter(new ButtonAdapter(this));
+	}
+	
+	// Check if we have a data connection available
+	public void checkConnection() {
+		ConnectivityManager conman=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo info = conman.getActiveNetworkInfo();
+		
+		if (info == null || !info.isConnected()) {
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Error: You must enable your data connection (Wifi or 3g) to use this app")
+			
+				.setNeutralButton("Exit", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						Menu.this.finish();
+					}
+				});
+			
+			AlertDialog alert = builder.create();
+			alert.show();
+		}
 	}
 
 	// This class/list feeds into the grid view.
