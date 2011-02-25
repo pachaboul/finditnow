@@ -182,13 +182,7 @@ public class Map extends MapActivity {
         locOverlay.enableMyLocation();
         mapOverlays.add(locOverlay);
         
-        Runnable runnable = new Runnable() {
-			public void run() {
-				centerOnLocation();
-			}
-        };
-        
-        locOverlay.runOnFirstFix(runnable);
+        centerOnLocation();
     }
     
     private void centerOnLocation() {
