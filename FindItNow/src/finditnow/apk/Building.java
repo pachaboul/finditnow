@@ -1,18 +1,16 @@
 package finditnow.apk;
 
-import com.google.android.maps.GeoPoint;
-
 public class Building {
-    private GeoPoint point;
+    private int bid;
     private String name;
     
-    public Building(GeoPoint point, String name) {
-		this.point = point;
+    public Building(int bid, String name) {
+		this.bid = bid;
 		this.name = name;
     }
     
-    public GeoPoint getPoint() {
-    	return point;
+    public int getBID() {
+    	return bid;
     }
     
     public String getName() {

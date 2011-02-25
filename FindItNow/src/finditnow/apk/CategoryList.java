@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.google.android.maps.GeoPoint;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,9 +39,9 @@ public class CategoryList extends ListActivity {
     	
     	// Grab the correct list to show.
     	if (category.equals("buildings")) {
-    		Map<Integer, Building> map = Menu.getBuildings();
-    		for (Integer bid : map.keySet()) {
-    			list.add(map.get(bid).getName());
+    		Map<GeoPoint, Building> map = Menu.getBuildings();
+    		for (GeoPoint point : map.keySet()) {
+    			list.add(map.get(point).getName());
     		}
     		Collections.sort(list);
     	} else {
@@ -53,7 +55,7 @@ public class CategoryList extends ListActivity {
     	
     	lv.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-    			Intent myIntent = new Intent(v.getContext(), Map.class);
+    			Intent myIntent = new Intent(v.getContext(), finditnow.apk.Map.class);
     			myIntent.putExtra("category", category);
     			myIntent.putExtra("itemName", ((TextView) v).getText());
     			startActivity(myIntent);
