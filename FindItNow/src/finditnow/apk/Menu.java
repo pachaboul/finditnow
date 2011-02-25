@@ -132,6 +132,7 @@ public class Menu extends Activity {
 		} catch (JSONException e) {
 			Log.e("log_tag", "Error converting response to JSON "+e.toString());
 		}
+		Log.v("test", infoArray.toString());
 	  	return infoArray;
 	}
 	
