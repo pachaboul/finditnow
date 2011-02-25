@@ -53,7 +53,6 @@ public class Map extends MapActivity {
 	private UWOverlay itemizedOverlay;
 	
 	// Shared static variables that the other modules can access
-	private static HashMap<GeoPoint, String> buildings;
 	private static String category;
 	private static String itemName;
 	
@@ -78,15 +77,12 @@ public class Map extends MapActivity {
         category = extras.getString("category");
         itemName = extras.getString("itemName");
         
-        // Store a map from categories to icons so that other modules can use it
-        buildings = createBuildingsList();
-        
         // Create the map and detect the user's location
         createMap();
         locateUser();
         if (getCategory().equals("buildings")) {
-        	for (GeoPoint p : buildings.keySet()) {
-        		if (buildings.get(p).equals(itemName)) {
+        	for (GeoPoint p : Menu.getBuildings().keySet()) {
+        		if (Menu.getBuildings().get(p).equals(itemName)) {
         			itemizedOverlay.addOverlay(new OverlayItem(p, "blah", "blah"));
         	        mapOverlays.add(itemizedOverlay);
         		}
@@ -123,22 +119,6 @@ public class Map extends MapActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
-    }
-    
-    /** This method creates a map from GeoPoint coordinates to building names */
-    private HashMap<GeoPoint, String> createBuildingsList() {
-    	HashMap<GeoPoint, String> buildingsMap = new HashMap<GeoPoint, String>();
-    	
-    	buildingsMap.put(new GeoPoint(47654799, -122307776), "Mary Gates Hall");
-    	buildingsMap.put(new GeoPoint(47653613, -122306380), "Electrical Engineering");
-    	buildingsMap.put(new GeoPoint(47654244, -122306348), "Guggenheim Hall");
-    	buildingsMap.put(new GeoPoint(47654860, -122306558), "Sieg Hall");
-    	buildingsMap.put(new GeoPoint(47657123, -122308101), "Savery Hall");
-    	buildingsMap.put(new GeoPoint(47656629, -122307181), "Smith Hall");
-    	buildingsMap.put(new GeoPoint(47656582, -122309098), "Kane Hall");
-    	buildingsMap.put(new GeoPoint(47656465, -122310287), "Odegaard Undergraduate Library");
-    	
-    	return buildingsMap;
     }
     
     /** This method creates the map and displays the overlays on top of it */
@@ -262,11 +242,6 @@ public class Map extends MapActivity {
     public static String getCategory() {
     	return category;
     }
-	
-    /** This method returns the building associated with the location p */
-	public static String getBuilding(GeoPoint p) {
-		return buildings.get(p);
-	}
 	
 	/** This method returns the floors associated with the location p */
 	public static String[] getFloors(GeoPoint p)
