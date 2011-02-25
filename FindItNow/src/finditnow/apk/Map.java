@@ -24,8 +24,11 @@ import org.json.JSONException;
 
 import com.google.android.maps.*;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 
