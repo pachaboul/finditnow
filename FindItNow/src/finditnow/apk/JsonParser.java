@@ -110,7 +110,7 @@ public class JsonParser {
 		return map;
 	}
 	
-	public static Map<GeoPoint,Building> parseBuildingJson(String json)
+	public static HashMap<GeoPoint, Building> parseBuildingJson(String json)
 	{
 		//used for parsing the JSON object
 		Gson gson = new Gson();
@@ -118,7 +118,7 @@ public class JsonParser {
 		JsonArray arr = parser.next().getAsJsonArray();
 		
 		//creates the map for information to be stored in
-		Map<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
+		HashMap<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
 		
 
 		for (int i = 0; i < arr.size(); i++)
