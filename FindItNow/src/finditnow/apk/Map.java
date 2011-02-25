@@ -53,7 +53,6 @@ public class Map extends MapActivity {
 	private UWOverlay itemizedOverlay;
 	
 	// Shared static variables that the other modules can access
-	private static HashMap<String, Integer> icons;
 	private static HashMap<GeoPoint, String> buildings;
 	private static String category;
 	private static String itemName;
@@ -80,7 +79,6 @@ public class Map extends MapActivity {
         itemName = extras.getString("itemName");
         
         // Store a map from categories to icons so that other modules can use it
-        icons = createIconsList();
         buildings = createBuildingsList();
         
         // Create the map and detect the user's location
@@ -127,18 +125,6 @@ public class Map extends MapActivity {
         }
     }
     
-    /** This method returns a map from categories to icons (icons must be the same name as the category, in lowercase */
-    private HashMap<String, Integer> createIconsList() {
-    	HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
-
-    	// Loop over each category and map it to the icon file associated with it
-    	for (String str : Menu.categories) {
-			iconsMap.put(str.toLowerCase(), getResources().getIdentifier("drawable/"+str.toLowerCase(), null, getPackageName()));
-		}
-    	
-		return iconsMap;
-    }
-    
     /** This method creates a map from GeoPoint coordinates to building names */
     private HashMap<GeoPoint, String> createBuildingsList() {
     	HashMap<GeoPoint, String> buildingsMap = new HashMap<GeoPoint, String>();
@@ -165,7 +151,7 @@ public class Map extends MapActivity {
         
         // Build up our overlays and initialize our "UWOverlay" class
         mapOverlays = mapView.getOverlays();
-        drawable = this.getResources().getDrawable(getIcons().get(getCategory()));
+        drawable = this.getResources().getDrawable(Menu.getIcons().get(getCategory()));
         itemizedOverlay = new UWOverlay(drawable, this);
         
         // Zoom out enough
@@ -271,11 +257,6 @@ public class Map extends MapActivity {
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
-    
-    /** This method returns the icons map */
-    public static HashMap<String, Integer> getIcons() {
-    	return icons;
-    }
     
     /** This method returns the current category */
     public static String getCategory() {

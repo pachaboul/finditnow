@@ -9,6 +9,25 @@
  */
 package finditnow.apk;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import com.google.android.maps.GeoPoint;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -31,12 +50,21 @@ import android.widget.TextView;
 
 public class Menu extends Activity {
 	
+	private static java.util.Map<Integer, Building> buildings;
+	private static HashMap<String, Integer> icons;
+	
 	// On launch, show menu.xml layout, set up grid.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
 		
+        // Store a map from categories to icons so that other modules can use it
+        icons = createIconsList();
+		
 		checkConnection();
+		
+		JSONArray listOfBuildings = requestBuildings();
+		buildings = JsonParser.parseBuildingJson(listOfBuildings.toString());
 		
 		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
         buttonGrid.setAdapter(new ButtonAdapter(this));
@@ -62,6 +90,62 @@ public class Menu extends Activity {
 			alert.show();
 		}
 	}
+	
+	/**This method makes a request across the network to the database sending
+	the current location and category
+	@return: a JSONArray if item locations sent from the database */
+	private JSONArray requestBuildings() {
+		/*
+		   * HTTP Post request
+		   */
+		String data = "";
+	  	InputStream iStream = null;
+	  	JSONArray infoArray = null;
+	  	try{
+		        HttpClient httpclient = new DefaultHttpClient();
+		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/~johnsj8/getBuildings.php");
+		        
+		        HttpResponse response = httpclient.execute(httppost);
+		        HttpEntity entity = response.getEntity();
+		        iStream = entity.getContent();
+	  	}catch(Exception e){
+	  	    Log.e("log_tag", "Error in http connection "+e.toString());
+	  	}
+	  	//convert response to string
+	  	try{
+		        BufferedReader reader = new BufferedReader(new InputStreamReader(iStream,"iso-8859-1"),8);
+		        StringBuilder sb = new StringBuilder();
+		        String line = null;
+		        while ((line = reader.readLine()) != null) {
+		        	sb.append(line + "\n");
+		        }
+		        iStream.close();
+		 
+		        data = sb.toString();
+	  	}catch(Exception e){
+	  	    Log.e("log_tag", "Error converting result "+e.toString());
+	  	}
+	  	
+	  	//Log.i("log_tag", "the output of request is : "+data);
+	  	try {
+			infoArray = new JSONArray(data);
+		} catch (JSONException e) {
+			Log.e("log_tag", "Error converting response to JSON "+e.toString());
+		}
+	  	return infoArray;
+	}
+	
+    /** This method returns a map from categories to icons (icons must be the same name as the category, in lowercase */
+    private HashMap<String, Integer> createIconsList() {
+    	HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
+
+    	// Loop over each category and map it to the icon file associated with it
+    	for (String str : categories) {
+			iconsMap.put(str.toLowerCase(), getResources().getIdentifier("drawable/"+str.toLowerCase(), null, getPackageName()));
+		}
+    	
+		return iconsMap;
+    }
 
 	// This class/list feeds into the grid view.
 	public class ButtonAdapter extends BaseAdapter {
@@ -94,9 +178,9 @@ public class Menu extends Activity {
     			
     			// Add image button
     			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
-    			ib.setImageResource(icons[position]);
     			
     			final String category = categories[position];
+    			ib.setImageResource(getIcons().get(category.toLowerCase()));
     			
     			if (position == 1 || position == 6) {
     				// Jump to CategoryList
@@ -146,15 +230,12 @@ public class Menu extends Activity {
         "VENDING"
     };
     
-    // Icon assets
-    protected static Integer[] icons = {
-        R.drawable.atms,
-        R.drawable.buildings,
-        R.drawable.coffee,
-        R.drawable.dining,
-        R.drawable.mailboxes,
-        R.drawable.restrooms,
-        R.drawable.supplies,
-        R.drawable.vending
-    };
+    public static java.util.Map<Integer, Building> getBuildings() {
+		return buildings;
+    }
+    
+    /** This method returns the icons map */
+    public static HashMap<String, Integer> getIcons() {
+    	return icons;
+    }
 }
