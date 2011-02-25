@@ -66,7 +66,7 @@ public class FloorDetailDialog extends Dialog {
 			
 			//sets the different property of the icon display
 			ImageView img2 = new ImageView(this.getContext());
-			img2.setImageResource(Menu.getIcons().get(Map.getCategory()));
+			img2.setImageResource(Menu.getIcon(Map.getCategory()));
 			img2.setAdjustViewBounds(true);
 			img2.setMaxHeight(IMG_TOP+IMG_DIFF*(i+1));
 			img2.setPadding(IMG_LEFT,IMG_TOP+IMG_DIFF*i , IMG_RIGHT,0);

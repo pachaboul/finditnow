@@ -151,7 +151,7 @@ public class Map extends MapActivity {
         
         // Build up our overlays and initialize our "UWOverlay" class
         mapOverlays = mapView.getOverlays();
-        drawable = this.getResources().getDrawable(Menu.getIcons().get(getCategory()));
+        drawable = this.getResources().getDrawable(Menu.getIcon(getCategory()));
         itemizedOverlay = new UWOverlay(drawable, this);
         
         // Zoom out enough
