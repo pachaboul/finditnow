@@ -81,11 +81,9 @@ public class Map extends MapActivity {
         createMap();
         locateUser();
         
-        if (!getCategory().equals("buildings")) {
-	        listOfLocations = requestLocations();
-	        geopointMap = JsonParser.parseJson(listOfLocations.toString());
-	        geopointNameMap = JsonParser.parseNameJson(listOfLocations.toString());
-        }
+        listOfLocations = requestLocations();
+        geopointMap = JsonParser.parseJson(listOfLocations);
+        geopointNameMap = JsonParser.parseNameJson(listOfLocations);
         
         placeOverlays();
     }
@@ -218,7 +216,6 @@ public class Map extends MapActivity {
     private void placeOverlays() {
     	
     	if (getCategory().equals("buildings")) {
-    		geopointMap.clear();
     		GeoPoint point = CategoryList.getGeoPointFromBuilding(itemName);
     		geopointMap.put(point, Menu.getBuildings().get(point).getFloorName());
     	}
