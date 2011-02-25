@@ -1,4 +1,4 @@
-package finditnow.apk;
+/*package finditnow.apk;
 
 
 import junit.framework.TestCase;
@@ -168,3 +168,4 @@ public class JsonParserTest extends TestCase {
 		return result;
 	}
 }
+*/

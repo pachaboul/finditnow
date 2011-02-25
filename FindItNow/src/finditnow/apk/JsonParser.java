@@ -15,6 +15,8 @@ import com.google.android.maps.GeoPoint;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+
 public class JsonParser {
 	//This is a string to keep track of the names of each piece of information in the
 	//JSON array.
@@ -31,17 +33,18 @@ public class JsonParser {
 	"floor_names"};
 
 	//parses a Json Array into a map of locations and its floor names
-	public static Map<GeoPoint,String[]> parseJson(String json)
+	public static Map<GeoPoint,String[]> parseJson(JSONArray jsonArray)
 	{
-		if (json != null) {
+		//creates the map for information to be stored in
+		Map<GeoPoint,String[]> map = new HashMap<GeoPoint,String[]>();
+		
+		if (jsonArray != null) {
+			
+			String json = jsonArray.toString();
 			//used for parsing the JSON object
 			Gson gson = new Gson();
 			JsonStreamParser parser = new JsonStreamParser(json);
 			JsonArray arr = parser.next().getAsJsonArray();
-
-			//creates the map for information to be stored in
-			Map<GeoPoint,String[]> map = new HashMap<GeoPoint,String[]>();
-
 
 			for (int i = 0; i < arr.size(); i++)
 			{
@@ -85,23 +88,22 @@ public class JsonParser {
 				else
 					map.put(point, new String[]{"n/a"});
 			}
-			return map; 
-		} else {
-			return null;
-		}
+		} 
+		return map;
 	}
 
 	//a Json Array into a map of locations and its corresponding names
-	public static Map<GeoPoint,String> parseNameJson(String json)
+	public static Map<GeoPoint,String> parseNameJson(JSONArray jsonArray)
 	{
-		if (json != null) {
+		//create the map with GeoPoint as key and string as name
+		Map<GeoPoint,String> map = new HashMap<GeoPoint,String>();
+		
+		if (jsonArray != null) {
+			String json = jsonArray.toString();
 			//	Gson gson = new Gson();
 			//used to parse a json
 			JsonStreamParser parser = new JsonStreamParser(json);
 			JsonArray arr = parser.next().getAsJsonArray();
-	
-			//create the map with GeoPoint as key and string as name
-			Map<GeoPoint,String> map = new HashMap<GeoPoint,String>();
 	
 			for (int i = 0; i < arr.size(); i++)
 			{
@@ -113,10 +115,8 @@ public class JsonParser {
 				map.put(point,ob.get(LOCATION_NAMES[3]).getAsString());
 			}
 
-			return map;
-		} else {
-			return null;
-		}
+		} 
+		return map;
 	}
 
 	public static Map<GeoPoint,Building> parseBuildingJson(String json)
