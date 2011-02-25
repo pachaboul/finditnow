@@ -197,7 +197,7 @@ public class Menu extends Activity {
     				// Otherwise, jump to map
 	    			ib.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
-							Intent myIntent = new Intent(v.getContext(), Map.class);
+							Intent myIntent = new Intent(v.getContext(), finditnow.apk.Map.class);
 			                myIntent.putExtra("category", category.toLowerCase());
 			                startActivity(myIntent);
 						}
