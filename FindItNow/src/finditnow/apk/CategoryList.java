@@ -70,4 +70,13 @@ public class CategoryList extends ListActivity {
 		list.add("Scantrons");
 		return list;
 	}
+	
+	public static GeoPoint getGeoPointFromBuilding(String buildingName) {
+		for (GeoPoint point : Menu.getBuildings().keySet()) {
+			if (Menu.getBuildings().get(point).getName().equals(buildingName)) {
+				return point;
+			}
+		}
+		return null;
+	}
 }
