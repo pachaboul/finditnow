@@ -62,18 +62,6 @@ public class CategoryList extends ListActivity {
     		}
     	});
     }
-    
-    // List of buildings we have data collection for.
-    private static final String[] BUILDINGS = new String[] {
-    	"Electrical Engineering",
-    	"Guggenheim Hall",
-    	"Kane Hall",
-    	"Mary Gates Hall",
-    	"Odegaard Undergraduate Library",
-    	"Savery Hall",
-    	"Sieg Hall",
-    	"Smith Hall"
-	};
 	 
     // List of supplies item types.
 	private static ArrayList<String> supplies() {

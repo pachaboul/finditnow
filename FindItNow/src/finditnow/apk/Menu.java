@@ -180,7 +180,7 @@ public class Menu extends Activity {
     			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
     			
     			final String category = categories[position];
-    			ib.setImageResource(getIcons().get(category.toLowerCase()));
+    			ib.setImageResource(getIcon(category));
     			
     			if (position == 1 || position == 6) {
     				// Jump to CategoryList
@@ -235,7 +235,7 @@ public class Menu extends Activity {
     }
     
     /** This method returns the icons map */
-    public static HashMap<String, Integer> getIcons() {
-    	return icons;
+    public static Integer getIcon(String category) {
+    	return icons.get(category.toLowerCase());
     }
 }
