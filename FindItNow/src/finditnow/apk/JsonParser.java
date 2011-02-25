@@ -110,7 +110,7 @@ public class JsonParser {
 		return map;
 	}
 	
-	public static Map<Integer,Building> parseBuildingJson(String json)
+	public static Map<GeoPoint,Building> parseBuildingJson(String json)
 	{
 		//used for parsing the JSON object
 		Gson gson = new Gson();
@@ -118,7 +118,7 @@ public class JsonParser {
 		JsonArray arr = parser.next().getAsJsonArray();
 		
 		//creates the map for information to be stored in
-		Map<Integer,Building> map = new HashMap<Integer,Building>();
+		Map<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
 		
 
 		for (int i = 0; i < arr.size(); i++)
@@ -138,9 +138,9 @@ public class JsonParser {
 			String name = ob.get(BUILDING_NAMES[3]).getAsString();
 			//JsonArray floor_ids_raw = ob.get(BUILDING_NAMES[4]).getAsJsonArray();
 			//JsonArray floor_names = ob.get(BUILDING_NAMES[5]).getAsJsonArray();
-			Building build = new Building(point, name);
+			Building build = new Building(bid, name);
 			
-			map.put(bid, build);
+			map.put(point, build);
 		}
 		
 		return map;

@@ -50,7 +50,7 @@ import android.widget.TextView;
 
 public class Menu extends Activity {
 	
-	private static java.util.Map<Integer, Building> buildings;
+	private static java.util.Map<GeoPoint, Building> buildings;
 	private static HashMap<String, Integer> icons;
 	
 	// On launch, show menu.xml layout, set up grid.
@@ -230,7 +230,7 @@ public class Menu extends Activity {
         "VENDING"
     };
     
-    public static java.util.Map<Integer, Building> getBuildings() {
+    public static java.util.Map<GeoPoint, Building> getBuildings() {
 		return buildings;
     }
     
