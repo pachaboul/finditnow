@@ -80,19 +80,14 @@ public class Map extends MapActivity {
         // Create the map and detect the user's location
         createMap();
         locateUser();
-        if (getCategory().equals("buildings")) {
-        	for (GeoPoint p : Menu.getBuildings().keySet()) {
-        		if (Menu.getBuildings().get(p).equals(itemName)) {
-        			itemizedOverlay.addOverlay(new OverlayItem(p, "blah", "blah"));
-        	        mapOverlays.add(itemizedOverlay);
-        		}
-        	}
-        } else {
+        
+        if (!getCategory().equals("buildings")) {
 	        listOfLocations = requestLocations();
 	        geopointMap = JsonParser.parseJson(listOfLocations.toString());
-	        placeOverlays();
 	        geopointNameMap = JsonParser.parseNameJson(listOfLocations.toString());
         }
+        
+        placeOverlays();
     }
     
     public void onPause() {
@@ -221,6 +216,13 @@ public class Map extends MapActivity {
     
     /** This method places the locations retrieved from the database onto the map */
     private void placeOverlays() {
+    	
+    	if (getCategory().equals("buildings")) {
+    		geopointMap.clear();
+    		GeoPoint point = CategoryList.getGeoPointFromBuilding(itemName);
+    		geopointMap.put(point, Menu.getBuildings().get(point).getFloorName());
+    	}
+    	
         for (GeoPoint point : geopointMap.keySet()) {
         	OverlayItem overlayItem = new OverlayItem(point, "blah", "blah");
         	itemizedOverlay.addOverlay(overlayItem);
