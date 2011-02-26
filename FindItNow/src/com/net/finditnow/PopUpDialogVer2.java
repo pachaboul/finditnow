@@ -13,6 +13,8 @@ import android.widget.SimpleAdapter;
 import android.view.MotionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import android.widget.RelativeLayout;
+import android.util.Log;
 
 public class PopUpDialogVer2 extends Dialog{
 
@@ -92,14 +94,18 @@ public class PopUpDialogVer2 extends Dialog{
 	    				hashMapListForListView.add(map);
 	    				map = new HashMap<String,Object>();
 	    			}
+	    			lv.getLayoutParams().height = 200;
     			}
-	    	    	lv.setAdapter(
-	    	    			new SimpleAdapter(lv.getContext(),
-	                                hashMapListForListView, 
-	                                R.layout.flrlist_item,
-	                                new String[] {"name", "icon"},
-	                                new int[] { R.id.flrName, R.id.flrIcon}) 
-	    	    	);
+    			else
+    				lv.getLayoutParams().height = 0;
+
+    	    	lv.setAdapter(
+    	    			new SimpleAdapter(lv.getContext(),
+                                hashMapListForListView, 
+                                R.layout.flrlist_item,
+                                new String[] {"name", "icon"},
+                                new int[] { R.id.flrName, R.id.flrIcon}) 
+    	    	);
     		}
     	});
 		//String[] w = {"abc","def","ghi","jkl","mno","pqr","stu","vwx","yz"};
@@ -109,6 +115,7 @@ public class PopUpDialogVer2 extends Dialog{
     	//lv.setAdapter(new ArrayAdapter<String>(lv.getContext(), R.layout.list_item, w));
     	
 		//layout.addView(cat.getListView());
+	
     	
 	}
 	public boolean onTouchEvent(MotionEvent e)
