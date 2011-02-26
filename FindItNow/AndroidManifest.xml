@@ -7,14 +7,14 @@
     	android:icon="@drawable/icon"
 		android:label="@string/app_name"
 		android:theme="@android:style/Theme.NoTitleBar">
-        <activity android:name=".Menu"
+        <activity android:name=".FINMenu"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Map"></activity>
+        <activity android:name=".FINMap"></activity>
         <activity android:name=".CategoryList"></activity>
 		<uses-library android:name="com.google.android.maps" />
     </application>
