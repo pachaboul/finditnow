@@ -9,7 +9,6 @@
  */
 package com.net.finditnow;
 
-import java.util.Map;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -35,7 +34,7 @@ import android.widget.TextView;
 
 public class FINMenu extends Activity {
 	
-	private static Map<GeoPoint, Building> buildings;
+	private static HashMap<GeoPoint, Building> buildings;
 	private static HashMap<String, Integer> icons;
 	
 	// On launch, show menu.xml layout, set up grid.
@@ -171,7 +170,7 @@ public class FINMenu extends Activity {
         "VENDING"
     };
     
-    public static java.util.Map<GeoPoint, Building> getBuildings() {
+    public static HashMap<GeoPoint, Building> getBuildings() {
 		return buildings;
     }
     

@@ -12,7 +12,6 @@ package com.net.finditnow;
 
 import com.google.gson.*;
 import com.google.android.maps.GeoPoint;
-import java.util.Map;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -33,10 +32,10 @@ public class JsonParser {
 	"floor_names"};
 
 	//parses a Json Array into a map of locations and its floor names
-	public static Map<GeoPoint,String[]> parseJson(JSONArray jsonArray)
+	public static HashMap<GeoPoint, String[]> parseJson(JSONArray jsonArray)
 	{
 		//creates the map for information to be stored in
-		Map<GeoPoint,String[]> map = new HashMap<GeoPoint,String[]>();
+		HashMap<GeoPoint,String[]> map = new HashMap<GeoPoint,String[]>();
 		
 		if (jsonArray != null) {
 			
@@ -93,10 +92,10 @@ public class JsonParser {
 	}
 
 	//a Json Array into a map of locations and its corresponding names
-	public static Map<GeoPoint,String> parseNameJson(JSONArray jsonArray)
+	public static HashMap<GeoPoint, String> parseNameJson(JSONArray jsonArray)
 	{
 		//create the map with GeoPoint as key and string as name
-		Map<GeoPoint,String> map = new HashMap<GeoPoint,String>();
+		HashMap<GeoPoint,String> map = new HashMap<GeoPoint,String>();
 		
 		if (jsonArray != null) {
 			String json = jsonArray.toString();
@@ -119,7 +118,7 @@ public class JsonParser {
 		return map;
 	}
 
-	public static Map<GeoPoint,Building> parseBuildingJson(String json)
+	public static HashMap<GeoPoint, Building> parseBuildingJson(String json)
 	{
 		//used for parsing the JSON object
 		Gson gson = new Gson();
@@ -127,7 +126,7 @@ public class JsonParser {
 		JsonArray arr = parser.next().getAsJsonArray();
 
 		//creates the map for information to be stored in
-		Map<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
+		HashMap<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
 
 
 		for (int i = 0; i < arr.size(); i++)
