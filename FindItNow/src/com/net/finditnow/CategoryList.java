@@ -6,7 +6,7 @@
  * Auto-completion suggestions are enabled.
  */
 
-package finditnow.apk;
+package com.net.finditnow;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +39,7 @@ public class CategoryList extends ListActivity {
     	
     	// Grab the correct list to show.
     	if (category.equals("buildings")) {
-    		Map<GeoPoint, Building> map = Menu.getBuildings();
+    		Map<GeoPoint, Building> map = FINMenu.getBuildings();
     		for (GeoPoint point : map.keySet()) {
     			list.add(map.get(point).getName());
     		}
@@ -55,7 +55,7 @@ public class CategoryList extends ListActivity {
     	
     	lv.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-    			Intent myIntent = new Intent(v.getContext(), finditnow.apk.Map.class);
+    			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			myIntent.putExtra("category", category);
     			myIntent.putExtra("itemName", ((TextView) v).getText());
     			startActivity(myIntent);
@@ -72,8 +72,8 @@ public class CategoryList extends ListActivity {
 	}
 	
 	public static GeoPoint getGeoPointFromBuilding(String buildingName) {
-		for (GeoPoint point : Menu.getBuildings().keySet()) {
-			if (Menu.getBuildings().get(point).getName().equals(buildingName)) {
+		for (GeoPoint point : FINMenu.getBuildings().keySet()) {
+			if (FINMenu.getBuildings().get(point).getName().equals(buildingName)) {
 				return point;
 			}
 		}

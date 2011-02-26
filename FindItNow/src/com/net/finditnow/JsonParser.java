@@ -1,4 +1,5 @@
-package finditnow.apk;
+package com.net.finditnow;
+
 /*
  * This class provides methods to parse a Json string into a HashMap
  * 
@@ -8,7 +9,6 @@ package finditnow.apk;
  * TODO: need to have a map for the radius of a building for final release.
  * 
  */
-import android.util.Log;
 
 import com.google.gson.*;
 import com.google.android.maps.GeoPoint;

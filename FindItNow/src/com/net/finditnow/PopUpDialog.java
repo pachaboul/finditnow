@@ -1,4 +1,5 @@
-package finditnow.apk;
+package com.net.finditnow;
+
 /* 
  * This class is a custom dialog for displaying more information regarding a location
  * and the service it provides
@@ -48,7 +49,7 @@ public class PopUpDialog extends Dialog{
     	//Converts the first letter of category to upper case and
     	//adds the name of the service provided if it exist
     	StringBuffer buffer = new StringBuffer();
-    	buffer.append(Map.getCategory());    	
+    	buffer.append(FINMap.getCategory());    	
     	//char cateName = Character.toUpperCase(buffer.charAt(0));
     	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
     	if (!(name == null) && !name.equals(""))

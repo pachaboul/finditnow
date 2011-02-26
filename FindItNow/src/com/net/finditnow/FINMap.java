@@ -1,36 +1,15 @@
-/** Map.java
+/** FINMap.java
  *  This is MapView class which uses the Google Maps API
  *  It draws the overlay, communicates with the database, and detects user location
  */
 
-package finditnow.apk;
+package com.net.finditnow;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
-
 import com.google.android.maps.*;
-
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
@@ -40,7 +19,7 @@ import android.view.MenuItem;
  * @author EricHare
  *
  */
-public class Map extends MapActivity {
+public class FINMap extends MapActivity {
 	
 	// Map and Location Variables
 	private MapView mapView;
@@ -57,7 +36,6 @@ public class Map extends MapActivity {
 	private static String itemName;
 	
 	// Location and GeoPoint Variables
-	private JSONArray listOfLocations;
 	private static GeoPoint location;
 	private static java.util.Map<GeoPoint, String[]> geopointMap;
 	private static java.util.Map<GeoPoint,String> geopointNameMap;
@@ -81,7 +59,7 @@ public class Map extends MapActivity {
         createMap();
         locateUser();
         
-        listOfLocations = requestLocations();
+        JSONArray listOfLocations = Request.requestFromDB(category, itemName, location);
         geopointMap = JsonParser.parseJson(listOfLocations);
         geopointNameMap = JsonParser.parseNameJson(listOfLocations);
         
@@ -124,7 +102,7 @@ public class Map extends MapActivity {
         
         // Build up our overlays and initialize our "UWOverlay" class
         mapOverlays = mapView.getOverlays();
-        drawable = this.getResources().getDrawable(Menu.getIcon(getCategory()));
+        drawable = this.getResources().getDrawable(FINMenu.getIcon(getCategory()));
         itemizedOverlay = new UWOverlay(drawable, this);
         
         // Zoom out enough
@@ -153,71 +131,12 @@ public class Map extends MapActivity {
 		mapController.animateTo(location);
     }
     
-    /**This method makes a request across the network to the database sending
-    	the current location and category
-    	@return: a JSONArray if item locations sent from the database */
-    private JSONArray requestLocations() {
-    	/*
-  	   * HTTP Post request
-  	   */
-    	String data = "";
-	  	InputStream iStream = null;
-	  	JSONArray infoArray = null;
-	  	try{
-  	        HttpClient httpclient = new DefaultHttpClient();
-  	        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/~johnsj8/getLocations.php");
-  			List nameValuePairs = new ArrayList();
-  			
-  			nameValuePairs.add(new BasicNameValuePair("cat", category));
-  			if (itemName != null) {
-  				String item = itemName;
-  				if (item.equals("Blue books")) {
-  					item = "blue_book";
-  				} else if (item.equals("Scantrons")) {
-  					item = "scantron";
-  				}
-  				nameValuePairs.add(new BasicNameValuePair("item", item));
-  			}
-  			nameValuePairs.add(new BasicNameValuePair("lat", location.getLatitudeE6()+""));
-  			nameValuePairs.add(new BasicNameValuePair("long", location.getLongitudeE6()+""));
-  	        
-  			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-  	        HttpResponse response = httpclient.execute(httppost);
-  	        HttpEntity entity = response.getEntity();
-  	        iStream = entity.getContent();
-	  	}catch(Exception e){
-	  	    Log.e("log_tag", "Error in http connection "+e.toString());
-	  	}
-	  	//convert response to string
-	  	try{
-  	        BufferedReader reader = new BufferedReader(new InputStreamReader(iStream,"iso-8859-1"),8);
-  	        StringBuilder sb = new StringBuilder();
-  	        String line = null;
-  	        while ((line = reader.readLine()) != null) {
-  	        	sb.append(line + "\n");
-  	        }
-  	        iStream.close();
-  	 
-  	        data = sb.toString();
-	  	}catch(Exception e){
-	  	    Log.e("log_tag", "Error converting result "+e.toString());
-	  	}
-	  	
-	  	//Log.i("log_tag", "the output of request is : "+data);
-	  	try {
-			infoArray = new JSONArray(data);
-		} catch (JSONException e) {
-			Log.e("log_tag", "Error converting response to JSON "+e.toString());
-		}
-	  	return infoArray;
-    }
-    
     /** This method places the locations retrieved from the database onto the map */
     private void placeOverlays() {
     	
     	if (getCategory().equals("buildings")) {
     		GeoPoint point = CategoryList.getGeoPointFromBuilding(itemName);
-    		geopointMap.put(point, Menu.getBuildings().get(point).getFloorName());
+    		geopointMap.put(point, FINMenu.getBuildings().get(point).getFloorName());
     	}
     	
         for (GeoPoint point : geopointMap.keySet()) {
