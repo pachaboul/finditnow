@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import com.google.android.maps.*;
+import android.app.Dialog;
 
 
 public class UWOverlay extends ItemizedOverlay<OverlayItem> {
@@ -45,7 +46,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	    String name = FINMap.getLocationName(itemLocation);	    
 		String buildingName = FINMenu.getBuildings().get(itemLocation).getName();
 		
-	    PopUpDialog popUp = new PopUpDialog(mContext, floor, buildingName, name);
+	    Dialog popUp = new PopUpDialogVer2(mContext, floor, buildingName, name);
 	  
 	    popUp.show();
 	    return true;
