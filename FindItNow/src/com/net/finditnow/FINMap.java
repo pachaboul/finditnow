@@ -9,8 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import org.json.JSONArray;
 import com.google.android.maps.*;
+
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
@@ -73,23 +76,31 @@ public class FINMap extends MapActivity {
     }
     
     @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.android_menu, menu);
+        inflater.inflate(R.menu.map_menu, menu);
         return true;
     }
+    
+    void onCreateOptionsMenu() {
+	}
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-        case R.id.my_location:
-        	centerOnLocation();
-            return true;
-        case R.id.help:
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+	        case R.id.category:
+                startActivity(new Intent(this, FINMenu.class));
+	            return true;
+	        case R.id.my_location:
+	        	centerOnLocation();
+	            return true;
+	        case R.id.add_new:
+	            return true;
+	        case R.id.help:
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
         }
     }
     
