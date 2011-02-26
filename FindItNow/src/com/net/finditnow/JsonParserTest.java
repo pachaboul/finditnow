@@ -3,7 +3,6 @@
 
 import junit.framework.TestCase;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
 import com.google.android.maps.GeoPoint;
 

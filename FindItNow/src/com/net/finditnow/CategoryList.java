@@ -10,8 +10,8 @@ package com.net.finditnow;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.google.android.maps.GeoPoint;
 
@@ -39,7 +39,7 @@ public class CategoryList extends ListActivity {
     	
     	// Grab the correct list to show.
     	if (category.equals("buildings")) {
-    		Map<GeoPoint, Building> map = FINMenu.getBuildings();
+    		HashMap<GeoPoint, Building> map = FINMenu.getBuildings();
     		for (GeoPoint point : map.keySet()) {
     			list.add(map.get(point).getName());
     		}

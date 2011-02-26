@@ -5,6 +5,7 @@
 
 package com.net.finditnow;
 
+import java.util.HashMap;
 import java.util.List;
 import org.json.JSONArray;
 import com.google.android.maps.*;
@@ -37,8 +38,8 @@ public class FINMap extends MapActivity {
 	
 	// Location and GeoPoint Variables
 	private static GeoPoint location;
-	private static java.util.Map<GeoPoint, String[]> geopointMap;
-	private static java.util.Map<GeoPoint,String> geopointNameMap;
+	private static HashMap<GeoPoint, String[]> geopointMap;
+	private static HashMap<GeoPoint,String> geopointNameMap;
 
 	/** Called when the activity is first created.
      * 	It initializes the map layout, detects the user's category, and builds the map
