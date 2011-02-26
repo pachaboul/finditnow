@@ -79,24 +79,27 @@ public class PopUpDialogVer2 extends Dialog{
 			img2.setPadding(IMG_LEFT,IMG_TOP+IMG_DIFF*i , IMG_RIGHT,0);
 			layout.addView(img2);
     		 */
-    			ArrayList<HashMap<String,Object>> hashMapListForListView = new ArrayList<HashMap<String,Object>>();
-    			HashMap<String,Object> map = new HashMap<String,Object>();
-    			for (String s: floor)
-    			{
-    				map.put("name",s);
-    				map.put("icon",FINMenu.getIcon(FINMap.getCategory()));
-    				hashMapListForListView.add(map);
-    				map = new HashMap<String,Object>();
-    			}
-    			
     			ListView lv = (ListView) findViewById(R.id.flrList);
-    	    	lv.setAdapter(
-    	    			new SimpleAdapter(lv.getContext(),
-                                hashMapListForListView, 
-                                R.layout.flrlist_item,
-                                new String[] {"name", "icon"},
-                                new int[] { R.id.flrName, R.id.flrIcon}) 
-    	    	);
+    			ArrayList<HashMap<String,Object>> hashMapListForListView = new ArrayList<HashMap<String,Object>>();
+
+    			if (lv.getCount() == 0)
+    			{
+	    			HashMap<String,Object> map = new HashMap<String,Object>();
+	    			for (String s: floor)
+	    			{
+	    				map.put("name",s);
+	    				map.put("icon",FINMenu.getIcon(FINMap.getCategory()));
+	    				hashMapListForListView.add(map);
+	    				map = new HashMap<String,Object>();
+	    			}
+    			}
+	    	    	lv.setAdapter(
+	    	    			new SimpleAdapter(lv.getContext(),
+	                                hashMapListForListView, 
+	                                R.layout.flrlist_item,
+	                                new String[] {"name", "icon"},
+	                                new int[] { R.id.flrName, R.id.flrIcon}) 
+	    	    	);
     		}
     	});
 		//String[] w = {"abc","def","ghi","jkl","mno","pqr","stu","vwx","yz"};
