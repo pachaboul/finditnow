@@ -1,4 +1,4 @@
-package finditnow.apk;
+package com.net.finditnow;
 
 public class Building {
     private int bid;
@@ -7,8 +7,7 @@ public class Building {
     private String[] floor_names;
     
     //no arg constructor using Gson
-    public Building()
-    {
+    public Building() {
     	
     }
     public Building(int bid, String name, int[] fid, String[] fn) {

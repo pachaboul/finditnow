@@ -1,4 +1,4 @@
-/*package finditnow.apk;
+/*package com.net.finditnow;
 
 
 import junit.framework.TestCase;
@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Iterator;
 import com.google.android.maps.GeoPoint;
 
-import finditnow.apk.JsonParser;
+import com.net.finditnow.JsonParser;
 
 public class JsonParserTest extends TestCase {
 	protected String json1;

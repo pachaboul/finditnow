@@ -7,25 +7,12 @@
  * This is the class that is first shown when FIN is
  * launched.
  */
-package finditnow.apk;
+package com.net.finditnow;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import com.google.android.maps.GeoPoint;
 
@@ -37,19 +24,16 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class Menu extends Activity {
+public class FINMenu extends Activity {
 	
 	private static Map<GeoPoint, Building> buildings;
 	private static HashMap<String, Integer> icons;
@@ -64,7 +48,7 @@ public class Menu extends Activity {
 		
 		checkConnection();
 		
-		JSONArray listOfBuildings = requestBuildings();
+		JSONArray listOfBuildings = Request.requestFromDB("", "", null);
 		buildings = JsonParser.parseBuildingJson(listOfBuildings.toString());
 		
 		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
@@ -83,58 +67,13 @@ public class Menu extends Activity {
 			
 				.setNeutralButton("Exit", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						Menu.this.finish();
+						FINMenu.this.finish();
 					}
 				});
 			
 			AlertDialog alert = builder.create();
 			alert.show();
 		}
-	}
-	
-	/**This method makes a request across the network to the database sending
-	the current location and category
-	@return: a JSONArray if item locations sent from the database */
-	private JSONArray requestBuildings() {
-		/*
-		   * HTTP Post request
-		   */
-		String data = "";
-	  	InputStream iStream = null;
-	  	JSONArray infoArray = null;
-	  	try{
-		        HttpClient httpclient = new DefaultHttpClient();
-		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/~johnsj8/getBuildings.php");
-		        
-		        HttpResponse response = httpclient.execute(httppost);
-		        HttpEntity entity = response.getEntity();
-		        iStream = entity.getContent();
-	  	}catch(Exception e){
-	  	    Log.e("log_tag", "Error in http connection "+e.toString());
-	  	}
-	  	//convert response to string
-	  	try{
-		        BufferedReader reader = new BufferedReader(new InputStreamReader(iStream,"iso-8859-1"),8);
-		        StringBuilder sb = new StringBuilder();
-		        String line = null;
-		        while ((line = reader.readLine()) != null) {
-		        	sb.append(line + "\n");
-		        }
-		        iStream.close();
-		 
-		        data = sb.toString();
-	  	}catch(Exception e){
-	  	    Log.e("log_tag", "Error converting result "+e.toString());
-	  	}
-	  	
-	  	//Log.i("log_tag", "the output of request is : "+data);
-	  	try {
-			infoArray = new JSONArray(data);
-		} catch (JSONException e) {
-			Log.e("log_tag", "Error converting response to JSON "+e.toString());
-		}
-		Log.v("test", infoArray.toString());
-	  	return infoArray;
 	}
 	
     /** This method returns a map from categories to icons (icons must be the same name as the category, in lowercase */
@@ -197,7 +136,7 @@ public class Menu extends Activity {
     				// Otherwise, jump to map
 	    			ib.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
-							Intent myIntent = new Intent(v.getContext(), finditnow.apk.Map.class);
+							Intent myIntent = new Intent(v.getContext(), FINMap.class);
 			                myIntent.putExtra("category", category.toLowerCase());
 			                startActivity(myIntent);
 						}
