@@ -25,8 +25,10 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -63,6 +65,33 @@ public class FINMenu extends Activity {
 		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
         buttonGrid.setAdapter(new ButtonAdapter(this));
 	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.findItem(R.id.categories_button).setVisible(false);
+    	menu.findItem(R.id.add_new_button).setVisible(false);
+    	menu.findItem(R.id.my_location_button).setVisible(false);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+	        case R.id.help_button:
+	        	startActivity(new Intent(this, FINHelp.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+        }
+    }
 	
 	public ArrayList<String> buildCategories(JSONArray listOfCategories) {
 		ArrayList<String> category_list = new ArrayList<String>();
