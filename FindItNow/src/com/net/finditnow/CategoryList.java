@@ -18,6 +18,9 @@ import com.google.android.maps.GeoPoint;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -79,4 +82,33 @@ public class CategoryList extends ListActivity {
 		}
 		return null;
 	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.findItem(R.id.add_new_button).setVisible(false);
+    	menu.findItem(R.id.my_location_button).setVisible(false);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+	        case R.id.help_button:
+	        	startActivity(new Intent(this, FINHelp.class));
+	            return true;
+	        case R.id.categories_button:
+	        	startActivity(new Intent(this, FINMenu.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+        }
+    }
 }

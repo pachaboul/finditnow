@@ -78,26 +78,24 @@ public class FINMap extends MapActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.map_menu, menu);
+        inflater.inflate(R.menu.options_menu, menu);
         return true;
     }
-    
-    void onCreateOptionsMenu() {
-	}
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-	        case R.id.category:
+	        case R.id.categories_button:
                 startActivity(new Intent(this, FINMenu.class));
 	            return true;
-	        case R.id.my_location:
+	        case R.id.my_location_button:
 	        	centerOnLocation();
 	            return true;
-	        case R.id.add_new:
+	        case R.id.add_new_button:
 	            return true;
-	        case R.id.help:
+	        case R.id.help_button:
+	        	startActivity(new Intent(this, FINHelp.class));
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -174,13 +172,12 @@ public class FINMap extends MapActivity {
     }
 	
 	/** This method returns the floors associated with the location p */
-	public static String[] getFloors(GeoPoint p)
-	{
+	public static String[] getFloors(GeoPoint p) {
 		return geopointMap.get(p);
 	}
 	
 	/** This method returns the location name associated with the location p */
-	public static String getLocationName(GeoPoint p){
+	public static String getLocationName(GeoPoint p) {
 		return geopointNameMap.get(p);
 	}
 }
