@@ -9,9 +9,11 @@
  */
 package com.net.finditnow;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import com.google.android.maps.GeoPoint;
 
@@ -23,6 +25,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,22 +39,48 @@ public class FINMenu extends Activity {
 	
 	private static HashMap<GeoPoint, Building> buildings;
 	private static HashMap<String, Integer> icons;
+	private static ArrayList<String> categories;
 	
 	// On launch, show menu.xml layout, set up grid.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
 		
+		// Generate our list of categories from the database
+		JSONArray listOfCategories = Request.requestFromDB(null, null, null);
+		categories = buildCategories(listOfCategories);
+		
         // Store a map from categories to icons so that other modules can use it
         icons = createIconsList();
 		
+        // Check connection of Android device
 		checkConnection();
 		
-		JSONArray listOfBuildings = Request.requestFromDB("", "", null);
+		// Generate list of buildings from the database
+		JSONArray listOfBuildings = Request.requestFromDB("", null, null);
 		buildings = JsonParser.parseBuildingJson(listOfBuildings.toString());
 		
 		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
         buttonGrid.setAdapter(new ButtonAdapter(this));
+	}
+	
+	public ArrayList<String> buildCategories(JSONArray listOfCategories) {
+		ArrayList<String> category_list = new ArrayList<String>();
+		for (int i = 0; i < listOfCategories.length(); i++) {
+		    try {
+		    	String category = listOfCategories.getString(i);
+		    	if (!category.equals("regions") && !category.equals("floors")) {
+		    		if (category.equals("school_supplies")) {
+		    			category_list.add("supplies");
+		    		} else {
+		    			category_list.add(category);
+		    		}
+		    	}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return category_list;
 	}
 	
 	// Check if we have a data connection available
@@ -81,7 +110,7 @@ public class FINMenu extends Activity {
 
     	// Loop over each category and map it to the icon file associated with it
     	for (String str : categories) {
-			iconsMap.put(str.toLowerCase(), getResources().getIdentifier("drawable/"+str.toLowerCase(), null, getPackageName()));
+			iconsMap.put(str, getResources().getIdentifier("drawable/"+str, null, getPackageName()));
 		}
     	
 		return iconsMap;
@@ -96,7 +125,7 @@ public class FINMenu extends Activity {
     	}
 
     	public int getCount() {
-    		return categories.length;
+    		return categories.size();
     	}
 
     	public Object getItem(int position) {
@@ -119,7 +148,7 @@ public class FINMenu extends Activity {
     			// Add image button
     			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
     			
-    			final String category = categories[position];
+    			final String category = categories.get(position);
     			ib.setImageResource(getIcon(category));
     			
     			if (position == 1 || position == 6) {
@@ -127,7 +156,7 @@ public class FINMenu extends Activity {
     				ib.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							Intent myIntent = new Intent(v.getContext(), CategoryList.class);
-			                myIntent.putExtra("category", category.toLowerCase());
+			                myIntent.putExtra("category", category);
 			                startActivity(myIntent);
 						}
 	    			});
@@ -136,7 +165,7 @@ public class FINMenu extends Activity {
 	    			ib.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							Intent myIntent = new Intent(v.getContext(), FINMap.class);
-			                myIntent.putExtra("category", category.toLowerCase());
+			                myIntent.putExtra("category", category);
 			                startActivity(myIntent);
 						}
 	    			});
@@ -144,7 +173,8 @@ public class FINMenu extends Activity {
     			
     			// Add text above button.
     			TextView tv = (TextView) myView.findViewById(R.id.grid_item_text);
-    			tv.setText(categories[position]);
+    	    	tv.setText(category.toUpperCase());
+    	    	
     		}
     		return myView;
     	}
@@ -157,18 +187,6 @@ public class FINMenu extends Activity {
 			return mContext;
 		}
     }
-	
-	// Category selections.
-    protected static String[] categories = {
-        "ATMs",
-        "BUILDINGS",
-        "COFFEE",
-        "DINING",
-        "MAILBOXES",
-        "RESTROOMS",
-        "SUPPLIES",
-        "VENDING"
-    };
     
     public static HashMap<GeoPoint, Building> getBuildings() {
 		return buildings;
@@ -176,6 +194,6 @@ public class FINMenu extends Activity {
     
     /** This method returns the icons map */
     public static Integer getIcon(String category) {
-    	return icons.get(category.toLowerCase());
+    	return icons.get(category);
     }
 }

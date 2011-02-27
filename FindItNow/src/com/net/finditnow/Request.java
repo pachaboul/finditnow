@@ -13,8 +13,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.json.*;
 
 import android.util.Log;
 
@@ -34,8 +33,8 @@ public class Request {
 	  	JSONArray infoArray = null;
 	  	try{
 		        HttpClient httpclient = new DefaultHttpClient();
-		        HttpPost httppost = (location != null)? new HttpPost("http://cubist.cs.washington.edu/~johnsj8/getLocations.php") : 
-		        										new HttpPost("http://cubist.cs.washington.edu/~johnsj8/getBuildings.php");
+		        String suffix = (location == null? (category == null? "~dustinab/getCategories.php" : "~johnsj8/getBuildings.php") : "~johnsj8/getLocations.php");
+		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/" + suffix);
 		        if (location != null) {
 		  			List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 		  			
@@ -72,16 +71,22 @@ public class Request {
 		        iStream.close();
 		 
 		        data = sb.toString();
+		        Log.v("test", data);
 	  	}catch(Exception e){
 	  	    Log.e("log_tag", "Error converting result "+e.toString());
 	  	}
-	  	
 	  	//Log.i("log_tag", "the output of request is : "+data);
 	  	try {
-			infoArray = new JSONArray(data);
+		  	if (category == null) {
+		  		JSONTokener jsontok = new JSONTokener(data);
+		  		infoArray = CDL.rowToJSONArray(jsontok);
+		  	} else {
+		  		infoArray = new JSONArray(data);
+		  	}
 		} catch (JSONException e) {
 			Log.e("log_tag", "Error converting response to JSON "+e.toString());
 		}
+		
 	  	return infoArray;
 	}
 }
