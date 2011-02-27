@@ -76,7 +76,7 @@ public class FINMenu extends Activity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.findItem(R.id.categories_button).setVisible(false);
-    	menu.findItem(R.id.add_new_button).setVisible(false);
+    	menu.findItem(R.id.add_new_button).setVisible(true);
     	menu.findItem(R.id.my_location_button).setVisible(false);
     	return true;
     }
