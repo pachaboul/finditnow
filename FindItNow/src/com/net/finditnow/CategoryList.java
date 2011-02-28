@@ -71,6 +71,7 @@ public class CategoryList extends ListActivity {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("Blue books");
 		list.add("Scantrons");
+		list.add("Printing");
 		return list;
 	}
 	
