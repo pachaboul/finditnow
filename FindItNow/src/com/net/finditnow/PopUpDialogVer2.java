@@ -1,6 +1,7 @@
 package com.net.finditnow;
 
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.app.Dialog;
 import android.content.Context;
@@ -83,9 +84,12 @@ public class PopUpDialogVer2 extends Dialog{
     		 */
     			ListView lv = (ListView) findViewById(R.id.flrList);
     			ArrayList<HashMap<String,Object>> hashMapListForListView = new ArrayList<HashMap<String,Object>>();
-
+    			Button toggle = (Button) findViewById(R.id.showFlrButt);
+    			
+    			// Show all the floor info.
     			if (lv.getCount() == 0)
     			{
+    				toggle.setText("Hide Floors");
 	    			HashMap<String,Object> map = new HashMap<String,Object>();
 	    			for (String s: floor)
 	    			{
@@ -94,10 +98,18 @@ public class PopUpDialogVer2 extends Dialog{
 	    				hashMapListForListView.add(map);
 	    				map = new HashMap<String,Object>();
 	    			}
-	    			lv.getLayoutParams().height = 200;
+	    			
+	    			// added the wrap content option so the dialog doesn't have a blank
+	    			// space for buildings with few levels ... but maybe we'll use a 
+	    			// scroll view eventually? -- Mai
+	    			lv.getLayoutParams().height = Math.min(200, LinearLayout.LayoutParams.WRAP_CONTENT);
     			}
-    			else
+    			
+    			// Hide all the floor info.
+    			else {
+    				toggle.setText("See Which Floors");
     				lv.getLayoutParams().height = 0;
+    			}
 
     	    	lv.setAdapter(
     	    			new SimpleAdapter(lv.getContext(),
