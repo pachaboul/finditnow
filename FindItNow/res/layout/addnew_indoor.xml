@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <TextView
+		android:id="@+id/addnew_inheader"
+		android:text="Add New Indoor Item"
+		android:textColor="#FFFFFF"
+		android:textSize="25dp"
+		android:textStyle="bold"  
+		android:shadowColor="#000000"  
+        android:shadowRadius="1.5"  
+		android:background="#59E01B"
+		android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	    android:gravity="center"
+	   	android:layout_marginBottom="8dp"/>
+	   	
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addnew_inheader"
+        android:text="Type here:"/>
+    <EditText
+        android:id="@+id/entry"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:layout_below="@id/label"/>
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/entry"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dip"
+        android:text="OK" />
+    <Button
+	    android:id="@+id/addnew_cancel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip" 
+		android:layout_alignParentLeft="true"
+        android:layout_alignTop="@id/ok"
+        android:text="Cancel" />
+</RelativeLayout>
