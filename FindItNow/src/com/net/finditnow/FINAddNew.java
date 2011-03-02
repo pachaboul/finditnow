@@ -1,5 +1,3 @@
-// This section here is under construction.  It'll be cleaned up soon.
-
 package com.net.finditnow;
 
 import android.app.Activity;
@@ -11,25 +9,53 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
 public class FINAddNew extends Activity {
 	
+	private RadioButton rs;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_popup);
-		final RadioButton radio_in = (RadioButton) findViewById(R.id.radio_in);
-		final RadioButton radio_out = (RadioButton) findViewById(R.id.radio_out);
+		
+		
+		rs = (RadioButton) findViewById(R.id.addnew_in);
+		final RadioButton radio_in = (RadioButton) findViewById(R.id.addnew_in);
+		final RadioButton radio_out = (RadioButton) findViewById(R.id.addnew_out);
 		radio_in.setOnClickListener(radio_listener);
 		radio_out.setOnClickListener(radio_listener);
+		
+		final Button next = (Button) findViewById(R.id.addnew_next);
+		final Button cancel1 = (Button) findViewById(R.id.addnew_cancel1);
+		next.setOnClickListener(next_listener);
+		cancel1.setOnClickListener(cancel_listener);
 	}
 
+	private OnClickListener next_listener = new OnClickListener() {
+	    public void onClick(View v) {    	
+	    	if (rs.getId() == R.id.addnew_in) { //Adding indoor location
+	    		Toast.makeText(FINAddNew.this, rs.getText(), Toast.LENGTH_SHORT).show();
+	    		setContentView(R.layout.addnew_indoor);
+	    	} else if (rs.getId() == R.id.addnew_out) { //Adding outdoor location
+	    		Toast.makeText(FINAddNew.this, rs.getText(), Toast.LENGTH_SHORT).show();	
+	    	}
+	    }
+	};
+	
+
+	private OnClickListener cancel_listener = new OnClickListener() {
+	    public void onClick(View v) {
+	    	startActivity(new Intent(v.getContext(), FINMenu.class));
+	    }
+	};
+	
+	
 	private OnClickListener radio_listener = new OnClickListener() {
 	    public void onClick(View v) {
-	        // Perform action on clicks
-	        RadioButton rb = (RadioButton) v;
-	        Toast.makeText(FINAddNew.this, rb.getText(), Toast.LENGTH_SHORT).show();
+	        rs = (RadioButton) v;
 	    }
 	};
 	
