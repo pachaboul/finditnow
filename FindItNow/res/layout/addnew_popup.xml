@@ -1,23 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
-   
-   <RadioGroup
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical">
-      
-      <RadioButton android:id="@+id/radio_in"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Indoor Location" />
-      
-      <RadioButton android:id="@+id/radio_out"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Outdoor Location" />
-    
-    </RadioGroup>
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+	android:background="#ffffff">
+	
+	<TextView
+		android:id="@+id/addnew_header"
+		android:text="Choose one"
+		android:textColor="#FFFFFF"
+		android:textSize="25dp"
+		android:textStyle="bold"  
+		android:shadowColor="#000000"  
+        android:shadowRadius="1.5"  
+		android:background="#59E01B"
+		android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	    android:gravity="center"
+	   	android:layout_marginBottom="8dp"/>
+	
+	<TextView
+		android:paddingTop="10dp"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:layout_below="@id/addnew_header"
+        android:id="@+id/addnew_radiolabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="The new location is:"
+        android:textColor="#000000"
+        android:gravity="center"/>
+		
+	<RadioGroup 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:orientation="vertical"
+		android:layout_below="@id/addnew_radiolabel"
+		android:id="@+id/addnew_radio"
+		android:gravity="center">
+
+		<RadioButton 
+			android:id="@+id/addnew_in"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:text="Indoors"
+			android:checked="true" 
+			android:textColor="#000000"/>
+
+		<RadioButton 
+			android:id="@+id/addnew_out"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:text="Outdoors" 
+			android:textColor="#000000"/>
+
+	</RadioGroup>
+	
+	<Button 
+		android:id="@+id/addnew_next"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_below="@id/addnew_radio"
+		android:layout_marginRight="10dip"
+        android:layout_alignParentRight="true"
+		android:text="Next"/>
+		
+	<Button
+		android:id="@+id/addnew_cancel1" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="10dip" 
+		android:layout_alignParentLeft="true"
+		android:layout_alignTop="@id/addnew_next"
+		android:text="Cancel" />
+		
+</RelativeLayout>
