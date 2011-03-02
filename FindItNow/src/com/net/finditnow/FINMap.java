@@ -12,10 +12,14 @@ import com.google.android.maps.*;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * This is the Map class, which integrates the Google Maps API and itemized overlays
@@ -42,7 +46,8 @@ public class FINMap extends MapActivity {
 	// Location and GeoPoint Variables
 	private static GeoPoint location;
 	private static HashMap<GeoPoint, String[]> geopointMap;
-	private static HashMap<GeoPoint,String> geopointNameMap;
+	private static HashMap<GeoPoint,String> geopointNameMap;	
+	private static final GeoPoint DEFAULT_LOCATION = new GeoPoint(47654799,-122307776);
 
 	/** Called when the activity is first created.
      * 	It initializes the map layout, detects the user's category, and builds the map
@@ -63,11 +68,11 @@ public class FINMap extends MapActivity {
         createMap();
         locateUser();
         
-        JSONArray listOfLocations = Request.requestFromDB(category, itemName, location);
-        geopointMap = JsonParser.parseJson(listOfLocations);
-        geopointNameMap = JsonParser.parseNameJson(listOfLocations);
-        
-        placeOverlays();
+    	JSONArray listOfLocations = Request.requestFromDB(category, itemName, DEFAULT_LOCATION);
+    	geopointMap = JsonParser.parseJson(listOfLocations);
+    	geopointNameMap = JsonParser.parseNameJson(listOfLocations);
+            
+    	placeOverlays();
     }
     
     public void onPause() {
@@ -82,6 +87,28 @@ public class FINMap extends MapActivity {
         return true;
     }
     
+    public static double distanceTo(GeoPoint point) {
+    	Location dest = new Location("Hi");
+    	Location curr = new Location("Bye");
+    	
+    	if (location != null && !location.equals(DEFAULT_LOCATION)) {
+	    	float latitude_curr = (float) (location.getLatitudeE6()*1E-6);
+	    	float longitude_curr = (float) (location.getLongitudeE6()*1E-6);
+	    	float latitude_dest = (float) (point.getLatitudeE6()*1E-6);
+	    	float longitude_dest = (float) (point.getLongitudeE6()*1E-6);
+	    	
+	    	curr.setLatitude(latitude_curr);
+	    	curr.setLongitude(longitude_curr);
+	    	dest.setLatitude(latitude_dest);
+	    	dest.setLongitude(longitude_dest);
+	    	
+	    	return (curr.distanceTo(dest) * 0.000621371192);
+    	} else {
+    		return -1;
+    	}
+    }
+    
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -90,7 +117,11 @@ public class FINMap extends MapActivity {
                 startActivity(new Intent(this, FINMenu.class));
 	            return true;
 	        case R.id.my_location_button:
-	        	centerOnLocation();
+	        	if (location != null) {
+	        		mapController.animateTo(location);
+	        	} else {
+	        		Toast.makeText(this, "Error: Could Not Detect Location", Toast.LENGTH_SHORT).show();
+	        	}
 	            return true;
 	        case R.id.add_new_button:
 	        	startActivity(new Intent(this, FINAddNew.class));
@@ -122,24 +153,33 @@ public class FINMap extends MapActivity {
     
     /** This method locates the user and displays the user's location in an overlay icon */
     private void locateUser() {
-    	
     	// Define a new LocationOverlay and enable it
-        locOverlay = new MyLocationOverlay(this, mapView);
+        locOverlay = new MyLocationOverlay(this, mapView) {
+        	public void onLocationChanged(Location loc) {
+        		super.onLocationChanged(loc);
+        		location = new GeoPoint((int)(loc.getLatitude()*1E6), (int)(loc.getLongitude()*1E6));
+        	}
+        };
         
         // Enable the overlay
         locOverlay.enableMyLocation();
-        mapOverlays.add(locOverlay);
         
-        centerOnLocation();
-    }
-    
-    private void centerOnLocation() {
-    	// Try to get the current location, otherwise set a default
-		location = locOverlay.getMyLocation();
-		if (location == null) {
-			location = new GeoPoint(47654799,-122307776);
-		}
-		mapController.animateTo(location);
+    	Toast.makeText(this, "Detecting Location, Please Wait...", Toast.LENGTH_SHORT).show();
+    	location = locOverlay.getMyLocation();
+    	
+    	Handler handler = new Handler();
+    	handler.postDelayed(new Runnable() { 
+            public void run() { 
+            	// Try to get the current location, otherwise set a default
+        		if (location == null) {
+        			Toast.makeText(FINMap.this, "Error: Could Not Detect Location", Toast.LENGTH_SHORT).show();
+        			mapController.animateTo(DEFAULT_LOCATION);
+        		} else {
+	        		mapOverlays.add(locOverlay);
+	        		mapController.animateTo(location);
+        		}
+            } 
+        }, 3000);
     }
     
     /** This method places the locations retrieved from the database onto the map */
