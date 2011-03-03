@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.view.View;
 import android.widget.ListView;
 import java.lang.StringBuffer;
+import java.math.BigDecimal;
+
 import android.widget.SimpleAdapter;
 import android.view.MotionEvent;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class PopUpDialogVer2 extends Dialog{
 	private String[] floor;
 	private String buildName;
 	private String name;	
-	private double distance;
+	private BigDecimal distance;
 	
 	public PopUpDialogVer2(Context context) {
 		super(context);
@@ -31,7 +33,7 @@ public class PopUpDialogVer2 extends Dialog{
 	}
 	//creates a PopUpDialog with the given fields, should use this one
 	public PopUpDialogVer2(Context context,String[] floor, 
-				String building, String name, double distance)
+				String building, String name, BigDecimal distance)
 	{
 		super(context);
 		this.floor = floor;
@@ -63,7 +65,7 @@ public class PopUpDialogVer2 extends Dialog{
     	
     	TextView distText = (TextView) findViewById(R.id.distanceText);
     	String text = "Distance to here: ";
-    	if (distance == -1)
+    	if (distance.equals(new BigDecimal(-1)))
     		distText.setText(text+"Cannot Calculate");
     	else
     		distText.setText(text+distance+" mi.");
