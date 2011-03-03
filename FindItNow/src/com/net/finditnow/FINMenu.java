@@ -10,6 +10,7 @@
 package com.net.finditnow;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -55,6 +56,7 @@ public class FINMenu extends Activity {
 		// Generate our list of categories from the database
 		JSONArray listOfCategories = Request.requestFromDB(null, null, null);
 		categories = getCategoriesList(listOfCategories);
+		Collections.sort(categories);
 		
         // Store a map from categories to icons so that other modules can use it
         iconsMap = createIconsList();
@@ -63,6 +65,7 @@ public class FINMenu extends Activity {
 		JSONArray listOfBuildings = Request.requestFromDB("", null, null);
 		buildingsMap = JsonParser.parseBuildingJson(listOfBuildings.toString());
 		buildings = createBuildingList(buildingsMap);
+		Collections.sort(buildings);
 		
 		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
         buttonGrid.setAdapter(new ButtonAdapter(this));
