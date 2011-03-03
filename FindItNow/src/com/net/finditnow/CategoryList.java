@@ -38,6 +38,7 @@ public class CategoryList extends ListActivity {
     	
     	Bundle extras = getIntent().getExtras(); 
     	final String category = extras.getString("category");
+    	setTitle("FindItNow > " + FINUtil.capFirstChar(category));
     	List<String> list = new ArrayList<String>();
     	
     	// Grab the correct list to show.

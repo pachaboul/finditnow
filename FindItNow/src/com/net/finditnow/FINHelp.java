@@ -19,6 +19,7 @@ public class FINHelp extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.help);
+		setTitle("FindItNow > Help Guide");
 		
 		LinearLayout helpBody = (LinearLayout) findViewById(R.id.help_contents);
 		
