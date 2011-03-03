@@ -39,28 +39,30 @@ import android.widget.TextView;
 
 public class FINMenu extends Activity {
 	
-	private static HashMap<GeoPoint, Building> buildings;
-	private static HashMap<String, Integer> icons;
+	private static HashMap<GeoPoint, Building> buildingsMap;
+	private static HashMap<String, Integer> iconsMap;
 	private static ArrayList<String> categories;
+	private static ArrayList<String> buildings;
 	
 	// On launch, show menu.xml layout, set up grid.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
 		
-		// Generate our list of categories from the database
-		JSONArray listOfCategories = Request.requestFromDB(null, null, null);
-		categories = buildCategories(listOfCategories);
-		
-        // Store a map from categories to icons so that other modules can use it
-        icons = createIconsList();
-		
         // Check connection of Android device
 		checkConnection();
 		
+		// Generate our list of categories from the database
+		JSONArray listOfCategories = Request.requestFromDB(null, null, null);
+		categories = getCategoriesList(listOfCategories);
+		
+        // Store a map from categories to icons so that other modules can use it
+        iconsMap = createIconsList();
+		
 		// Generate list of buildings from the database
 		JSONArray listOfBuildings = Request.requestFromDB("", null, null);
-		buildings = JsonParser.parseBuildingJson(listOfBuildings.toString());
+		buildingsMap = JsonParser.parseBuildingJson(listOfBuildings.toString());
+		buildings = createBuildingList(buildingsMap);
 		
 		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
         buttonGrid.setAdapter(new ButtonAdapter(this));
@@ -95,7 +97,7 @@ public class FINMenu extends Activity {
         }
     }
 	
-	public ArrayList<String> buildCategories(JSONArray listOfCategories) {
+	public ArrayList<String> getCategoriesList(JSONArray listOfCategories) {
 		ArrayList<String> category_list = new ArrayList<String>();
 		for (int i = 0; i < listOfCategories.length(); i++) {
 		    try {
@@ -218,13 +220,38 @@ public class FINMenu extends Activity {
 			return mContext;
 		}
     }
-    
-    public static HashMap<GeoPoint, Building> getBuildings() {
+	
+	public static ArrayList<String> createBuildingList(HashMap<GeoPoint, Building> map) {
+		ArrayList<String> list = new ArrayList<String>();
+		for (GeoPoint point : map.keySet()) {
+			list.add(map.get(point).getName());
+		}
+		return list;
+	}
+	
+	public static ArrayList<String> getBuildingsList() {
 		return buildings;
+	}
+	
+	public static ArrayList<String> getCategoriesList() {
+		return categories;
+	}
+    
+    public static Building getBuilding(GeoPoint point) {
+    	return buildingsMap.get(point);
     }
     
     /** This method returns the icons map */
     public static Integer getIcon(String category) {
-    	return icons.get(category);
+    	return iconsMap.get(category);
     }
+    
+	public static GeoPoint getGeoPointFromBuilding(String buildingName) {
+		for (GeoPoint point : buildingsMap.keySet()) {
+			if (getBuilding(point).getName().equals(buildingName)) {
+				return point;
+			}
+		}
+		return null;
+	}
 }
