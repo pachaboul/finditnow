@@ -42,11 +42,7 @@ public class CategoryList extends ListActivity {
     	
     	// Grab the correct list to show.
     	if (category.equals("buildings")) {
-    		HashMap<GeoPoint, Building> map = FINMenu.getBuildings();
-    		for (GeoPoint point : map.keySet()) {
-    			list.add(map.get(point).getName());
-    		}
-    		Collections.sort(list);
+    		list = FINMenu.getBuildingsList();
     	} else {
     		list = supplies();
     	}
@@ -73,15 +69,6 @@ public class CategoryList extends ListActivity {
 		list.add("Scantrons");
 		list.add("Printing");
 		return list;
-	}
-	
-	public static GeoPoint getGeoPointFromBuilding(String buildingName) {
-		for (GeoPoint point : FINMenu.getBuildings().keySet()) {
-			if (FINMenu.getBuildings().get(point).getName().equals(buildingName)) {
-				return point;
-			}
-		}
-		return null;
 	}
 	
 	@Override

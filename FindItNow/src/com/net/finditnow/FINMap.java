@@ -186,8 +186,8 @@ public class FINMap extends MapActivity {
     private void placeOverlays() {
     	
     	if (getCategory().equals("buildings")) {
-    		GeoPoint point = CategoryList.getGeoPointFromBuilding(itemName);
-    		geopointMap.put(point, FINMenu.getBuildings().get(point).getFloorName());
+    		GeoPoint point = FINMenu.getGeoPointFromBuilding(itemName);
+    		geopointMap.put(point, FINMenu.getBuilding(point).getFloorName());
     	}
     	
         for (GeoPoint point : geopointMap.keySet()) {
