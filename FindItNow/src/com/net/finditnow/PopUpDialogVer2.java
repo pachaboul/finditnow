@@ -46,9 +46,8 @@ public class PopUpDialogVer2 extends Dialog{
  
     	//Converts the first letter of category to upper case and
     	//adds the name of the service provided if it exist
-    	StringBuffer buffer = new StringBuffer();
-    	buffer.append(FINMap.getCategory());    	
-    	//char cateName = Character.toUpperCase(buffer.charAt(0));
+    	StringBuffer buffer = new StringBuffer(FINUtil.capFirstChar(FINMap.getCategory()));
+    	
     	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
     	if (!(name == null) && !name.equals(""))
     		buffer.append(" : "+ name);
