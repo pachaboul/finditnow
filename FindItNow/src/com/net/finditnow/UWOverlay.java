@@ -1,5 +1,6 @@
 package com.net.finditnow;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -44,11 +45,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		OverlayItem item = mOverlays.get(index);
 		GeoPoint itemLocation = item.getPoint();
 		
-		double distance = FINMap.distanceTo(itemLocation);
-		if (distance != -1) {
-			// Then this distance is valid and should be displayed
-			// If distance is -1, it means we couldn't detect user location.  Maybe indicate that on the popup? iono.
-		}
+		BigDecimal distance = FINMap.distanceTo(itemLocation);
 
 	    String[] floor = FINMap.getFloors(itemLocation);
 	    String name = FINMap.getLocationName(itemLocation);	    
