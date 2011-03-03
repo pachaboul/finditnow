@@ -17,6 +17,7 @@
         <activity android:name=".CategoryList"></activity>
         <activity android:name=".FINHelp"></activity>
         <activity android:name=".FINAddNew"></activity>
+        <activity android:name=".FINAddMap"></activity>
 		<uses-library android:name="com.google.android.maps" />
     </application>
 
