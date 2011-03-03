@@ -46,6 +46,10 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		GeoPoint itemLocation = item.getPoint();
 		
 		BigDecimal distance = FINMap.distanceTo(itemLocation);
+		
+		// Returns the time to walk there in minutes
+		// Only valid if distance is not BigDecimal(-1)
+		int walkingTime = FINMap.walkingTime(distance);
 
 	    String[] floor = FINMap.getFloors(itemLocation);
 	    String name = FINMap.getLocationName(itemLocation);	    

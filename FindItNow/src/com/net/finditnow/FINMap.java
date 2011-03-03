@@ -119,6 +119,9 @@ public class FINMap extends MapActivity {
     	}
     }
     
+    public static int walkingTime(BigDecimal distance) {
+    	return (20 / distance.intValue());
+    }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
