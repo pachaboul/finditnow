@@ -73,7 +73,12 @@ public class FINAddNew extends Activity {
 		bSpinner.setAdapter(bAdapter);
 		bSpinner.setOnItemSelectedListener(bspinner_listener);
 		selectedBuilding = FINMenu.getBuilding(FINMenu.getGeoPointFromBuilding(FINMenu.getBuildingsList().get(0))); //uhhhh well it works...	
-	}
+	
+		Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
+		ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINUtil.capFirstChar(FINMenu.getCategoriesList()));
+		cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		cSpinner.setAdapter(cAdapter);
+    }
     
     protected void setFloorSpinner() {
     	Spinner fSpinner = (Spinner) findViewById(R.id.addnew_fspinner);
