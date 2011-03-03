@@ -62,10 +62,11 @@ public class PopUpDialogVer2 extends Dialog{
     	seeflr.on*/
     	
     	TextView distText = (TextView) findViewById(R.id.distanceText);
+    	String text = "Distance to here: ";
     	if (distance == -1)
-    		distText.setText("Cannot Calculate");
+    		distText.setText(text+"Cannot Calculate");
     	else
-    		distText.setText(distance+" mi.");
+    		distText.setText(text+distance+" mi.");
     	
     	//there is a button on this dialog, we need it to be clickable
     	Button butt = (Button) findViewById(R.id.showFlrButt);
