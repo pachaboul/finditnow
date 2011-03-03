@@ -12,11 +12,18 @@
               android:textColor="#FFF"
 			  android:layout_marginLeft="10px"
               />
+    <TextView android:id="@+id/distanceText"
+    		  android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:textColor="#FFF"
+              android:layout_toRightOf="@id/categoryName"
+			  android:layout_marginLeft="10px"
+              />
     <Button android:id="@+id/showFlrButt"
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
     		android:text="See Which Floors"
-    		android:layout_below="@id/category"
+    		android:layout_below="@id/categoryName"
     		android:layout_marginTop="20px"
     		/>
    	<ListView android:id="@+id/flrList"
