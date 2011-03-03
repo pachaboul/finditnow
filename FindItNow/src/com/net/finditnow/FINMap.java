@@ -5,6 +5,8 @@
 
 package com.net.finditnow;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 import org.json.JSONArray;
@@ -94,7 +96,7 @@ public class FINMap extends MapActivity {
         return true;
     }
     
-    public static double distanceTo(GeoPoint point) {
+    public static BigDecimal distanceTo(GeoPoint point) {
     	Location dest = new Location("Hi");
     	Location curr = new Location("Bye");
     	
@@ -109,9 +111,11 @@ public class FINMap extends MapActivity {
 	    	dest.setLatitude(latitude_dest);
 	    	dest.setLongitude(longitude_dest);
 	    	
-	    	return (curr.distanceTo(dest) * 0.000621371192);
+	    	MathContext mc = new MathContext(1);
+	    	
+	    	return new BigDecimal(curr.distanceTo(dest) * 0.000621371192, mc);
     	} else {
-    		return -1;
+    		return new BigDecimal(-1);
     	}
     }
     
