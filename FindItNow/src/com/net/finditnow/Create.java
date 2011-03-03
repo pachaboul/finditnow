@@ -24,7 +24,7 @@ public class Create {
 	/**This method makes a request across the network to the database sending
 	the current location and category
 	@return: a JSONArray if item locations sent from the database */
-	public static JSONArray sendToDB(String category, GeoPoint location, int floor_id, String details) {
+	public static JSONArray sendToDB(String category, GeoPoint location, int floor_id, String special_info) {
 		/*
 		   * HTTP Post request
 		   */
@@ -33,14 +33,14 @@ public class Create {
 	  	JSONArray infoArray = null;
 	  	try{
 		        HttpClient httpclient = new DefaultHttpClient();
-		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/~dustinab/FINsert/create.php");
+		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/FINsert/create.php");
 		  			
 		        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 		        
 	  			nameValuePairs.add(new BasicNameValuePair("category", category.toLowerCase()));
 	  			nameValuePairs.add(new BasicNameValuePair("latitude", location.getLatitudeE6()+""));
 	  			nameValuePairs.add(new BasicNameValuePair("longitude", location.getLongitudeE6()+""));
-	  			nameValuePairs.add(new BasicNameValuePair("details", details));
+	  			nameValuePairs.add(new BasicNameValuePair("special_info", special_info));
 	  			
 	  			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 		        
