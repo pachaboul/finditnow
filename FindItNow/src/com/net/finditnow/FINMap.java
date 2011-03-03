@@ -64,6 +64,13 @@ public class FINMap extends MapActivity {
         category = extras.getString("category");
         itemName = extras.getString("itemName");
         
+        // Set breadcrumbing in titlebar.
+        if (itemName == null) {
+        	setTitle("FindItNow > " + FINUtil.capFirstChar(category));
+        } else {
+        	setTitle("FindItNow > " + FINUtil.capFirstChar(category) + " > " + FINUtil.capFirstChar(itemName));
+        }
+        
         // Create the map and detect the user's location
         createMap();
         locateUser();

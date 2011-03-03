@@ -27,6 +27,7 @@ public class FINAddNew extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_popup);
+		setTitle("FindItNow > Add New Item");
 		
 		geopointConfirm = findViewById(R.id.addmap_confirm);
 		rs = (RadioButton) findViewById(R.id.addnew_in);
