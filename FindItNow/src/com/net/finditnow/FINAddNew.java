@@ -1,9 +1,6 @@
 package com.net.finditnow;
 
-import com.google.android.maps.GeoPoint;
-
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,20 +8,27 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.Toast;
+import android.widget.Spinner;
+import android.widget.AdapterView.OnItemSelectedListener;
+
+import com.google.android.maps.GeoPoint;
 
 public class FINAddNew extends Activity {
 	
 	private RadioButton rs;
 	private static GeoPoint tappedPoint;
+	View geopointConfirm;
+	Building selectedBuilding;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_popup);
 		
-		
+		geopointConfirm = findViewById(R.id.addmap_confirm);
 		rs = (RadioButton) findViewById(R.id.addnew_in);
 		final RadioButton radio_in = (RadioButton) findViewById(R.id.addnew_in);
 		final RadioButton radio_out = (RadioButton) findViewById(R.id.addnew_out);
@@ -32,31 +36,19 @@ public class FINAddNew extends Activity {
 		radio_out.setOnClickListener(radio_listener);
 		
 		final Button next = (Button) findViewById(R.id.addnew_next);
-		final Button cancel1 = (Button) findViewById(R.id.addnew_cancel1);
 		next.setOnClickListener(next_listener);
-		cancel1.setOnClickListener(cancel_listener);
 	}
 
 	private OnClickListener next_listener = new OnClickListener() {
 	    public void onClick(View v) {    	
 	    	if (rs.getId() == R.id.addnew_in) { //Adding indoor location
-	    		Toast.makeText(FINAddNew.this, rs.getText(), Toast.LENGTH_SHORT).show();
-	    		setContentView(R.layout.addnew_indoor);
+	    		handleIndoorItem();
 	    	} else if (rs.getId() == R.id.addnew_out) { //Adding outdoor location
-	    		Toast.makeText(FINAddNew.this, rs.getText(), Toast.LENGTH_SHORT).show();
 				Intent myIntent = new Intent(v.getContext(), FINAddMap.class);
                 startActivity(myIntent);
 	    	}
 	    }
 	};
-	
-
-	private OnClickListener cancel_listener = new OnClickListener() {
-	    public void onClick(View v) {
-	    	startActivity(new Intent(v.getContext(), FINMenu.class));
-	    }
-	};
-	
 	
 	private OnClickListener radio_listener = new OnClickListener() {
 	    public void onClick(View v) {
@@ -71,7 +63,38 @@ public class FINAddNew extends Activity {
         return true;
     }
     
-    @Override
+    protected void handleIndoorItem() {
+    	setContentView(R.layout.addnew_indoor);
+    	
+    	Spinner bSpinner = (Spinner) findViewById(R.id.addnew_bspinner);
+		ArrayAdapter<String> bAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINMenu.getBuildingsList());
+		bAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		bSpinner.setAdapter(bAdapter);
+		bSpinner.setOnItemSelectedListener(bspinner_listener);
+		selectedBuilding = FINMenu.getBuilding(FINMenu.getGeoPointFromBuilding(FINMenu.getBuildingsList().get(0))); //uhhhh well it works...	
+	}
+    
+    protected void setFloorSpinner() {
+    	Spinner fSpinner = (Spinner) findViewById(R.id.addnew_fspinner);
+		ArrayAdapter<String> fAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, selectedBuilding.getFloorName());
+		fAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		fSpinner.setAdapter(fAdapter);
+//		fSpinner.setOnItemSelectedListener(fspinner_listener);
+    }
+    
+    private OnItemSelectedListener bspinner_listener = new OnItemSelectedListener() {
+		public void onItemSelected(AdapterView<?> parent, View arg1, int pos, long arg3) {
+			selectedBuilding = FINMenu.getBuilding(FINMenu.getGeoPointFromBuilding(parent.getItemAtPosition(pos).toString()));
+			setFloorSpinner();
+		}
+
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+
+	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.findItem(R.id.add_new_button).setVisible(false);
     	menu.findItem(R.id.my_location_button).setVisible(false);

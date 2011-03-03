@@ -18,31 +18,41 @@
 	   	android:layout_marginBottom="8dp"/>
 	   	
     <TextView
-        android:id="@+id/label"
+    	android:id="@+id/addnew_bspinnertext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
         android:layout_below="@+id/addnew_inheader"
-        android:text="Type here:"/>
-    <EditText
-        android:id="@+id/entry"
+        android:text="Please select the building that houses the new item."/>
+    
+    <Spinner 
+        android:id="@+id/addnew_bspinner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/editbox_background"
-        android:layout_below="@id/label"/>
+        android:layout_below="@+id/addnew_bspinnertext"
+        android:prompt="@+id/addnew_spinner"/>
+        
+   <TextView
+    	android:id="@+id/addnew_fspinnertext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:layout_below="@+id/addnew_bspinner"
+        android:text="Please select the corresponding floor."/>
+        
+   <Spinner 
+        android:id="@+id/addnew_fspinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addnew_fspinnertext"
+        android:prompt="@+id/addnew_spinner"/>
+        
     <Button
         android:id="@+id/ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/entry"
+        android:layout_below="@id/addnew_fspinner"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dip"
-        android:text="OK" />
-    <Button
-	    android:id="@+id/addnew_cancel2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip" 
-		android:layout_alignParentLeft="true"
-        android:layout_alignTop="@id/ok"
-        android:text="Cancel" />
+        android:text="Add Item" />
 </RelativeLayout>
