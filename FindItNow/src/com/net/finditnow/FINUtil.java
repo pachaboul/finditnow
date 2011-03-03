@@ -1,6 +1,6 @@
 package com.net.finditnow;
 
-import java.lang.StringBuffer;
+import java.util.ArrayList;
 
 /*
  * This is a class that holds some util methods that is shared between classes.
@@ -16,5 +16,17 @@ public class FINUtil {
     	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
 		
     	return buffer.toString();
+	}
+	
+	public static ArrayList<String> capFirstChar(ArrayList<String> strs)
+	{
+		ArrayList<String> al = new ArrayList<String>();
+		for (String s : strs) {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(s);
+			buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
+			al.add(buffer.toString());
+		}
+		return al;
 	}
 }
