@@ -116,7 +116,7 @@ public class PopUpDialogVer2 extends Dialog{
     			
     			// Hide all the floor info.
     			else {
-    				toggle.setText("See Which Floors");
+    				toggle.setText("Show Floors");
     				lv.getLayoutParams().height = 0;
     			}
 

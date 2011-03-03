@@ -22,7 +22,7 @@
     <Button android:id="@+id/showFlrButt"
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
-    		android:text="See Which Floors"
+    		android:text="Show Floors"
     		android:layout_below="@id/distanceText"
     		android:layout_marginTop="20px"
     		/>
