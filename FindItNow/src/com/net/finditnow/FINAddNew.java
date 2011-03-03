@@ -1,5 +1,7 @@
 package com.net.finditnow;
 
+import com.google.android.maps.GeoPoint;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 public class FINAddNew extends Activity {
 	
 	private RadioButton rs;
+	private static GeoPoint tappedPoint;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,7 +43,9 @@ public class FINAddNew extends Activity {
 	    		Toast.makeText(FINAddNew.this, rs.getText(), Toast.LENGTH_SHORT).show();
 	    		setContentView(R.layout.addnew_indoor);
 	    	} else if (rs.getId() == R.id.addnew_out) { //Adding outdoor location
-	    		Toast.makeText(FINAddNew.this, rs.getText(), Toast.LENGTH_SHORT).show();	
+	    		Toast.makeText(FINAddNew.this, rs.getText(), Toast.LENGTH_SHORT).show();
+				Intent myIntent = new Intent(v.getContext(), FINAddMap.class);
+                startActivity(myIntent);
 	    	}
 	    }
 	};
@@ -84,5 +89,13 @@ public class FINAddNew extends Activity {
 	        default:
 	            return super.onOptionsItemSelected(item);
         }
+    }
+    
+    public static GeoPoint getTappedPoint() {
+    	return tappedPoint;
+    }
+    
+    public static void setTappedPoint(GeoPoint point) {
+    	tappedPoint = point;
     }
 }
