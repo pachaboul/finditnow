@@ -32,7 +32,7 @@ public class FINAddMap extends MapActivity {
         // Build up our overlays and initialize our "UWOverlay" class
         mapOverlays = mapView.getOverlays();
         itemizedOverlay = new FINAddOverlay();
-        mapOverlays.add(itemizedOverlay);
+        mapOverlays.add(itemizedOverlay); 
         
         // Zoom out enough
         mapController.setZoom(17);

@@ -64,13 +64,13 @@
         android:layout_alignParentRight="true"
 		android:text="Next"/>
 		
-	<Button
-		android:id="@+id/addnew_cancel1" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="10dip" 
-		android:layout_alignParentLeft="true"
-		android:layout_alignTop="@id/addnew_next"
-		android:text="Cancel" />
+<!--	<Button-->
+<!--		android:id="@+id/addnew_cancel1" -->
+<!--		android:layout_width="wrap_content"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:layout_marginLeft="10dip" -->
+<!--		android:layout_alignParentLeft="true"-->
+<!--		android:layout_alignTop="@id/addnew_next"-->
+<!--		android:text="Cancel" />-->
 		
 </RelativeLayout>

@@ -1,15 +1,10 @@
 package com.net.finditnow;
 
-import java.util.ArrayList;
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
-import com.google.android.maps.*;
-import android.app.Dialog;
+import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
 
 
 public class FINAddOverlay extends Overlay {
