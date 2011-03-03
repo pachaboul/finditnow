@@ -33,8 +33,8 @@ public class Request {
 	  	JSONArray infoArray = null;
 	  	try{
 		        HttpClient httpclient = new DefaultHttpClient();
-		        String suffix = (location == null? (category == null? "~dustinab/getCategories.php" : "~johnsj8/getBuildings.php") : "~johnsj8/getLocations.php");
-		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/" + suffix);
+		        String suffix = (location == null? (category == null? "getCategories.php" : "getBuildings.php") : "getLocations.php");
+		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/" + suffix);
 		        if (location != null) {
 		  			List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 		  			
