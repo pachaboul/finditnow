@@ -16,28 +16,13 @@
 	    android:layout_height="40dp"
 	    android:gravity="center"
 	   	android:layout_marginBottom="8dp"/>
-
-   <TextView
-    	android:id="@+id/addnew_cspinnertext"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:layout_below="@+id/addnew_inheader"
-        android:text="Please select the category of item you'd like to add:"/>
-        
-   <Spinner 
-        android:id="@+id/addnew_cspinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addnew_cspinnertext"
-        android:prompt="@+id/addnew_spinner"/>
 	   	
     <TextView
     	android:id="@+id/addnew_bspinnertext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
-        android:layout_below="@+id/addnew_cspinner"
+        android:layout_below="@+id/addnew_inheader"
         android:text="Please select the building that houses your new item."/>
     
     <Spinner 
