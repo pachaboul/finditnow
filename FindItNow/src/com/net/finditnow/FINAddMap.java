@@ -78,37 +78,34 @@ public class FINAddMap extends MapActivity {
 	
 	         //---add the marker---
 	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.androidmarker);            
-	         canvas.drawBitmap(bmp, screenPts.x, screenPts.y, null);         
+	         canvas.drawBitmap(bmp, screenPts.x-15, screenPts.y-15, null);         
 	         return true;
 	     }
 	
 		@Override
-	    public boolean onTouchEvent(MotionEvent event, MapView mapView) {   
-	        //---when user lifts his finger---...
-	        if (event.getAction() == 1) {
-	        	tappedPoint = mapView.getProjection().fromPixels((int) event.getX(), (int) event.getY());
-	        	Log.v("Blah", tappedPoint.toString());
-	        	Toast.makeText(getBaseContext(), tappedPoint.getLatitudeE6() / 1E6 + "," +  tappedPoint.getLongitudeE6() /1E6 , Toast.LENGTH_SHORT).show();
-	        	
-	        	AlertDialog.Builder builder = new AlertDialog.Builder(mapView.getContext());
-				builder.setMessage("Is this Location Correct?")
-				
-					.setCancelable(false)
-				    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				        public void onClick(DialogInterface dialog, int id) {
-				             FINAddMap.this.finish();
-				        }
-				    })
-				    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-				        public void onClick(DialogInterface dialog, int id) {
-				             dialog.cancel();
-				        }
-				    });
-				
-				AlertDialog alert = builder.create();
-				alert.show();
-	        }
-	        return false;
+	    public boolean onTap(GeoPoint p, MapView mapView) {   
+        	tappedPoint = p;
+        	Log.v("Blah", tappedPoint.toString());
+        	Toast.makeText(getBaseContext(), tappedPoint.getLatitudeE6() / 1E6 + "," +  tappedPoint.getLongitudeE6() /1E6 , Toast.LENGTH_SHORT).show();
+        	
+        	AlertDialog.Builder builder = new AlertDialog.Builder(mapView.getContext());
+			builder.setMessage("Is this Location Correct?")
+			
+				.setCancelable(false)
+			    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			        public void onClick(DialogInterface dialog, int id) {
+			             FINAddMap.this.finish();
+			        }
+			    })
+			    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+			        public void onClick(DialogInterface dialog, int id) {
+			             dialog.cancel();
+			        }
+			    });
+			
+			AlertDialog alert = builder.create();
+			alert.show();
+			return true;
 	    }
 	}
 }
