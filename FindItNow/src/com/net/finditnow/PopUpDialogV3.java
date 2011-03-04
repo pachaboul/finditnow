@@ -93,7 +93,7 @@ public class PopUpDialogV3 extends Dialog{
     	else
     	{
     		distText.setText("Distance to here: " + distance + " mi.");
-    		timeToText.setText("Walking Time: " + walkTime + " minutes");
+    		timeToText.setText("Walking Time: " + walkTime + FINUtil.pluralize("minutes", walkTime));
     	}
 
     	

@@ -38,5 +38,12 @@ public class FINUtil {
 		return Html.fromHtml(str).toString();
 	}
 	
-
+	// pluralize like c-krazy
+	public static String pluralize(String str, int num) {
+		if (num == 1) {
+			return str + "s";
+		} else {
+			return str;
+		}
+	}
 }
