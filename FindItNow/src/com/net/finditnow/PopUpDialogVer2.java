@@ -26,20 +26,21 @@ public class PopUpDialogVer2 extends Dialog{
 	private String buildName;
 	private String name;	
 	private BigDecimal distance;
-	
+	private double walkTime;
 	public PopUpDialogVer2(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
 	//creates a PopUpDialog with the given fields, should use this one
 	public PopUpDialogVer2(Context context,String[] floor, 
-				String building, String name, BigDecimal distance)
+				String building, String name, BigDecimal distance, double walk)
 	{
 		super(context);
 		this.floor = floor;
 		this.buildName = building;
 		this.name = name;
 		this.distance = distance;
+		this.walkTime = walk;
 	}
 	
 	protected void onCreate(Bundle savedInstanceState)
@@ -74,7 +75,7 @@ public class PopUpDialogVer2 extends Dialog{
     	else
     	{
     		distText.setText("Distance to here: "+distance+" mi.");
-    		timeToText.setText("Walking Time: " + FINMap.walkingTime(distance) + " minutes");
+    		timeToText.setText("Walking Time: " + walkTime + " minutes");
     	}
 
     	

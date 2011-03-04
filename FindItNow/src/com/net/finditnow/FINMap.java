@@ -111,7 +111,7 @@ public class FINMap extends MapActivity {
 	    	dest.setLatitude(latitude_dest);
 	    	dest.setLongitude(longitude_dest);
 	    	
-	    	MathContext mc = new MathContext(1);
+	    	MathContext mc = new MathContext(2);
 	    	
 	    	return new BigDecimal(curr.distanceTo(dest) * 0.000621371192, mc);
     	} else {
@@ -119,8 +119,11 @@ public class FINMap extends MapActivity {
     	}
     }
     
-    public static int walkingTime(BigDecimal distance) {
-    	return (20 / distance.intValue());
+    public static double walkingTime(BigDecimal distance) {
+    	// 20 mile / minute ?
+    	// 20 minute / mile?
+    	BigDecimal dec = new BigDecimal(20 * distance.doubleValue(), new MathContext(2));
+    	return dec.doubleValue();
     }
     
     @Override
