@@ -19,11 +19,18 @@
               android:layout_below="@id/categoryName"
 			  android:layout_marginLeft="10px"
               />
+   <TextView android:id="@+id/timeReachText"
+    		  android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:textColor="#FFF"
+              android:layout_below="@id/distanceText"
+			  android:layout_marginLeft="10px"
+              />
     <Button android:id="@+id/showFlrButt"
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
     		android:text="Show Floors"
-    		android:layout_below="@id/distanceText"
+    		android:layout_below="@id/timeReachText"
     		android:layout_marginTop="20px"
     		/>
    	<ListView android:id="@+id/flrList"
