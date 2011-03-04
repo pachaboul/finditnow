@@ -58,7 +58,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	    
 		String category = FINMap.getCategory();
 		
-	    Dialog popUp = new PopUpDialogVer2(mContext, floor, buildingName,category, name, distance, walkingTime);
+	    Dialog popUp = new PopUpDialogV3(mContext, floor, buildingName,category, name, distance, walkingTime);
 	  
 	    popUp.show();
 	    return true;
