@@ -250,11 +250,21 @@ public class FINMenu extends Activity {
     
     /** This method returns the icons map */
     public static Integer getIcon(String category) {
-    	return iconsMap.get(category);
+    	int icon = iconsMap.get(category);
+    	if (icon == 0) {
+    		return R.drawable.android;
+    	} else {
+    		return icon;
+    	}
     }
     
     public static Integer getBigIcon(String category) {
-    	return iconsMap.get(category + "-icon");
+    	int bigIcon = iconsMap.get(category + "-icon");
+    	if (bigIcon == 0) {
+    		return R.drawable.android;
+    	} else {
+    		return bigIcon;
+    	}
     }
     
 	public static GeoPoint getGeoPointFromBuilding(String buildingName) {
