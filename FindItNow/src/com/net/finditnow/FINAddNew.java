@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class FINAddNew extends Activity {
@@ -104,7 +105,9 @@ public class FINAddNew extends Activity {
 	    public void onClick(View v) {
 	    	HashMap<String,Integer> map = selectedBuilding.floorMap();
 	    	Create.sendToDB(selectedCategory, null, map.get(selectedFloor), "",  "",  "",  "");
-	    	
+	    	Intent myIntent = new Intent(v.getContext(), FINMenu.class);
+            startActivity(myIntent);
+            Toast.makeText(getBaseContext(), "New item added successfully!", Toast.LENGTH_LONG).show();
 	    }
 	};
     
