@@ -1,5 +1,5 @@
 package com.net.finditnow;
-
+//Blah
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +20,6 @@ import com.google.android.maps.GeoPoint;
 public class FINAddNew extends Activity {
 	
 	private RadioButton rs;
-	private static GeoPoint tappedPoint;
 	View geopointConfirm;
 	Building selectedBuilding;
 	
@@ -113,18 +112,10 @@ public class FINAddNew extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
 	        case R.id.categories_button:
-                startActivity(new Intent(this, FINMenu.class));
+                startActivityForResult(new Intent(this, FINMenu.class), 0);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
         }
-    }
-    
-    public static GeoPoint getTappedPoint() {
-    	return tappedPoint;
-    }
-    
-    public static void setTappedPoint(GeoPoint point) {
-    	tappedPoint = point;
     }
 }

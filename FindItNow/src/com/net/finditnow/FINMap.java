@@ -49,7 +49,8 @@ public class FINMap extends MapActivity {
 	private static GeoPoint location;
 	private static HashMap<GeoPoint, String[]> geopointMap;
 	private static HashMap<GeoPoint,String> geopointNameMap;	
-	private static final GeoPoint DEFAULT_LOCATION = new GeoPoint(47654799,-122307776);
+	
+	public static final GeoPoint DEFAULT_LOCATION = new GeoPoint(47654799,-122307776);
 
 	/** Called when the activity is first created.
      * 	It initializes the map layout, detects the user's category, and builds the map
