@@ -27,20 +27,23 @@ public class PopUpDialogVer2 extends Dialog{
 	private String name;	
 	private BigDecimal distance;
 	private double walkTime;
+	private String category;
+	
 	public PopUpDialogVer2(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
 	//creates a PopUpDialog with the given fields, should use this one
 	public PopUpDialogVer2(Context context,String[] floor, 
-				String building, String name, BigDecimal distance, double walk)
+				String building, String category, String name, BigDecimal distance, double walkingTime)
 	{
 		super(context);
 		this.floor = floor;
 		this.buildName = building;
 		this.name = name;
 		this.distance = distance;
-		this.walkTime = walk;
+		this.walkTime = walkingTime;
+		this.category = category;
 	}
 	
 	protected void onCreate(Bundle savedInstanceState)
@@ -52,7 +55,7 @@ public class PopUpDialogVer2 extends Dialog{
  
     	//Converts the first letter of category to upper case and
     	//adds the name of the service provided if it exist
-    	StringBuffer buffer = new StringBuffer(FINUtil.capFirstChar(FINMap.getCategory()));
+    	StringBuffer buffer = new StringBuffer(FINUtil.capFirstChar(category));
     	
     	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
     	if (!(name == null) && !name.equals(""))
@@ -114,7 +117,7 @@ public class PopUpDialogVer2 extends Dialog{
 	    			for (String s: floor)
 	    			{
 	    				map.put("name",s);
-	    				map.put("icon",FINMenu.getIcon(FINMap.getCategory()));
+	    				map.put("icon",FINMenu.getIcon(category));
 	    				hashMapListForListView.add(map);
 	    				map = new HashMap<String,Object>();
 	    			}
@@ -122,6 +125,7 @@ public class PopUpDialogVer2 extends Dialog{
 	    			// added the wrap content option so the dialog doesn't have a blank
 	    			// space for buildings with few levels ... but maybe we'll use a 
 	    			// scroll view eventually? -- Mai
+	    			// ListView is by default scroll view --Chanel
 	    			lv.getLayoutParams().height = Math.min(200, LinearLayout.LayoutParams.WRAP_CONTENT);
     			}
     			

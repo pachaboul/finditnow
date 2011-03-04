@@ -54,8 +54,9 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	    String[] floor = FINMap.getFloors(itemLocation);
 	    String name = FINMap.getLocationName(itemLocation);	    
 		String buildingName = FINMenu.getBuilding(itemLocation).getName();
+		String category = FINMap.getCategory();
 		
-	    Dialog popUp = new PopUpDialogVer2(mContext, floor, buildingName, name, distance, walkingTime);
+	    Dialog popUp = new PopUpDialogVer2(mContext, floor, buildingName,category, name, distance, walkingTime);
 	  
 	    popUp.show();
 	    return true;
