@@ -10,8 +10,6 @@ public class FINUtilTest extends TestCase {
 	protected String string2;
 	protected String string3;
 	protected ArrayList<String> stringArray1;
-	protected ArrayList<String> stringArray2;
-	protected ArrayList<String> stringArray3;
 	
 	protected void setUp() {
 		string1 = "cat";
