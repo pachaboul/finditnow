@@ -24,7 +24,7 @@ public class Create {
 	/**This method makes a request across the network to the database sending
 	the current location and category
 	@return: a JSONArray if item locations sent from the database */
-	public static JSONArray sendToDB(String category, GeoPoint location, int floor_id, String special_info) {
+	public static JSONArray sendToDB(String category, GeoPoint location, int fid, String special_info, String bb, String sc, String print) {
 		/*
 		   * HTTP Post request
 		   */
@@ -37,9 +37,20 @@ public class Create {
 		  			
 		        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 		        
-	  			nameValuePairs.add(new BasicNameValuePair("category", category.toLowerCase()));
-	  			nameValuePairs.add(new BasicNameValuePair("latitude", location.getLatitudeE6()+""));
-	  			nameValuePairs.add(new BasicNameValuePair("longitude", location.getLongitudeE6()+""));
+		        if (category.toLowerCase() == "supplies") {
+		        	nameValuePairs.add(new BasicNameValuePair("category", "school_supplies"));
+		        	nameValuePairs.add(new BasicNameValuePair("bb", bb));
+		        	nameValuePairs.add(new BasicNameValuePair("sc", sc));
+		        	nameValuePairs.add(new BasicNameValuePair("print", print));
+		        } else {
+		        	nameValuePairs.add(new BasicNameValuePair("category", category.toLowerCase()));
+		        }
+		        
+	  			nameValuePairs.add(new BasicNameValuePair("fid", fid+""));
+	  			if (fid == 0) {
+		  			nameValuePairs.add(new BasicNameValuePair("latitude", location.getLatitudeE6()+""));
+		  			nameValuePairs.add(new BasicNameValuePair("longitude", location.getLongitudeE6()+""));
+	  			}
 	  			nameValuePairs.add(new BasicNameValuePair("special_info", special_info));
 	  			
 	  			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));

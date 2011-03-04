@@ -17,7 +17,6 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,8 +46,8 @@ public class FINMap extends MapActivity {
 	
 	// Location and GeoPoint Variables
 	private static GeoPoint location;
-	private static HashMap<GeoPoint, String[]> geopointMap;
-	private static HashMap<GeoPoint,String> geopointNameMap;	
+	private static HashMap<GeoPoint, String[]> geoPointFloorMap;
+	private static HashMap<GeoPoint,String> geoPointSpecialInfoMap;	
 	
 	public static final GeoPoint DEFAULT_LOCATION = new GeoPoint(47654799,-122307776);
 
@@ -79,8 +78,8 @@ public class FINMap extends MapActivity {
         locateUser();
         
     	JSONArray listOfLocations = Request.requestFromDB(category, itemName, DEFAULT_LOCATION);
-    	geopointMap = JsonParser.parseJson(listOfLocations);
-    	geopointNameMap = JsonParser.parseNameJson(listOfLocations);
+    	geoPointFloorMap = JsonParser.parseJson(listOfLocations);
+    	geoPointSpecialInfoMap = JsonParser.parseNameJson(listOfLocations);
             
     	placeOverlays();
     }
@@ -206,16 +205,16 @@ public class FINMap extends MapActivity {
     	
     	if (getCategory().equals("buildings")) {
     		GeoPoint point = FINMenu.getGeoPointFromBuilding(itemName);
-    		geopointMap.put(point, FINMenu.getBuilding(point).getFloorName());
+    		geoPointFloorMap.put(point, FINMenu.getBuilding(point).getFloorName());
     	}
     	
-        for (GeoPoint point : geopointMap.keySet()) {
+        for (GeoPoint point : geoPointFloorMap.keySet()) {
         	OverlayItem overlayItem = new OverlayItem(point, "blah", "blah");
         	itemizedOverlay.addOverlay(overlayItem);
         }
         
         // Add our overlay to the list
-        if (!geopointMap.keySet().isEmpty()) {
+        if (!geoPointFloorMap.keySet().isEmpty()) {
         	mapOverlays.add(itemizedOverlay);
         }
     }
@@ -233,11 +232,11 @@ public class FINMap extends MapActivity {
 	
 	/** This method returns the floors associated with the location p */
 	public static String[] getFloors(GeoPoint p) {
-		return geopointMap.get(p);
+		return geoPointFloorMap.get(p);
 	}
 	
 	/** This method returns the location name associated with the location p */
-	public static String getLocationName(GeoPoint p) {
-		return geopointNameMap.get(p);
+	public static String getSpecialInfo(GeoPoint p) {
+		return geoPointSpecialInfoMap.get(p);
 	}
 }

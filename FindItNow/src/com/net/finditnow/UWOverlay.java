@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
-
 import com.google.android.maps.*;
 import android.app.Dialog;
 
@@ -52,7 +50,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		int walkingTime = FINMap.walkingTime(distance);
 
 	    String[] floor = FINMap.getFloors(itemLocation);
-	    String name = FINMap.getLocationName(itemLocation);	 
+	    String name = FINMap.getSpecialInfo(itemLocation);	 
 	    String buildingName = "Outdoor Location";
 	    
 	    if (FINMenu.getBuilding(itemLocation) != null)
