@@ -147,6 +147,7 @@ public class FINMenu extends Activity {
     	// Loop over each category and map it to the icon file associated with it
     	for (String str : categories) {
 			iconsMap.put(str, getResources().getIdentifier("drawable/"+str, null, getPackageName()));
+			iconsMap.put(str + "-icon", getResources().getIdentifier("drawable/"+str+"_big", null, getPackageName()));
 		}
     	
 		return iconsMap;
@@ -188,7 +189,7 @@ public class FINMenu extends Activity {
 			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
 			
 			final String category = categories.get(position);
-			ib.setImageResource(getIcon(category));
+			ib.setImageResource(getBigIcon(category));
 			
 			if (position == 1 || position == 6) {
 				// Jump to CategoryList
@@ -250,6 +251,10 @@ public class FINMenu extends Activity {
     /** This method returns the icons map */
     public static Integer getIcon(String category) {
     	return iconsMap.get(category);
+    }
+    
+    public static Integer getBigIcon(String category) {
+    	return iconsMap.get(category + "-icon");
     }
     
 	public static GeoPoint getGeoPointFromBuilding(String buildingName) {
