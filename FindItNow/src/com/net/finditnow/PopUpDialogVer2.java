@@ -64,11 +64,19 @@ public class PopUpDialogVer2 extends Dialog{
     	seeflr.on*/
     	
     	TextView distText = (TextView) findViewById(R.id.distanceText);
-    	String text = "Distance to here: ";
-    	if (distance.equals(new BigDecimal(-1)))
-    		distText.setText(text+"Cannot Calculate");
+    	
+    	TextView timeToText = (TextView) findViewById(R.id.timeReachText);
+      	if (distance.equals(new BigDecimal(-1)))
+    	{
+    		distText.setText("Distance to here: "+"Cannot Calculate");
+    		timeToText.setText("Walking Time: " + "Cannot Calculate");
+    	}
     	else
-    		distText.setText(text+distance+" mi.");
+    	{
+    		distText.setText("Distance to here: "+distance+" mi.");
+    		timeToText.setText("Walking Time: " + FINMap.walkingTime(distance) + " minutes");
+    	}
+
     	
     	//there is a button on this dialog, we need it to be clickable
     	Button butt = (Button) findViewById(R.id.showFlrButt);
