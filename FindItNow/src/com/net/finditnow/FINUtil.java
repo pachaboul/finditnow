@@ -2,6 +2,8 @@ package com.net.finditnow;
 
 import java.util.ArrayList;
 
+import android.text.Html;
+
 /*
  * This is a class that holds some util methods that is shared between classes.
  */
@@ -32,5 +34,10 @@ public class FINUtil {
 			al.add(buffer.toString());
 		}
 		return al;
+	}
+	
+	// Get string from HTML
+	public static String fromHtml(String str) {
+		return Html.fromHtml(str).toString();
 	}
 }

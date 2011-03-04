@@ -1,42 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/layout_root"
-              android:orientation="horizontal"
-              android:layout_width="wrap_content"
+              android:orientation="vertical"
+              android:layout_width="275dp"
               android:layout_height="wrap_content"
-              android:padding="10dp"
+              android:paddingLeft="15dp"
+              android:paddingRight="15dp"
+              android:paddingTop="10dp"
+              android:paddingBottom="10dp"
               >
+    <TextView android:id="@+id/dialogTitle"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:textColor="#FFF"
+              android:textSize="18dp"
+              android:textStyle="bold"
+              android:layout_marginBottom="15dp"
+              />
     <TextView android:id="@+id/categoryName"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textColor="#FFF"
-			  android:layout_marginLeft="10px"
               />
     <TextView android:id="@+id/distanceText"
     		  android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:textColor="#FFF"
-              android:layout_below="@id/categoryName"
-			  android:layout_marginLeft="10px"
               />
    <TextView android:id="@+id/timeReachText"
     		  android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:textColor="#FFF"
-              android:layout_below="@id/distanceText"
-			  android:layout_marginLeft="10px"
               />
     <Button android:id="@+id/showFlrButt"
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
     		android:text="Show Floors"
-    		android:layout_below="@id/timeReachText"
-    		android:layout_marginTop="20px"
+    		android:layout_marginTop="20dp"
     		/>
    	<ListView android:id="@+id/flrList"
     		android:layout_width="fill_parent"
     		android:layout_height="0px"
-    		android:layout_below="@id/showFlrButt"
-	    		/>
-   
-</RelativeLayout>
+	    	/>
+</LinearLayout>

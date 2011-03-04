@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
 import java.lang.StringBuffer;
 import java.math.BigDecimal;
@@ -31,13 +32,14 @@ public class PopUpDialogVer2 extends Dialog{
 	
 	public PopUpDialogVer2(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 	}
 	//creates a PopUpDialog with the given fields, should use this one
 	public PopUpDialogVer2(Context context,String[] floor, 
 				String building, String category, String name, BigDecimal distance, int walkingTime)
 	{
 		super(context);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.floor = floor;
 		this.buildName = building;
 		this.name = name;
@@ -49,10 +51,13 @@ public class PopUpDialogVer2 extends Dialog{
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		setContentView(R.layout.popupdialog);
-		if ( buildName != null && !buildName.equals(""))
-			setTitle(buildName);
-		else
-			setTitle("Outdoor Location");
+
+    	TextView title = (TextView) findViewById(R.id.dialogTitle);
+    	if ( buildName != null && !buildName.equals("")) {
+			title.setText(buildName);
+    	} else {
+			title.setText("Outdoor Location");
+    	}
     	
     	TextView cate = (TextView) findViewById(R.id.categoryName);
  
@@ -62,7 +67,7 @@ public class PopUpDialogVer2 extends Dialog{
     	
     	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
     	if (!(name == null) && !name.equals(""))
-    		buffer.append(" : "+ name);
+    		buffer.append(": "+ name);
     	
     	//sets the text into the textView
     	cate.setText(buffer.toString());
@@ -75,12 +80,12 @@ public class PopUpDialogVer2 extends Dialog{
     	TextView timeToText = (TextView) findViewById(R.id.timeReachText);
       	if (distance.equals(new BigDecimal(-1)))
     	{
-    		distText.setText("Distance to here: "+"Cannot Calculate");
-    		timeToText.setText("Walking Time: " + "Cannot Calculate");
+    		distText.setText("Distance to here: Cannot Calculate");
+    		timeToText.setText("Walking time: Cannot Calculate");
     	}
     	else
     	{
-    		distText.setText("Distance to here: "+distance+" mi.");
+    		distText.setText("Distance to here: " + distance + " mi.");
     		timeToText.setText("Walking Time: " + walkTime + " minutes");
     	}
 
@@ -125,10 +130,6 @@ public class PopUpDialogVer2 extends Dialog{
 	    				map = new HashMap<String,Object>();
 	    			}
 	    			
-	    			// added the wrap content option so the dialog doesn't have a blank
-	    			// space for buildings with few levels ... but maybe we'll use a 
-	    			// scroll view eventually? -- Mai
-	    			// ListView is by default scroll view --Chanel
 	    			lv.getLayoutParams().height = Math.min(200, LinearLayout.LayoutParams.WRAP_CONTENT);
     			}
     			
