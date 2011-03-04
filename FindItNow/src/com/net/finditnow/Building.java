@@ -1,5 +1,7 @@
 package com.net.finditnow;
 
+import java.util.HashMap;
+
 public class Building {
     private int bid;
     private String name;
@@ -30,6 +32,14 @@ public class Building {
     }
     public int[] getFid(){
     	return fid;
+    }
+    
+    public HashMap<String, Integer> floorMap() {
+    	HashMap<String, Integer> map = new HashMap<String, Integer>();
+    	for (int i = 0; i < getFloorName().length; i++) {
+    		map.put(getFloorName()[i], getFid()[i]);
+    	}
+    	return map;
     }
     
     public String toString(){
