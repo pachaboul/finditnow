@@ -49,7 +49,10 @@ public class PopUpDialogVer2 extends Dialog{
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		setContentView(R.layout.popupdialog);
-    	setTitle(buildName);
+		if ( buildName != null && !buildName.equals(""))
+			setTitle(buildName);
+		else
+			setTitle("Outdoor Location");
     	
     	TextView cate = (TextView) findViewById(R.id.categoryName);
  
