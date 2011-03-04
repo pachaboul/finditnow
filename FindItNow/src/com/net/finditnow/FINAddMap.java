@@ -78,7 +78,7 @@ public class FINAddMap extends MapActivity {
 	
 	         //---add the marker---
 	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.androidmarker);            
-	         canvas.drawBitmap(bmp, screenPts.x, screenPts.y-50, null);         
+	         canvas.drawBitmap(bmp, screenPts.x, screenPts.y, null);         
 	         return true;
 	     }
 	
