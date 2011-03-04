@@ -34,20 +34,20 @@ public final class R {
     public static final class id {
         public static final int GridItem=0x7f060017;
         public static final int add_new_button=0x7f060029;
-        public static final int addmap_confirm=0x7f06000a;
-        public static final int addnew_bspinner=0x7f060005;
-        public static final int addnew_bspinnertext=0x7f060004;
-        public static final int addnew_cspinner=0x7f060002;
-        public static final int addnew_cspinnertext=0x7f060001;
-        public static final int addnew_fspinner=0x7f060007;
-        public static final int addnew_fspinnertext=0x7f060006;
-        public static final int addnew_header=0x7f06000c;
-        public static final int addnew_in=0x7f06000f;
+        public static final int addmap_confirm=0x7f060008;
+        public static final int addnew_bspinner=0x7f060002;
+        public static final int addnew_bspinnertext=0x7f060001;
+        public static final int addnew_cspinner=0x7f060010;
+        public static final int addnew_cspinnertext=0x7f06000f;
+        public static final int addnew_fspinner=0x7f060005;
+        public static final int addnew_fspinnertext=0x7f060004;
+        public static final int addnew_header=0x7f06000a;
+        public static final int addnew_in=0x7f06000d;
         public static final int addnew_inheader=0x7f060000;
         public static final int addnew_next=0x7f060011;
-        public static final int addnew_out=0x7f060010;
-        public static final int addnew_radio=0x7f06000e;
-        public static final int addnew_radiolabel=0x7f06000d;
+        public static final int addnew_out=0x7f06000e;
+        public static final int addnew_radio=0x7f06000c;
+        public static final int addnew_radiolabel=0x7f06000b;
         public static final int addnew_spinner=0x7f060003;
         public static final int categories_button=0x7f060027;
         public static final int category=0x7f06001e;
@@ -69,10 +69,10 @@ public final class R {
         public static final int help_section_header=0x7f06001b;
         public static final int layout_root=0x7f06001d;
         public static final int layout_rootflr=0x7f060012;
-        public static final int mainlayout=0x7f060009;
-        public static final int mapview=0x7f06000b;
+        public static final int mainlayout=0x7f060007;
+        public static final int mapview=0x7f060009;
         public static final int my_location_button=0x7f060028;
-        public static final int ok=0x7f060008;
+        public static final int ok=0x7f060006;
         public static final int showFlrButt=0x7f060025;
         public static final int timeReachText=0x7f060024;
     }

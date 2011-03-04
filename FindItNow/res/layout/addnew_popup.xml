@@ -33,7 +33,7 @@
 	<RadioGroup 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" 
-		android:orientation="vertical"
+		android:orientation="horizontal"
 		android:layout_below="@id/addnew_radiolabel"
 		android:id="@+id/addnew_radio"
 		android:gravity="center">
@@ -55,22 +55,28 @@
 
 	</RadioGroup>
 	
+	   <TextView
+    	android:id="@+id/addnew_cspinnertext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:layout_below="@+id/addnew_radio"
+        android:text="Please select the category of item you'd like to add:"/>
+        
+   <Spinner 
+        android:id="@+id/addnew_cspinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addnew_cspinnertext"
+        android:prompt="@+id/addnew_spinner"/>
+	
 	<Button 
 		android:id="@+id/addnew_next"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
-		android:layout_below="@id/addnew_radio"
+		android:layout_below="@id/addnew_cspinner"
 		android:layout_marginRight="10dip"
         android:layout_alignParentRight="true"
 		android:text="Next"/>
-		
-<!--	<Button-->
-<!--		android:id="@+id/addnew_cancel1" -->
-<!--		android:layout_width="wrap_content"-->
-<!--		android:layout_height="wrap_content"-->
-<!--		android:layout_marginLeft="10dip" -->
-<!--		android:layout_alignParentLeft="true"-->
-<!--		android:layout_alignTop="@id/addnew_next"-->
-<!--		android:text="Cancel" />-->
 		
 </RelativeLayout>

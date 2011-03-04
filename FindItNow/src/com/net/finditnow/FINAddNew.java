@@ -1,21 +1,10 @@
 package com.net.finditnow;
 //Blah
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
-
-import com.google.android.maps.GeoPoint;
 
 public class FINAddNew extends Activity {
 	
@@ -35,9 +24,21 @@ public class FINAddNew extends Activity {
 		radio_in.setOnClickListener(radio_listener);
 		radio_out.setOnClickListener(radio_listener);
 		
+		Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
+		ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINUtil.capFirstChar(FINMenu.getCategoriesList()));
+		cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		cSpinner.setAdapter(cAdapter);
+		cSpinner.setOnItemSelectedListener(cspinner_listener);
+		
+		
 		final Button next = (Button) findViewById(R.id.addnew_next);
 		next.setOnClickListener(next_listener);
 	}
+	
+	private OnItemSelectedListener c nspinner_listener = new OnItemSelectedListener() {
+		public void onItemSelected(AdapterView<?> parent, View arg1, int pos, long arg3) {
+			
+		}
 
 	private OnClickListener next_listener = new OnClickListener() {
 	    public void onClick(View v) {    	
@@ -72,11 +73,6 @@ public class FINAddNew extends Activity {
 		bSpinner.setAdapter(bAdapter);
 		bSpinner.setOnItemSelectedListener(bspinner_listener);
 		selectedBuilding = FINMenu.getBuilding(FINMenu.getGeoPointFromBuilding(FINMenu.getBuildingsList().get(0))); //uhhhh well it works...	
-	
-		Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
-		ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINUtil.capFirstChar(FINMenu.getCategoriesList()));
-		cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		cSpinner.setAdapter(cAdapter);
     }
     
     protected void setFloorSpinner() {
