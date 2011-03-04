@@ -16,12 +16,12 @@ public class JsonParserTest extends TestCase {
         
         protected void setUp() {
         	fValue1= 2.0;
-        	fValue2= 3.0;
+        	fValue2= 4.0;
         }
         
         public void test1() {
                 double result= fValue1 + fValue2;
-                assertTrue(result == 5.0);
+                assertTrue(result == 6.0);
         }
         
         private boolean equals(HashMap<GeoPoint,String[]> a, HashMap<GeoPoint,String[]> b) {
