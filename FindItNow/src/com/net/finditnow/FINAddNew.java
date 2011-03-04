@@ -1,9 +1,18 @@
 package com.net.finditnow;
 //Blah
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class FINAddNew extends Activity {
@@ -30,16 +39,19 @@ public class FINAddNew extends Activity {
 		cSpinner.setAdapter(cAdapter);
 		cSpinner.setOnItemSelectedListener(cspinner_listener);
 		
-		
 		final Button next = (Button) findViewById(R.id.addnew_next);
 		next.setOnClickListener(next_listener);
 	}
 	
-	private OnItemSelectedListener c nspinner_listener = new OnItemSelectedListener() {
+	private OnItemSelectedListener cspinner_listener = new OnItemSelectedListener() {
 		public void onItemSelected(AdapterView<?> parent, View arg1, int pos, long arg3) {
 			
 		}
 
+		public void onNothingSelected(AdapterView<?> arg0) {
+			
+		}
+	};
 	private OnClickListener next_listener = new OnClickListener() {
 	    public void onClick(View v) {    	
 	    	if (rs.getId() == R.id.addnew_in) { //Adding indoor location
