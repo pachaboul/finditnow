@@ -26,7 +26,7 @@ public class PopUpDialogVer2 extends Dialog{
 	private String buildName;
 	private String name;	
 	private BigDecimal distance;
-	private double walkTime;
+	private int walkTime;
 	private String category;
 	
 	public PopUpDialogVer2(Context context) {
@@ -35,7 +35,7 @@ public class PopUpDialogVer2 extends Dialog{
 	}
 	//creates a PopUpDialog with the given fields, should use this one
 	public PopUpDialogVer2(Context context,String[] floor, 
-				String building, String category, String name, BigDecimal distance, double walkingTime)
+				String building, String category, String name, BigDecimal distance, int walkingTime)
 	{
 		super(context);
 		this.floor = floor;

@@ -120,11 +120,11 @@ public class FINMap extends MapActivity {
     	}
     }
     
-    public static double walkingTime(BigDecimal distance) {
+    public static int walkingTime(BigDecimal distance) {
     	// 20 mile / minute ?
     	// 20 minute / mile?
-    	BigDecimal dec = new BigDecimal(20 * distance.doubleValue(), new MathContext(2));
-    	return dec.doubleValue();
+    	BigDecimal dec = new BigDecimal(22.5 * distance.doubleValue(), new MathContext(2));
+    	return dec.intValue();
     }
     
     @Override
