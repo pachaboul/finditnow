@@ -1,8 +1,8 @@
 package com.net.finditnow;
 
 import java.util.ArrayList;
-
 import android.text.Html;
+
 
 /*
  * This is a class that holds some util methods that is shared between classes.
@@ -28,10 +28,7 @@ public class FINUtil {
 	{
 		ArrayList<String> al = new ArrayList<String>();
 		for (String s : strs) {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(s);
-			buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
-			al.add(buffer.toString());
+			capFirstChar(s);
 		}
 		return al;
 	}
@@ -40,4 +37,6 @@ public class FINUtil {
 	public static String fromHtml(String str) {
 		return Html.fromHtml(str).toString();
 	}
+	
+
 }
