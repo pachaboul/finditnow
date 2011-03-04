@@ -174,44 +174,46 @@ public class FINMenu extends Activity {
 
     	// Sets up the view shown within each grid cell.
     	public View getView(int position, View convertView, ViewGroup parent) {
-    		View myView = convertView;
+    		View myView;
 			
     		// If not created yet, initialize it.
     		if (convertView == null) {	
     			LayoutInflater li = getLayoutInflater();
     			myView = li.inflate(R.layout.grid_item, null);
-    			
-    			// Add image button
-    			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
-    			
-    			final String category = categories.get(position);
-    			ib.setImageResource(getIcon(category));
-    			
-    			if (position == 1 || position == 6) {
-    				// Jump to CategoryList
-    				ib.setOnClickListener(new OnClickListener() {
-						public void onClick(View v) {
-							Intent myIntent = new Intent(v.getContext(), CategoryList.class);
-			                myIntent.putExtra("category", category);
-			                startActivity(myIntent);
-						}
-	    			});
-    			} else {
-    				// Otherwise, jump to map
-	    			ib.setOnClickListener(new OnClickListener() {
-						public void onClick(View v) {
-							Intent myIntent = new Intent(v.getContext(), FINMap.class);
-			                myIntent.putExtra("category", category);
-			                startActivity(myIntent);
-						}
-	    			});
-    			}
-    			
-    			// Add text above button.
-    			TextView tv = (TextView) myView.findViewById(R.id.grid_item_text);
-    	    	tv.setText(category.toUpperCase());
-    	    	
+    		} else {
+    			myView = convertView;
     		}
+    		
+    		// Add image button
+			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
+			
+			final String category = categories.get(position);
+			ib.setImageResource(getIcon(category));
+			
+			if (position == 1 || position == 6) {
+				// Jump to CategoryList
+				ib.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						Intent myIntent = new Intent(v.getContext(), CategoryList.class);
+		                myIntent.putExtra("category", category);
+		                startActivity(myIntent);
+					}
+    			});
+			} else {
+				// Otherwise, jump to map
+    			ib.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						Intent myIntent = new Intent(v.getContext(), FINMap.class);
+		                myIntent.putExtra("category", category);
+		                startActivity(myIntent);
+					}
+    			});
+			}
+			
+			// Add text above button.
+			TextView tv = (TextView) myView.findViewById(R.id.grid_item_text);
+	    	tv.setText(FINUtil.capFirstChar(category));
+    		
     		return myView;
     	}
 
@@ -223,6 +225,7 @@ public class FINMenu extends Activity {
 			return mContext;
 		}
     }
+
 	
 	public static ArrayList<String> createBuildingList(HashMap<GeoPoint, Building> map) {
 		ArrayList<String> list = new ArrayList<String>();
