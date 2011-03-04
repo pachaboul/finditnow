@@ -175,6 +175,7 @@ public class FINMap extends MapActivity {
         	public void onLocationChanged(Location loc) {
         		super.onLocationChanged(loc);
         		location = new GeoPoint((int)(loc.getLatitude()*1E6), (int)(loc.getLongitude()*1E6));
+        		mapOverlays.add(locOverlay);
         	}
         };
         
