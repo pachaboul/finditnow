@@ -48,7 +48,7 @@
         android:prompt="@+id/addnew_spinner"/>
 
     <Button
-        android:id="@+id/ok"
+        android:id="@+id/addnew_additem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/addnew_fspinner"

@@ -35,6 +35,7 @@ public final class R {
         public static final int GridItem=0x7f060017;
         public static final int add_new_button=0x7f060029;
         public static final int addmap_confirm=0x7f060008;
+        public static final int addnew_additem=0x7f060006;
         public static final int addnew_bspinner=0x7f060002;
         public static final int addnew_bspinnertext=0x7f060001;
         public static final int addnew_cspinner=0x7f060010;
@@ -72,7 +73,6 @@ public final class R {
         public static final int mainlayout=0x7f060007;
         public static final int mapview=0x7f060009;
         public static final int my_location_button=0x7f060028;
-        public static final int ok=0x7f060006;
         public static final int showFlrButt=0x7f060025;
         public static final int timeReachText=0x7f060024;
     }
