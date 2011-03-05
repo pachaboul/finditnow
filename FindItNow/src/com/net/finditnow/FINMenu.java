@@ -54,7 +54,7 @@ public class FINMenu extends Activity {
 		checkConnection();
 		
 		// Generate our list of categories from the database
-		JSONArray listOfCategories = Request.requestFromDB(null, null, null);
+		JSONArray listOfCategories = Retrieve.requestFromDB(null, null, null);
 		categories = getCategoriesList(listOfCategories);
 		Collections.sort(categories);
 		
@@ -62,7 +62,7 @@ public class FINMenu extends Activity {
         iconsMap = createIconsList();
 		
 		// Generate list of buildings from the database
-		JSONArray listOfBuildings = Request.requestFromDB("", null, null);
+		JSONArray listOfBuildings = Retrieve.requestFromDB("", null, null);
 		buildingsMap = JsonParser.parseBuildingJson(listOfBuildings.toString());
 		buildings = createBuildingList(buildingsMap);
 		Collections.sort(buildings);
