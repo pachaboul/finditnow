@@ -1,8 +1,10 @@
 package com.net.finditnow;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.Button;
@@ -111,8 +113,34 @@ public class PopUpDialogV3 extends Dialog{
     	} else {
     		String info = name.replace("\n", "<br />");
 			outDoor.setText(Html.fromHtml(info));
-			butt.setVisibility(butt.INVISIBLE);
-			butt.getLayoutParams().height = 0;
+
+			butt.setText("Clcik to report this is not here");
+			
+			butt.setOnClickListener( new View.OnClickListener()
+	    	{
+	    		public void onClick(View v)
+	    		{
+	    			AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+	    			builder.setMessage("This is not actually connect to update and don't have"
+	    						+ " the object id yet, but!!\n"
+	    						+ "Are you sure that this is not here?");
+	    			builder.setCancelable(false);
+	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
+	    		           public void onClick(DialogInterface dialog, int id) {
+	   		                //sents info to update.php here
+	    		                dialog.dismiss();
+	    		           }
+	    		       });
+	    			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+	    		           public void onClick(DialogInterface dialog, int id) {
+	    		                dialog.cancel();
+	    		           }
+	    		       });
+
+	    			AlertDialog dailog = builder.create();
+	    			dailog.show();
+	    		}
+	    	});
     	}
     	
     	TextView cate = (TextView) findViewById(R.id.categoryName);
