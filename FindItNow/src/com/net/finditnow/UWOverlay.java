@@ -90,6 +90,9 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	    String specialInfo = FINMap.getSpecialInfo(itemLocation);
 		String category = FINMap.getCategory();
 		int iconId = FINMenu.getIcon(category);
+		if (category.equals("supplies")) {
+			category = FINMap.getItemName();
+		}
 		
 		// Assume it is an outdoor location, but if it is not, grab the building name
 	    String buildingName = "Outdoor Location";	    
