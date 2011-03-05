@@ -42,6 +42,8 @@ public class PopUpDialogV3 extends Dialog{
 	private int walkTime;
 	private String category;
 	
+	private boolean listExpanded;
+	
 	public PopUpDialogV3(Context context) {
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -58,6 +60,7 @@ public class PopUpDialogV3 extends Dialog{
 		this.distance = distance;
 		this.walkTime = walkingTime;
 		this.category = category;
+		listExpanded = false;
 	}
 	
 	protected void onCreate(Bundle savedInstanceState)
@@ -109,57 +112,24 @@ public class PopUpDialogV3 extends Dialog{
     			
     			
     			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
-    			ArrayList<HashMap<String,Object>> hashMapListForListView = new ArrayList<HashMap<String,Object>>();
-    			List<List<HashMap<String,Object>>> childMapForView = new ArrayList<List<HashMap<String,Object>>>();
-    		
     			Button toggle = (Button) findViewById(R.id.showFlrButt);
     			
+    			String[] flr = new String[0];
     			// Show all the floor info.
-    			/*if (lv.getCount() == 0)
+    			if (listExpanded)
     			{
     				toggle.setText("Hide Floors");
-	    			HashMap<String,Object> map = new HashMap<String,Object>();
-	    			for (String s: floor)
-	    			{
-	    				map.put("name",s);
-	    				map.put("icon",FINMenu.getIcon(category));
-	    				hashMapListForListView.add(map);
-	    				map = new HashMap<String,Object>();
-	    			}
-	    			
-	    			ArrayList<HashMap<String,Object>> childList = new ArrayList<HashMap<String,Object>>();
-	    			for (String s: floor)
-	    			{
-	    				map.put("name",s);
-	    				map.put("text", s + " ...blahblablaba info");
-	    				childList.add(map);
-	    				childMapForView.add(childList);
-	    				map = new HashMap<String,Object>();
-	    				childList = new ArrayList<HashMap<String,Object>>();
-	    			}
-	    			
 	    			lv.getLayoutParams().height = Math.min(200, LinearLayout.LayoutParams.WRAP_CONTENT);
+	    			flr = floor;
     			}
     			// Hide all the floor info.
     			else {
     				toggle.setText("Show Floors");
     				lv.getLayoutParams().height = 0;
+    				
     			}
-
-    	    	lv.setAdapter(
-    	    			new SimpleExpandableListAdapter(lv.getContext(),
-                                hashMapListForListView, 
-                                R.layout.flrlist_item,
-                                new String[] {"name"},//, "icon"},
-                                new int[] { R.id.flrName},//, R.id.flrIcon}, 
-
-                                childMapForView,
-                                R.layout.flrlist_child,
-                                new String[]{"text"},
-                                new int[] {R.id.floorDetailText}        
-    	    			) 
-    	    	);*/
-    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),floor, name));
+    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, name));
+    			listExpanded = !listExpanded;
     		}
     	});
     	
