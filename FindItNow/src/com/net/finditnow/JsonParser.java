@@ -35,7 +35,6 @@ public class JsonParser {
 	//parses a Json Array into a map of locations and its floor names
 	public static HashMap<GeoPoint, String[]> parseJson(JSONArray jsonArray)
 	{
-		Log.i("log", jsonArray.toString());
 		//creates the map for information to be stored in
 		HashMap<GeoPoint,String[]> map = new HashMap<GeoPoint,String[]>();
 		

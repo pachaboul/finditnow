@@ -115,7 +115,6 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);
 				
 		TextView text = (TextView) relative.findViewById(R.id.flrName);
-		Log.i("log", groupPosition+ "   "+ (text == null) );
 		text.setText(floorNames[groupPosition]);
 		
 		ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
