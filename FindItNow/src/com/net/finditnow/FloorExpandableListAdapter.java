@@ -36,12 +36,15 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	private String[] floorNames;
 	private String info;
 	private Context context;
+	private int iconId;
 	
-	public FloorExpandableListAdapter(Context context,String[] floorName, String info) {
+	public FloorExpandableListAdapter(Context context,String[] floorName, String info,
+			int iconId) {
 		super();
 		this.context = context;
 		this.floorNames = floorName;
 		this.info = info;
+		this.iconId = iconId;
 	}
 
 	public Object getChild(int groupPosition, int childPosition) {
@@ -111,6 +114,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		text.setText(floorNames[groupPosition]);
 		
 		ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
+		img.setImageResource(iconId);
 		
 		return relative;
 	}
