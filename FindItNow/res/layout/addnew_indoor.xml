@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#fff">
+	
     <TextView
 		android:id="@+id/addnew_inheader"
 		android:text="Add New Indoor Item"
@@ -14,45 +16,83 @@
 		android:background="#59E01B"
 		android:layout_width="fill_parent"
 	    android:layout_height="40dp"
-	    android:gravity="center"
-	   	android:layout_marginBottom="8dp"/>
+	    android:gravity="center"/>
 	   	
-    <TextView
-    	android:id="@+id/addnew_bspinnertext"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:layout_below="@+id/addnew_inheader"
-        android:text="Please select the building that houses your new item."/>
-    
-    <Spinner 
-        android:id="@+id/addnew_bspinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addnew_bspinnertext"
-        android:prompt="@+id/addnew_spinner"/>
-        
-   <TextView
-    	android:id="@+id/addnew_fspinnertext"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:layout_below="@+id/addnew_bspinner"
-        android:text="Please select the corresponding floor."/>
-        
-   <Spinner 
-        android:id="@+id/addnew_fspinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addnew_fspinnertext"
-        android:prompt="@+id/addnew_spinner"/>
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:padding="15dp">
+		
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:padding="10dp"
+			android:background="#809EFC23"
+			android:layout_marginBottom="15dp">	
+	   	
+		    <TextView
+		    	android:id="@+id/addnew_bspinnertext"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@+id/addnew_inheader"
+		        android:paddingLeft="10dp"
+		        android:text="Select the building that houses your new item."
+		        android:textStyle="bold"
+		        android:textColor="#000000"
+		        android:textSize="16dp"/>
+		    
+		    <Spinner 
+		        android:id="@+id/addnew_bspinner"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10dp"
+		        android:layout_below="@+id/addnew_bspinnertext"
+		        android:prompt="@string/spinner_building"/>
+		        
+		</LinearLayout>
+		
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:padding="10dp"
+			android:background="#809EFC23"
+			android:layout_marginBottom="15dp">	 
+			       
+		   <TextView
+		    	android:id="@+id/addnew_fspinnertext"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@+id/addnew_bspinner"
+		        android:paddingLeft="10dp"
+		        android:text="Select the corresponding floor."
+		        android:textStyle="bold"
+		        android:textColor="#000000"
+		        android:textSize="16dp"/>
+		        
+		   <Spinner 
+		        android:id="@+id/addnew_fspinner"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10dp"
+		        android:layout_below="@+id/addnew_fspinnertext"
+		        android:prompt="@string/spinner_floor"/>
+		</LinearLayout>
 
-    <Button
-        android:id="@+id/addnew_additem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/addnew_fspinner"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="10dip"
-        android:text="Add Item" />
-</RelativeLayout>
+		<RelativeLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+			
+		    <Button
+		        android:id="@+id/addnew_additem"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/addnew_fspinner"
+		        android:layout_alignParentRight="true"
+		        android:text="Add Item" />
+	    </RelativeLayout>
+    
+	</LinearLayout>
+</LinearLayout>
