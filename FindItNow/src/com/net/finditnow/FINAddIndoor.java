@@ -63,7 +63,7 @@ public class FINAddIndoor extends Activity {
 	
     protected void setFloorSpinner() {
     	Spinner fSpinner = (Spinner) findViewById(R.id.addnew_fspinner);
-		ArrayAdapter<String> fAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, selectedBuilding.getFloorName());
+		ArrayAdapter<String> fAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, selectedBuilding.getFloorNames());
 		fAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		fSpinner.setAdapter(fAdapter);
 		fSpinner.setOnItemSelectedListener(fspinner_listener);
