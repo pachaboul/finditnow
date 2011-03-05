@@ -36,6 +36,7 @@
    			android:layout_below="@id/timeReachText"
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
+    		android:textColor="#FFF"
    		/>
    <Button android:id="@+id/showFlrButt"
     		android:layout_width="fill_parent"

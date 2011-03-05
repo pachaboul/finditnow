@@ -43,6 +43,7 @@ public class PopUpDialogV3 extends Dialog{
 	private String category;
 	private int iconId;
 	private boolean listExpanded;
+	private boolean isOutdoor;
 	
 	public PopUpDialogV3(Context context) {
 		super(context);
@@ -51,7 +52,7 @@ public class PopUpDialogV3 extends Dialog{
 	//creates a PopUpDialog with the given fields, should use this one
 	public PopUpDialogV3(Context context,String[] floor, 
 				String building, String category, String name, BigDecimal distance, int walkingTime,
-				int iconId)
+				int iconId, boolean isOutdoor)
 	{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -63,6 +64,7 @@ public class PopUpDialogV3 extends Dialog{
 		this.category = category;
 		listExpanded = true;
 		this.iconId = iconId;
+		this.isOutdoor = isOutdoor;
 	}
 	
 	protected void onCreate(Bundle savedInstanceState)
@@ -70,13 +72,13 @@ public class PopUpDialogV3 extends Dialog{
 		setContentView(R.layout.popupdialog3);
 
     	TextView title = (TextView) findViewById(R.id.dialogTitle);
-    	
+		title.setText(buildName);
+
 		//there is a button on this dialog, we need it to be clickable
     	Button butt = (Button) findViewById(R.id.showFlrButt);
     	TextView outDoor = (TextView) findViewById(R.id.outDoorText);
     	
-    	if ( buildName != null && !buildName.equals("")) {
-			title.setText(buildName);
+    	if ( !isOutdoor) {
 
 	    	//so when the user press it, it'll show the detail display
 	    	butt.setOnClickListener( new View.OnClickListener()
@@ -105,10 +107,11 @@ public class PopUpDialogV3 extends Dialog{
 	    		}
 	    	});
 	    	outDoor.setVisibility(outDoor.INVISIBLE);
+	    	outDoor.getLayoutParams().height = 0;
     	} else {
-			title.setText("Outdoor Location");
 			outDoor.setText(name);
 			butt.setVisibility(butt.INVISIBLE);
+			butt.getLayoutParams().height = 0;
     	}
     	
     	TextView cate = (TextView) findViewById(R.id.categoryName);
