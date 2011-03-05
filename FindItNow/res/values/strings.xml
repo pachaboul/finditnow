@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FindItNow</string>
+    <string name="categories">Categories</string>
+    <string name="my_location">My Location</string>
+    <string name="add_new">Add New Item</string>
+    <string name="help">Help</string>
+	<string name="help_questions">&quot;&lt;b&gt;How do I find an item?&lt;/b&gt;&lt;br /&gt;Start on the Categories page.  Select a category button (you may be prompted to select a secondary item type), and the map will launch.  The map icons represent the multiple locations where the items can be found.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;How do I add an item?&lt;/b&gt;&lt;br/&gt;Help section forthcoming.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;I added an item, but no longer see it on the map.  Why is it gone?&lt;/b&gt;&lt;br/&gt;Help section forthcoming.&quot;</string>
+	<string name="help_troubleshooting">Help section forthcoming.</string>
+	<string name="help_about">FindItNow is an Android application developed for a software engineering project at the University of Washington.&lt;br/&gt;&lt;br/&gt;Contributers: Dustin Abramson, Mai Dang, Michael Falcone, Eric Hare, Chanel Huang, Jillyn Johnson, and Jared Jones&lt;br/&gt;&lt;br/&gt;Visit our &lt;a href=\'http://code.google.com/p/recycle-locator\'&gt;project site&lt;/a&gt; to learn more.</string>
+<string name="spinner_category">Select Category</string>
+<string name="spinner_building">Select Building</string>
+<string name="spinner_floor">Select Floor</string>
+</resources>
