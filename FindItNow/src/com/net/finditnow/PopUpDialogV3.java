@@ -1,31 +1,36 @@
 package com.net.finditnow;
 
-
+import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.view.Window;
-import android.widget.ListView;
-import java.lang.StringBuffer;
-import java.math.BigDecimal;
-
-import android.widget.SimpleAdapter;
 import android.view.MotionEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import android.widget.RelativeLayout;
 import android.util.Log;
-
 
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.BaseExpandableListAdapter;
-import java.util.List;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.StringBuffer;
+import java.math.BigDecimal;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 public class PopUpDialogV3 extends Dialog{
 
@@ -104,22 +109,8 @@ public class PopUpDialogV3 extends Dialog{
     	{
     		public void onClick(View v)
     		{
-    		/*
-    		 * 			//sets the different property of the text display
-			TextView text2 = new TextView(this.getContext());
-			text2.setText(floor[i]);
-			text2.setPadding(TEXT_LEFT, TEXT_TOP + TEXT_DIFF*i, 0, 0);
-			text2.setTextColor(smptext.getTextColors());
-			layout.addView(text2);
-			
-			//sets the different property of the icon display
-			ImageView img2 = new ImageView(this.getContext());
-			img2.setImageResource(FINMenu.getIcon(FINMap.getCategory()));
-			img2.setAdjustViewBounds(true);
-			img2.setMaxHeight(IMG_TOP+IMG_DIFF*(i+1));
-			img2.setPadding(IMG_LEFT,IMG_TOP+IMG_DIFF*i , IMG_RIGHT,0);
-			layout.addView(img2);
-    		 */
+    			
+    			
     			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
     			ArrayList<HashMap<String,Object>> hashMapListForListView = new ArrayList<HashMap<String,Object>>();
     			List<List<HashMap<String,Object>>> childMapForView = new ArrayList<List<HashMap<String,Object>>>();
@@ -183,5 +174,47 @@ public class PopUpDialogV3 extends Dialog{
 	{
 		dismiss();
 		return true;
+	}
+	
+	public static String updateDB(String category,int id) {
+		/*
+		   * HTTP Post request
+		   */
+		String data = "";
+	  	InputStream iStream = null;
+	  	try{
+		        HttpClient httpclient = new DefaultHttpClient();
+		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/update.php");
+		  			
+		        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+		        
+	  			nameValuePairs.add(new BasicNameValuePair("category", category));
+	  			nameValuePairs.add(new BasicNameValuePair("id", id+""));
+	  			
+	  			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		        
+		        HttpResponse response = httpclient.execute(httppost);
+		        HttpEntity entity = response.getEntity();
+		        iStream = entity.getContent();
+	  	}catch(Exception e){
+	  	    Log.e("log_tag", "Error in http connection "+e.toString());
+	  	}
+	  	//convert response to string
+	  	try{
+		        BufferedReader reader = new BufferedReader(new InputStreamReader(iStream,"iso-8859-1"),8);
+		        StringBuilder sb = new StringBuilder();
+		        String line = null;
+		        while ((line = reader.readLine()) != null) {
+		        	sb.append(line + "\n");
+		        }
+		        iStream.close();
+		 
+		        data = sb.toString();
+		        Log.v("test", data);
+	  	}catch(Exception e){
+	  	    Log.e("log_tag", "Error converting result "+e.toString());
+	  	}
+		
+	  	return data;
 	}
 }  
