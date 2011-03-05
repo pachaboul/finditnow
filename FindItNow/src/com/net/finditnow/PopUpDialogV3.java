@@ -115,7 +115,7 @@ public class PopUpDialogV3 extends Dialog{
     			Button toggle = (Button) findViewById(R.id.showFlrButt);
     			
     			// Show all the floor info.
-    			if (lv.getCount() == 0)
+    			/*if (lv.getCount() == 0)
     			{
     				toggle.setText("Hide Floors");
 	    			HashMap<String,Object> map = new HashMap<String,Object>();
@@ -138,12 +138,8 @@ public class PopUpDialogV3 extends Dialog{
 	    				childList = new ArrayList<HashMap<String,Object>>();
 	    			}
 	    			
-	    			
-	    			
-	    			
 	    			lv.getLayoutParams().height = Math.min(200, LinearLayout.LayoutParams.WRAP_CONTENT);
     			}
-    			
     			// Hide all the floor info.
     			else {
     				toggle.setText("Show Floors");
@@ -162,7 +158,8 @@ public class PopUpDialogV3 extends Dialog{
                                 new String[]{"text"},
                                 new int[] {R.id.floorDetailText}        
     	    			) 
-    	    	);
+    	    	);*/
+    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),floor, name));
     		}
     	});
     	
