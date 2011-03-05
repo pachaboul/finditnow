@@ -41,7 +41,7 @@ public class PopUpDialogV3 extends Dialog{
 	private BigDecimal distance;
 	private int walkTime;
 	private String category;
-	
+	private int iconId;
 	private boolean listExpanded;
 	
 	public PopUpDialogV3(Context context) {
@@ -50,7 +50,8 @@ public class PopUpDialogV3 extends Dialog{
 	}
 	//creates a PopUpDialog with the given fields, should use this one
 	public PopUpDialogV3(Context context,String[] floor, 
-				String building, String category, String name, BigDecimal distance, int walkingTime)
+				String building, String category, String name, BigDecimal distance, int walkingTime,
+				int iconId)
 	{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -61,6 +62,7 @@ public class PopUpDialogV3 extends Dialog{
 		this.walkTime = walkingTime;
 		this.category = category;
 		listExpanded = false;
+		this.iconId = iconId;
 	}
 	
 	protected void onCreate(Bundle savedInstanceState)
@@ -128,7 +130,7 @@ public class PopUpDialogV3 extends Dialog{
     				lv.getLayoutParams().height = 0;
     				
     			}
-    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, name));
+    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, name, iconId));
     			listExpanded = !listExpanded;
     		}
     	});
