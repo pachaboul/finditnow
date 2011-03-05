@@ -205,7 +205,7 @@ public class FINMap extends MapActivity {
     	
     	if (getCategory().equals("buildings")) {
     		GeoPoint point = FINMenu.getGeoPointFromBuilding(itemName);
-    		geoPointFloorMap.put(point, FINMenu.getBuilding(point).getFloorName());
+    		geoPointFloorMap.put(point, FINMenu.getBuilding(point).getFloorNames());
     	}
     	
         for (GeoPoint point : geoPointFloorMap.keySet()) {
