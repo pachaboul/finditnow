@@ -57,7 +57,7 @@ public class FINAddIndoor extends Activity {
 	    	Create.sendToDB(FINUtil.reverseCapFirstChar(selectedCategory), null, map.get(selectedFloor), "",  "",  "",  "");
 	    	Intent myIntent = new Intent(v.getContext(), FINMenu.class);
             startActivity(myIntent);
-            Toast.makeText(getBaseContext(), selectedCategory + "location added successfully!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), selectedCategory + " location added successfully!", Toast.LENGTH_LONG).show();
 	    }
 	};
 	
