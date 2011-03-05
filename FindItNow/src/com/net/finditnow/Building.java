@@ -2,13 +2,6 @@
  * Building.java by Eric Hare
  * This class defines a "Building" object for use in FindItNow
  * It allows convenient storage of pertinent building information
- * 
- * 
- * Note -- Chanel
- * for the JsonParser to work correctly, the names of the
- * variable must match the name in the JSON object.
- * so building id is named bid in JSON object
- * floor id named fid
  */
 
 package com.net.finditnow;
