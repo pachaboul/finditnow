@@ -13,8 +13,9 @@ package com.net.finditnow;
 import com.google.gson.*;
 import com.google.android.maps.GeoPoint;
 import java.util.HashMap;
-
 import org.json.JSONArray;
+
+import android.util.Log;
 
 public class JsonParser {
 	//This is a string to keep track of the names of each piece of information in the
@@ -34,6 +35,7 @@ public class JsonParser {
 	//parses a Json Array into a map of locations and its floor names
 	public static HashMap<GeoPoint, String[]> parseJson(JSONArray jsonArray)
 	{
+		Log.i("log", jsonArray.toString());
 		//creates the map for information to be stored in
 		HashMap<GeoPoint,String[]> map = new HashMap<GeoPoint,String[]>();
 		

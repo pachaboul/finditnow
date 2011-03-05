@@ -61,7 +61,7 @@ public class PopUpDialogV3 extends Dialog{
 		this.distance = distance;
 		this.walkTime = walkingTime;
 		this.category = category;
-		listExpanded = false;
+		listExpanded = true;
 		this.iconId = iconId;
 	}
 	
@@ -70,10 +70,45 @@ public class PopUpDialogV3 extends Dialog{
 		setContentView(R.layout.popupdialog3);
 
     	TextView title = (TextView) findViewById(R.id.dialogTitle);
+    	
+		//there is a button on this dialog, we need it to be clickable
+    	Button butt = (Button) findViewById(R.id.showFlrButt);
+    	TextView outDoor = (TextView) findViewById(R.id.outDoorText);
+    	
     	if ( buildName != null && !buildName.equals("")) {
 			title.setText(buildName);
+
+	    	//so when the user press it, it'll show the detail display
+	    	butt.setOnClickListener( new View.OnClickListener()
+	    	{
+	    		public void onClick(View v)
+	    		{
+	    			
+	    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
+	    			Button toggle = (Button) findViewById(R.id.showFlrButt);
+	    			
+	    			String[] flr = new String[0];
+	    			// Show all the floor info.
+	    			if (listExpanded)
+	    			{
+	    				toggle.setText("Hide Floors");
+		    			lv.getLayoutParams().height = Math.min(200, LinearLayout.LayoutParams.WRAP_CONTENT);
+		    			flr = floor;
+	    			}
+	    			// Hide all the floor info.
+	    			else {
+	    				toggle.setText("Show Floors");
+	    				lv.getLayoutParams().height = 0;
+	    			}
+	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, name, iconId));
+	    			listExpanded = !listExpanded;
+	    		}
+	    	});
+	    	outDoor.setVisibility(outDoor.INVISIBLE);
     	} else {
 			title.setText("Outdoor Location");
+			outDoor.setText(name);
+			butt.setVisibility(butt.INVISIBLE);
     	}
     	
     	TextView cate = (TextView) findViewById(R.id.categoryName);
@@ -103,37 +138,6 @@ public class PopUpDialogV3 extends Dialog{
     		timeToText.setText(Html.fromHtml("<b>Walking Time:</b> " + walkTime + FINUtil.pluralize("minute", walkTime)));
     	}
 
-    	
-    	//there is a button on this dialog, we need it to be clickable
-    	Button butt = (Button) findViewById(R.id.showFlrButt);
-    	//so when the user press it, it'll show the detail display
-    	butt.setOnClickListener( new View.OnClickListener()
-    	{
-    		public void onClick(View v)
-    		{
-    			
-    			
-    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
-    			Button toggle = (Button) findViewById(R.id.showFlrButt);
-    			
-    			String[] flr = new String[0];
-    			// Show all the floor info.
-    			if (listExpanded)
-    			{
-    				toggle.setText("Hide Floors");
-	    			lv.getLayoutParams().height = Math.min(200, LinearLayout.LayoutParams.WRAP_CONTENT);
-	    			flr = floor;
-    			}
-    			// Hide all the floor info.
-    			else {
-    				toggle.setText("Show Floors");
-    				lv.getLayoutParams().height = 0;
-    				
-    			}
-    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, name, iconId));
-    			listExpanded = !listExpanded;
-    		}
-    	});
     	
 	}
 	public boolean onTouchEvent(MotionEvent e)
