@@ -21,7 +21,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
-public class FINAddMap extends MapActivity {
+public class FINAddOutdoor extends MapActivity {
 	
 	// Map and Location Variables
 	private static MapView mapView;
@@ -34,7 +34,7 @@ public class FINAddMap extends MapActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.addnew_map);
+		setContentView(R.layout.addnew_outdoor);
 		
 		tappedPoint = new GeoPoint(0, 0);
 		
@@ -94,7 +94,7 @@ public class FINAddMap extends MapActivity {
 				.setCancelable(false)
 			    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int id) {
-			             FINAddMap.this.finish();
+			             FINAddOutdoor.this.finish();
 			        }
 			    })
 			    .setNegativeButton("No", new DialogInterface.OnClickListener() {
