@@ -30,9 +30,11 @@ import android.widget.TextView;
 
 public class CategoryList extends ListActivity {
 	
-	// On launch, determine which category type was passed
-	// and display the appropriate list.
-	// Defaults to supplies if category is unrecognized.
+	/**
+     * On launch, determines which category type was passed
+     * and displays the appropriate list.
+     * Defaults to supplies if category is unrecognized.
+     */
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	
@@ -53,6 +55,7 @@ public class CategoryList extends ListActivity {
     	ListView lv = getListView();
     	lv.setTextFilterEnabled(true);
     	
+    	// Every item will launch the map
     	lv.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
@@ -63,7 +66,10 @@ public class CategoryList extends ListActivity {
     	});
     }
 	 
-    // List of supplies item types.
+	/**
+     * List of school supplies item types
+     * Note: this is hard-coded in our application
+     */
 	private static ArrayList<String> supplies() {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("Blue books");
@@ -72,6 +78,9 @@ public class CategoryList extends ListActivity {
 		return list;
 	}
 	
+	/**
+     * Creates the Android options menu
+     */
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -79,17 +88,26 @@ public class CategoryList extends ListActivity {
         return true;
     }
     
+	/**
+     * Prepares the options menu before being displayed.
+     * Removes centering location option (special for the Map only).
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(R.id.add_new_button).setVisible(false);
     	menu.findItem(R.id.my_location_button).setVisible(false);
     	return true;
     }
     
+    /**
+     * Expand and define the Android options menu
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+        	case R.id.add_new_button:
+	    		startActivity(new Intent(this, FINAddNew.class));
+	    		return true;
 	        case R.id.help_button:
 	        	startActivity(new Intent(this, FINHelp.class));
 	            return true;
