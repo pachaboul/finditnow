@@ -80,7 +80,7 @@ public final class R {
     }
     public static final class layout {
         public static final int addnew_indoor=0x7f030000;
-        public static final int addnew_map=0x7f030001;
+        public static final int addnew_outdoor=0x7f030001;
         public static final int addnew_popup=0x7f030002;
         public static final int fin_splash=0x7f030003;
         public static final int floordialog=0x7f030004;
