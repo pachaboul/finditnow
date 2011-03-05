@@ -12,7 +12,7 @@ public class Building {
 	
 	private String name; // Store the name of the building
 	private int building_id; // Store the building ID
-	private int[] floor_ids; // Store the floor IDs
+	private int[] fid; // Store the floor IDs
 	private String[] floor_names; // Store the floor names
 
 	/**
@@ -33,7 +33,7 @@ public class Building {
 	public Building(int building_id, String name, int[] floor_ids, String[] floor_names) {
 		this.building_id = building_id;
 		this.name = name;
-		this.floor_ids = floor_ids;
+		this.fid = floor_ids;
 		this.floor_names = floor_names;
 	}
 
@@ -70,7 +70,7 @@ public class Building {
 	 * @return An array of integers representing the floor IDs
 	 */
 	public int[] getFloorIDs(){
-		return floor_ids;
+		return fid;
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class Building {
 	 */
 	public String toString(){
 		String result = "Name: " + name + ", Building ID: " + getBuildingID() + 
-						", Floor IDs: " + getFloorIDs().toString() + 
+						", Floor IDs: " + getFloorIDs()+ 
 						", Floor Names: " + getFloorNames().toString();
 		return result;
 	}
