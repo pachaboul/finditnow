@@ -46,4 +46,16 @@ public class FINUtil {
 			return str;
 		}
 	}
+	
+	public static String reverseCapFirstChar(String str) {
+		if (str.equals("ATMs")) {
+			return "atms";
+		} else {
+			StringBuffer buffer = new StringBuffer();
+	    	buffer.append(str);    	
+	    	//char cateName = Character.toUpperCase(buffer.charAt(0));
+	    	buffer.setCharAt(0, Character.toLowerCase(buffer.charAt(0)));
+	    	return buffer.toString();
+		}
+	}
 }

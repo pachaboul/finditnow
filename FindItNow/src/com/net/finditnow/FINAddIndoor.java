@@ -54,7 +54,7 @@ public class FINAddIndoor extends Activity {
 	private OnClickListener additem_listener = new OnClickListener() {
 	    public void onClick(View v) {
 	    	HashMap<String,Integer> map = selectedBuilding.floorMap();
-	    	Create.sendToDB(selectedCategory, null, map.get(selectedFloor), "",  "",  "",  "");
+	    	Create.sendToDB(FINUtil.reverseCapFirstChar(selectedCategory), null, map.get(selectedFloor), "",  "",  "",  "");
 	    	Intent myIntent = new Intent(v.getContext(), FINMenu.class);
             startActivity(myIntent);
             Toast.makeText(getBaseContext(), "New item added successfully!", Toast.LENGTH_LONG).show();
