@@ -23,9 +23,7 @@ public class FINAddNew extends Activity {
 	
 	private RadioButton rs;
 	View geopointConfirm;
-	Building selectedBuilding;
 	String selectedCategory;
-	String selectedFloor;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,9 +64,12 @@ public class FINAddNew extends Activity {
 	private OnClickListener next_listener = new OnClickListener() {
 	    public void onClick(View v) {    	
 	    	if (rs.getId() == R.id.addnew_in) { //Adding indoor location
-	    		handleIndoorItem();
+	    		Intent myIntent = new Intent(v.getContext(), FINAddIndoor.class);
+	    		myIntent.putExtra("selectedCategory", selectedCategory);
+                startActivity(myIntent);
 	    	} else if (rs.getId() == R.id.addnew_out) { //Adding outdoor location
-				Intent myIntent = new Intent(v.getContext(), FINAddMap.class);
+				Intent myIntent = new Intent(v.getContext(), FINAddOutdoor.class);
+				myIntent.putExtra("selectedCategory", selectedCategory);
                 startActivity(myIntent);
 	    	}
 	    }
@@ -86,61 +87,6 @@ public class FINAddNew extends Activity {
         inflater.inflate(R.menu.options_menu, menu);
         return true;
     }
-    
-    protected void handleIndoorItem() {
-    	setContentView(R.layout.addnew_indoor);
-    	
-    	Spinner bSpinner = (Spinner) findViewById(R.id.addnew_bspinner);
-		ArrayAdapter<String> bAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINMenu.getBuildingsList());
-		bAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		bSpinner.setAdapter(bAdapter);
-		bSpinner.setOnItemSelectedListener(bspinner_listener);
-		selectedBuilding = FINMenu.getBuilding(FINMenu.getGeoPointFromBuilding(FINMenu.getBuildingsList().get(0))); //uhhhh well it works...	
-		
-		Button addItem = (Button) findViewById(R.id.addnew_additem);
-		addItem.setOnClickListener(additem_listener);
-    }
-    
-	private OnClickListener additem_listener = new OnClickListener() {
-	    public void onClick(View v) {
-	    	HashMap<String,Integer> map = selectedBuilding.floorMap();
-	    	Create.sendToDB(selectedCategory, null, map.get(selectedFloor), "",  "",  "",  "");
-	    	Intent myIntent = new Intent(v.getContext(), FINMenu.class);
-            startActivity(myIntent);
-            Toast.makeText(getBaseContext(), "New item added successfully!", Toast.LENGTH_LONG).show();
-	    }
-	};
-    
-    protected void setFloorSpinner() {
-    	Spinner fSpinner = (Spinner) findViewById(R.id.addnew_fspinner);
-		ArrayAdapter<String> fAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, selectedBuilding.getFloorName());
-		fAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		fSpinner.setAdapter(fAdapter);
-		fSpinner.setOnItemSelectedListener(fspinner_listener);
-    }
-    
-    private OnItemSelectedListener bspinner_listener = new OnItemSelectedListener() {
-		public void onItemSelected(AdapterView<?> parent, View arg1, int pos, long arg3) {
-			selectedBuilding = FINMenu.getBuilding(FINMenu.getGeoPointFromBuilding(parent.getItemAtPosition(pos).toString()));
-			setFloorSpinner();
-		}
-
-		public void onNothingSelected(AdapterView<?> arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-	};
-	
-	 private OnItemSelectedListener fspinner_listener = new OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> parent, View arg1, int pos, long arg3) {
-				selectedFloor = parent.getItemAtPosition(pos).toString();
-			}
-
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
 	
 	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
