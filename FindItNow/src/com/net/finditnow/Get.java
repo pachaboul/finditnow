@@ -1,5 +1,5 @@
 /***
- * Retrieve.java by Eric Hare
+ * Get.java by Eric Hare
  * This class defines our Retrieve Locations interface with the PHP layer
  * It is called to retrieve items from the database, including categories and buildings
  */
@@ -29,10 +29,10 @@ import android.util.Log;
 // GeoPoint for location services
 import com.google.android.maps.GeoPoint;
 
-public class Retrieve {
+public class Get {
 	
 	// A Constant representing the location of the root of the get files
-	private static final String REQUEST_LOCATIONS_ROOT = "http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/";
+	private static final String GET_LOCATIONS_ROOT = "http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/";
 	
 	/**
 	 * This method processes a request to retrieve locations from the database
@@ -55,7 +55,7 @@ public class Retrieve {
 	  	try {
 		        HttpClient httpclient = new DefaultHttpClient();
 		        String suffix = (location == null? (category == null? "getCategories.php" : "getBuildings.php") : "getLocations.php");
-		        HttpPost httppost = new HttpPost(REQUEST_LOCATIONS_ROOT + suffix);
+		        HttpPost httppost = new HttpPost(GET_LOCATIONS_ROOT + suffix);
 		        
 		        // If the location is not null, this is a request for items in a category
 		        if (location != null) {

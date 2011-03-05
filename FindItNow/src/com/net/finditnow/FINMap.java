@@ -83,7 +83,7 @@ public class FINMap extends MapActivity {
         locateUser();
         
         // Retrieve locations from the database and parse them
-    	JSONArray listOfLocations = Retrieve.requestFromDB(category, itemName, DEFAULT_LOCATION);
+    	JSONArray listOfLocations = Get.requestFromDB(category, itemName, DEFAULT_LOCATION);
     	geoPointFloorMap = JsonParser.parseJson(listOfLocations);
     	geoPointSpecialInfoMap = JsonParser.parseNameJson(listOfLocations);
         
