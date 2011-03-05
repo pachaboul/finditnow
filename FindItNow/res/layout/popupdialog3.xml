@@ -20,8 +20,15 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textColor="#FFF"
-              android:layout_marginBottom="15dp"
               />
+   <TextView android:id="@+id/outDoorText"
+   			android:layout_below="@id/categoryName"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:textColor="#FFF"
+    		android:layout_marginLeft="15dp"
+    		android:layout_marginBottom="15dp"
+   		/>
     <TextView android:id="@+id/distanceText"
     		  android:layout_width="fill_parent"
               android:layout_height="wrap_content"
@@ -32,12 +39,6 @@
               android:layout_height="wrap_content"
               android:textColor="#FFF"
               />
-   <TextView android:id="@+id/outDoorText"
-   			android:layout_below="@id/timeReachText"
-    		android:layout_width="fill_parent"
-    		android:layout_height="wrap_content"
-    		android:textColor="#FFF"
-   		/>
    <Button android:id="@+id/showFlrButt"
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"

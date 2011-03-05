@@ -109,7 +109,8 @@ public class PopUpDialogV3 extends Dialog{
 	    	outDoor.setVisibility(outDoor.INVISIBLE);
 	    	outDoor.getLayoutParams().height = 0;
     	} else {
-			outDoor.setText(name);
+    		String info = name.replace("\n", "<br />");
+			outDoor.setText(Html.fromHtml(info));
 			butt.setVisibility(butt.INVISIBLE);
 			butt.getLayoutParams().height = 0;
     	}
@@ -119,11 +120,7 @@ public class PopUpDialogV3 extends Dialog{
     	//Converts the first letter of category to upper case and
     	//adds the name of the service provided if it exist
     	String specialInfo = "<b>" + FINUtil.capFirstChar(category) + "</b>";
-    	if (name != null && !name.equals("")) {
-	    	name = name.replace("\n", "<br />");
-    		specialInfo += (": " + name);
-    	}
-    	
+
     	//sets the text into the textView
     	cate.setText(Html.fromHtml(specialInfo));
     	
