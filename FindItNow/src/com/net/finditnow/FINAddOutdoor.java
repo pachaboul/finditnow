@@ -99,7 +99,7 @@ public class FINAddOutdoor extends MapActivity {
 			        	Create.sendToDB(FINUtil.reverseCapFirstChar(selectedCategory), tappedPoint, 0, "",  "",  "",  "");
 				    	Intent myIntent = new Intent(getBaseContext(), FINMenu.class);
 			            startActivity(myIntent);
-			            Toast.makeText(getBaseContext(), "New item added successfully!", Toast.LENGTH_LONG).show();
+			            Toast.makeText(getBaseContext(), selectedCategory + " location added successfully!", Toast.LENGTH_LONG).show();
 			        }
 			    })
 			    .setNegativeButton("No", new DialogInterface.OnClickListener() {
