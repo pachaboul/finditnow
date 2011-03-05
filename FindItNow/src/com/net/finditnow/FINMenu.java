@@ -1,11 +1,13 @@
 /*
  * This class displays the menu of buttons
- * each corresponding to the eight categories
- * Simple options will launch the Map; options
- * with sub-categories will launch CategoryList.
+ * each corresponding each category.  Simple options will launch the Map;
+ * options with sub-categories will launch CategoryList.
+ * 
+ * Initial database retrieving routines are also executed before
+ * the button grid is drawn.  An Internet connection is also checked.
  * 
  * This is the class that is first shown when FIN is
- * launched.
+ * launched, after the splash screen.
  */
 package com.net.finditnow;
 
@@ -45,7 +47,10 @@ public class FINMenu extends Activity {
 	private static ArrayList<String> categories;
 	private static ArrayList<String> buildings;
 	
-	// On launch, show menu.xml layout, set up grid.
+	/**
+     * Check for a connection, generate our categories and buildings list
+     * from the database, and set up the grid layout of buttons.
+     */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
@@ -71,6 +76,9 @@ public class FINMenu extends Activity {
         buttonGrid.setAdapter(new ButtonAdapter(this));
 	}
 	
+	/**
+     * Creates the Android options menu
+     */
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -78,28 +86,43 @@ public class FINMenu extends Activity {
         return true;
     }
     
+	/**
+     * Prepares the options menu before being displayed.
+     * Removes redundant Category option, and centering location
+     * option (special for the Map only).
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.findItem(R.id.categories_button).setVisible(false);
-    	menu.findItem(R.id.add_new_button).setVisible(true);
     	menu.findItem(R.id.my_location_button).setVisible(false);
     	return true;
     }
     
+    /**
+     * Expand and define the Android options menu
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+        	case R.id.add_new_button:
+        		startActivity(new Intent(this, FINAddNew.class));
+        		return true;
 	        case R.id.help_button:
 	        	startActivity(new Intent(this, FINHelp.class));
 	            return true;
-	        case R.id.add_new_button:
-	        	startActivity(new Intent(this, FINAddNew.class));
 	        default:
 	            return super.onOptionsItemSelected(item);
         }
     }
 	
+	/**
+     * Returns an ArrayList of categories, duplicated from the given JSONArray list.
+     * The list is almost exactly the same, with the exclusion of regions, floors,
+     * and exception of "school_supplies" (which is added as "supplies").
+     * 
+     * @param listOfCategories List of categories, in JSONArray form.
+     */
 	public ArrayList<String> getCategoriesList(JSONArray listOfCategories) {
 		ArrayList<String> category_list = new ArrayList<String>();
 		for (int i = 0; i < listOfCategories.length(); i++) {
@@ -119,7 +142,11 @@ public class FINMenu extends Activity {
 		return category_list;
 	}
 	
-	// Check if we have a data connection available
+	/**
+     * Checks for an Internet connection.
+     * If there is no connection, or we are unable to retrieve information about our connection,
+     * display a message alerting the user about lack of connection.
+     */
 	public void checkConnection() {
 		ConnectivityManager conman=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = conman.getActiveNetworkInfo();
@@ -140,7 +167,12 @@ public class FINMenu extends Activity {
 		}
 	}
 	
-    /** This method returns a map from categories to icons (icons must be the same name as the category, in lowercase */
+    /**
+     * Returns a map from categories to icons (icons must be the same lower-case string as the category)
+     * Populates the HashMap with both small icons and bigger icons.
+     * Key for small icons: "<category>"
+     * Key for big icons:  "<category>-icon"
+	 */
     private HashMap<String, Integer> createIconsList() {
     	HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
 
@@ -227,7 +259,9 @@ public class FINMenu extends Activity {
 		}
     }
 
-	
+	/**
+     * Returns an ArrayList of unique buildings from a HashMap of GeoPoints and buildings.
+     */
 	public static ArrayList<String> createBuildingList(HashMap<GeoPoint, Building> map) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (GeoPoint point : map.keySet()) {
@@ -236,19 +270,35 @@ public class FINMenu extends Activity {
 		return list;
 	}
 	
+    /**
+     * Returns an ArrayList of buildings
+     */
 	public static ArrayList<String> getBuildingsList() {
 		return buildings;
 	}
 	
+	/**
+     * Returns an ArrayList of top-level categories
+     */
 	public static ArrayList<String> getCategoriesList() {
 		return categories;
 	}
     
+	/**
+     * Returns the building associated with the GeoPoint
+     */
     public static Building getBuilding(GeoPoint point) {
     	return buildingsMap.get(point);
     }
     
-    /** This method returns the icons map */
+    /**
+     * Returns a miniature-sized icon associated with the category
+     * These icons are used for the map overlays and dialog windows.
+     * 
+     * @param category The top-level category
+     * @return If no icon is found, return the default Android icon.
+	 * otherwise, return the appropriate category icon.
+     */
     public static Integer getIcon(String category) {
     	int icon = iconsMap.get(category);
     	if (icon == 0) {
@@ -258,6 +308,14 @@ public class FINMenu extends Activity {
     	}
     }
     
+    /**
+     * Returns a large-sized icon associated with the category
+     * These icons are used for the menu's grid buttons.
+     * 
+     * @param category The top-level category
+     * @return If no icon is found, return the default Android icon.
+     * Otherwise, return the appropriate category icon.
+     */
     public static Integer getBigIcon(String category) {
     	int bigIcon = iconsMap.get(category + "-icon");
     	if (bigIcon == 0) {
@@ -267,6 +325,13 @@ public class FINMenu extends Activity {
     	}
     }
     
+    /**
+     * Returns the GeoPoint associated with the building.
+     * Icon overlays are positioned on these GeoPoints.
+     * 
+     * @param buildingName The full name of the building.
+     * @return GeoPoint representing the 'center' of the building.
+     */
 	public static GeoPoint getGeoPointFromBuilding(String buildingName) {
 		for (GeoPoint point : buildingsMap.keySet()) {
 			if (getBuilding(point).getName().equals(buildingName)) {

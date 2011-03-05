@@ -288,6 +288,10 @@ public class FINMap extends MapActivity {
     public static String getCategory() {
     	return category;
     }
+    
+    public static String getItemName() {
+    	return itemName;
+    }
 	
 	/**
 	 * This method returns the floors where the location exists in the building
