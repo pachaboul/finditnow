@@ -11,6 +11,7 @@ import com.google.android.maps.OverlayItem;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -28,6 +29,7 @@ public class FINAddOutdoor extends MapActivity {
 	private MapController mapController;
 	private static FINAddOverlay mapOverlay;
 	private static List<Overlay> mapOverlays;
+	String selectedCategory;
 	
 	// Tapped Point
 	private static GeoPoint tappedPoint;
@@ -48,7 +50,9 @@ public class FINAddOutdoor extends MapActivity {
         mapOverlays = mapView.getOverlays();
         mapOverlays.add(mapOverlay);
         
-        // Build up our overlays and initialize our "UWOverlay" class
+        Bundle extras = getIntent().getExtras(); 
+		selectedCategory = extras.getString("selectedCategory");
+		Log.v("test", selectedCategory);
         
         // Zoom out enough
         mapController.animateTo(FINMap.DEFAULT_LOCATION);
@@ -77,16 +81,14 @@ public class FINAddOutdoor extends MapActivity {
 	         mapView.getProjection().toPixels(tappedPoint, screenPts);
 	
 	         //---add the marker---
-	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.androidmarker);            
+	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINMenu.getIcon(FINUtil.reverseCapFirstChar(selectedCategory)));            
 	         canvas.drawBitmap(bmp, screenPts.x-15, screenPts.y-15, null);         
 	         return true;
-	     }
+		 }
 	
 		@Override
 	    public boolean onTap(GeoPoint p, MapView mapView) {   
         	tappedPoint = p;
-        	Log.v("Blah", tappedPoint.toString());
-        	Toast.makeText(getBaseContext(), tappedPoint.getLatitudeE6() / 1E6 + "," +  tappedPoint.getLongitudeE6() /1E6 , Toast.LENGTH_SHORT).show();
         	
         	AlertDialog.Builder builder = new AlertDialog.Builder(mapView.getContext());
 			builder.setMessage("Is this Location Correct?")
@@ -94,7 +96,10 @@ public class FINAddOutdoor extends MapActivity {
 				.setCancelable(false)
 			    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int id) {
-			             FINAddOutdoor.this.finish();
+			        	Create.sendToDB(FINUtil.reverseCapFirstChar(selectedCategory), tappedPoint, 0, "",  "",  "",  "");
+				    	Intent myIntent = new Intent(getBaseContext(), FINMenu.class);
+			            startActivity(myIntent);
+			            Toast.makeText(getBaseContext(), "New item added successfully!", Toast.LENGTH_LONG).show();
 			        }
 			    })
 			    .setNegativeButton("No", new DialogInterface.OnClickListener() {
