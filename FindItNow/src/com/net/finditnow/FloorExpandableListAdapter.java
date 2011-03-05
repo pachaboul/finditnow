@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.view.Window;
 import android.view.MotionEvent;
+import android.text.Html;
 import android.util.Log;
 
 import android.app.AlertDialog;
@@ -58,7 +59,11 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
 
 		TextView text = (TextView) relative.findViewById(R.id.floorDetailText);
-		text.setText("Information here: "+ info);
+		
+		String specialInfo = info.replace("\n", "<br />");
+		//specialInfo += (": " + info);
+		
+		text.setText(Html.fromHtml(specialInfo));
 		
 		Button button = (Button) relative.findViewById(R.id.flrDetailButton);
 		button.setOnClickListener( new View.OnClickListener()
