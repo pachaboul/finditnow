@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.view.View;
 import android.view.Window;
 import android.view.MotionEvent;
+import android.text.Html;
 import android.util.Log;
 
 import android.widget.ExpandableListView;
@@ -21,7 +22,6 @@ import java.util.HashMap;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.StringBuffer;
 import java.math.BigDecimal;
 
 import org.apache.http.HttpEntity;
@@ -75,30 +75,27 @@ public class PopUpDialogV3 extends Dialog{
  
     	//Converts the first letter of category to upper case and
     	//adds the name of the service provided if it exist
-    	StringBuffer buffer = new StringBuffer(FINUtil.capFirstChar(category));
-    	
-    	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
-    	if (!(name == null) && !name.equals(""))
-    		buffer.append(": "+ name);
+    	String specialInfo = "<b>" + FINUtil.capFirstChar(category) + "</b>";
+    	if (name != null && !name.equals("")) {
+	    	name = name.replace("\n", "<br />");
+    		specialInfo += (": " + name);
+    	}
     	
     	//sets the text into the textView
-    	cate.setText(buffer.toString());
-
-    	/*TextView seeflr = (TextView) findViewById(R.id.seefloor);
-    	seeflr.on*/
+    	cate.setText(Html.fromHtml(specialInfo));
     	
     	TextView distText = (TextView) findViewById(R.id.distanceText);
     	
     	TextView timeToText = (TextView) findViewById(R.id.timeReachText);
       	if (distance.equals(new BigDecimal(-1)))
     	{
-    		distText.setText("Distance to here: Cannot Calculate");
-    		timeToText.setText("Walking time: Cannot Calculate");
+    		distText.setText(Html.fromHtml("<b>Distance to here:</b> Cannot calculate"));
+    		timeToText.setText(Html.fromHtml("<b>Walking time:</b> Cannot calculate"));
     	}
     	else
     	{
-    		distText.setText("Distance to here: " + distance + " mi.");
-    		timeToText.setText("Walking Time: " + walkTime + FINUtil.pluralize("minute", walkTime));
+    		distText.setText(Html.fromHtml("<b>Distance to here:</b> " + distance + " mi."));
+    		timeToText.setText(Html.fromHtml("<b>Walking Time:</b> " + walkTime + FINUtil.pluralize("minute", walkTime)));
     	}
 
     	

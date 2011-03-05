@@ -12,15 +12,15 @@
     <TextView android:id="@+id/dialogTitle"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:textColor="#FFF"
+              android:textColor="#5EC22D"
               android:textSize="18dp"
               android:textStyle="bold"
-              android:layout_marginBottom="15dp"
               />
     <TextView android:id="@+id/categoryName"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textColor="#FFF"
+              android:layout_marginBottom="15dp"
               />
     <TextView android:id="@+id/distanceText"
     		  android:layout_width="fill_parent"
