@@ -28,7 +28,7 @@ public class FINUtil {
 	{
 		ArrayList<String> al = new ArrayList<String>();
 		for (String s : strs) {
-			capFirstChar(s);
+			al.add(capFirstChar(s));
 		}
 		return al;
 	}
