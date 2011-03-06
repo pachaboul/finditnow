@@ -31,6 +31,10 @@ public class FINHelp extends Activity {
 		View tips = addTextHelpSection("TROUBLESHOOTING TIPS", String.format(getString(R.string.help_troubleshooting)));
 		helpBody.addView(tips);
 		
+		// Disclaimers
+		View disclaimers = addTextHelpSection("DISCLAIMERS", String.format(getString(R.string.help_disclaimers)));
+		helpBody.addView(disclaimers);
+		
 		// About
 		View about = addTextHelpSection("ABOUT", String.format(getString(R.string.help_about)));
 		helpBody.addView(about);
