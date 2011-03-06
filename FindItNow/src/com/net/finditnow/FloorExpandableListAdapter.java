@@ -59,8 +59,9 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
 
 		TextView text = (TextView) relative.findViewById(R.id.floorDetailText);
-		
-		String specialInfo = info.replace("\n", "<br />");
+		String specialInfo = "";
+		if (info != null)
+			specialInfo = info.replace("\n", "<br />");
 		//specialInfo += (": " + info);
 		
 		text.setText(Html.fromHtml(specialInfo));
