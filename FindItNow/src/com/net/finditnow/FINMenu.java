@@ -223,7 +223,7 @@ public class FINMenu extends Activity {
 			final String category = categories.get(position);
 			ib.setImageResource(getBigIcon(category));
 			
-			if (position == 1 || position == 6) {
+			if (category.equals("supplies") || category.equals("buildings")) {
 				// Jump to CategoryList
 				ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
