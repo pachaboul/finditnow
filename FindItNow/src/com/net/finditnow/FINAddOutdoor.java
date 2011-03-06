@@ -30,6 +30,7 @@ public class FINAddOutdoor extends MapActivity {
 	private static FINAddOverlay mapOverlay;
 	private static List<Overlay> mapOverlays;
 	String selectedCategory;
+	boolean[] supplyTypes;
 	
 	// Tapped Point
 	private static GeoPoint tappedPoint;
@@ -52,6 +53,7 @@ public class FINAddOutdoor extends MapActivity {
         
         Bundle extras = getIntent().getExtras(); 
 		selectedCategory = extras.getString("selectedCategory");
+		supplyTypes = extras.getBooleanArray("supplyTypes");
 		Log.v("test", selectedCategory);
         
         // Zoom out enough
@@ -96,7 +98,16 @@ public class FINAddOutdoor extends MapActivity {
 				.setCancelable(false)
 			    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int id) {
-			        	Create.sendToDB(FINUtil.reverseCapFirstChar(selectedCategory), tappedPoint, 0, "",  "",  "",  "");
+						String bb = "", sc = "", pr = "";
+						if (selectedCategory.equals("Supplies") && supplyTypes[0])
+							bb = "bb";
+						if (selectedCategory.equals("Supplies") && supplyTypes[1])
+							sc = "sc";
+						if (selectedCategory.equals("Supplies") && supplyTypes[2])
+							pr = "print";
+
+			        	Create.sendToDB(FINUtil.reverseCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr);
+			        	
 				    	Intent myIntent = new Intent(getBaseContext(), FINMenu.class);
 			            startActivity(myIntent);
 			            Toast.makeText(getBaseContext(), selectedCategory + " location added successfully!", Toast.LENGTH_LONG).show();
