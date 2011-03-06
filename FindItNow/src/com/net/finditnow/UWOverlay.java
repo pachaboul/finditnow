@@ -77,26 +77,23 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
         @Override
         protected boolean onTap(int index) {
                
-                // Retrieve the item that was tapped
-                OverlayItem item = mapOverlays.get(index);
-                GeoPoint itemLocation = item.getPoint();
-               
-                // Calculate the distance and the walking time to this location
-                BigDecimal distance = FINMap.distanceTo(itemLocation);
-                int walkingTime = FINMap.walkingTime(distance, 35);
+            // Retrieve the item that was tapped
+            OverlayItem item = mapOverlays.get(index);
+            GeoPoint itemLocation = item.getPoint();
+           
+            // Calculate the distance and the walking time to this location
+            BigDecimal distance = FINMap.distanceBetween(FINMap.getLocation(), itemLocation);
+            int walkingTime = FINMap.walkingTime(distance, 35);
 
-                // Retrieve the floors, special info, and category of the location
-         //   String[] floors = FINMap.getLocationFloors(itemLocation);
-           // String specialInfo = FINMap.getSpecialInfo(itemLocation);
-                String category = FINMap.getCategory();
-                int iconId = FINMenu.getIcon(category);
-                if (category.equals("supplies")) {
-                        category = FINMap.getItemName();
-                }
-                
+            // Retrieve the floors, special info, and category of the location
+            String category = FINMap.getCategory();
+            int iconId = FINMenu.getIcon(category);
+            if (category.equals("supplies")) {
+                    category = FINMap.getItemName();
+            }
             CategoryItem catItem = FINMap.getCategoryItem(itemLocation);
             
-                // Assume it is an outdoor location, but if it is not, grab the building name
+            // Assume it is an outdoor location, but if it is not, grab the building name
             String buildingName = "Outdoor Location"; 
             String[] allFlrName = new String[0];
             boolean isOutdoor = true;
