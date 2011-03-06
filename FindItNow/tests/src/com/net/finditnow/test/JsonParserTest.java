@@ -57,7 +57,7 @@ public class JsonParserTest extends TestCase {
         private boolean categoryEquals(HashMap<GeoPoint,CategoryItem> a, HashMap<GeoPoint,CategoryItem> b) {
                 Iterator<HashMap.Entry<GeoPoint, CategoryItem>> iterA = a.entrySet().iterator();
                 Iterator<HashMap.Entry<GeoPoint, CategoryItem>> iterB = b.entrySet().iterator();
-                boolean result = true;
+                boolean result = a.size() == b.size();
                 
                 while (iterA.hasNext() && iterB.hasNext()) {
                         HashMap.Entry<GeoPoint,CategoryItem> entryA = iterA.next();
