@@ -74,7 +74,7 @@ public class FINAddIndoor extends Activity {
 			if (selectedCategory.equals("Supplies") && supplyTypes[2])
 				pr = "print";
 
-			Create.sendToDB(FINUtil.reverseCapFirstChar(selectedCategory), null, map.get(selectedFloor), "", bb, sc, pr);
+			Create.sendToDB(selectedCategory, null, map.get(selectedFloor), "", bb, sc, pr);
 
 			Intent myIntent = new Intent(v.getContext(), FINMenu.class);
 			startActivity(myIntent);

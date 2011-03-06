@@ -63,7 +63,7 @@ public class Create {
 		        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 		        
 		        // Special case for supplies.  Handle the optional parameters as needed
-		        if (category.toLowerCase() == "supplies") {
+		        if (category.toLowerCase().equals("supplies")) {
 		        	nameValuePairs.add(new BasicNameValuePair("category", "school_supplies"));
 		        	nameValuePairs.add(new BasicNameValuePair("bb", bb));
 		        	nameValuePairs.add(new BasicNameValuePair("sc", sc));

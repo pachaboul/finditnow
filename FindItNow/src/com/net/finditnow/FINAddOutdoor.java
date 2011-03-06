@@ -83,7 +83,7 @@ public class FINAddOutdoor extends MapActivity {
 	         mapView.getProjection().toPixels(tappedPoint, screenPts);
 	
 	         //---add the marker---
-	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINMenu.getIcon(FINUtil.reverseCapFirstChar(selectedCategory)));            
+	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINMenu.getIcon(selectedCategory.toLowerCase()));            
 	         canvas.drawBitmap(bmp, screenPts.x-12, screenPts.y-35, null);         
 	         return true;
 		 }
@@ -106,7 +106,7 @@ public class FINAddOutdoor extends MapActivity {
 						if (selectedCategory.equals("Supplies") && supplyTypes[2])
 							pr = "print";
 
-			        	Create.sendToDB(FINUtil.reverseCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr);
+			        	Create.sendToDB(selectedCategory, tappedPoint, 0, "",  bb,  sc,  pr);
 			        	
 				    	Intent myIntent = new Intent(getBaseContext(), FINMenu.class);
 			            startActivity(myIntent);
