@@ -128,7 +128,7 @@ public class PopUpDialog extends Dialog{
 	    			// Show all the floor info.
 	    			if (lv.getCount() == 0)
 	    			{
-	    				toggle.setText("[ - Hide Floors ]");
+	    				toggle.setText("Hide Floors");
 	    				lv.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
 	    				if (floorName.length > 3)
 	    					lv.getLayoutParams().height = 150;
@@ -137,7 +137,7 @@ public class PopUpDialog extends Dialog{
 	    			}
 	    			// Hide all the floor info.
 	    			else {
-	    				toggle.setText("[ + Show Floors ]");
+	    				toggle.setText("Show Floors");
 	    				lv.getLayoutParams().height = 0;
 	    			}
 	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, info, 
@@ -152,7 +152,7 @@ public class PopUpDialog extends Dialog{
     		String spInfo = info.replace("\n", "<br />");
 			outDoor.setText(Html.fromHtml(spInfo));
 
-			butt.setText("[ Report not found ]");
+			butt.setText("Report not found");
 			
 			butt.setOnClickListener( new View.OnClickListener()
 	    	{
