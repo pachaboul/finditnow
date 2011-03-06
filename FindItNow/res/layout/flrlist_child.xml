@@ -15,7 +15,7 @@
     		android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:textColor="#FFF"
-              android:text="Item is not here"
+              android:text="Click to report this is not here"
               android:layout_below="@id/floorDetailText"
               /> 
 </RelativeLayout>
