@@ -48,7 +48,8 @@
 				android:layout_alignParentRight="true"
 	    		android:layout_width="wrap_content"
 	    		android:layout_height="wrap_content"
-	    		android:text="[ + Show Floors ]"
+	    		android:background="@drawable/fin_rounded_button"
+	    		android:text="Show Floors"
 	    		android:textColor="#5EC22D"
 	    		android:textStyle="bold"
 	    		android:textSize="14dp"/>
