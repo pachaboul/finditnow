@@ -25,39 +25,26 @@
  */
 package com.net.finditnow;
 
+//Necessary for using certain methods
 import android.content.Context;
 import android.content.DialogInterface;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.MotionEvent;
 
+//different type of views used in this dialog
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Button;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 
+//formating
 import android.text.Html;
-import android.util.Log;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+//special Deciaml Object which is used for formatting
 import java.math.BigDecimal;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 
 public class PopUpDialog extends Dialog{
 
@@ -133,7 +120,6 @@ public class PopUpDialog extends Dialog{
 	    	{
 	    		public void onClick(View v)
 	    		{
-	    			
 	    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
 	    			Button toggle = (Button) findViewById(R.id.showFlrButt);
 	    			
@@ -142,15 +128,19 @@ public class PopUpDialog extends Dialog{
 	    			if (lv.getCount() == 0)
 	    			{
 	    				toggle.setText("Hide Floors");
-		    			lv.getLayoutParams().height = Math.min(200, LinearLayout.LayoutParams.WRAP_CONTENT);
-		    			flr = floorName;
+	    				lv.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+	    				if (floorName.length > 3)
+	    					lv.getLayoutParams().height = 200;
+
+	    				flr = floorName;
 	    			}
 	    			// Hide all the floor info.
 	    			else {
 	    				toggle.setText("Show Floors");
 	    				lv.getLayoutParams().height = 0;
 	    			}
-	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, info, iconId));
+	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, info, 
+	    					iconId, category));
 	    		}
 	    	});
 	    	//outdoor information is not needed in this case, make
@@ -167,17 +157,20 @@ public class PopUpDialog extends Dialog{
 	    	{
 	    		public void onClick(View v)
 	    		{
+	    			//pops a Dialog to confirm the user's intent
 	    			AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
 	    			builder.setMessage("This is not actually connect to update and don't have"
 	    						+ " the object id yet, but!!\n"
 	    						+ "Are you sure that this is not here?");
 	    			builder.setCancelable(false);
+	    			//confirms the action and perform the update accordingly 
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
 	   		                //sents info to update.php here
 	    		                dialog.dismiss();
 	    		           }
 	    		       });
+	    			//cancels the action if the user didn't mean to do it
 	    			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
 	    		                dialog.cancel();
@@ -225,55 +218,5 @@ public class PopUpDialog extends Dialog{
 		//dismisses this dialog (close it)
 		dismiss();
 		return true;
-	}
-	
-	/**
-	 * Communicate with the database for updating the counts
-	 * for things that is not present at the supposed location.
-	 * 
-	 * @param category - category of the object
-	 * @param id - id of the object to be update
-	 * @return String that represents the db response
-	 */
-	public static String updateDB(String category,int id) {
-		/*
-		   * HTTP Post request
-		   */
-		String data = "";
-	  	InputStream iStream = null;
-	  	try{
-		        HttpClient httpclient = new DefaultHttpClient();
-		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/update.php");
-		  			
-		        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-		        
-	  			nameValuePairs.add(new BasicNameValuePair("category", category));
-	  			nameValuePairs.add(new BasicNameValuePair("id", id+""));
-	  			
-	  			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		        
-		        HttpResponse response = httpclient.execute(httppost);
-		        HttpEntity entity = response.getEntity();
-		        iStream = entity.getContent();
-	  	}catch(Exception e){
-	  	    Log.e("log_tag", "Error in http connection "+e.toString());
-	  	}
-	  	//convert response to string
-	  	try{
-		        BufferedReader reader = new BufferedReader(new InputStreamReader(iStream,"iso-8859-1"),8);
-		        StringBuilder sb = new StringBuilder();
-		        String line = null;
-		        while ((line = reader.readLine()) != null) {
-		        	sb.append(line + "\n");
-		        }
-		        iStream.close();
-		 
-		        data = sb.toString();
-		        Log.v("test", data);
-	  	}catch(Exception e){
-	  	    Log.e("log_tag", "Error converting result "+e.toString());
-	  	}
-		
-	  	return data;
 	}
 }  
