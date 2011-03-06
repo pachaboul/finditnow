@@ -1,12 +1,11 @@
 package com.net.finditnow;
 
-/*
+/***
  * This class provides methods to parse a Json string into a HashMap
  * 
  * Json String:
  * [ {"lat": int, "long":int, "floor_names":[strings], "name":string} ,...]
  * 
- * TODO: need to have a map for the radius of a building for final release.
  * 
  */
 
@@ -24,7 +23,6 @@ public class JsonParser {
 		"long",
 		"floor_names",
 	"info"};
-
 	private static final String[] BUILDING_NAMES = { "bid",
 		"lat",
 		"long",
@@ -32,7 +30,12 @@ public class JsonParser {
 		"fid",
 	"floor_names"};
 
-	//parses a Json Array into a map of locations and its floor names
+	/**
+	 * parses a Json Array into a map of locations and its floor names
+	 * 
+	 * @param jsonArray jsonArray containing information
+	 * @return HashMap<GeoPoint, String[]> maps a location with its floor names
+	 */
 	public static HashMap<GeoPoint, String[]> parseJson(JSONArray jsonArray)
 	{
 		//creates the map for information to be stored in
@@ -52,12 +55,6 @@ public class JsonParser {
 				{
 					//Since the JsonArray contains whole bunch json array, we can get each one out
 					JsonObject ob = arr.get(i).getAsJsonObject();
-	
-					//some ways to get things out of a Json Object
-					/*System.out.println("Building Name: "+ob.get("buildingName").getAsString());
-						System.out.println("category Name: "+ob.get("category").getAsString());
-						System.out.println("floor Num: "+ob.get("floorNum").getAsInt());
-						System.out.println();*/
 	
 					//place the information in the map with GeoPoint as key
 					GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
@@ -95,7 +92,12 @@ public class JsonParser {
 		return map;
 	}
 
-	//a Json Array into a map of locations and its corresponding names
+	/**
+	 * parses a Json Array into a map of locations and its corresponding names
+	 * 
+	 * @param jsonArray jsonArray containing information
+	 * @return HashMap<GeoPoint, String> maps a location with its names
+	 */
 	public static HashMap<GeoPoint, String> parseNameJson(JSONArray jsonArray)
 	{
 		//create the map with GeoPoint as key and string as name
@@ -103,7 +105,6 @@ public class JsonParser {
 		
 		if (jsonArray != null) {
 			String json = jsonArray.toString();
-			//	Gson gson = new Gson();
 			//used to parse a json
 			JsonStreamParser parser = new JsonStreamParser(json);
 			JsonArray arr = parser.next().getAsJsonArray();
@@ -125,6 +126,12 @@ public class JsonParser {
 		return map;
 	}
 
+	/**
+	 *  parse a json string into a map of GeoPoint to Building
+	 *  
+	 * @param json the json string representation of an array of building objects
+	 * @return a map of location to its corresponding building object
+	 */
 	public static HashMap<GeoPoint, Building> parseBuildingJson(String json)
 	{
 		//used for parsing the JSON object
@@ -143,26 +150,19 @@ public class JsonParser {
 				//Since the JsonArray contains whole bunch json array, we can get each one out
 				JsonObject ob = arr.get(i).getAsJsonObject();
 	
-				//some ways to get things out of a Json Object
-				/*System.out.println("Building Name: "+ob.get("buildingName").getAsString());
-					System.out.println("category Name: "+ob.get("category").getAsString());
-					System.out.println("floor Num: "+ob.get("floorNum").getAsInt());
-					System.out.println();*/
-	
 				//place the information in the map with BuildingID as key
-				//int bid = ob.get(BUILDING_NAMES[0]).getAsInt();
 				GeoPoint point = new GeoPoint( ob.get(BUILDING_NAMES[1]).getAsInt(),ob.get(BUILDING_NAMES[2]).getAsInt());
-				//	String name = ob.get(BUILDING_NAMES[3]).getAsString();
+	
+				//remove lat, long so it can be used for the Gson.fromJson
 				ob.remove(BUILDING_NAMES[1]);
 				ob.remove(BUILDING_NAMES[2]);
 	
 				//Log.i("log_tag", ob.toString());
 	
+				//converts a Json string directly to a building object
 				Building build = gson.fromJson(ob,Building.class);
-				//JsonArray floor_ids_raw = ob.get(BUILDING_NAMES[4]).getAsJsonArray();
-				//JsonArray floor_names = ob.get(BUILDING_NAMES[5]).getAsJsonArray();
-				//Building build = new Building(bid, name);
-				//Log.i("log_tag", point.toString() + "   " + build.toString());
+				
+				//puts it in the map
 				map.put(point, build);
 			}
 		}

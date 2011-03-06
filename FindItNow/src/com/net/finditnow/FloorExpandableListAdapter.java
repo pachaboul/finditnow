@@ -177,21 +177,17 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	//The following methods are suppose to be override, but is not
 	// of importance here, so they contain no meaningful results
 	public long getGroupId(int groupPosition) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	public boolean hasStableIds() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public long getChildId(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }
