@@ -29,6 +29,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	private String info;			//information associated
 	private Context context;			
 	private int iconId;				//id of the category's icon
+	private String category;		//category
 	
 	/**
 	 * Creates a new FloorExpandableListAdapter with each variable initialized
@@ -37,14 +38,16 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @param floorName - the list of floor names
 	 * @param info - the additional information associated
 	 * @param iconId - the resource id of the icon of the category
+	 * @param category - the category currently displaying
 	 */
 	public FloorExpandableListAdapter(Context context,String[] floorName, String info,
-			int iconId) {
+			int iconId, String category) {
 		super();
 		this.context = context;
 		this.floorNames = floorName;
 		this.info = info;
 		this.iconId = iconId;
+		this.category = category;
 	}
 	
 	/**

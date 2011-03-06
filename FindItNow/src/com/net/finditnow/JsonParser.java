@@ -9,12 +9,16 @@ package com.net.finditnow;
  * 
  */
 
+//packages for handling JSON
 import com.google.gson.*;
-import com.google.android.maps.GeoPoint;
-import java.util.HashMap;
 import org.json.JSONArray;
 
+//Android reporting log
 import android.util.Log;
+
+//utils to build the results
+import com.google.android.maps.GeoPoint;
+import java.util.HashMap;
 
 public class JsonParser {
 	//This is a string to keep track of the names of each piece of information in the
@@ -42,6 +46,7 @@ public class JsonParser {
 		HashMap<GeoPoint,String[]> map = new HashMap<GeoPoint,String[]>();
 		
 		if (jsonArray != null) {
+			//Log.i("log", jsonArray.toString());
 			
 			String json = jsonArray.toString();
 			//used for parsing the JSON object
