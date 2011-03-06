@@ -84,9 +84,11 @@ public class FINMap extends MapActivity {
         
         // Retrieve locations from the database and parse them
     	JSONArray listOfLocations = Get.requestFromDB(category, itemName, DEFAULT_LOCATION);
-
-		geoPointItem = JsonParser.parseCategoryJson(listOfLocations.toString());
-        
+    	if (listOfLocations == null)
+    		geoPointItem = JsonParser.parseCategoryJson("");	
+    	else
+    		geoPointItem = JsonParser.parseCategoryJson(listOfLocations.toString());
+        Log.i("log", geoPointItem.size()+"");
     	// Add these locations to the map view
     	placeOverlays();
     }
