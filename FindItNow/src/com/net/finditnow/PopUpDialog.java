@@ -138,7 +138,7 @@ public class PopUpDialog extends Dialog{
 	    				toggle.setText("Show Floors");
 	    				lv.getLayoutParams().height = 0;
 	    			}
-	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),catItem,
+	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),item,
 	    					iconId, category));
 	    		}
 	    	});
@@ -147,7 +147,7 @@ public class PopUpDialog extends Dialog{
 	    	outDoor.setVisibility(outDoor.INVISIBLE);
 	    	outDoor.getLayoutParams().height = 0;
     	} else {
-    		String spInfo = catItem.getFloor_names().get(0).replace("\n", "<br />");
+    		String spInfo = catItem.getInfo().get(0).replace("\n", "<br />");
 			outDoor.setText(Html.fromHtml(spInfo));
 
 			butt.setText("Report not found");

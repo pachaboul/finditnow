@@ -94,7 +94,8 @@ public class JsonParser {
 						//the floor id associated with this point
 						item.addId(id);
 					}
-					Log.i("log", item.toString());
+
+					map.put(point, item);
 				}
 			}
 		} 
