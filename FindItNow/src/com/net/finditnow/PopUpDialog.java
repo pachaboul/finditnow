@@ -88,13 +88,13 @@ public class PopUpDialog extends Dialog{
 	 * 
 	 */
 	public PopUpDialog(Context context,String[] floorName, 
-				String building, String category, String info, BigDecimal distance, int walkingTime,
+				String buildName, String category, String info, BigDecimal distance, int walkingTime,
 				int iconId, boolean isOutdoor)
 	{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.floorName = floorName;
-		this.buildName = building;
+		this.buildName = buildName;
 		this.info = info;
 		this.distance = distance;
 		this.walkTime = walkingTime;
