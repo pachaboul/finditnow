@@ -24,17 +24,21 @@ public final class R {
         public static final int coffee_big=0x7f020007;
         public static final int dining=0x7f020008;
         public static final int dining_big=0x7f020009;
-        public static final int fin_rounded_button=0x7f02000a;
-        public static final int fin_splash=0x7f02000b;
-        public static final int icon=0x7f02000c;
-        public static final int mailboxes=0x7f02000d;
-        public static final int mailboxes_big=0x7f02000e;
-        public static final int restrooms=0x7f02000f;
-        public static final int restrooms_big=0x7f020010;
-        public static final int supplies=0x7f020011;
-        public static final int supplies_big=0x7f020012;
-        public static final int vending=0x7f020013;
-        public static final int vending_big=0x7f020014;
+        public static final int fin_clickable_button=0x7f02000a;
+        public static final int fin_clickable_button2=0x7f02000b;
+        public static final int fin_rounded_button_focus=0x7f02000c;
+        public static final int fin_rounded_button_focus2=0x7f02000d;
+        public static final int fin_rounded_button_normal=0x7f02000e;
+        public static final int fin_splash=0x7f02000f;
+        public static final int icon=0x7f020010;
+        public static final int mailboxes=0x7f020011;
+        public static final int mailboxes_big=0x7f020012;
+        public static final int restrooms=0x7f020013;
+        public static final int restrooms_big=0x7f020014;
+        public static final int supplies=0x7f020015;
+        public static final int supplies_big=0x7f020016;
+        public static final int vending=0x7f020017;
+        public static final int vending_big=0x7f020018;
     }
     public static final class id {
         public static final int GridItem=0x7f070016;

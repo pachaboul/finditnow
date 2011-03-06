@@ -19,9 +19,7 @@
 		android:id="@+id/gridview"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:paddingTop="8dp"
-		android:paddingLeft="8dp"
-		android:paddingRight="8dp"
+		android:padding="8dp"
 		android:columnWidth="90dp"
 		android:numColumns="2"
 		android:verticalSpacing="8dp" 
@@ -29,4 +27,5 @@
 		android:stretchMode="columnWidth"
 		android:gravity="center"
 		android:background="#FFFFFF"/>
+		
 </LinearLayout>
