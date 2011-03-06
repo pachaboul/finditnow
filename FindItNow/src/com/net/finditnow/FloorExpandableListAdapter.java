@@ -130,7 +130,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 */
 	public int getChildrenCount(int groupPosition) {
 		//every group (parent) only has 1 child, which is the information display.
-		return 1;
+		return (category.equals("buildings") ? 0 : 1 );
 	}
 
 	/**
