@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/layout_rootflr"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              >
+    <TextView android:id="@+id/floorDetailText"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textColor="#FFF"
+              android:text="Item is not here"
+              />   
+    <Button android:id="@+id/flrDetailButton"
+    		android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:textColor="#FFF"
+              android:text="Click to report this is not here"
+              android:layout_below="@id/floorDetailText"
+              /> 
+</RelativeLayout>
