@@ -36,6 +36,78 @@ public class JsonParser {
 	"floor_names"};
 
 	/**
+	 * DEPRECIATED
+	 * parses a Json Array into a map of locations and its corresponding CategoryItem
+	 * 
+	 * @param jsonArray jsonArray containing information
+	 * @return HashMap<GeoPoint, CategoryItem> maps a location with its information
+	 */
+	public static HashMap<GeoPoint, CategoryItem> parseCategoryJson(JSONArray jsonArray)
+	{
+		//creates the map for information to be stored in
+		HashMap<GeoPoint,CategoryItem> map = new HashMap<GeoPoint,CategoryItem>();
+		
+		if (jsonArray != null) {
+			//Log.i("log", jsonArray.toString());
+			
+			String json = jsonArray.toString();
+			//used for parsing the JSON object
+			Gson gson = new Gson();
+			JsonStreamParser parser = new JsonStreamParser(json);
+			JsonArray arr = parser.next().getAsJsonArray();
+
+			for (int i = 0; i < arr.size(); i++)
+			{
+				if (arr.get(i).isJsonObject())
+				{
+					//Since the JsonArray contains whole bunch json array, we can get each one out
+					JsonObject ob = arr.get(i).getAsJsonObject();
+	
+					//place the information in the map with GeoPoint as key
+					GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
+					CategoryItem item = new CategoryItem();
+
+					//if the point is already in the map, get it out to add to it
+					if (map.get(point) != null)
+					{
+						item = map.get(point);
+					}
+					
+					
+					if (ob.has(LOCATION_NAMES[2]))
+					{
+						JsonArray s = ob.get(LOCATION_NAMES[2]).getAsJsonArray();
+						//the floor names associated with this point
+						String[] flrNames = gson.fromJson(s,String[].class);
+						for (String flr: flrNames)
+							item.addFloor_names(flr);
+					}
+					if (ob.has(LOCATION_NAMES[3]))
+					{
+						JsonArray s = ob.get(LOCATION_NAMES[3]).getAsJsonArray();
+						//the floor names associated with this point
+						String[] infos = gson.fromJson(s,String[].class);
+						for (String info: infos)
+							item.addInfo(info);
+					}
+					if (ob.has(LOCATION_NAMES[4]))
+					{
+						JsonArray s = ob.get(LOCATION_NAMES[4]).getAsJsonArray();
+						//the floor names associated with this point
+						int[] ids = gson.fromJson(s,int[].class);
+						for (int id: ids)
+							item.addId(id);
+					}
+				}
+			}
+		} 
+		return map;
+	}
+
+	
+	
+	/**
+	 * DEPRECIATED
 	 * parses a Json Array into a map of locations and its floor names
 	 * 
 	 * @param jsonArray jsonArray containing information
@@ -99,6 +171,7 @@ public class JsonParser {
 	}
 
 	/**
+	 * DEPRECIATED
 	 * parses a Json Array into a map of locations and its corresponding names
 	 * 
 	 * @param jsonArray jsonArray containing information
