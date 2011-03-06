@@ -107,7 +107,7 @@ public class PopUpDialog extends Dialog{
 
 		//the button that 1) displays the list of floor
 		//            or  2) unconfirms an outdoor location
-    	Button butt = (Button) findViewById(R.id.showFlrButt);
+		TextView butt = (TextView) findViewById(R.id.showFlrButt);
     	
     	//the text for displaying information for outdoor
     	// has no info is it is indoor
@@ -121,13 +121,14 @@ public class PopUpDialog extends Dialog{
 	    		public void onClick(View v)
 	    		{
 	    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
-	    			Button toggle = (Button) findViewById(R.id.showFlrButt);
+	    			//Button toggle = (Button) findViewById(R.id.showFlrButt);
+	    			TextView toggle = (TextView) findViewById(R.id.showFlrButt);
 	    			
 	    			String[] flr = new String[0];
 	    			// Show all the floor info.
 	    			if (lv.getCount() == 0)
 	    			{
-	    				toggle.setText("Hide Floors");
+	    				toggle.setText("[ - Hide Floors ]");
 	    				lv.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
 	    				if (floorName.length > 3)
 	    					lv.getLayoutParams().height = 200;
@@ -136,7 +137,7 @@ public class PopUpDialog extends Dialog{
 	    			}
 	    			// Hide all the floor info.
 	    			else {
-	    				toggle.setText("Show Floors");
+	    				toggle.setText("[ + Show Floors ]");
 	    				lv.getLayoutParams().height = 0;
 	    			}
 	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, info, 
@@ -151,7 +152,7 @@ public class PopUpDialog extends Dialog{
     		String spInfo = info.replace("\n", "<br />");
 			outDoor.setText(Html.fromHtml(spInfo));
 
-			butt.setText("Clcik to report this is not here");
+			butt.setText("[ Report not found ]");
 			
 			butt.setOnClickListener( new View.OnClickListener()
 	    	{

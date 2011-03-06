@@ -89,7 +89,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		text.setText(Html.fromHtml(specialInfo));
 		
 		//This is the button for reporting something to be missing
-		Button button = (Button) relative.findViewById(R.id.flrDetailButton);
+		TextView button = (TextView) relative.findViewById(R.id.flrDetailButton);
 		button.setOnClickListener( new View.OnClickListener()
     	{
     		public void onClick(View v)
