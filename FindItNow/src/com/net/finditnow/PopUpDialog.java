@@ -131,7 +131,7 @@ public class PopUpDialog extends Dialog{
 	    				toggle.setText("[ - Hide Floors ]");
 	    				lv.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
 	    				if (floorName.length > 3)
-	    					lv.getLayoutParams().height = 200;
+	    					lv.getLayoutParams().height = 150;
 
 	    				flr = floorName;
 	    			}
