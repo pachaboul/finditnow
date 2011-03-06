@@ -9,7 +9,6 @@ package com.net.finditnow;
 
 import java.util.ArrayList;
 
-
 public class CategoryItem {
 
 	private ArrayList<String> floor_names;
@@ -46,6 +45,54 @@ public class CategoryItem {
 	public void addId(int id) {
 		this.id.add(id);
 	}
+
+
+	/**
+	 * auto-generated equals method
+	 * return true if two are equal, otherwise false
+	 * 
+	 * @param obj oth other to be compare to
+	 * @return boolean whether two object are equal or not
+	 */
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		
+		CategoryItem other = (CategoryItem) obj;
+		if (this.floor_names.size() != other.floor_names.size())
+			return false;
+		for(int c= 0; c < floor_names.size(); c++)
+		{
+			if (! this.floor_names.get(c).equals(other.floor_names.get(c)) )
+				return false;
+		}
+		if (this.info.size() != other.floor_names.size())
+			return false;
+		for(int c= 0; c < floor_names.size(); c++)
+		{
+			if (! this.info.get(c).equals(other.info.get(c)) )
+				return false;
+		}
+		if (this.id.size() != other.id.size())
+			return false;
+		for(int c= 0; c < id.size(); c++)
+		{
+			if (this.id.get(c) != other.id.get(c) )
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "CategoryItem [floor_names=" + floor_names + ", id=" + id
+				+ ", info=" + info + "]";
+	}
+	
 	
 	
 }

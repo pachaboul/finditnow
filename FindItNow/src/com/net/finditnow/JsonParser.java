@@ -42,15 +42,15 @@ public class JsonParser {
 	 * @param jsonArray jsonArray containing information
 	 * @return HashMap<GeoPoint, CategoryItem> maps a location with its information
 	 */
-	public static HashMap<GeoPoint, CategoryItem> parseCategoryJson(JSONArray jsonArray)
+	public static HashMap<GeoPoint, CategoryItem> parseCategoryJson(String json)
 	{
 		//creates the map for information to be stored in
 		HashMap<GeoPoint,CategoryItem> map = new HashMap<GeoPoint,CategoryItem>();
 		
-		if (jsonArray != null) {
-			//Log.i("log", jsonArray.toString());
+		if (json != null && !json.equals("")) {
+			Log.i("log", json);
 			
-			String json = jsonArray.toString();
+			//String json = jsonArray.toString();
 			//used for parsing the JSON object
 			Gson gson = new Gson();
 			JsonStreamParser parser = new JsonStreamParser(json);
@@ -84,20 +84,17 @@ public class JsonParser {
 					}
 					if (ob.has(LOCATION_NAMES[3]))
 					{
-						JsonArray s = ob.get(LOCATION_NAMES[3]).getAsJsonArray();
-						//the floor names associated with this point
-						String[] infos = gson.fromJson(s,String[].class);
-						for (String info: infos)
-							item.addInfo(info);
+						String s = ob.get(LOCATION_NAMES[3]).getAsString();
+						//the floor info associated with this point
+						item.addInfo(s);
 					}
 					if (ob.has(LOCATION_NAMES[4]))
 					{
-						JsonArray s = ob.get(LOCATION_NAMES[4]).getAsJsonArray();
-						//the floor names associated with this point
-						int[] ids = gson.fromJson(s,int[].class);
-						for (int id: ids)
-							item.addId(id);
+						int id = ob.get(LOCATION_NAMES[4]).getAsInt();
+						//the floor id associated with this point
+						item.addId(id);
 					}
+					Log.i("log", item.toString());
 				}
 			}
 		} 
@@ -220,7 +217,6 @@ public class JsonParser {
 
 		//creates the map for information to be stored in
 		HashMap<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
-
 
 		for (int i = 0; i < arr.size(); i++)
 		{

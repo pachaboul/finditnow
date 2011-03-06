@@ -25,6 +25,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -84,6 +85,8 @@ public class FINMap extends MapActivity {
         
         // Retrieve locations from the database and parse them
     	JSONArray listOfLocations = Get.requestFromDB(category, itemName, DEFAULT_LOCATION);
+		Log.i("log", listOfLocations.toString());
+
     	geoPointFloorMap = JsonParser.parseJson(listOfLocations);
     	geoPointSpecialInfoMap = JsonParser.parseNameJson(listOfLocations);
         
