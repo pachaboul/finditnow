@@ -1,3 +1,28 @@
+/***
+ * PopUpDialog.java by Chanel Huang
+ * version 3.0:
+ * Dispalys information differently for outdoor location and
+ * location inside a building.
+ * For location inside a building:
+ * 	a button to show more details about each floor, where
+ * 	more information about each floor will be displayed
+ *  as well as a button for reporting something to be not
+ *  there.
+ * For out door location:
+ * 	displays information and a button to report
+ * 	something that is not there.
+ * 
+ * version 2.0:
+ * Still displays information about the location.
+ * However, unlike version 1, it displays detail about each floor
+ * in the same dialog box.
+ * 
+ * version 1.0 (beta) :
+ * A pop up dialog that displays information about the location,
+ * where clicking on a button will pop up another dialog
+ * with more detail information about each floor.
+ * 
+ */
 package com.net.finditnow;
 
 import android.content.Context;
@@ -44,7 +69,6 @@ public class PopUpDialog extends Dialog{
 	private int walkTime;
 	private String category;
 	private int iconId;
-	private boolean listExpanded;
 	private boolean isOutdoor;
 
 	//creates a PopUpDialog with the given fields, should use this one
@@ -77,8 +101,6 @@ public class PopUpDialog extends Dialog{
 		this.category = category;
 		this.iconId = iconId;
 		this.isOutdoor = isOutdoor;
-		this.listExpanded = true;
-
 	}
 	
 	/**
@@ -117,7 +139,7 @@ public class PopUpDialog extends Dialog{
 	    			
 	    			String[] flr = new String[0];
 	    			// Show all the floor info.
-	    			if (listExpanded)
+	    			if (lv.getCount() == 0)
 	    			{
 	    				toggle.setText("Hide Floors");
 		    			lv.getLayoutParams().height = Math.min(200, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -129,7 +151,6 @@ public class PopUpDialog extends Dialog{
 	    				lv.getLayoutParams().height = 0;
 	    			}
 	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, info, iconId));
-	    			listExpanded = !listExpanded;
 	    		}
 	    	});
 	    	//outdoor information is not needed in this case, make
@@ -206,6 +227,14 @@ public class PopUpDialog extends Dialog{
 		return true;
 	}
 	
+	/**
+	 * Communicate with the database for updating the counts
+	 * for things that is not present at the supposed location.
+	 * 
+	 * @param category - category of the object
+	 * @param id - id of the object to be update
+	 * @return String that represents the db response
+	 */
 	public static String updateDB(String category,int id) {
 		/*
 		   * HTTP Post request
