@@ -25,8 +25,7 @@ import android.util.Log;
 public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	
 	//data for populating the list
-	private String[] floorNames;	//names of the floor
-	private String info;			//information associated
+	private CategoryItem catItem;		//information associated w/ this location
 	private Context context;			
 	private int iconId;				//id of the category's icon
 	private String category;		//category
@@ -40,12 +39,11 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @param iconId - the resource id of the icon of the category
 	 * @param category - the category currently displaying
 	 */
-	public FloorExpandableListAdapter(Context context,String[] floorName, String info,
+	public FloorExpandableListAdapter(Context context,CategoryItem catItem,
 			int iconId, String category) {
 		super();
 		this.context = context;
-		this.floorNames = floorName;
-		this.info = info;
+		this.catItem = catItem;
 		this.iconId = iconId;
 		this.category = category;
 	}
@@ -58,7 +56,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @return the data of the child 
 	 */
 	public Object getChild(int groupPosition, int childPosition) {
-		return info;
+		return catItem.getInfo().get(groupPosition);
 	}
 
 	/**
@@ -82,8 +80,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		// particular object
 		TextView text = (TextView) relative.findViewById(R.id.floorDetailText);
 		String specialInfo = "";
-		if (info != null)
-			specialInfo = info.replace("\n", "<br />");
+		if (catItem.getInfo().get(groupPosition) != null)
+			specialInfo = catItem.getInfo().get(groupPosition).replace("\n", "<br />");
 
 		//sets it to the text field
 		text.setText(Html.fromHtml(specialInfo));
@@ -140,7 +138,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @return the data child for the specified group 
 	 */
 	public Object getGroup(int groupPosition) {
-		return floorNames[groupPosition];
+		return catItem.getFloor_names().get(groupPosition);
 	}
 	/**
 	 * Gets the number of groups.
@@ -148,7 +146,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @return the number of groups
 	 */
 	public int getGroupCount() {
-		return floorNames.length;
+		return catItem.getFloor_names().size();
 	}
 
 	/**
@@ -168,8 +166,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 				
 		//Text for displaying the floor name
 		TextView text = (TextView) relative.findViewById(R.id.flrName);
-		text.setText(floorNames[groupPosition]);
-		
+		text.setText(catItem.getFloor_names().get(groupPosition));
+	
 		//the icon associated with the category
 		ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
 		img.setImageResource(iconId);

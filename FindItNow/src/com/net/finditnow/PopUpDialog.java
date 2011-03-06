@@ -49,9 +49,8 @@ import java.math.BigDecimal;
 public class PopUpDialog extends Dialog{
 
 	//Local variable for displaying
-	private String[] floorName;
 	private String buildName;
-	private String info;	
+	private CategoryItem catItem;	
 	private BigDecimal distance;
 	private int walkTime;
 	private String category;
@@ -74,15 +73,14 @@ public class PopUpDialog extends Dialog{
 	 * @param isOutdoor - indicates this popUpDialog is for outdoor location or not
 	 * 
 	 */
-	public PopUpDialog(Context context,String[] floorName, 
-				String buildName, String category, String info, BigDecimal distance, int walkingTime,
+	public PopUpDialog(Context context,
+				String buildName, String category, CategoryItem catItem, BigDecimal distance, int walkingTime,
 				int iconId, boolean isOutdoor)
 	{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.floorName = floorName;
 		this.buildName = buildName;
-		this.info = info;
+		this.catItem = catItem;
 		this.distance = distance;
 		this.walkTime = walkingTime;
 		this.category = category;
@@ -124,23 +122,23 @@ public class PopUpDialog extends Dialog{
 	    			//Button toggle = (Button) findViewById(R.id.showFlrButt);
 	    			TextView toggle = (TextView) findViewById(R.id.showFlrButt);
 	    			
-	    			String[] flr = new String[0];
+	    			CategoryItem item = new CategoryItem();
 	    			// Show all the floor info.
 	    			if (lv.getCount() == 0)
 	    			{
 	    				toggle.setText("Hide Floors");
 	    				lv.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-	    				if (floorName.length > 3)
+	    				if (catItem.getFloor_names().size() > 3)
 	    					lv.getLayoutParams().height = 150;
 
-	    				flr = floorName;
+	    				item = catItem;
 	    			}
 	    			// Hide all the floor info.
 	    			else {
 	    				toggle.setText("Show Floors");
 	    				lv.getLayoutParams().height = 0;
 	    			}
-	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, info, 
+	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),catItem,
 	    					iconId, category));
 	    		}
 	    	});
@@ -149,7 +147,7 @@ public class PopUpDialog extends Dialog{
 	    	outDoor.setVisibility(outDoor.INVISIBLE);
 	    	outDoor.getLayoutParams().height = 0;
     	} else {
-    		String spInfo = info.replace("\n", "<br />");
+    		String spInfo = catItem.getFloor_names().get(0).replace("\n", "<br />");
 			outDoor.setText(Html.fromHtml(spInfo));
 
 			butt.setText("Report not found");

@@ -49,8 +49,7 @@ public class FINMap extends MapActivity {
 	
 	// Location and GeoPoint Variables
 	private static GeoPoint location;
-	private static HashMap<GeoPoint, String[]> geoPointFloorMap;
-	private static HashMap<GeoPoint,String> geoPointSpecialInfoMap;	
+	private static HashMap<GeoPoint, CategoryItem> geoPointItem;
 	
 	// A constant representing the default location of the user
 	// Change this the coordinates of another campus if desired (defaults to UW Seattle)
@@ -85,10 +84,8 @@ public class FINMap extends MapActivity {
         
         // Retrieve locations from the database and parse them
     	JSONArray listOfLocations = Get.requestFromDB(category, itemName, DEFAULT_LOCATION);
-		Log.i("log", listOfLocations.toString());
 
-    	geoPointFloorMap = JsonParser.parseJson(listOfLocations);
-    	geoPointSpecialInfoMap = JsonParser.parseNameJson(listOfLocations);
+		geoPointItem = JsonParser.parseCategoryJson(listOfLocations.toString());
         
     	// Add these locations to the map view
     	placeOverlays();
@@ -261,17 +258,22 @@ public class FINMap extends MapActivity {
     	// If the category is buildings, then we only put the single point on the map
     	if (getCategory().equals("buildings")) {
     		GeoPoint point = FINMenu.getGeoPointFromBuilding(itemName);
-    		geoPointFloorMap.put(point, FINMenu.getBuilding(point).getFloorNames());
+    		
+    		CategoryItem item = new CategoryItem();
+    		for(String flr:FINMenu.getBuilding(point).getFloorNames())
+    			item.addFloor_names(flr);
+
+    		geoPointItem.put(point, item);
     	}
     	
     	// Loop over the locations that we have retrieved and add them
-        for (GeoPoint point : geoPointFloorMap.keySet()) {
+        for (GeoPoint point : geoPointItem.keySet()) {
         	OverlayItem overlayItem = new OverlayItem(point, "", "");
         	itemizedOverlay.addOverlay(overlayItem);
         }
         
         // If we have retrieved items to display, add them to the overlay list
-        if (!geoPointFloorMap.keySet().isEmpty()) {
+        if (!geoPointItem.keySet().isEmpty()) {
         	mapOverlays.add(itemizedOverlay);
         }
     }
@@ -295,26 +297,8 @@ public class FINMap extends MapActivity {
     public static String getItemName() {
     	return itemName;
     }
-	
-	/**
-	 * This method returns the floors where the location exists in the building
-	 * 
-	 * @param point The coordinates to retrieve this information from
-	 * 
-	 * @return A String array of floors where this location exists
-	 */
-	public static String[] getLocationFloors(GeoPoint point) {
-		return geoPointFloorMap.get(point);
-	}
-	
-	/**
-	 * This method returns the special information associated with point
-	 * 
-	 * @param point The coordinates to retrieve this information from
-	 * 
-	 * @return A String representing the special information for the location
-	 */
-	public static String getSpecialInfo(GeoPoint point) {
-		return geoPointSpecialInfoMap.get(point);
-	}
+    
+    public static CategoryItem getCategoryItem(GeoPoint p){
+    	return geoPointItem.get(p);
+    }
 }

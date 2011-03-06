@@ -4,60 +4,69 @@ import junit.framework.TestCase;
 import java.util.HashMap;
 import java.util.Iterator;
 import com.google.android.maps.GeoPoint;
+import com.net.finditnow.JsonParser;
+import com.net.finditnow.CategoryItem;
 
 public class JsonParserTest extends TestCase {
         
-        protected double fValue1;
-        protected double fValue2;
+        protected String json1;
+        protected String json2;
         
         protected void setUp() {
-        	fValue1= 2.0;
-        	fValue2= 4.0;
+        	json1 = "[{\"id\":17,\"long\":-122309098,\"floor_names\":[\"Basement\"],\"lat\":47656582,\"info\":\"\"}]";
+        	json2 ="[{\"id\":13,\"long\":-122309098,\"floor_names\":[],\"lat\":47656582,\"info\":\"Curbside 8, Siganos \n Mon to Fri, 10:30am to 3pm\"}," +
+        			"{\"id\":14,\"long\":-122309098,\"floor_names\":[],\"lat\":47656582,\"info\":\"Hot Dawgs, Motosurf, Red Square BBQ \n Mon to Fri, 10:30am to 3pm\"}]";
+        	
+        	
         }
         
-        public void test1() {
-                double result= fValue1 + fValue2;
-                assertTrue(result == 6.0);
-        }
-        
-        private boolean equals(HashMap<GeoPoint,String[]> a, HashMap<GeoPoint,String[]> b) {
-                Iterator<HashMap.Entry<GeoPoint, String[]>> iterA = a.entrySet().iterator();
-                Iterator<HashMap.Entry<GeoPoint, String[]>> iterB = b.entrySet().iterator();
+        public void test1obj() {
+                HashMap<GeoPoint, CategoryItem> map = JsonParser.parseCategoryJson(json1);
+                HashMap<GeoPoint, CategoryItem> expected = new  HashMap<GeoPoint, CategoryItem>();
                 
+                CategoryItem value= new CategoryItem();
+                value.addFloor_names("");
+                value.addInfo("");
+                value.addId(13);
+                
+                value.addFloor_names("");
+                value.addInfo("");
+                value.addId(14);
+
+                expected.put(new GeoPoint(47656582,-122309098), value);
+                
+                assertTrue(categoryEquals(map,expected));
+        }
+        
+        public void testTwoObj() {
+            HashMap<GeoPoint, CategoryItem> map = JsonParser.parseCategoryJson(json2);
+            HashMap<GeoPoint, CategoryItem> expected = new  HashMap<GeoPoint, CategoryItem>();
+            
+            CategoryItem value= new CategoryItem();
+            value.addFloor_names("Basement");
+            value.addInfo("");
+            value.addId(17);
+            expected.put(new GeoPoint(47656582,-122309098), value);
+            
+            
+            
+            assertTrue(categoryEquals(map,expected));
+        }
+    
+        
+        private boolean categoryEquals(HashMap<GeoPoint,CategoryItem> a, HashMap<GeoPoint,CategoryItem> b) {
+                Iterator<HashMap.Entry<GeoPoint, CategoryItem>> iterA = a.entrySet().iterator();
+                Iterator<HashMap.Entry<GeoPoint, CategoryItem>> iterB = b.entrySet().iterator();
                 boolean result = true;
                 
                 while (iterA.hasNext() && iterB.hasNext()) {
-                        HashMap.Entry<GeoPoint, String[]> entryA = iterA.next();
-                        HashMap.Entry<GeoPoint, String[]> entryB = iterB.next();
+                        HashMap.Entry<GeoPoint,CategoryItem> entryA = iterA.next();
+                        HashMap.Entry<GeoPoint, CategoryItem> entryB = iterB.next();
                         
                         result = result && ( entryA.getKey().equals(entryB.getKey()) );
-                        String[] strA = entryA.getValue();
-                        String[] strB = entryB.getValue();
-                        result = result && ( strA.length == strB.length);
-                        for (int i = 0; i < Math.min(strA.length, strB.length); i++)
-                        {
-                                result = result && ( strA[i].compareTo(strB[i]) == 0 );
-                        }
-                        
-                }
-                return result;
-        }
-
-        private boolean nameEquals(HashMap<GeoPoint,String> a, HashMap<GeoPoint,String> b) {
-                Iterator<HashMap.Entry<GeoPoint, String>> iterA = a.entrySet().iterator();
-                Iterator<HashMap.Entry<GeoPoint, String>> iterB = b.entrySet().iterator();
-                
-                boolean result = true;
-                
-                while (iterA.hasNext() && iterB.hasNext())
-                {
-                        HashMap.Entry<GeoPoint, String> entryA = iterA.next();
-                        HashMap.Entry<GeoPoint, String> entryB = iterB.next();
-                        
-                        result = result && ( entryA.getKey().equals(entryB.getKey()) );
-                        String strA = entryA.getValue();
-                        String strB = entryB.getValue();
-                        result = result && ( strA.compareTo(strB) == 0);
+                        CategoryItem strA = entryA.getValue();
+                        CategoryItem strB = entryB.getValue();
+                        result = result && ( strA.equals(strB)) ;
                         
                 }
                 return result;
