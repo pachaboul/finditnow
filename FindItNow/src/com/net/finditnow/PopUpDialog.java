@@ -2,25 +2,25 @@ package com.net.finditnow;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.app.AlertDialog;
-import android.app.Dialog;
+
 import android.os.Bundle;
-import android.widget.Button;
 import android.view.View;
 import android.view.Window;
 import android.view.MotionEvent;
+
+import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Button;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+
 import android.text.Html;
 import android.util.Log;
 
-import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
-import android.widget.BaseExpandableListAdapter;
-
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -37,52 +37,76 @@ import org.apache.http.message.BasicNameValuePair;
 public class PopUpDialog extends Dialog{
 
 	//Local variable for displaying
-	private String[] floor;
+	private String[] floorName;
 	private String buildName;
-	private String name;	
+	private String info;	
 	private BigDecimal distance;
 	private int walkTime;
 	private String category;
 	private int iconId;
 	private boolean listExpanded;
 	private boolean isOutdoor;
-	
-	public PopUpDialog(Context context) {
-		super(context);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-	}
+
 	//creates a PopUpDialog with the given fields, should use this one
-	public PopUpDialog(Context context,String[] floor, 
-				String building, String category, String name, BigDecimal distance, int walkingTime,
+	/**
+	 * Constructor that intializes all the information to be displayed in
+	 * this dialog
+	 * 
+	 * @param context - the context which calls this dialog
+	 * @param floorName - the names of the floors where the category is located
+	 * @param buildName - the name of the building/location
+	 * @param category - the name of the current category
+	 * @param info - any additional information that goes along the category
+	 * @param distance - the distance from current location to location of building
+	 * @param walkingTime - the time it take from current location to this location
+	 * @param iconId - the id of the drawable Icon for this category
+	 * @param isOutdoor - indicates this popUpDialog is for outdoor location or not
+	 * 
+	 */
+	public PopUpDialog(Context context,String[] floorName, 
+				String building, String category, String info, BigDecimal distance, int walkingTime,
 				int iconId, boolean isOutdoor)
 	{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.floor = floor;
+		this.floorName = floorName;
 		this.buildName = building;
-		this.name = name;
+		this.info = info;
 		this.distance = distance;
 		this.walkTime = walkingTime;
 		this.category = category;
-		listExpanded = true;
 		this.iconId = iconId;
 		this.isOutdoor = isOutdoor;
+		this.listExpanded = true;
+
 	}
 	
+	/**
+	 * called when PopUpDialog is first created
+	 * It places all the information on the dialog, 
+	 * 	creates a list for the floor details if there should be one
+	 *  and any button that is necessary
+	 *  
+	 */
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		setContentView(R.layout.popupdialog);
 
+		//sets the title of this dialog
     	TextView title = (TextView) findViewById(R.id.dialogTitle);
 		title.setText(buildName);
 
-		//there is a button on this dialog, we need it to be clickable
+		//the button that 1) displays the list of floor
+		//            or  2) unconfirms an outdoor location
     	Button butt = (Button) findViewById(R.id.showFlrButt);
+    	
+    	//the text for displaying information for outdoor
+    	// has no info is it is indoor
     	TextView outDoor = (TextView) findViewById(R.id.outDoorText);
     	
     	if ( !isOutdoor) {
-
-	    	//so when the user press it, it'll show the detail display
+    		//This location is indoor
+    		//the button will show/hide the floor list when clicked on
 	    	butt.setOnClickListener( new View.OnClickListener()
 	    	{
 	    		public void onClick(View v)
@@ -97,22 +121,24 @@ public class PopUpDialog extends Dialog{
 	    			{
 	    				toggle.setText("Hide Floors");
 		    			lv.getLayoutParams().height = Math.min(200, LinearLayout.LayoutParams.WRAP_CONTENT);
-		    			flr = floor;
+		    			flr = floorName;
 	    			}
 	    			// Hide all the floor info.
 	    			else {
 	    				toggle.setText("Show Floors");
 	    				lv.getLayoutParams().height = 0;
 	    			}
-	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, name, iconId));
+	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),flr, info, iconId));
 	    			listExpanded = !listExpanded;
 	    		}
 	    	});
+	    	//outdoor information is not needed in this case, make
+	    	// it disappear
 	    	outDoor.setVisibility(outDoor.INVISIBLE);
 	    	outDoor.getLayoutParams().height = 0;
     	} else {
-    		String info = name.replace("\n", "<br />");
-			outDoor.setText(Html.fromHtml(info));
+    		String spInfo = info.replace("\n", "<br />");
+			outDoor.setText(Html.fromHtml(spInfo));
 
 			butt.setText("Clcik to report this is not here");
 			
@@ -149,15 +175,17 @@ public class PopUpDialog extends Dialog{
     	//adds the name of the service provided if it exist
     	String specialInfo = "<b>" + FINUtil.capFirstChar(category) + "</b>";
 
-    	//sets the text into the textView
+    	//sets the text into the textView for category name
     	cate.setText(Html.fromHtml(specialInfo));
     	
+    	//sets the text for displaying the distance and walkingTime
     	TextView distText = (TextView) findViewById(R.id.distanceText);
-    	
     	TextView timeToText = (TextView) findViewById(R.id.timeReachText);
       	if (distance.equals(new BigDecimal(-1)))
     	{
-    		distText.setText(Html.fromHtml("<b>Distance to here:</b> Cannot calculate"));
+    		//if location of the user is not known, indicated by -1
+      		//then show that it cannot be calculated.
+      		distText.setText(Html.fromHtml("<b>Distance to here:</b> Cannot calculate"));
     		timeToText.setText(Html.fromHtml("<b>Walking time:</b> Cannot calculate"));
     	}
     	else
@@ -165,11 +193,15 @@ public class PopUpDialog extends Dialog{
     		distText.setText(Html.fromHtml("<b>Distance to here:</b> " + distance + " mi."));
     		timeToText.setText(Html.fromHtml("<b>Walking Time:</b> " + walkTime + FINUtil.pluralize("minute", walkTime)));
     	}
-
-    	
 	}
+	/**
+	 * call when user touches on the screen
+	 * closes the dialog if the user tap anywhere on screen
+	 * but the lists or buttons
+	 */
 	public boolean onTouchEvent(MotionEvent e)
 	{
+		//dismisses this dialog (close it)
 		dismiss();
 		return true;
 	}
