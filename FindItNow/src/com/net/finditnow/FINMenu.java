@@ -1,4 +1,4 @@
-/*
+/**
  * This class displays the menu of buttons
  * each corresponding each category.  Simple options will launch the Map;
  * options with sub-categories will launch CategoryList.
@@ -72,6 +72,7 @@ public class FINMenu extends Activity {
 		buildings = createBuildingList(buildingsMap);
 		Collections.sort(buildings);
 		
+		// Populate the grid with category buttons.
 		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
         buttonGrid.setAdapter(new ButtonAdapter(this));
 	}
@@ -185,27 +186,54 @@ public class FINMenu extends Activity {
 		return iconsMap;
     }
 
-	// This class/list feeds into the grid view.
+	/**
+	 * This class populates the grid view.
+	 * It is a list of image buttons
+	 */
 	public class ButtonAdapter extends BaseAdapter {
     	private Context mContext;
     	
+    	/**
+    	 * Constructor for ButtonAdapter
+    	 * @param c The context of the client class.
+    	 */
     	public ButtonAdapter(Context c) {
     		setmContext(c);
     	}
-
+    	
+    	/**
+    	 * The number of items in the list
+    	 */
     	public int getCount() {
     		return categories.size();
     	}
 
+    	/**
+    	 * Stub method; it doesn't matter what we return.
+    	 * @param position
+    	 * @return null (default)
+    	 */
     	public Object getItem(int position) {
     		return null;
     	}
-
+    	
+    	/**
+    	 * Stub method; it doesn't matter what we return.
+    	 * @param position
+    	 * @return 0 (default)
+    	 */
     	public long getItemId(int position) {
     		return 0;
     	}
 
-    	// Sets up the view shown within each grid cell.
+    	/**
+    	 * Sets up the view shown in each grid cell:
+    	 * The image button and the text displayed on top
+    	 * @param position The index of the button
+    	 * @param convertView The view to be returned
+    	 * @param parent The parent ViewGroup that will house the view.
+    	 * @return The generated view for this position.
+    	 */
     	public View getView(int position, View convertView, ViewGroup parent) {
     		View myView;
 			
@@ -249,11 +277,19 @@ public class FINMenu extends Activity {
     		
     		return myView;
     	}
-
+    	
+    	/**
+    	 * Sets the passed context to be our own context
+    	 * @param mContext
+    	 */
 		public void setmContext(Context mContext) {
 			this.mContext = mContext;
 		}
 
+		/**
+    	 * Returns the class's own context
+    	 * @return Returns the class's private context
+    	 */
 		public Context getmContext() {
 			return mContext;
 		}
