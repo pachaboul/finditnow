@@ -26,7 +26,8 @@ public class JsonParser {
 	private static final String[] LOCATION_NAMES = { "lat",
 		"long",
 		"floor_names",
-	"info"};
+		"info",
+		"id"};
 	private static final String[] BUILDING_NAMES = { "bid",
 		"lat",
 		"long",
