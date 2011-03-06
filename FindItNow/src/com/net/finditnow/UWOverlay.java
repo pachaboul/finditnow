@@ -103,7 +103,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
             }
                
             // Building the pop-up dialog with this information and then show it
-            Dialog popUp = new PopUpDialogV3(context, floors, buildingName, category,
+            Dialog popUp = new PopUpDialog(context, floors, buildingName, category,
                                 specialInfo, distance, walkingTime, iconId, isOutdoor);
             popUp.show();
            

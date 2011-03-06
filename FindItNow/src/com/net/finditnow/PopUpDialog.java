@@ -34,7 +34,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-public class PopUpDialogV3 extends Dialog{
+public class PopUpDialog extends Dialog{
 
 	//Local variable for displaying
 	private String[] floor;
@@ -47,12 +47,12 @@ public class PopUpDialogV3 extends Dialog{
 	private boolean listExpanded;
 	private boolean isOutdoor;
 	
-	public PopUpDialogV3(Context context) {
+	public PopUpDialog(Context context) {
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 	}
 	//creates a PopUpDialog with the given fields, should use this one
-	public PopUpDialogV3(Context context,String[] floor, 
+	public PopUpDialog(Context context,String[] floor, 
 				String building, String category, String name, BigDecimal distance, int walkingTime,
 				int iconId, boolean isOutdoor)
 	{
@@ -71,7 +71,7 @@ public class PopUpDialogV3 extends Dialog{
 	
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		setContentView(R.layout.popupdialog3);
+		setContentView(R.layout.popupdialog);
 
     	TextView title = (TextView) findViewById(R.id.dialogTitle);
 		title.setText(buildName);
