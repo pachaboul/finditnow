@@ -78,19 +78,20 @@ public class FINMap extends MapActivity {
         	setTitle("FindItNow > " + FINUtil.capFirstChar(category) + " > " + FINUtil.capFirstChar(itemName));
         }
         
-        // Create the map and detect the user's location
+        // Create the map and the map view
         createMap();
-        locateUser();
         
         // Retrieve locations from the database and parse them
     	JSONArray listOfLocations = Get.requestFromDB(category, itemName, DEFAULT_LOCATION);
-    	if (listOfLocations == null)
+    	if (listOfLocations == null) {
     		geoPointItem = JsonParser.parseCategoryJson("");	
-    	else
+    	} else {
     		geoPointItem = JsonParser.parseCategoryJson(listOfLocations.toString());
-        Log.i("log", geoPointItem.size()+"");
-    	// Add these locations to the map view
+    	}
+
+    	// Add these locations to the map view and detect user location
     	placeOverlays();
+        locateUser();
     }
     /**
      * Called when the activity is paused to disable the location services
@@ -129,7 +130,7 @@ public class FINMap extends MapActivity {
 	        	if (location != null) {
 	        		mapController.animateTo(location);
 	        	} else {
-	        		Toast.makeText(this, "Error: Could Not Detect Location", Toast.LENGTH_SHORT).show();
+	        		Toast.makeText(this, "Error: Could not detect your location", Toast.LENGTH_SHORT).show();
 	        	}
 	            return true;
 	            
@@ -230,7 +231,7 @@ public class FINMap extends MapActivity {
         locOverlay.enableMyLocation();
         
         // Attempt to detect the user's current location
-    	Toast.makeText(this, "Detecting Location, Please Wait...", Toast.LENGTH_SHORT).show();
+    	Toast.makeText(this, "Detecting your location, please wait...", Toast.LENGTH_SHORT).show();
     	location = locOverlay.getMyLocation();
     	
     	// Define a handler to run the given commands after 3 seconds
@@ -242,14 +243,14 @@ public class FINMap extends MapActivity {
             	
             	// Try to get the current location, otherwise set a default
         		if (location == null) {
-        			Toast.makeText(FINMap.this, "Error: Could Not Detect Location", Toast.LENGTH_SHORT).show();
+        			Toast.makeText(FINMap.this, "Error: Could not detect your location", Toast.LENGTH_SHORT).show();
         			mapController.animateTo(DEFAULT_LOCATION);
         		} else {
 	        		mapOverlays.add(locOverlay);
 	        		mapController.animateTo(location);
         		}
             } 
-        }, 3000);
+        }, 5000);
     }
     
     /**
