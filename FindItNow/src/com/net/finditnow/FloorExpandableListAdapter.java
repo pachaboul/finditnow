@@ -86,6 +86,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		//sets it to the text field
 		text.setText(Html.fromHtml(specialInfo));
 		
+		pos = groupPosition;
+		
 		//This is the button for reporting something to be missing
 		TextView button = (TextView) relative.findViewById(R.id.flrDetailButton);
 		button.setOnClickListener( new View.OnClickListener()
@@ -101,7 +103,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
     			//confirms the action and perform the update accordingly 
     			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
     		           public void onClick(DialogInterface dialog, int id) {
-   		                //sents info to update.php here
+    		        	    Update.updateDB(category, catItem.getId().get(pos));
     		                dialog.dismiss();
     		           }
     		       });
@@ -119,7 +121,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		
 		return relative;
 	}
-
+	private int pos;
 	/**
 	 * Gets the number of children in a specified group.
 	 * 
