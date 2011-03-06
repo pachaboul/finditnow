@@ -1,12 +1,8 @@
 package com.net.finditnow.test;
 
 import junit.framework.TestCase;
-import java.util.ArrayList;
-
-import android.util.Log;
 
 import com.net.finditnow.Building;
-import com.net.finditnow.FINUtil;
 
 public class BuildingTest extends TestCase {
         

@@ -1,17 +1,11 @@
 package com.net.finditnow.test;
 
 import junit.framework.TestCase;
-import java.util.ArrayList;
 
 import org.json.JSONArray;
 
-import android.util.Log;
-
 import com.google.android.maps.GeoPoint;
-import com.net.finditnow.Building;
 import com.net.finditnow.FINMap;
-import com.net.finditnow.FINMenu;
-import com.net.finditnow.FINUtil;
 import com.net.finditnow.Get;
 
 public class GetTest extends TestCase {

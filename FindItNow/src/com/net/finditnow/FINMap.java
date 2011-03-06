@@ -25,7 +25,6 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -157,25 +156,25 @@ public class FINMap extends MapActivity {
      * 
      * @return A BigDecimal representing the distance to this point in miles
      */
-    public static BigDecimal distanceTo(GeoPoint point) {
+    public static BigDecimal distanceBetween(GeoPoint point1, GeoPoint point2) {
     	
     	// Define a math context and two location variables to process
     	MathContext mc = new MathContext(2);
-    	Location curr = new Location("");
-    	Location dest = new Location("");
+    	Location loc1 = new Location("");
+    	Location loc2 = new Location("");
     	
     	// This method is valid so long as the location is not the default and not null
-    	if (location != null && !location.equals(DEFAULT_LOCATION)) {
+    	if (point1 != null && point2 != null) {
     		
     		// Compute the latitude and longitude of the two points
 	    	// Add these values to our location variable
-	    	curr.setLatitude((float)(location.getLatitudeE6()*1E-6));
-	    	curr.setLongitude((float)(location.getLongitudeE6()*1E-6));
-	    	dest.setLatitude((float)(point.getLatitudeE6()*1E-6));
-	    	dest.setLongitude((float)(point.getLongitudeE6()*1E-6));
+	    	loc1.setLatitude((float)(point1.getLatitudeE6()*1E-6));
+	    	loc1.setLongitude((float)(point1.getLongitudeE6()*1E-6));
+	    	loc2.setLatitude((float)(point2.getLatitudeE6()*1E-6));
+	    	loc2.setLongitude((float)(point2.getLongitudeE6()*1E-6));
 	    	
 	    	// Return this value in miles rounded
-	    	return new BigDecimal(curr.distanceTo(dest) * 0.000621371192, mc);
+	    	return new BigDecimal(loc1.distanceTo(loc2) * 0.000621371192, mc);
     	} else {
     		
     		// Return -1 if the location was not valid
@@ -196,7 +195,9 @@ public class FINMap extends MapActivity {
     	return dec.intValue();
     }
     
-    /** This method creates the map and displays the overlays on top of it */
+    /**
+     * This method creates the map and displays the overlays on top of it 
+     */
     private void createMap() {
     	
         // Initialize our MapView and MapController
@@ -297,11 +298,28 @@ public class FINMap extends MapActivity {
     	return category;
     }
     
+    /**
+     * This method returns the item name selected by the user if supplies is chosen
+     * @return A String representing the item name, null if supplies is not chosen
+     */
     public static String getItemName() {
     	return itemName;
     }
     
+    /**
+     * This method returns an item located at the point p
+     * @param p A GeoPoint representing the location to retrieve the category item
+     * @return A CategoryItem object containing the list of locations
+     */
     public static CategoryItem getCategoryItem(GeoPoint p){
     	return geoPointItem.get(p);
+    }
+    
+    /**
+     * This method returns the user's current location
+     * @return GeoPoint representing the user's location
+     */
+    public static GeoPoint getLocation() {
+    	return location;
     }
 }
