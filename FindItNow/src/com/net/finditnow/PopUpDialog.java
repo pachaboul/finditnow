@@ -165,8 +165,8 @@ public class PopUpDialog extends Dialog{
 	    			//confirms the action and perform the update accordingly 
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
-	   		                //sents info to update.php here
-	    		                dialog.dismiss();
+	    		        	   Update.updateDB(category, catItem.getId().get(0));
+	    		        	   dialog.dismiss();
 	    		           }
 	    		       });
 	    			//cancels the action if the user didn't mean to do it
