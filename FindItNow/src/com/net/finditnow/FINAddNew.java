@@ -1,10 +1,12 @@
 package com.net.finditnow;
 //Blah
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +26,8 @@ public class FINAddNew extends Activity {
 	private RadioButton rs;
 	View geopointConfirm;
 	String selectedCategory;
+	AlertDialog.Builder builder;
+	boolean[] supplyTypes = {true, true, true};
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,20 +60,47 @@ public class FINAddNew extends Activity {
 	private OnItemSelectedListener cspinner_listener = new OnItemSelectedListener() {
 		public void onItemSelected(AdapterView<?> parent, View arg1, int pos, long arg3) {
 			selectedCategory = parent.getItemAtPosition(pos).toString();
+			if(selectedCategory.equals("Supplies")) {
+				handleSupplies(arg1);
+			}
 		}
 
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
 	};
+	
+	private void handleSupplies(View view) {
+		builder = new AlertDialog.Builder(this);
+		builder.setTitle("What supplies are offered?");
+		builder.setMultiChoiceItems(R.array.specific_supplies, supplyTypes, supply_listener);		
+		builder.setCancelable(false);		
+		builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) {
+		        }
+		    });
+		
+		AlertDialog alert = builder.create();
+		alert.show();	
+	}
+	
+	private OnMultiChoiceClickListener supply_listener = new OnMultiChoiceClickListener() {
+		
+		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+				supplyTypes[which] = isChecked;
+		}
+	};
+	
 	private OnClickListener next_listener = new OnClickListener() {
 	    public void onClick(View v) {    	
 	    	if (rs.getId() == R.id.addnew_in) { //Adding indoor location
 	    		Intent myIntent = new Intent(v.getContext(), FINAddIndoor.class);
 	    		myIntent.putExtra("selectedCategory", selectedCategory);
+	    		myIntent.putExtra("supplyTypes", supplyTypes);
                 startActivity(myIntent);
 	    	} else if (rs.getId() == R.id.addnew_out) { //Adding outdoor location
 				Intent myIntent = new Intent(v.getContext(), FINAddOutdoor.class);
 				myIntent.putExtra("selectedCategory", selectedCategory);
+				myIntent.putExtra("supplyTypes", supplyTypes);
                 startActivity(myIntent);
 	    	}
 	    }
