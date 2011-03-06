@@ -2,41 +2,56 @@ package com.net.finditnow.test;
 
 import junit.framework.TestCase;
 import java.util.ArrayList;
+
+import android.util.Log;
+
+import com.net.finditnow.Building;
 import com.net.finditnow.FINUtil;
 
 public class BuildingTest extends TestCase {
         
-	protected String string1;
-	protected String string2;
-	protected String string3;
-	protected ArrayList<String> stringArray1;
+	protected Building build;
 	
 	protected void setUp() {
-		string1 = "cat";
-		string2 = "Cat";
-		string3 = "c";
+		int[] fid = new int[3];
+		fid[0] = 1;
+		fid[1] = 2;
+		fid[2] = 3;
 		
-		stringArray1 = new ArrayList<String>();		
-		stringArray1.add("chanel");
-		stringArray1.add("mai");
+		String[] fnames = new String[3];
+		fnames[0] = "Floor One";
+		fnames[1] = "Floor Two";
+		fnames[2] = "Floor Three";
+		
+		build = new Building(15, "Test Building", fid, fnames);
 	}
 	
-	public void test1() {
-	    assertTrue(FINUtil.capFirstChar(string1).equals("Cat"));
+	public void testBID() {
+		assertTrue(build.getBuildingID() == 15);
 	}
 	
-	public void test2() {
-	    assertTrue(FINUtil.capFirstChar(string2).equals("Cat"));
+	public void testName() {
+		assertTrue(build.getName().equals("Test Building"));
 	}
 	
-	public void test3() {
-	    assertTrue(FINUtil.capFirstChar(string3).equals("C"));
+	public void testFID() {
+		int[] fid = new int[3];
+		fid[0] = 1;
+		fid[1] = 2;
+		fid[2] = 3;
+		
+		assertTrue(build.getFloorIDs()[1] == fid[1]);
 	}
 	
-	public void test4() {
-		ArrayList<String> result4 = new ArrayList<String>();
-		result4.add("Chanel");
-		result4.add("Mai");
-	    assertTrue(FINUtil.capFirstChar(stringArray1).equals(result4));
+	public void testFloorNames() {
+		String[] fnames = new String[3];
+		fnames[0] = "Floor One";
+		fnames[1] = "Floor Two";
+		fnames[2] = "Floor Three";
+		assertTrue(build.getFloorNames()[0].equals("Floor One"));
+	}
+	
+	public void testMap() {
+		assertTrue(build.floorMap().get("Floor One") == 1);
 	}
 }
