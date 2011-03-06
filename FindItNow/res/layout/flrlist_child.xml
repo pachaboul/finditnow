@@ -25,7 +25,7 @@
 		            android:textStyle="bold"
 		            android:text="Report not found"
 		            android:layout_alignParentRight="true"
-		            android:background="@drawable/fin_rounded_button"
+		            android:background="@drawable/fin_clickable_button2"
 		    /> 
 	</RelativeLayout>
 </LinearLayout>
