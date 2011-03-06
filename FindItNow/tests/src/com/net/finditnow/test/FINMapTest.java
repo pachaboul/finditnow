@@ -29,7 +29,7 @@ public class FINMapTest extends TestCase {
 		assertEquals(0, FINMap.distanceBetween(point1, point2).intValue());
 	}
 	
-	public void distanceTest2() {
+	public void testDistance2() {
 		assertEquals(0.39, FINMap.distanceBetween(point1, point3).doubleValue());
 	}
 	
@@ -42,14 +42,10 @@ public class FINMapTest extends TestCase {
 	}
 	
 	public void testWalkingTime3() {
-		assertEquals(7, FINMap.walkingTime(FINMap.distanceBetween(point1, point3), 20));
+		assertEquals(16, FINMap.walkingTime(FINMap.distanceBetween(point1, point3), 40));
 	}
 	
 	public void testWalkingTime4() {
-		assertEquals(15, FINMap.walkingTime(FINMap.distanceBetween(point1, point3), 40));
-	}
-	
-	public void testWalkingTime5() {
 		assertEquals(0, FINMap.walkingTime(FINMap.distanceBetween(point1, point3), 0));
 	}
 }
