@@ -97,16 +97,18 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
             CategoryItem catItem = FINMap.getCategoryItem(itemLocation);
             
                 // Assume it is an outdoor location, but if it is not, grab the building name
-            String buildingName = "Outdoor Location";      
+            String buildingName = "Outdoor Location"; 
+            String[] allFlrName = new String[0];
             boolean isOutdoor = true;
             if (FINMenu.getBuilding(itemLocation) != null) {
                 buildingName = FINMenu.getBuilding(itemLocation).getName();
                 isOutdoor = false;
+                allFlrName = FINMenu.getBuilding(itemLocation).getFloorNames();
             }
                
             // Building the pop-up dialog with this information and then show it
             Dialog popUp = new PopUpDialog(context, buildingName, category,
-            		catItem, distance, walkingTime, iconId, isOutdoor);
+            		catItem, distance, walkingTime, iconId, isOutdoor,allFlrName);
             popUp.show();
            
             return true;

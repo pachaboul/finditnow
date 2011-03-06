@@ -56,6 +56,7 @@ public class PopUpDialog extends Dialog{
 	private String category;
 	private int iconId;
 	private boolean isOutdoor;
+	private String[] allFlrName;
 
 	//creates a PopUpDialog with the given fields, should use this one
 	/**
@@ -75,7 +76,7 @@ public class PopUpDialog extends Dialog{
 	 */
 	public PopUpDialog(Context context,
 				String buildName, String category, CategoryItem catItem, BigDecimal distance, int walkingTime,
-				int iconId, boolean isOutdoor)
+				int iconId, boolean isOutdoor, String[] allFlrName)
 	{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -86,6 +87,7 @@ public class PopUpDialog extends Dialog{
 		this.category = category;
 		this.iconId = iconId;
 		this.isOutdoor = isOutdoor;
+		this.allFlrName = allFlrName;
 	}
 	
 	/**
@@ -128,7 +130,7 @@ public class PopUpDialog extends Dialog{
 	    			{
 	    				toggle.setText("Hide Floors");
 	    				lv.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-	    				if (catItem.getFloor_names().size() > 3)
+	    				if (allFlrName.length > 3)
 	    					lv.getLayoutParams().height = 150;
 
 	    				item = catItem;
@@ -139,7 +141,7 @@ public class PopUpDialog extends Dialog{
 	    				lv.getLayoutParams().height = 0;
 	    			}
 	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),item,
-	    					iconId, category));
+	    					iconId, category, allFlrName));
 	    		}
 	    	});
 	    	//outdoor information is not needed in this case, make

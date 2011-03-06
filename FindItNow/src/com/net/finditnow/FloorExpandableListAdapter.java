@@ -29,6 +29,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	private Context context;			
 	private int iconId;				//id of the category's icon
 	private String category;		//category
+	private String[] allFlrName;
 	
 	/**
 	 * Creates a new FloorExpandableListAdapter with each variable initialized
@@ -40,12 +41,13 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @param category - the category currently displaying
 	 */
 	public FloorExpandableListAdapter(Context context,CategoryItem catItem,
-			int iconId, String category) {
+			int iconId, String category, String[] allFlrName) {
 		super();
 		this.context = context;
 		this.catItem = catItem;
 		this.iconId = iconId;
 		this.category = category;
+		this.allFlrName = allFlrName;
 	}
 	
 	/**
@@ -73,53 +75,57 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		
-		//the layout/view which is defined by a layout XML
-		View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
+		if (catItem.getFloor_names().contains(allFlrName[groupPosition])){
+			pos = catItem.getFloor_names().indexOf(allFlrName[groupPosition]);
 
-		//This is the text for any additional information associated with this
-		// particular object
-		TextView text = (TextView) relative.findViewById(R.id.floorDetailText);
-		String specialInfo = "";
-		if (catItem.getInfo().get(groupPosition) != null)
-			specialInfo = catItem.getInfo().get(groupPosition).replace("\n", "<br />");
-
-		//sets it to the text field
-		text.setText(Html.fromHtml(specialInfo));
-		
-		pos = groupPosition;
-		
-		//This is the button for reporting something to be missing
-		TextView button = (TextView) relative.findViewById(R.id.flrDetailButton);
-		button.setOnClickListener( new View.OnClickListener()
-    	{
-    		public void onClick(View v)
-    		{
-    			//pops a Dialog to confirm the user's intent
-    			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-    			builder.setMessage("This is not actually connect to update and don't have"
-    						+ " the object id yet, but!!\n"
-    						+ "Are you sure that this is not here?");
-    			builder.setCancelable(false);
-    			//confirms the action and perform the update accordingly 
-    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
-    		           public void onClick(DialogInterface dialog, int id) {
-    		        	    Update.updateDB(category, catItem.getId().get(pos));
-    		                dialog.dismiss();
-    		           }
-    		       });
-    			//cancels the action if the user didn't mean to do it
-    			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-    		           public void onClick(DialogInterface dialog, int id) {
-    		                dialog.cancel();
-    		           }
-    		       });
-
-    			AlertDialog dailog = builder.create();
-    			dailog.show();
-    		}
-    	});
-		
-		return relative;
+			//the layout/view which is defined by a layout XML
+			View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
+	
+			//This is the text for any additional information associated with this
+			// particular object
+			TextView text = (TextView) relative.findViewById(R.id.floorDetailText);
+			String specialInfo = "";
+			if (catItem.getInfo().get(pos) != null)
+				specialInfo = catItem.getInfo().get(pos).replace("\n", "<br />");
+	
+			//sets it to the text field
+			text.setText(Html.fromHtml(specialInfo));
+			
+			
+			//This is the button for reporting something to be missing
+			TextView button = (TextView) relative.findViewById(R.id.flrDetailButton);
+			button.setOnClickListener( new View.OnClickListener()
+	    	{
+	    		public void onClick(View v)
+	    		{
+	    			//pops a Dialog to confirm the user's intent
+	    			AlertDialog.Builder builder = new AlertDialog.Builder(context);
+	    			builder.setMessage("This is not actually connect to update and don't have"
+	    						+ " the object id yet, but!!\n"
+	    						+ "Are you sure that this is not here?");
+	    			builder.setCancelable(false);
+	    			//confirms the action and perform the update accordingly 
+	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
+	    		           public void onClick(DialogInterface dialog, int id) {
+	    		        	    Update.updateDB(category, catItem.getId().get(pos));
+	    		                dialog.dismiss();
+	    		           }
+	    		       });
+	    			//cancels the action if the user didn't mean to do it
+	    			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+	    		           public void onClick(DialogInterface dialog, int id) {
+	    		                dialog.cancel();
+	    		           }
+	    		       });
+	
+	    			AlertDialog dailog = builder.create();
+	    			dailog.show();
+	    		}
+	    	});
+			
+			return relative;
+		}
+		return null;
 	}
 	private int pos;
 	/**
@@ -130,7 +136,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 */
 	public int getChildrenCount(int groupPosition) {
 		//every group (parent) only has 1 child, which is the information display.
-		return (category.equals("buildings") ? 0 : 1 );
+		return (category.equals("buildings") ? 0 : 
+			(catItem.getFloor_names().contains(allFlrName[groupPosition]) ? 1 :0  ) );
 	}
 
 	/**
@@ -148,7 +155,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @return the number of groups
 	 */
 	public int getGroupCount() {
-		return catItem.getFloor_names().size();
+		return allFlrName.length;
 	}
 
 	/**
@@ -168,11 +175,13 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 				
 		//Text for displaying the floor name
 		TextView text = (TextView) relative.findViewById(R.id.flrName);
-		text.setText(catItem.getFloor_names().get(groupPosition));
+		text.setText(allFlrName[groupPosition]);
 	
 		//the icon associated with the category
-		ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
-		img.setImageResource(iconId);
+		if (catItem.getFloor_names().contains(allFlrName[groupPosition])){
+			ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
+			img.setImageResource(iconId);
+		}
 		
 		return relative;
 	}
