@@ -9,11 +9,7 @@
 package com.net.finditnow;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-
-import com.google.android.maps.GeoPoint;
 
 import android.app.ListActivity;
 import android.content.Intent;
