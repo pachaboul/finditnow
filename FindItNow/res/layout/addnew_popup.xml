@@ -38,7 +38,7 @@
 		        android:id="@+id/addnew_radiolabel"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:text="The new location is:"
+		        android:text="The new item is:"
 		        android:textStyle="bold"
 		        android:textColor="#000000"
 		        android:textSize="16dp"/>
