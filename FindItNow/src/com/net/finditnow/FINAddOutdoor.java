@@ -113,7 +113,8 @@ public class FINAddOutdoor extends MapActivity {
 			    })
 			    .setNegativeButton("No", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int id) {
-			             dialog.cancel();
+			        	Toast.makeText(getBaseContext(), "Tap the Location of your Item", Toast.LENGTH_SHORT).show();
+			            dialog.cancel();
 			        }
 			    });
 			
