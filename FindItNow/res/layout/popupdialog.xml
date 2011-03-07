@@ -60,5 +60,8 @@
    			android:layout_height="fill_parent"
     		android:layout_width="fill_parent"
     		android:background="#409EFC23"
+    		android:scrollbars="vertical"
+    		android:scrollbarStyle="outsideInset"
+    		android:scrollbarSize="25dp"
 	    	/>
 </LinearLayout>
