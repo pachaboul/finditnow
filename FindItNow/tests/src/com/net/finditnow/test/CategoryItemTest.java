@@ -34,15 +34,45 @@ public class CategoryItemTest extends TestCase {
 		
 	}
 	
-	public void testOneID() {
+	public void testAddId(){
+		item.addId(4);
+		item.addId(4);
+		item.addId(4);
+		item.addId(5);
+		
+		assertTrue(item.getId().get(4) == 4);
+		assertTrue(item.getId().get(6) == 5);
+	}
+	public void testAddInfo(){
+		item.addInfo("");
+		item.addInfo("Test!");
+		item.addInfo("");
+		item.addInfo("abc");
+		
+		assertTrue(item.getInfo().get(4).equals("Test!"));
+		assertTrue(!item.getInfo().get(5).equals("abc"));
+	}
+	public void testAddFloorName(){
+		item.addFloor_names("Floor B");
+		item.addFloor_names("");
+		item.addFloor_names("");
+		item.addFloor_names("base");
+		
+		assertTrue(item.getFloor_names().get(4).equals(""));
+		assertTrue(item.getFloor_names().get(6).equals("base"));
+	}
+	public void testgetID() {
 		assertTrue(item.getId().get(0) == 1);
+		assertTrue(item.getId().get(2) == 3);
 	}
 	
-	public void testOneFloorName() {
+	public void testgetFloorName() {
 		assertTrue(item.getFloor_names().get(0).equals("Floor One"));
+		assertTrue(!item.getFloor_names().get(2).equals("Floor Two"));
 	}
 	
-	public void testOneInfo() {
+	public void testgetInfo() {
+		assertTrue(item.getInfo().get(0).equals("a"));
 		assertTrue(item.getInfo().get(2).equals("blah"));
 	}
 	public void testEquals(){
