@@ -30,6 +30,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+// DESIGN PATTERN: Sub-Classing.  This module extends the MapActivity class to implement a map view
+//				   It adds some non-standard functionality, including location and item overlays
 public class FINMap extends MapActivity {
 	
 	// Map and Location Variables
@@ -47,6 +49,8 @@ public class FINMap extends MapActivity {
 	private static String itemName;
 	
 	// Location and GeoPoint Variables
+	// DESIGN PATTERN: Encapsulation.  Location is sensitive information, and thus private
+	// 				   But can be accessed via getLocations()
 	private static GeoPoint location;
 	private static HashMap<GeoPoint, CategoryItem> geoPointItem;
 	
@@ -264,13 +268,16 @@ public class FINMap extends MapActivity {
     		GeoPoint point = FINMenu.getGeoPointFromBuilding(itemName);
     		
     		CategoryItem item = new CategoryItem();
-    		for(String flr:FINMenu.getBuilding(point).getFloorNames())
+    		for (String flr : FINMenu.getBuilding(point).getFloorNames()) {
     			item.addFloor_names(flr);
+    		}
 
     		geoPointItem.put(point, item);
     	}
     	
     	// Loop over the locations that we have retrieved and add them
+    	// DESIGN PATTERN: Iteration.  We iterate over the set of GeoPoints corresponding to items
+    	//				   We designed geoPointItem to allow for simple iteration for this purpose
         for (GeoPoint point : geoPointItem.keySet()) {
         	OverlayItem overlayItem = new OverlayItem(point, "", "");
         	itemizedOverlay.addOverlay(overlayItem);
