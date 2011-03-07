@@ -22,6 +22,9 @@ public class FINUtil {
 			StringBuffer buffer = new StringBuffer();
 	    	buffer.append(str);    	
 	    	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
+	    	if (buffer.indexOf(" ") != -1) {
+		    	buffer.setCharAt(buffer.indexOf(" ") + 1, Character.toUpperCase(buffer.charAt(buffer.indexOf(" ") + 1)));
+	    	}
 	    	return buffer.toString();
 		}
 	}
@@ -52,5 +55,14 @@ public class FINUtil {
 		} else {
 			return str + "s";
 		}
+	}
+	
+	/**
+	 * Returns a new string replacing occurrences of underscores with spaces
+	 * @param str The old unformatted string
+	 * @return A new string with underscores replaced by spaces
+	 */
+	public static String removeUnderscore(String str) {
+		return str.replace('_', ' ');
 	}
 }
