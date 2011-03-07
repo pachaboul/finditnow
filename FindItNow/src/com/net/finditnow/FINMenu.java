@@ -11,6 +11,9 @@
  */
 package com.net.finditnow;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -148,13 +151,13 @@ public class FINMenu extends Activity {
      * Checks for an Internet connection.
      * If there is no connection, or we are unable to retrieve information about our connection,
      * display a message alerting the user about lack of connection.
+     * 
+     * @param context The context with which to do the check
+     * 
+	 * @return True if the internet connection is functional
      */
 	public void checkConnection() {
-		ConnectivityManager conman=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo info = conman.getActiveNetworkInfo();
-		
-		if (info == null || !info.isConnected()) {
-			
+		if (!isOnline(this)) {		
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage("Error: You must enable your data connection (Wifi or 3g) to use this app")
 			
@@ -167,6 +170,39 @@ public class FINMenu extends Activity {
 			AlertDialog alert = builder.create();
 			alert.show();
 		}
+	}
+	
+
+	/**
+	 * This method returns whether the user's internet connection is functioning
+	 * 
+	 * @param context The context with which to do the check
+	 * 
+	 * @return True if the internet connection is functional
+	 */
+	public static boolean isOnline(Context context) {
+		try {
+			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo netInfo = cm.getActiveNetworkInfo();
+			if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+				URL url = new URL("http://www.google.com");
+				HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+				
+				urlc.setRequestProperty("User-Agent", "My Android Demo");
+				urlc.setRequestProperty("Connection", "close");
+				urlc.setConnectTimeout(1000); // mTimeout is in seconds
+
+				urlc.connect();
+				if (urlc.getResponseCode() == 200) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
     /**
