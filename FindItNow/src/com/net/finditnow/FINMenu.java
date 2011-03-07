@@ -64,7 +64,7 @@ public class FINMenu extends Activity {
 		Collections.sort(categories);
 		
         // Store a map from categories to icons so that other modules can use it
-        iconsMap = createIconsList();
+        iconsMap = createIconsList(categories, getApplicationContext());
 		
 		// Generate list of buildings from the database
 		JSONArray listOfBuildings = Get.requestFromDB("", null, null);
@@ -124,7 +124,7 @@ public class FINMenu extends Activity {
      * 
      * @param listOfCategories List of categories, in JSONArray form.
      */
-	public ArrayList<String> getCategoriesList(JSONArray listOfCategories) {
+	public static ArrayList<String> getCategoriesList(JSONArray listOfCategories) {
 		ArrayList<String> category_list = new ArrayList<String>();
 		for (int i = 0; i < listOfCategories.length(); i++) {
 		    try {
@@ -172,15 +172,15 @@ public class FINMenu extends Activity {
      * Returns a map from categories to icons (icons must be the same lower-case string as the category)
      * Populates the HashMap with both small icons and bigger icons.
      * Key for small icons: "<category>"
-     * Key for big icons:  "<category>-icon"
+     * Key for big icons:  "<category>-big"
 	 */
-    private HashMap<String, Integer> createIconsList() {
+    public static HashMap<String, Integer> createIconsList(ArrayList<String> categories, Context c) {
     	HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
 
     	// Loop over each category and map it to the icon file associated with it
     	for (String str : categories) {
-			iconsMap.put(str, getResources().getIdentifier("drawable/"+str, null, getPackageName()));
-			iconsMap.put(str + "-icon", getResources().getIdentifier("drawable/"+str+"_big", null, getPackageName()));
+			iconsMap.put(str, c.getResources().getIdentifier("drawable/"+str, null, c.getPackageName()));
+			iconsMap.put(str + "-big", c.getResources().getIdentifier("drawable/"+str+"_big", null, c.getPackageName()));
 		}
     	
 		return iconsMap;
@@ -353,7 +353,7 @@ public class FINMenu extends Activity {
      * Otherwise, return the appropriate category icon.
      */
     public static Integer getBigIcon(String category) {
-    	int bigIcon = iconsMap.get(category + "-icon");
+    	int bigIcon = iconsMap.get(category + "-big");
     	if (bigIcon == 0) {
     		return R.drawable.android;
     	} else {
