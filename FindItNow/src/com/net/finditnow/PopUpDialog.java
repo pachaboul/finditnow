@@ -121,6 +121,7 @@ public class PopUpDialog extends Dialog{
 	    			TextView toggle = (TextView) findViewById(R.id.showFlrButt);
 	    			
 	    			CategoryItem item = new CategoryItem();
+	    			String[] flrNames = new String[0];
 	    			// Show all the floor info.
 	    			if (lv.getCount() == 0)
 	    			{
@@ -130,6 +131,7 @@ public class PopUpDialog extends Dialog{
 	    					lv.getLayoutParams().height = 150;
 
 	    				item = catItem;
+	    				flrNames = allFlrName;
 	    			}
 	    			// Hide all the floor info.
 	    			else {
@@ -137,7 +139,7 @@ public class PopUpDialog extends Dialog{
 	    				lv.getLayoutParams().height = 0;
 	    			}
 	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),item,
-	    					iconId, category, allFlrName));
+	    					iconId, category, flrNames));
 	    		}
 	    	});
 	    	//outdoor information is not needed in this case, make
