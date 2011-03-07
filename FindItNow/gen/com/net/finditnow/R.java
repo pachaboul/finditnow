@@ -75,12 +75,12 @@ public final class R {
         public static final int help_link=0x7f07001a;
         public static final int help_section_body=0x7f07001c;
         public static final int help_section_header=0x7f07001b;
-        public static final int layout_root=0x7f07001e;
         public static final int layout_rootflr=0x7f070011;
         public static final int mainlayout=0x7f070006;
         public static final int mapview=0x7f070008;
         public static final int my_location_button=0x7f070027;
         public static final int outDoorText=0x7f070021;
+        public static final int popupLayout=0x7f07001e;
         public static final int showFlrButt=0x7f070024;
         public static final int timeReachText=0x7f070023;
     }
