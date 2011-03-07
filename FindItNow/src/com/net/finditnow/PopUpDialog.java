@@ -41,6 +41,12 @@ import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+/*
+ * Design Principle: inheritance
+ *   inherit most of the methods from Dialog. We only override those methods that
+ *   we need to produce a different behavior from regular Dialog as well as kept
+ *   more information as global fields than Dialog.
+ */
 public class PopUpDialog extends Dialog{
 
 	//Local variable for displaying

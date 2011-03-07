@@ -18,7 +18,14 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
+/*
+ * Design Principle: inheritance
+ *   Inherit most of the methods from BaseExpandableListAdapter. 
+ *   BaseExpandableListAdapter is actually implements the interface, ExpandableListAdapter.
+ *   However, since not all method defined in ExpandableListAdapter need to be different from
+ *   BaseExpandableListAdapter, we decide to inherit the from BaseExpandableListAdapter and only
+ *   override those that should have different behavior.
+ */
 public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	
 	//data for populating the list

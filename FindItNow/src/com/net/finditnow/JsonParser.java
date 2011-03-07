@@ -22,6 +22,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonStreamParser;
 
 public class JsonParser {
+	 /*
+	 * Design Principle: Information Hiding
+	 * These two arrays are only visible to this class.  Other module do not
+	 * ever need to know the exact names of each data coming from the
+	 * back-end database via JSON objects.
+	 */
 	//This is a string to keep track of the names of each piece of information in the
 	//JSON array.
 	private static final String[] LOCATION_NAMES = { "lat",
