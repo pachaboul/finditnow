@@ -134,7 +134,7 @@ public class PopUpDialog extends Dialog{
 	    				toggle.setText("Hide Floors");
 	    				lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
 	    				if (allFlrName.length > 3)
-	    					lv.getLayoutParams().height = 180;
+	    					lv.getLayoutParams().height = 150;
 
 	    				item = catItem;
 	    				flrNames = allFlrName;
@@ -156,7 +156,7 @@ public class PopUpDialog extends Dialog{
     		String spInfo = catItem.getInfo().get(0).replace("\n", "<br />");
 			outDoor.setText(Html.fromHtml(spInfo));
 
-			butt.setText("Report not found");
+			butt.setText("Can't find it?");
 			
 			butt.setOnClickListener( new View.OnClickListener()
 	    	{
