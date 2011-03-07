@@ -8,6 +8,7 @@
 			   android:layout_width="wrap_content"
 			   android:layout_height="wrap_content"
 			   android:paddingLeft="40px"
+			   android:paddingTop="10px"
 			  />
 	<TextView 
 		android:id="@+id/flrName" 
