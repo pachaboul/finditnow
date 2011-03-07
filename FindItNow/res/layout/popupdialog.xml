@@ -52,7 +52,7 @@
 	    		android:text="Show Floors"
 	    		android:textColor="#5EC22D"
 	    		android:textStyle="bold"
-	    		android:textSize="14dp"/>
+	    		android:textSize="18dp"/>
 	    		
 	</RelativeLayout>
 	
@@ -60,8 +60,5 @@
    			android:layout_height="fill_parent"
     		android:layout_width="fill_parent"
     		android:background="#409EFC23"
-    		android:scrollbars="vertical"
-    		android:scrollbarStyle="outsideInset"
-    		android:scrollbarSize="25dp"
 	    	/>
 </LinearLayout>
