@@ -200,7 +200,7 @@ public class PopUpDialog extends Dialog{
     	else
     	{
     		distText.setText(Html.fromHtml("<b>Distance to here:</b> " + distance + " mi."));
-    		timeToText.setText(Html.fromHtml("<b>Walking Time:</b> " + walkTime + FINUtil.pluralize("minute", walkTime)));
+    		timeToText.setText(Html.fromHtml("<b>Walking Time:</b> " + walkTime + " " + FINUtil.pluralize("minute", walkTime)));
     	}
 	}
 	/**
