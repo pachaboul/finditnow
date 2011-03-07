@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -52,12 +51,11 @@ public class FINAddOutdoor extends MapActivity {
         Bundle extras = getIntent().getExtras(); 
 		selectedCategory = extras.getString("selectedCategory");
 		supplyTypes = extras.getBooleanArray("supplyTypes");
-		Log.v("test", selectedCategory);
         
         // Zoom out enough
         mapController.animateTo(FINMap.DEFAULT_LOCATION);
         mapController.setZoom(17);
-        Toast.makeText(getBaseContext(), "Tap the Location of your Item", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -113,7 +111,7 @@ public class FINAddOutdoor extends MapActivity {
 			    })
 			    .setNegativeButton("No", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int id) {
-			        	Toast.makeText(getBaseContext(), "Tap the Location of your Item", Toast.LENGTH_SHORT).show();
+			        	Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
 			            dialog.cancel();
 			        }
 			    });
