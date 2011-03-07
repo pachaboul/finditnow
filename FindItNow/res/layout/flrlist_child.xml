@@ -23,7 +23,7 @@
 		            android:layout_height="wrap_content"
 		            android:textColor="#E07E1B"
 		            android:textStyle="bold"
-		            android:text="Report not found"
+		            android:text="Can't find it?"
 		            android:layout_alignParentRight="true"
 		            android:background="@drawable/fin_clickable_button2"
 		    /> 
