@@ -159,7 +159,7 @@ public class FINMenu extends Activity {
 	public void checkConnection() {
 		if (!isOnline(this)) {		
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("Error: You must enable your data connection (Wifi or 3g) to use this app")
+			builder.setMessage("Error: You must enable your data connection (Wifi or 3G) to use this app")
 			
 				.setNeutralButton("Exit", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
