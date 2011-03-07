@@ -28,5 +28,16 @@
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="fill_parent"
 	    />
+	    
+	    <TextView
+			android:id="@+id/help_link"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#000000"
+			android:textSize="14dp"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp"
+			android:paddingBottom="15dp"/>
+			
 	</LinearLayout>
 </ScrollView>

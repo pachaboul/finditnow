@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +39,13 @@ public class FINHelp extends Activity {
 		
 		// About
 		View about = addTextHelpSection("ABOUT", String.format(getString(R.string.help_about)));
+		((LinearLayout) about).setPadding(0, 0, 0, 0);
 		helpBody.addView(about);
+		
+		// Link
+		TextView link = (TextView) findViewById(R.id.help_link);
+		link.setText(Html.fromHtml("<a href=\"http://code.google.com/p/recycle-locator\">FindItNow on Google Code</a>"));
+		link.setMovementMethod(LinkMovementMethod.getInstance()); 
 	}
 	
 	/**
