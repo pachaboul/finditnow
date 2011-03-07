@@ -1,6 +1,7 @@
 package com.net.finditnow;
 
 /***
+ * JsonParser.java by Chanel Huang
  * This class provides methods to parse a Json string into a HashMap
  * 
  * Json String:
@@ -11,8 +12,6 @@ package com.net.finditnow;
 
 //packages for handling JSON
 import java.util.HashMap;
-
-import org.json.JSONArray;
 
 import android.util.Log;
 
@@ -38,7 +37,6 @@ public class JsonParser {
 	"floor_names"};
 
 	/**
-	 * DEPRECIATED
 	 * parses a Json Array into a map of locations and its corresponding CategoryItem
 	 * 
 	 * @param jsonArray jsonArray containing information
@@ -104,109 +102,8 @@ public class JsonParser {
 		return map;
 	}
 
-	
-	
 	/**
-	 * DEPRECIATED
-	 * parses a Json Array into a map of locations and its floor names
-	 * 
-	 * @param jsonArray jsonArray containing information
-	 * @return HashMap<GeoPoint, String[]> maps a location with its floor names
-	 */
-	public static HashMap<GeoPoint, String[]> parseJson(JSONArray jsonArray)
-	{
-		//creates the map for information to be stored in
-		HashMap<GeoPoint,String[]> map = new HashMap<GeoPoint,String[]>();
-		
-		if (jsonArray != null) {
-			//Log.i("log", jsonArray.toString());
-			
-			String json = jsonArray.toString();
-			//used for parsing the JSON object
-			Gson gson = new Gson();
-			JsonStreamParser parser = new JsonStreamParser(json);
-			JsonArray arr = parser.next().getAsJsonArray();
-
-			for (int i = 0; i < arr.size(); i++)
-			{
-				if (arr.get(i).isJsonObject())
-				{
-					//Since the JsonArray contains whole bunch json array, we can get each one out
-					JsonObject ob = arr.get(i).getAsJsonObject();
-	
-					//place the information in the map with GeoPoint as key
-					GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
-					if (ob.has(LOCATION_NAMES[2]))
-					{
-						JsonArray s = ob.get(LOCATION_NAMES[2]).getAsJsonArray();
-						//the floor names associated with this point
-						String[] flrNames = gson.fromJson(s,String[].class);
-	
-						//if the point is not added before, we add it
-						if (map.get(point) == null)
-							map.put(point,flrNames);
-						else
-						{
-							//if the point already has entries in map, we append it to the end.
-							String[] temp = map.get(point);
-							String[] newS = new String[temp.length+flrNames.length];
-							int c = 0;
-							for (; c < temp.length; c++)
-								newS[c] = temp[c];
-	
-							for (int k = 0; k < flrNames.length; k++, c++)
-							{
-								newS[c] = flrNames[k];
-	
-							}
-							map.put(point, newS);
-						}
-					}
-					else
-						map.put(point, new String[]{"n/a"});
-				}
-			}
-		} 
-		return map;
-	}
-
-	/**
-	 * DEPRECIATED
-	 * parses a Json Array into a map of locations and its corresponding names
-	 * 
-	 * @param jsonArray jsonArray containing information
-	 * @return HashMap<GeoPoint, String> maps a location with its names
-	 */
-	public static HashMap<GeoPoint, String> parseNameJson(JSONArray jsonArray)
-	{
-		//create the map with GeoPoint as key and string as name
-		HashMap<GeoPoint,String> map = new HashMap<GeoPoint,String>();
-		
-		if (jsonArray != null) {
-			String json = jsonArray.toString();
-			//used to parse a json
-			JsonStreamParser parser = new JsonStreamParser(json);
-			JsonArray arr = parser.next().getAsJsonArray();
-	
-			for (int i = 0; i < arr.size(); i++)
-			{
-				if (arr.get(i).isJsonObject())
-				{
-					//have JsonObjects in the JsonArray, so get it out to process
-					JsonObject ob = arr.get(i).getAsJsonObject();
-		
-					//get the Geopoint and the name to put in map.
-					GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
-					map.put(point,ob.get(LOCATION_NAMES[3]).getAsString());
-				}
-			}
-
-		} 
-		return map;
-	}
-
-	/**
-	 *  parse a json string into a map of GeoPoint to Building
+	 * parse a json string into a map of GeoPoint to Building
 	 *  
 	 * @param json the json string representation of an array of building objects
 	 * @return a map of location to its corresponding building object
