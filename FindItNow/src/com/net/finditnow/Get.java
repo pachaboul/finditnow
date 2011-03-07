@@ -52,6 +52,8 @@ public class Get {
 	  	JSONArray infoArray = null;
 	  	
 	  	// Attempt to make the HTTPPOST to the given location
+	  	// DESIGN PATTERN: Exceptions.  In Get/Update/Create, we catch any exception in PHP communication
+	  	//				   This also allows us to localize errors that occur during the process
 	  	try {
 		        HttpClient httpclient = new DefaultHttpClient();
 		        String suffix = (location == null? (category == null? "getCategories.php" : "getBuildings.php") : "getLocations.php");

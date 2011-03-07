@@ -42,6 +42,9 @@ public class Update {
 		   */
 		String data = "";
 	  	InputStream iStream = null;
+	  	
+	  	// DESIGN PATTERN: Exceptions.  In Get/Update/Create, we catch any exception in PHP communication
+	  	//				   This also allows us to localize errors that occur during the process
 	  	try{
 		        HttpClient httpclient = new DefaultHttpClient();
 		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/update.php");
