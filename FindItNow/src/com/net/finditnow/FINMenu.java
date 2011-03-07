@@ -18,8 +18,6 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.google.android.maps.GeoPoint;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -40,6 +38,8 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.maps.GeoPoint;
+
 public class FINMenu extends Activity {
 	
 	private static HashMap<GeoPoint, Building> buildingsMap;
@@ -51,6 +51,7 @@ public class FINMenu extends Activity {
      * Check for a connection, generate our categories and buildings list
      * from the database, and set up the grid layout of buttons.
      */
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);

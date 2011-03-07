@@ -6,7 +6,7 @@
 
 package com.net.finditnow;
 
-import java.util.HashMap; // For map from floor to IDs
+import java.util.HashMap;
 
 public class Building {
 	
@@ -91,6 +91,7 @@ public class Building {
 	 * 
 	 * @return String corresponding to the building object
 	 */
+	@Override
 	public String toString(){
 		String result = "Name: " + name + ", Building ID: " + getBuildingID() + 
 						", Floor IDs: " + getFloorIDs()+ 

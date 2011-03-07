@@ -20,14 +20,12 @@ import com.net.finditnow.Building;
 import com.net.finditnow.FINMenu;
 import com.net.finditnow.Get;
 import com.net.finditnow.JsonParser;
-import com.net.finditnow.R;
 
 public class FINMenuTest extends AndroidTestCase {
 
 	private static HashMap<GeoPoint, Building> buildingsMap;
 	private static HashMap<String, Integer> iconsMap;
 	private static ArrayList<String> categories;
-	private static ArrayList<String> buildings;
 	private static GeoPoint gp;
 	private static Building building;
 	
@@ -43,7 +41,6 @@ public class FINMenuTest extends AndroidTestCase {
 		// buildings stuff
 		JSONArray listOfBuildings = Get.requestFromDB("", null, null);
 		buildingsMap = JsonParser.parseBuildingJson(listOfBuildings.toString());
-		buildings = FINMenu.createBuildingList(buildingsMap);
 		
 		gp = new GeoPoint(47657186, -122306194);
 		building = new Building(15, "Miller Hall", null, null);

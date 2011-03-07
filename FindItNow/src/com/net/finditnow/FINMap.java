@@ -7,19 +7,13 @@
 
 package com.net.finditnow;
 
-// Java library imports
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 
-// JSONArray import
 import org.json.JSONArray;
 
-// Google Maps for Android imports
-import com.google.android.maps.*;
-
-// Other Android library dependencies
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -29,6 +23,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
 
 // DESIGN PATTERN: Sub-Classing.  This module extends the MapActivity class to implement a map view
 //				   It adds some non-standard functionality, including location and item overlays
@@ -99,7 +101,8 @@ public class FINMap extends MapActivity {
     /**
      * Called when the activity is paused to disable the location services
      */
-    public void onPause() {
+    @Override
+	public void onPause() {
     	super.onPause();
     	locOverlay.disableMyLocation();
     }
@@ -227,7 +230,8 @@ public class FINMap extends MapActivity {
         locOverlay = new MyLocationOverlay(this, mapView) {
         	
         	// Extend onLocationChanged() to add the result to the location variable
-        	public void onLocationChanged(Location loc) {
+        	@Override
+			public void onLocationChanged(Location loc) {
         		super.onLocationChanged(loc);
         		location = new GeoPoint((int)(loc.getLatitude()*1E6), (int)(loc.getLongitude()*1E6));
         		mapOverlays.add(locOverlay);
