@@ -26,25 +26,20 @@
 package com.net.finditnow;
 
 //Necessary for using certain methods
+import java.math.BigDecimal;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.view.MotionEvent;
-
-//different type of views used in this dialog
-import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Button;
-import android.app.AlertDialog;
-import android.app.Dialog;
-
-//formating
 import android.text.Html;
-//special Deciaml Object which is used for formatting
-import java.math.BigDecimal;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 public class PopUpDialog extends Dialog{
 
@@ -97,6 +92,7 @@ public class PopUpDialog extends Dialog{
 	 *  and any button that is necessary
 	 *  
 	 */
+	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		setContentView(R.layout.popupdialog);
@@ -129,7 +125,7 @@ public class PopUpDialog extends Dialog{
 	    			if (lv.getCount() == 0)
 	    			{
 	    				toggle.setText("Hide Floors");
-	    				lv.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+	    				lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
 	    				if (allFlrName.length > 3)
 	    					lv.getLayoutParams().height = 150;
 
@@ -146,7 +142,7 @@ public class PopUpDialog extends Dialog{
 	    	});
 	    	//outdoor information is not needed in this case, make
 	    	// it disappear
-	    	outDoor.setVisibility(outDoor.INVISIBLE);
+	    	outDoor.setVisibility(View.INVISIBLE);
 	    	outDoor.getLayoutParams().height = 0;
     	} else {
     		String spInfo = catItem.getInfo().get(0).replace("\n", "<br />");
@@ -212,6 +208,7 @@ public class PopUpDialog extends Dialog{
 	 * closes the dialog if the user tap anywhere on screen
 	 * but the lists or buttons
 	 */
+	@Override
 	public boolean onTouchEvent(MotionEvent e)
 	{
 		//dismisses this dialog (close it)

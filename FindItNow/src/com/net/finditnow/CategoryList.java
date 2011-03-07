@@ -19,9 +19,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 public class CategoryList extends ListActivity {
@@ -31,7 +31,8 @@ public class CategoryList extends ListActivity {
      * and displays the appropriate list.
      * Defaults to supplies if category is unrecognized.
      */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override
+	public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	
     	Bundle extras = getIntent().getExtras(); 

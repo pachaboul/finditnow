@@ -10,6 +10,7 @@ public class FINSplash extends Activity {
 	protected boolean active = true;
 	protected int splashTime = 1500; // time to display the splash screen in ms
 	
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fin_splash);

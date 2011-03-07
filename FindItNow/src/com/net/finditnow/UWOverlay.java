@@ -6,17 +6,16 @@
 
 package com.net.finditnow;
 
-// Java library imports
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-// Google Maps for Android imports
-import com.google.android.maps.*;
-
-// Other Android library dependencies
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.app.Dialog;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.ItemizedOverlay;
+import com.google.android.maps.OverlayItem;
 
 public class UWOverlay extends ItemizedOverlay<OverlayItem> {
        

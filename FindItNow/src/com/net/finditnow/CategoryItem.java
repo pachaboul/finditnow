@@ -54,6 +54,7 @@ public class CategoryItem {
 	 * @param obj oth other to be compare to
 	 * @return boolean whether two object are equal or not
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

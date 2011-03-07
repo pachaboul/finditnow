@@ -7,19 +7,16 @@ package com.net.finditnow;
  * to display the floor details.
  * 
  */
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Context;
-import android.widget.TextView;
 import android.widget.ImageView;
-import android.widget.Button;
-import android.text.Html;
-import android.view.LayoutInflater;
-import android.util.Log;
+import android.widget.TextView;
 
 
 public class FloorExpandableListAdapter extends BaseExpandableListAdapter {

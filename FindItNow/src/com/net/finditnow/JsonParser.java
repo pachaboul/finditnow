@@ -10,15 +10,17 @@ package com.net.finditnow;
  */
 
 //packages for handling JSON
-import com.google.gson.*;
+import java.util.HashMap;
+
 import org.json.JSONArray;
 
-//Android reporting log
 import android.util.Log;
 
-//utils to build the results
 import com.google.android.maps.GeoPoint;
-import java.util.HashMap;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonStreamParser;
 
 public class JsonParser {
 	//This is a string to keep track of the names of each piece of information in the
