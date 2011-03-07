@@ -79,6 +79,8 @@ public class JsonParser {
 						JsonArray s = ob.get(LOCATION_NAMES[2]).getAsJsonArray();
 						//the floor names associated with this point
 						String[] flrNames = gson.fromJson(s,String[].class);
+						if (flrNames.length == 0)
+							item.addFloor_names("");
 						for (String flr: flrNames)
 							item.addFloor_names(flr);
 					}
