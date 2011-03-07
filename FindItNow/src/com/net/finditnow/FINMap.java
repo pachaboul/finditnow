@@ -259,7 +259,7 @@ public class FINMap extends MapActivity {
 	        		mapController.animateTo(location);
         		}
             } 
-        }, 5000);
+        }, 3000);
     }
     
     /**
