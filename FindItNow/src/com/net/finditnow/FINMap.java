@@ -83,8 +83,9 @@ public class FINMap extends MapActivity {
         	setTitle("FindItNow > " + FINUtil.capFirstChar(category) + " > " + FINUtil.capFirstChar(itemName));
         }
         
-        // Create the map and the map view
+        // Create the map and the map view and detect user location
         createMap();
+        locateUser();
         
         // Retrieve locations from the database and parse them
     	JSONArray listOfLocations = Get.requestFromDB(category, itemName, DEFAULT_LOCATION);
@@ -94,9 +95,8 @@ public class FINMap extends MapActivity {
     		geoPointItem = JsonParser.parseCategoryJson(listOfLocations.toString());
     	}
 
-    	// Add these locations to the map view and detect user location
+    	// Add these locations to the map view
     	placeOverlays();
-        locateUser();
     }
     /**
      * Called when the activity is paused to disable the location services
@@ -219,6 +219,7 @@ public class FINMap extends MapActivity {
         
         // Zoom out enough
         mapController.setZoom(17);
+        mapController.setCenter(DEFAULT_LOCATION);
     }
     
     /**
@@ -243,23 +244,16 @@ public class FINMap extends MapActivity {
     	Toast.makeText(this, "Detecting your location, please wait...", Toast.LENGTH_SHORT).show();
     	location = locOverlay.getMyLocation();
     	
-    	// Define a handler to run the given commands after 3 seconds
-    	Handler handler = new Handler();
-    	handler.postDelayed(new Runnable() { 
+    	// Define an Android Runnable
+    	Runnable runnable = new Runnable() { 
     		
-    		// Run this method after 3 seconds have elapsed
+    		// Run this method with a fix on location has been received
             public void run() { 
-            	
-            	// Try to get the current location, otherwise set a default
-        		if (location == null) {
-        			Toast.makeText(FINMap.this, "Error: Could not detect your location", Toast.LENGTH_SHORT).show();
-        			mapController.animateTo(DEFAULT_LOCATION);
-        		} else {
-	        		mapOverlays.add(locOverlay);
-	        		mapController.animateTo(location);
-        		}
-            } 
-        }, 3000);
+        		mapOverlays.add(locOverlay);
+        		mapController.animateTo(location);
+        	}
+        }; 
+        locOverlay.runOnFirstFix(runnable);
     }
     
     /**
