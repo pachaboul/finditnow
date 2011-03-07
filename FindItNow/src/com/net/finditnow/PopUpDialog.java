@@ -140,7 +140,10 @@ public class PopUpDialog extends Dialog{
 	    				flrNames = allFlrName;
 	    				lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 							public void onGroupExpand(int groupPosition) {
-								PopUpDialog.this.findViewById(R.id.flrList).scrollBy(0, groupPosition);			
+				    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
+				    			
+				    			if (lv.getExpandableListAdapter().getChildrenCount(groupPosition) != 0)
+				    				lv.scrollBy(0, (groupPosition+1)*lv.getDividerHeight());			
 							}
 						});
 	    			}
