@@ -40,7 +40,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-
+import android.graphics.Region;
 /*
  * Design Principle: inheritance
  *   inherit most of the methods from Dialog. We only override those methods that
@@ -138,6 +138,11 @@ public class PopUpDialog extends Dialog{
 
 	    				item = catItem;
 	    				flrNames = allFlrName;
+	    				lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+							public void onGroupExpand(int groupPosition) {
+								PopUpDialog.this.findViewById(R.id.flrList).scrollBy(0, groupPosition);			
+							}
+						});
 	    			}
 	    			// Hide all the floor info.
 	    			else {
@@ -220,7 +225,18 @@ public class PopUpDialog extends Dialog{
 	public boolean onTouchEvent(MotionEvent e)
 	{
 		//dismisses this dialog (close it)
-		dismiss();
+		int bottom = this.findViewById(R.id.popupLayout).getBottom();
+		int top = this.findViewById(R.id.popupLayout).getTop();
+		int left =this.findViewById(R.id.popupLayout).getLeft();
+		int right =this.findViewById(R.id.popupLayout).getRight();
+		
+		Region dialogRegion = new Region (left,top,right,bottom );
+		
+		float x = e.getX();
+		float y = e.getY();
+		
+		if (!dialogRegion.contains(Math.round(x),Math.round(y)))
+			dismiss();
 		return true;
 	}
 }  
