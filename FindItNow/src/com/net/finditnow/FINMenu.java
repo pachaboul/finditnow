@@ -48,6 +48,7 @@ public class FINMenu extends Activity {
 	private static HashMap<GeoPoint, Building> buildingsMap;
 	private static HashMap<String, Integer> iconsMap;
 	private static ArrayList<String> categories;
+	
 	private static ArrayList<String> buildings;
 	
 	/**
@@ -81,148 +82,6 @@ public class FINMenu extends Activity {
         buttonGrid.setAdapter(new ButtonAdapter(this));
 	}
 	
-	/**
-     * Creates the Android options menu
-     */
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-        return true;
-    }
-    
-	/**
-     * Prepares the options menu before being displayed.
-     * Removes redundant Category option, and centering location
-     * option (special for the Map only).
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(R.id.categories_button).setVisible(false);
-    	menu.findItem(R.id.my_location_button).setVisible(false);
-    	return true;
-    }
-    
-    /**
-     * Expand and define the Android options menu
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-        	case R.id.add_new_button:
-        		startActivity(new Intent(this, FINAddNew.class));
-        		return true;
-	        case R.id.help_button:
-	        	startActivity(new Intent(this, FINHelp.class));
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-        }
-    }
-	
-	/**
-     * Returns an ArrayList of categories, duplicated from the given JSONArray list.
-     * The list is almost exactly the same, with the exclusion of regions, floors,
-     * and exception of "school_supplies" (which is added as "supplies").
-     * 
-     * @param listOfCategories List of categories, in JSONArray form.
-     */
-	public static ArrayList<String> getCategoriesList(JSONArray listOfCategories) {
-		ArrayList<String> category_list = new ArrayList<String>();
-		for (int i = 0; i < listOfCategories.length(); i++) {
-		    try {
-		    	String category = listOfCategories.getString(i);
-		    	if (!category.equals("regions") && !category.equals("floors")) {
-		    		if (category.equals("school_supplies")) {
-		    			category_list.add("supplies");
-		    		} else {
-		    			category_list.add(category);
-		    		}
-		    	}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		return category_list;
-	}
-	
-	/**
-     * Checks for an Internet connection.
-     * If there is no connection, or we are unable to retrieve information about our connection,
-     * display a message alerting the user about lack of connection.
-     * 
-     * @param context The context with which to do the check
-     * 
-	 * @return True if the internet connection is functional
-     */
-	public void checkConnection() {
-		if (!isOnline(this)) {		
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("Error: You must enable your data connection (Wifi or 3G) to use this app")
-			
-				.setNeutralButton("Exit", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						FINMenu.this.finish();
-					}
-				});
-			
-			AlertDialog alert = builder.create();
-			alert.show();
-		}
-	}
-	
-
-	/**
-	 * This method returns whether the user's internet connection is functioning
-	 * 
-	 * @param context The context with which to do the check
-	 * 
-	 * @return True if the internet connection is functional
-	 */
-	public static boolean isOnline(Context context) {
-		try {
-			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo netInfo = cm.getActiveNetworkInfo();
-			if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-				URL url = new URL("http://www.google.com");
-				HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-				
-				urlc.setRequestProperty("User-Agent", "My Android Demo");
-				urlc.setRequestProperty("Connection", "close");
-				urlc.setConnectTimeout(1000); // mTimeout is in seconds
-
-				urlc.connect();
-				if (urlc.getResponseCode() == 200) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
-    /**
-     * Returns a map from categories to icons (icons must be the same lower-case string as the category)
-     * Populates the HashMap with both small icons and bigger icons.
-     * Key for small icons: "<category>"
-     * Key for big icons:  "<category>-big"
-	 */
-    public static HashMap<String, Integer> createIconsList(ArrayList<String> categories, Context c) {
-    	HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
-
-    	// Loop over each category and map it to the icon file associated with it
-    	for (String str : categories) {
-			iconsMap.put(str, c.getResources().getIdentifier("drawable/"+str, null, c.getPackageName()));
-			iconsMap.put(str + "-big", c.getResources().getIdentifier("drawable/"+str+"_big", null, c.getPackageName()));
-		}
-    	
-		return iconsMap;
-    }
-
 	/**
 	 * This class populates the grid view.
 	 * It is a list of image buttons
@@ -264,6 +123,14 @@ public class FINMenu extends Activity {
     	}
 
     	/**
+    	 * Returns the class's own context
+    	 * @return Returns the class's private context
+    	 */
+		public Context getmContext() {
+			return mContext;
+		}
+    	
+    	/**
     	 * Sets up the view shown in each grid cell:
     	 * The image button and the text displayed on top
     	 * @param position The index of the button
@@ -288,7 +155,7 @@ public class FINMenu extends Activity {
 			final String category = categories.get(position);
 			ib.setImageResource(getBigIcon(category));
 			
-			if (category.equals("supplies") || category.equals("buildings")) {
+			if (category.equals("buildings") || category.equals("school_supplies")) {
 				// Jump to CategoryList
 				ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
@@ -314,24 +181,16 @@ public class FINMenu extends Activity {
     		
     		return myView;
     	}
-    	
-    	/**
+
+		/**
     	 * Sets the passed context to be our own context
     	 * @param mContext
     	 */
 		public void setmContext(Context mContext) {
 			this.mContext = mContext;
 		}
-
-		/**
-    	 * Returns the class's own context
-    	 * @return Returns the class's private context
-    	 */
-		public Context getmContext() {
-			return mContext;
-		}
     }
-
+	
 	/**
      * Returns an ArrayList of unique buildings from a HashMap of GeoPoints and buildings.
      */
@@ -342,43 +201,23 @@ public class FINMenu extends Activity {
 		}
 		return list;
 	}
-	
-    /**
-     * Returns an ArrayList of buildings
-     */
-	public static ArrayList<String> getBuildingsList() {
-		return buildings;
-	}
-	
-	/**
-     * Returns an ArrayList of top-level categories
-     */
-	public static ArrayList<String> getCategoriesList() {
-		return categories;
-	}
     
 	/**
-     * Returns the building associated with the GeoPoint
-     */
-    public static Building getBuilding(GeoPoint point) {
-    	return buildingsMap.get(point);
-    }
-    
-    /**
-     * Returns a miniature-sized icon associated with the category
-     * These icons are used for the map overlays and dialog windows.
-     * 
-     * @param category The top-level category
-     * @return If no icon is found, return the default Android icon.
-	 * otherwise, return the appropriate category icon.
-     */
-    public static Integer getIcon(String category) {
-    	int icon = iconsMap.get(category);
-    	if (icon == 0) {
-    		return R.drawable.android;
-    	} else {
-    		return icon;
-    	}
+     * Returns a map from categories to icons (icons must be the same lower-case string as the category)
+     * Populates the HashMap with both small icons and bigger icons.
+     * Key for small icons: "<category>"
+     * Key for big icons:  "<category>-big"
+	 */
+    public static HashMap<String, Integer> createIconsList(ArrayList<String> categories, Context c) {
+    	HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
+
+    	// Loop over each category and map it to the icon file associated with it
+    	for (String str : categories) {
+			iconsMap.put(str, c.getResources().getIdentifier("drawable/"+str, null, c.getPackageName()));
+			iconsMap.put(str + "-big", c.getResources().getIdentifier("drawable/"+str+"_big", null, c.getPackageName()));
+		}
+    	
+		return iconsMap;
     }
     
     /**
@@ -397,8 +236,52 @@ public class FINMenu extends Activity {
     		return bigIcon;
     	}
     }
-    
+	
+	/**
+     * Returns the building associated with the GeoPoint
+     */
+    public static Building getBuilding(GeoPoint point) {
+    	return buildingsMap.get(point);
+    }
+	
+	/**
+     * Returns an ArrayList of buildings
+     */
+	public static ArrayList<String> getBuildingsList() {
+		return buildings;
+	}
+	
+
+	/**
+     * Returns an ArrayList of top-level categories
+     */
+	public static ArrayList<String> getCategoriesList() {
+		return categories;
+	}
+	
     /**
+     * Returns an ArrayList of categories, duplicated from the given JSONArray list.
+     * The list is almost exactly the same, with the exclusion of regions, floors,
+     * and exception of "school_supplies" (which is added as "supplies").
+     * 
+     * @param listOfCategories List of categories, in JSONArray form.
+     */
+	public static ArrayList<String> getCategoriesList(JSONArray listOfCategories) {
+		ArrayList<String> category_list = new ArrayList<String>();
+		for (int i = 0; i < listOfCategories.length(); i++) {
+		    try {
+		    	String category = listOfCategories.getString(i);
+		    	if (!category.equals("regions") && !category.equals("floors")) {
+		    		category_list.add(category);
+		    	}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return category_list;
+	}
+
+	/**
      * Returns the GeoPoint associated with the building.
      * Icon overlays are positioned on these GeoPoints.
      * 
@@ -413,4 +296,118 @@ public class FINMenu extends Activity {
 		}
 		return null;
 	}
+
+	/**
+     * Returns a miniature-sized icon associated with the category
+     * These icons are used for the map overlays and dialog windows.
+     * 
+     * @param category The top-level category
+     * @return If no icon is found, return the default Android icon.
+	 * otherwise, return the appropriate category icon.
+     */
+    public static Integer getIcon(String category) {
+    	int icon = iconsMap.get(category);
+    	if (icon == 0) {
+    		return R.drawable.android;
+    	} else {
+    		return icon;
+    	}
+    }
+	
+    /**
+	 * This method returns whether the user's internet connection is functioning
+	 * 
+	 * @param context The context with which to do the check
+	 * 
+	 * @return True if the internet connection is functional
+	 */
+	public static boolean isOnline(Context context) {
+		try {
+			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo netInfo = cm.getActiveNetworkInfo();
+			if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+				URL url = new URL("http://www.google.com");
+				HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+				
+				urlc.setRequestProperty("User-Agent", "My Android Demo");
+				urlc.setRequestProperty("Connection", "close");
+				urlc.setConnectTimeout(1000); // mTimeout is in seconds
+
+				urlc.connect();
+				if (urlc.getResponseCode() == 200) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	/**
+     * Checks for an Internet connection.
+     * If there is no connection, or we are unable to retrieve information about our connection,
+     * display a message alerting the user about lack of connection.
+     * 
+     * @param context The context with which to do the check
+     * 
+	 * @return True if the internet connection is functional
+     */
+	public void checkConnection() {
+		if (!isOnline(this)) {		
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Error: You must enable your data connection (Wifi or 3G) to use this app")
+			
+				.setNeutralButton("Exit", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						FINMenu.this.finish();
+					}
+				});
+			
+			AlertDialog alert = builder.create();
+			alert.show();
+		}
+	}
+    
+    /**
+     * Creates the Android options menu
+     */
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+    
+    /**
+     * Expand and define the Android options menu
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        	case R.id.add_new_button:
+        		startActivity(new Intent(this, FINAddNew.class));
+        		return true;
+	        case R.id.help_button:
+	        	startActivity(new Intent(this, FINHelp.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    /**
+     * Prepares the options menu before being displayed.
+     * Removes redundant Category option, and centering location
+     * option (special for the Map only).
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.findItem(R.id.categories_button).setVisible(false);
+    	menu.findItem(R.id.my_location_button).setVisible(false);
+    	return true;
+    }
 }

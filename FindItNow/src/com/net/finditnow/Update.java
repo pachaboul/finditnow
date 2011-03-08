@@ -71,7 +71,6 @@ public class Update {
 		        iStream.close();
 		 
 		        data = sb.toString();
-		        Log.v("test", data);
 	  	}catch(Exception e){
 	  	    Log.e("log_tag", "Error converting result "+e.toString());
 	  	}

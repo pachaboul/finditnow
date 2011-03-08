@@ -20,7 +20,7 @@ public class FINAddIndoor extends Activity {
 	String selectedFloor;
 	String selectedCategory;
 	boolean[] supplyTypes;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,18 +68,30 @@ public class FINAddIndoor extends Activity {
 		public void onClick(View v) {
 			HashMap<String, Integer> map = selectedBuilding.floorMap();
 			String bb = "", sc = "", pr = "";
-			if (selectedCategory.equals("Supplies") && supplyTypes[0])
+			if (selectedCategory.equals("School Supplies") && supplyTypes[0])
 				bb = "bb";
-			if (selectedCategory.equals("Supplies") && supplyTypes[1])
+			if (selectedCategory.equals("School Supplies") && supplyTypes[1])
 				sc = "sc";
-			if (selectedCategory.equals("Supplies") && supplyTypes[2])
+			if (selectedCategory.equals("School Supplies") && supplyTypes[2])
 				pr = "print";
 
-			Create.sendToDB(selectedCategory, null, map.get(selectedFloor), "", bb, sc, pr);
+			Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), null, map.get(selectedFloor), "", bb, sc, pr);
 
 			Intent myIntent = new Intent(v.getContext(), FINMenu.class);
 			startActivity(myIntent);
 			Toast.makeText(getBaseContext(), selectedCategory + " location added successfully!", Toast.LENGTH_LONG).show();
+		}
+	};
+
+	private OnItemSelectedListener fspinner_listener = new OnItemSelectedListener() {
+		public void onItemSelected(AdapterView<?> parent, View arg1, int pos,
+				long arg3) {
+			selectedFloor = parent.getItemAtPosition(pos).toString();
+		}
+
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+
 		}
 	};
 
@@ -93,16 +105,4 @@ public class FINAddIndoor extends Activity {
 		fSpinner.setAdapter(fAdapter);
 		fSpinner.setOnItemSelectedListener(fspinner_listener);
 	}
-
-	private OnItemSelectedListener fspinner_listener = new OnItemSelectedListener() {
-		public void onItemSelected(AdapterView<?> parent, View arg1, int pos,
-				long arg3) {
-			selectedFloor = parent.getItemAtPosition(pos).toString();
-		}
-
-		public void onNothingSelected(AdapterView<?> arg0) {
-			// TODO Auto-generated method stub
-
-		}
-	};
 }

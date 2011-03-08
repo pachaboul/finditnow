@@ -71,14 +71,6 @@ public class FINHelp extends Activity {
     }
     
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(R.id.add_new_button).setVisible(false);
-    	menu.findItem(R.id.my_location_button).setVisible(false);
-    	menu.findItem(R.id.help_button).setVisible(false);
-    	return true;
-    }
-    
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
@@ -88,5 +80,13 @@ public class FINHelp extends Activity {
 	        default:
 	            return super.onOptionsItemSelected(item);
         }
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.findItem(R.id.add_new_button).setVisible(false);
+    	menu.findItem(R.id.my_location_button).setVisible(false);
+    	menu.findItem(R.id.help_button).setVisible(false);
+    	return true;
     }
 }

@@ -52,15 +52,10 @@ public class FINAddNew extends Activity {
 		next.setOnClickListener(next_listener);
 	}
 	
-	private ArrayList<String> parseForUserSubmittableCategories(ArrayList<String> al) {
-		al.remove("Buildings");
-		return al;
-	}
-	
 	private OnItemSelectedListener cspinner_listener = new OnItemSelectedListener() {
 		public void onItemSelected(AdapterView<?> parent, View arg1, int pos, long arg3) {
 			selectedCategory = parent.getItemAtPosition(pos).toString();
-			if(selectedCategory.equals("Supplies")) {
+			if(selectedCategory.equals("School Supplies")) {
 				handleSupplies(arg1);
 			}
 		}
@@ -68,20 +63,6 @@ public class FINAddNew extends Activity {
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
 	};
-	
-	private void handleSupplies(View view) {
-		builder = new AlertDialog.Builder(this);
-		builder.setTitle("What supplies are offered?");
-		builder.setMultiChoiceItems(R.array.specific_supplies, supplyTypes, supply_listener);		
-		builder.setCancelable(false);		
-		builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) {
-		        }
-		    });
-		
-		AlertDialog alert = builder.create();
-		alert.show();	
-	}
 	
 	private OnMultiChoiceClickListener supply_listener = new OnMultiChoiceClickListener() {
 		
@@ -112,6 +93,20 @@ public class FINAddNew extends Activity {
 	    }
 	};
 	
+	private void handleSupplies(View view) {
+		builder = new AlertDialog.Builder(this);
+		builder.setTitle("What school supplies are offered?");
+		builder.setMultiChoiceItems(R.array.specific_supplies, supplyTypes, supply_listener);		
+		builder.setCancelable(false);		
+		builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) {
+		        }
+		    });
+		
+		AlertDialog alert = builder.create();
+		alert.show();	
+	}
+	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -120,14 +115,6 @@ public class FINAddNew extends Activity {
     }
 	
 	@Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(R.id.add_new_button).setVisible(false);
-    	menu.findItem(R.id.my_location_button).setVisible(false);
-    	menu.findItem(R.id.help_button).setVisible(false);
-    	return true;
-    }
-    
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
@@ -138,4 +125,17 @@ public class FINAddNew extends Activity {
 	            return super.onOptionsItemSelected(item);
         }
     }
+	
+	@Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.findItem(R.id.add_new_button).setVisible(false);
+    	menu.findItem(R.id.my_location_button).setVisible(false);
+    	menu.findItem(R.id.help_button).setVisible(false);
+    	return true;
+    }
+    
+    private ArrayList<String> parseForUserSubmittableCategories(ArrayList<String> al) {
+		al.remove("Buildings");
+		return al;
+	}
 }

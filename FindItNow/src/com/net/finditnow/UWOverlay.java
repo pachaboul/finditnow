@@ -46,28 +46,20 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
         }
 
         /**
-         * This method creates an item at the given index
-         */
-        @Override
-        protected OverlayItem createItem(int i) {
-          return mapOverlays.get(i);
-        }
-
-        /**
-         * This method returns the current size of the overlays
-         */
-        @Override
-        public int size() {
-                return mapOverlays.size();
-        }
-       
-        /**
          * This method adds the given overlay to the map and then repopulates it
          * @param overlay The overlay to add
          */
         public void addOverlay(OverlayItem overlay) {
             mapOverlays.add(overlay);
             populate();
+        }
+
+        /**
+         * This method creates an item at the given index
+         */
+        @Override
+        protected OverlayItem createItem(int i) {
+          return mapOverlays.get(i);
         }
        
         /**
@@ -87,7 +79,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
             // Retrieve the floors, special info, and category of the location
             String category = FINMap.getCategory();
             int iconId = FINMenu.getIcon(category);
-            if (category.equals("supplies")) {
+            if (category.equals("school_supplies")) {
                     category = FINMap.getItemName();
             }
             CategoryItem catItem = FINMap.getCategoryItem(itemLocation);
@@ -108,5 +100,13 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
             popUp.show();
            
             return true;
+        }
+       
+        /**
+         * This method returns the current size of the overlays
+         */
+        @Override
+        public int size() {
+                return mapOverlays.size();
         }
 }
