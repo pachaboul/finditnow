@@ -44,7 +44,7 @@ public class CategoryList extends ListActivity {
     	if (category.equals("buildings")) {
     		list = FINMenu.getBuildingsList();
     	} else {
-    		list = supplies();
+    		list = FINUtil.capFirstChar(supplies());
     	}
     	
     	setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, list));
@@ -57,21 +57,21 @@ public class CategoryList extends ListActivity {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			myIntent.putExtra("category", category);
-    			myIntent.putExtra("itemName", ((TextView) v).getText());
+    			myIntent.putExtra("itemName", FINUtil.deCapFirstChar(((TextView) v).getText().toString()));
     			startActivity(myIntent);
     		}
     	});
     }
-	 
+	
 	/**
      * List of school supplies item types
      * Note: this is hard-coded in our application
      */
 	private static ArrayList<String> supplies() {
 		ArrayList<String> list = new ArrayList<String>();
-		list.add("Blue books");
-		list.add("Scantrons");
-		list.add("Printing");
+		list.add("blue_books");
+		list.add("scantrons");
+		list.add("printing");
 		return list;
 	}
 	
@@ -86,16 +86,6 @@ public class CategoryList extends ListActivity {
     }
     
 	/**
-     * Prepares the options menu before being displayed.
-     * Removes centering location option (special for the Map only).
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(R.id.my_location_button).setVisible(false);
-    	return true;
-    }
-    
-    /**
      * Expand and define the Android options menu
      */
     @Override
@@ -114,5 +104,15 @@ public class CategoryList extends ListActivity {
 	        default:
 	            return super.onOptionsItemSelected(item);
         }
+    }
+    
+    /**
+     * Prepares the options menu before being displayed.
+     * Removes centering location option (special for the Map only).
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.findItem(R.id.my_location_button).setVisible(false);
+    	return true;
     }
 }

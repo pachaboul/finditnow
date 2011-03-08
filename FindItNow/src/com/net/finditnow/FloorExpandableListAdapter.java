@@ -35,6 +35,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	private String category;		//category
 	private String[] allFlrName;
 	
+	private int pos;
+	
 	/**
 	 * Creates a new FloorExpandableListAdapter with each variable initialized
 	 * 
@@ -53,7 +55,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		this.category = category;
 		this.allFlrName = allFlrName;
 	}
-	
+
 	/**
 	 * Gets the data associated with the given child within the given group.
 	 * 
@@ -63,6 +65,20 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 */
 	public Object getChild(int groupPosition, int childPosition) {
 		return catItem.getInfo().get(groupPosition);
+	}
+	public long getChildId(int groupPosition, int childPosition) {
+		return 0;
+	}
+	/**
+	 * Gets the number of children in a specified group.
+	 * 
+	 * @param groupPosition - the position of the group that contains the child
+	 * @return the children count in the specified group 
+	 */
+	public int getChildrenCount(int groupPosition) {
+		//every group (parent) only has 1 child, which is the information display.
+		return (category.equals("buildings") ? 0 : 
+			(catItem.getFloor_names().contains(allFlrName[groupPosition]) ? 1 :0  ) );
 	}
 
 	/**
@@ -104,12 +120,12 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	    		{
 	    			//pops a Dialog to confirm the user's intent
 	    			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-	    			builder.setMessage("Are you sure that this " + FINMap.getCategory() + " location is not here?");
+	    			builder.setMessage("Are you sure that this " + FINMap.getCategory().replace("_", " ") + " location is not here?");
 	    			builder.setCancelable(false);
 	    			//confirms the action and perform the update accordingly 
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
-	    		        	    Update.updateDB(category, catItem.getId().get(pos));
+	    		        	    Update.updateDB(FINUtil.deCapFirstChar(FINMap.getCategory()), catItem.getId().get(pos));
 	    		                dialog.dismiss();
 	    		           }
 	    		       });
@@ -129,19 +145,6 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		}
 		return null;
 	}
-	private int pos;
-	/**
-	 * Gets the number of children in a specified group.
-	 * 
-	 * @param groupPosition - the position of the group that contains the child
-	 * @return the children count in the specified group 
-	 */
-	public int getChildrenCount(int groupPosition) {
-		//every group (parent) only has 1 child, which is the information display.
-		return (category.equals("buildings") ? 0 : 
-			(catItem.getFloor_names().contains(allFlrName[groupPosition]) ? 1 :0  ) );
-	}
-
 	/**
 	 * Gets the data associated with the given group.
 	 * 
@@ -151,6 +154,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	public Object getGroup(int groupPosition) {
 		return catItem.getFloor_names().get(groupPosition);
 	}
+
 	/**
 	 * Gets the number of groups.
 	 * 
@@ -160,6 +164,11 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		return allFlrName.length;
 	}
 
+	//The following methods are suppose to be override, but is not
+	// of importance here, so they contain no meaningful results
+	public long getGroupId(int groupPosition) {
+		return 0;
+	}
 	/**
 	 * Gets a View that displays the given group.
 	 * @param groupPosition - the position of the group for which the View is returned
@@ -188,20 +197,11 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		return relative;
 	}
 
-	//The following methods are suppose to be override, but is not
-	// of importance here, so they contain no meaningful results
-	public long getGroupId(int groupPosition) {
-		return 0;
-	}
 	public boolean hasStableIds() {
 		return false;
 	}
 
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return false;
-	}
-
-	public long getChildId(int groupPosition, int childPosition) {
-		return 0;
 	}
 }

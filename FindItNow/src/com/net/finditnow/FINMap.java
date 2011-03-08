@@ -45,21 +45,21 @@ public class FINMap extends MapActivity {
 	private Drawable drawable;
 	private UWOverlay itemizedOverlay;
 	
-	// Shared static variables that the other modules can access
-	private static String category;
-	private static String itemName;
-	
-	// Location and GeoPoint Variables
+    // Shared static variables that the other modules can access
+	private static String category;    
+    private static String itemName;
+    
+    // Location and GeoPoint Variables
 	// DESIGN PATTERN: Encapsulation.  Location is sensitive information, and thus private
 	// 				   But can be accessed via getLocations()
-	private static GeoPoint location;
-	private static HashMap<GeoPoint, CategoryItem> geoPointItem;
-	
-	// A constant representing the default location of the user
+	private static GeoPoint location;    
+    private static HashMap<GeoPoint, CategoryItem> geoPointItem;
+    
+    // A constant representing the default location of the user
 	// Change this the coordinates of another campus if desired (defaults to UW Seattle)
 	public static final GeoPoint DEFAULT_LOCATION = new GeoPoint(47654799,-122307776);
-
-	/** 
+	
+    /** 
 	 * Called when the activity is first created.
      * It initializes the map layout, detects the user's category, and builds the map
      */
@@ -97,13 +97,143 @@ public class FINMap extends MapActivity {
     	// Add these locations to the map view
     	placeOverlays();
     }
+	
+	/**
+     * This method returns the distance from the user's current location to a given point
+     * It returns this in BigDecimal format for ease of processing
+     * 
+     * @param point A GeoPoint corresponding to the location under consideration
+     * 
+     * @return A BigDecimal representing the distance to this point in miles
+     */
+    public static BigDecimal distanceBetween(GeoPoint point1, GeoPoint point2) {
+    	
+    	// Define a math context and two location variables to process
+    	MathContext mc = new MathContext(2);
+    	Location loc1 = new Location("");
+    	Location loc2 = new Location("");
+    	
+    	// This method is valid so long as the location is not the default and not null
+    	if (point1 != null && point2 != null) {
+    		
+    		// Compute the latitude and longitude of the two points
+	    	// Add these values to our location variable
+	    	loc1.setLatitude((float)(point1.getLatitudeE6()*1E-6));
+	    	loc1.setLongitude((float)(point1.getLongitudeE6()*1E-6));
+	    	loc2.setLatitude((float)(point2.getLatitudeE6()*1E-6));
+	    	loc2.setLongitude((float)(point2.getLongitudeE6()*1E-6));
+	    	
+	    	// Return this value in miles rounded
+	    	return new BigDecimal(loc1.distanceTo(loc2) * 0.000621371192, mc);
+    	} else {
+    		
+    		// Return -1 if the location was not valid
+    		return new BigDecimal(-1);
+    	}
+    }
+	/**
+     * This method returns the category selected by the user
+     * @return A String representing the category chosen
+     */
+    public static String getCategory() {
+    	return category;
+    }
+	/**
+     * This method returns an item located at the point p
+     * @param p A GeoPoint representing the location to retrieve the category item
+     * @return A CategoryItem object containing the list of locations
+     */
+    public static CategoryItem getCategoryItem(GeoPoint p){
+    	return geoPointItem.get(p);
+    }
+	
+	/**
+     * This method returns the item name selected by the user if supplies is chosen
+     * @return A String representing the item name, null if supplies is not chosen
+     */
+    public static String getItemName() {
+    	return itemName;
+    }
+	/**
+     * This method returns the user's current location
+     * @return GeoPoint representing the user's location
+     */
+    public static GeoPoint getLocation() {
+    	return location;
+    }
+	/**
+     * This method computes the walking time for a given distance based on the mile time
+     * 
+     * @param distance The distance to calculate walking time over
+     * @param mile_time The amount of time in minutes to walk a mile
+     * 
+     * @return The walking time in minutes that it takes to walk the given distance rounded
+     */
+    public static int walkingTime(BigDecimal distance, int mile_time) {
+    	BigDecimal dec = new BigDecimal(mile_time * distance.doubleValue(), new MathContext(2));
+    	return dec.intValue();
+    }
+    
     /**
-     * Called when the activity is paused to disable the location services
+     * This method creates the map and displays the overlays on top of it 
+     */
+    private void createMap() {
+    	
+        // Initialize our MapView and MapController
+        mapView = (MapView) findViewById(R.id.mapview);
+        mapView.setBuiltInZoomControls(true);
+        mapController = mapView.getController();
+        
+        // Build up our overlays and initialize our "UWOverlay" class
+        mapOverlays = mapView.getOverlays();
+        drawable = this.getResources().getDrawable(FINMenu.getIcon(getCategory()));
+        itemizedOverlay = new UWOverlay(drawable, this);
+        
+        // Zoom out enough
+        mapController.setZoom(17);
+        mapController.setCenter(DEFAULT_LOCATION);
+    }
+    
+    /**
+     * Required for Android Maps API compatibility
      */
     @Override
-	public void onPause() {
-    	super.onPause();
-    	locOverlay.disableMyLocation();
+	protected boolean isRouteDisplayed() {
+		return false;
+	}
+    
+    /**
+     * This method locates the user and displays the user's location in an overlay icon
+     */
+    private void locateUser() {
+    	
+    	// Define a new LocationOverlay and enable it
+        locOverlay = new MyLocationOverlay(this, mapView) {
+        	
+        	// Extend onLocationChanged() to add the result to the location variable
+        	@Override
+			public void onLocationChanged(Location loc) {
+        		super.onLocationChanged(loc);
+        		location = new GeoPoint((int)(loc.getLatitude()*1E6), (int)(loc.getLongitude()*1E6));
+        		mapOverlays.add(locOverlay);
+        	}
+        };
+        locOverlay.enableMyLocation();
+        
+        // Attempt to detect the user's current location
+    	Toast.makeText(this, "Detecting your location, please wait...", Toast.LENGTH_SHORT).show();
+    	location = locOverlay.getMyLocation();
+    	
+    	// Define an Android Runnable
+    	Runnable runnable = new Runnable() { 
+    		
+    		// Run this method with a fix on location has been received
+            public void run() { 
+        		mapOverlays.add(locOverlay);
+        		mapController.animateTo(location);
+        	}
+        }; 
+        locOverlay.runOnFirstFix(runnable);
     }
     
     /**
@@ -155,104 +285,12 @@ public class FINMap extends MapActivity {
     }
     
     /**
-     * This method returns the distance from the user's current location to a given point
-     * It returns this in BigDecimal format for ease of processing
-     * 
-     * @param point A GeoPoint corresponding to the location under consideration
-     * 
-     * @return A BigDecimal representing the distance to this point in miles
+     * Called when the activity is paused to disable the location services
      */
-    public static BigDecimal distanceBetween(GeoPoint point1, GeoPoint point2) {
-    	
-    	// Define a math context and two location variables to process
-    	MathContext mc = new MathContext(2);
-    	Location loc1 = new Location("");
-    	Location loc2 = new Location("");
-    	
-    	// This method is valid so long as the location is not the default and not null
-    	if (point1 != null && point2 != null) {
-    		
-    		// Compute the latitude and longitude of the two points
-	    	// Add these values to our location variable
-	    	loc1.setLatitude((float)(point1.getLatitudeE6()*1E-6));
-	    	loc1.setLongitude((float)(point1.getLongitudeE6()*1E-6));
-	    	loc2.setLatitude((float)(point2.getLatitudeE6()*1E-6));
-	    	loc2.setLongitude((float)(point2.getLongitudeE6()*1E-6));
-	    	
-	    	// Return this value in miles rounded
-	    	return new BigDecimal(loc1.distanceTo(loc2) * 0.000621371192, mc);
-    	} else {
-    		
-    		// Return -1 if the location was not valid
-    		return new BigDecimal(-1);
-    	}
-    }
-    
-    /**
-     * This method computes the walking time for a given distance based on the mile time
-     * 
-     * @param distance The distance to calculate walking time over
-     * @param mile_time The amount of time in minutes to walk a mile
-     * 
-     * @return The walking time in minutes that it takes to walk the given distance rounded
-     */
-    public static int walkingTime(BigDecimal distance, int mile_time) {
-    	BigDecimal dec = new BigDecimal(mile_time * distance.doubleValue(), new MathContext(2));
-    	return dec.intValue();
-    }
-    
-    /**
-     * This method creates the map and displays the overlays on top of it 
-     */
-    private void createMap() {
-    	
-        // Initialize our MapView and MapController
-        mapView = (MapView) findViewById(R.id.mapview);
-        mapView.setBuiltInZoomControls(true);
-        mapController = mapView.getController();
-        
-        // Build up our overlays and initialize our "UWOverlay" class
-        mapOverlays = mapView.getOverlays();
-        drawable = this.getResources().getDrawable(FINMenu.getIcon(getCategory()));
-        itemizedOverlay = new UWOverlay(drawable, this);
-        
-        // Zoom out enough
-        mapController.setZoom(17);
-        mapController.setCenter(DEFAULT_LOCATION);
-    }
-    
-    /**
-     * This method locates the user and displays the user's location in an overlay icon
-     */
-    private void locateUser() {
-    	
-    	// Define a new LocationOverlay and enable it
-        locOverlay = new MyLocationOverlay(this, mapView) {
-        	
-        	// Extend onLocationChanged() to add the result to the location variable
-        	@Override
-			public void onLocationChanged(Location loc) {
-        		super.onLocationChanged(loc);
-        		location = new GeoPoint((int)(loc.getLatitude()*1E6), (int)(loc.getLongitude()*1E6));
-        		mapOverlays.add(locOverlay);
-        	}
-        };
-        locOverlay.enableMyLocation();
-        
-        // Attempt to detect the user's current location
-    	Toast.makeText(this, "Detecting your location, please wait...", Toast.LENGTH_SHORT).show();
-    	location = locOverlay.getMyLocation();
-    	
-    	// Define an Android Runnable
-    	Runnable runnable = new Runnable() { 
-    		
-    		// Run this method with a fix on location has been received
-            public void run() { 
-        		mapOverlays.add(locOverlay);
-        		mapController.animateTo(location);
-        	}
-        }; 
-        locOverlay.runOnFirstFix(runnable);
+    @Override
+	public void onPause() {
+    	super.onPause();
+    	locOverlay.disableMyLocation();
     }
     
     /**
@@ -284,46 +322,5 @@ public class FINMap extends MapActivity {
         if (!geoPointItem.keySet().isEmpty()) {
         	mapOverlays.add(itemizedOverlay);
         }
-    }
- 
-    /**
-     * Required for Android Maps API compatibility
-     */
-    @Override
-	protected boolean isRouteDisplayed() {
-		return false;
-	}
-    
-    /**
-     * This method returns the category selected by the user
-     * @return A String representing the category chosen
-     */
-    public static String getCategory() {
-    	return category;
-    }
-    
-    /**
-     * This method returns the item name selected by the user if supplies is chosen
-     * @return A String representing the item name, null if supplies is not chosen
-     */
-    public static String getItemName() {
-    	return itemName;
-    }
-    
-    /**
-     * This method returns an item located at the point p
-     * @param p A GeoPoint representing the location to retrieve the category item
-     * @return A CategoryItem object containing the list of locations
-     */
-    public static CategoryItem getCategoryItem(GeoPoint p){
-    	return geoPointItem.get(p);
-    }
-    
-    /**
-     * This method returns the user's current location
-     * @return GeoPoint representing the user's location
-     */
-    public static GeoPoint getLocation() {
-    	return location;
     }
 }

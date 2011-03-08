@@ -10,26 +10,6 @@ import java.util.ArrayList;
 public class FINUtil {
 	
 	/**
-	 * Capitalizes the first character of the given string.
-	 * @param str String to capitalize
-	 * @return Copy of the string with the first character capitalized
-	 */
-	public static String capFirstChar(String str)
-	{
-		if (str.equals("atms")) {
-			return "ATMs";
-		} else {
-			StringBuffer buffer = new StringBuffer();
-	    	buffer.append(str);    	
-	    	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
-	    	if (buffer.indexOf(" ") != -1) {
-		    	buffer.setCharAt(buffer.indexOf(" ") + 1, Character.toUpperCase(buffer.charAt(buffer.indexOf(" ") + 1)));
-	    	}
-	    	return buffer.toString();
-		}
-	}
-	
-	/**
 	 * Capitalizes the first character of all strings in an ArrayList
 	 * @param strs ArrayList of strings
 	 * @return New ArrayList with copy of the strings that are in proper caps.
@@ -44,6 +24,48 @@ public class FINUtil {
 	}
 	
 	/**
+	 * Capitalizes the first character of the given string.
+	 * @param str String to capitalize
+	 * @return Copy of the string with the first character capitalized
+	 */
+	public static String capFirstChar(String str)
+	{
+		if (str.equals("atms")) {
+			return "ATMs";
+		} else {
+			StringBuffer buffer = new StringBuffer();
+	    	buffer.append(str);    	
+	    	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
+	    	if (buffer.indexOf("_") != -1) {
+		    	buffer.setCharAt(buffer.indexOf("_") + 1, Character.toUpperCase(buffer.charAt(buffer.indexOf("_") + 1)));
+	    	}
+	    	return buffer.toString().replace('_', ' ');
+		}
+	}
+	
+	/**
+	 * Undoes the above operation
+	 * @param str The string to decap
+	 * @return A new string with the above operations undone
+	 */
+	public static String deCapFirstChar(String str) {
+		return str.toLowerCase().replace(" ", "_");
+	}
+	
+	/**
+	 * Returns the singular version of a plural string
+	 * @param str The plural string
+	 * @return A singular string
+	 */
+	public static String depluralize(String str) {
+		if (str.endsWith("s")) {
+			return str.substring(0, str.length() - 1);
+		} else {
+			return str;
+		}
+	}
+	
+	/**
 	 * Returns the proper pluralization of the given string noun
 	 * @param str The string noun (singular)
 	 * @param num The amount describing the noun
@@ -55,14 +77,5 @@ public class FINUtil {
 		} else {
 			return str + "s";
 		}
-	}
-	
-	/**
-	 * Returns a new string replacing occurrences of underscores with spaces
-	 * @param str The old unformatted string
-	 * @return A new string with underscores replaced by spaces
-	 */
-	public static String removeUnderscore(String str) {
-		return str.replace('_', ' ');
 	}
 }

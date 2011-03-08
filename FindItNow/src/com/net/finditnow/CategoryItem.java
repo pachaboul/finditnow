@@ -21,31 +21,17 @@ public class CategoryItem {
 		id = new ArrayList<Integer>();
 	}
 
-	public ArrayList<String> getFloor_names() {
-		return floor_names;
-	}
-
 	public void addFloor_names(String floorNames) {
 		this.floor_names.add(floorNames);
-	}
-
-	public ArrayList<String> getInfo() {
-		return info;
-	}
-
-	public void addInfo(String info) {
-		this.info.add(info);
-	}
-
-	
-	public ArrayList<Integer> getId() {
-		return id;
 	}
 
 	public void addId(int id) {
 		this.id.add(id);
 	}
 
+	public void addInfo(String info) {
+		this.info.add(info);
+	}
 
 	/**
 	 * auto-generated equals method
@@ -86,6 +72,20 @@ public class CategoryItem {
 				return false;
 		}
 		return true;
+	}
+
+	
+	public ArrayList<String> getFloor_names() {
+		return floor_names;
+	}
+
+	public ArrayList<Integer> getId() {
+		return id;
+	}
+
+
+	public ArrayList<String> getInfo() {
+		return info;
 	}
 
 	@Override

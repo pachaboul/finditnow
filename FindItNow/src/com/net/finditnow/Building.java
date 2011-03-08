@@ -38,42 +38,6 @@ public class Building {
 	}
 
 	/**
-	 * Method to return the building ID of the building object
-	 * 
-	 * @return An integer representing the building ID
-	 */
-	public int getBuildingID() {
-		return bid;
-	}
-
-	/**
-	 * Method to return the building name of the building object
-	 * 
-	 * @return A string of the building name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Method to return the floor names of the building object
-	 * 
-	 * @return An array of strings representing the floor names
-	 */
-	public String[] getFloorNames(){
-		return floor_names;
-	}
-	
-	/**
-	 * Method to return the floor IDs of the building object
-	 * 
-	 * @return An array of integers representing the floor IDs
-	 */
-	public int[] getFloorIDs(){
-		return fid;
-	}
-
-	/**
 	 * This method defines and returns a map from floor names to floor IDs
 	 * 
 	 * @return A HashMap from strings to integers of floor names to floor IDs
@@ -84,6 +48,42 @@ public class Building {
 			map.put(getFloorNames()[i], getFloorIDs()[i]);
 		}
 		return map;
+	}
+
+	/**
+	 * Method to return the building ID of the building object
+	 * 
+	 * @return An integer representing the building ID
+	 */
+	public int getBuildingID() {
+		return bid;
+	}
+
+	/**
+	 * Method to return the floor IDs of the building object
+	 * 
+	 * @return An array of integers representing the floor IDs
+	 */
+	public int[] getFloorIDs(){
+		return fid;
+	}
+	
+	/**
+	 * Method to return the floor names of the building object
+	 * 
+	 * @return An array of strings representing the floor names
+	 */
+	public String[] getFloorNames(){
+		return floor_names;
+	}
+
+	/**
+	 * Method to return the building name of the building object
+	 * 
+	 * @return A string of the building name
+	 */
+	public String getName() {
+		return name;
 	}
 
 	/**

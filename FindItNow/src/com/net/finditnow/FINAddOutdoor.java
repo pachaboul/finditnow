@@ -26,12 +26,13 @@ public class FINAddOutdoor extends MapActivity {
 	private static FINAddOverlay mapOverlay;
 	private static List<Overlay> mapOverlays;
 	String selectedCategory;
+	
 	boolean[] supplyTypes;
 	
 	// Tapped Point
 	private static GeoPoint tappedPoint;
 	
-	@Override
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_outdoor);
@@ -57,18 +58,8 @@ public class FINAddOutdoor extends MapActivity {
         mapController.setZoom(17);
         Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
 	}
-
-	@Override
-	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
-    public static GeoPoint getTappedPoint() {
-    	return tappedPoint;
-    }
-    
-    public class FINAddOverlay extends Overlay {
+	public class FINAddOverlay extends Overlay {
 		
 		 @Override
 	     public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when) {
@@ -79,7 +70,7 @@ public class FINAddOutdoor extends MapActivity {
 	         mapView.getProjection().toPixels(tappedPoint, screenPts);
 	
 	         //---add the marker---
-	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINMenu.getIcon(selectedCategory.toLowerCase()));            
+	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINMenu.getIcon(FINUtil.deCapFirstChar(selectedCategory)));            
 	         canvas.drawBitmap(bmp, screenPts.x-12, screenPts.y-35, null);         
 	         return true;
 		 }
@@ -95,14 +86,14 @@ public class FINAddOutdoor extends MapActivity {
 			    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int id) {
 						String bb = "", sc = "", pr = "";
-						if (selectedCategory.equals("Supplies") && supplyTypes[0])
+						if (selectedCategory.equals("School Supplies") && supplyTypes[0])
 							bb = "bb";
-						if (selectedCategory.equals("Supplies") && supplyTypes[1])
+						if (selectedCategory.equals("School Supplies") && supplyTypes[1])
 							sc = "sc";
-						if (selectedCategory.equals("Supplies") && supplyTypes[2])
+						if (selectedCategory.equals("School Supplies") && supplyTypes[2])
 							pr = "print";
 
-			        	Create.sendToDB(selectedCategory, tappedPoint, 0, "",  bb,  sc,  pr);
+			        	Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr);
 			        	
 				    	Intent myIntent = new Intent(getBaseContext(), FINMenu.class);
 			            startActivity(myIntent);
@@ -120,5 +111,15 @@ public class FINAddOutdoor extends MapActivity {
 			alert.show();
 			return true;
 	    }
+	}
+
+	public static GeoPoint getTappedPoint() {
+    	return tappedPoint;
+    }
+	
+    @Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

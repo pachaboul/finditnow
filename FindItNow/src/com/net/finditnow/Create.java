@@ -61,13 +61,11 @@ public class Create {
 		        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 		        
 		        // Special case for supplies.  Handle the optional parameters as needed
-		        if (category.toLowerCase().equals("supplies")) {
-		        	nameValuePairs.add(new BasicNameValuePair("category", "school_supplies"));
+		        nameValuePairs.add(new BasicNameValuePair("category", category));
+		        if (category.equals("school_supplies")) {
 		        	nameValuePairs.add(new BasicNameValuePair("bb", bb));
 		        	nameValuePairs.add(new BasicNameValuePair("sc", sc));
 		        	nameValuePairs.add(new BasicNameValuePair("print", print));
-		        } else {
-		        	nameValuePairs.add(new BasicNameValuePair("category", category.toLowerCase()));
 		        }
 		        
 		        // Add the floor ID, and if not in a building, the lat and long

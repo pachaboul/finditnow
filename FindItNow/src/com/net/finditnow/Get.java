@@ -37,12 +37,12 @@ public class Get {
 	 * It is used for plotting the locations properly on the map
 	 * 
 	 * @param category The category of items to retrieve
-	 * @param itemName If the category is supplies, the type of supplies to retrieve
+	 * @param item If the category is supplies, the type of supplies to retrieve
 	 * @param location The location of the user making the request
 	 * 
 	 * @return A JSONArray of locations, categories, or buildings from the database
 	 */
-	public static JSONArray requestFromDB(String category, String itemName, GeoPoint location) {
+	public static JSONArray requestFromDB(String category, String item, GeoPoint location) {
 
 		// Initialize input stream and response variables
 		String data = "";
@@ -61,18 +61,14 @@ public class Get {
 		        if (location != null) {
 		        	
 		  			List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();		  			
-		  			nameValuePairs.add(new BasicNameValuePair("cat", category));
 		  			
-		  			// If the itemName is not null, this is a request for supplies
-		  			if (itemName != null) {
-		  				String item = itemName;
-		  				if (item.equals("Blue books")) {
-		  					item = "blue_book";
-		  				} else if (item.equals("Scantrons")) {
-		  					item = "scantron";
-		  				}
-		  				nameValuePairs.add(new BasicNameValuePair("item", item));
-		  			} 
+		  			// If the itemName is not null, this is a request for school supplies
+		  			if (item != null) {
+		  				nameValuePairs.add(new BasicNameValuePair("cat", "supplies"));
+		  				nameValuePairs.add(new BasicNameValuePair("item", FINUtil.depluralize(item)));
+		  			} else {
+		  				nameValuePairs.add(new BasicNameValuePair("cat", category));
+		  			}
 		  			
 		  			// Add the lat and long of the user's location
 		  			nameValuePairs.add(new BasicNameValuePair("lat", location.getLatitudeE6()+""));

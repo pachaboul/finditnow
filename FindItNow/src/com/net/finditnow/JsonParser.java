@@ -13,8 +13,6 @@ package com.net.finditnow;
 //packages for handling JSON
 import java.util.HashMap;
 
-import android.util.Log;
-
 import com.google.android.maps.GeoPoint;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -43,6 +41,49 @@ public class JsonParser {
 	"floor_names"};
 
 	/**
+	 * parse a json string into a map of GeoPoint to Building
+	 *  
+	 * @param json the json string representation of an array of building objects
+	 * @return a map of location to its corresponding building object
+	 */
+	public static HashMap<GeoPoint, Building> parseBuildingJson(String json)
+	{
+		//used for parsing the JSON object
+		Gson gson = new Gson();
+		JsonStreamParser parser = new JsonStreamParser(json);
+		JsonArray arr = parser.next().getAsJsonArray();
+
+		//creates the map for information to be stored in
+		HashMap<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
+
+		for (int i = 0; i < arr.size(); i++)
+		{
+			if (arr.get(i).isJsonObject())
+			{
+				//Since the JsonArray contains whole bunch json array, we can get each one out
+				JsonObject ob = arr.get(i).getAsJsonObject();
+	
+				//place the information in the map with BuildingID as key
+				GeoPoint point = new GeoPoint( ob.get(BUILDING_NAMES[1]).getAsInt(),ob.get(BUILDING_NAMES[2]).getAsInt());
+	
+				//remove lat, long so it can be used for the Gson.fromJson
+				ob.remove(BUILDING_NAMES[1]);
+				ob.remove(BUILDING_NAMES[2]);
+	
+				//Log.i("log_tag", ob.toString());
+	
+				//converts a Json string directly to a building object
+				Building build = gson.fromJson(ob,Building.class);
+				
+				//puts it in the map
+				map.put(point, build);
+			}
+		}
+
+		return map;
+	}
+
+	/**
 	 * parses a Json Array into a map of locations and its corresponding CategoryItem
 	 * 
 	 * @param jsonArray jsonArray containing information
@@ -54,8 +95,7 @@ public class JsonParser {
 		HashMap<GeoPoint,CategoryItem> map = new HashMap<GeoPoint,CategoryItem>();
 		
 		if (json != null && !json.equals("")) {
-			Log.i("log", json);
-			
+
 			//String json = jsonArray.toString();
 			//used for parsing the JSON object
 			Gson gson = new Gson();
@@ -107,49 +147,6 @@ public class JsonParser {
 				}
 			}
 		} 
-		return map;
-	}
-
-	/**
-	 * parse a json string into a map of GeoPoint to Building
-	 *  
-	 * @param json the json string representation of an array of building objects
-	 * @return a map of location to its corresponding building object
-	 */
-	public static HashMap<GeoPoint, Building> parseBuildingJson(String json)
-	{
-		//used for parsing the JSON object
-		Gson gson = new Gson();
-		JsonStreamParser parser = new JsonStreamParser(json);
-		JsonArray arr = parser.next().getAsJsonArray();
-
-		//creates the map for information to be stored in
-		HashMap<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
-
-		for (int i = 0; i < arr.size(); i++)
-		{
-			if (arr.get(i).isJsonObject())
-			{
-				//Since the JsonArray contains whole bunch json array, we can get each one out
-				JsonObject ob = arr.get(i).getAsJsonObject();
-	
-				//place the information in the map with BuildingID as key
-				GeoPoint point = new GeoPoint( ob.get(BUILDING_NAMES[1]).getAsInt(),ob.get(BUILDING_NAMES[2]).getAsInt());
-	
-				//remove lat, long so it can be used for the Gson.fromJson
-				ob.remove(BUILDING_NAMES[1]);
-				ob.remove(BUILDING_NAMES[2]);
-	
-				//Log.i("log_tag", ob.toString());
-	
-				//converts a Json string directly to a building object
-				Building build = gson.fromJson(ob,Building.class);
-				
-				//puts it in the map
-				map.put(point, build);
-			}
-		}
-
 		return map;
 	}
 }
