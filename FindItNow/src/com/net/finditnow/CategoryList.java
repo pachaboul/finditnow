@@ -57,7 +57,7 @@ public class CategoryList extends ListActivity {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			myIntent.putExtra("category", category);
-    			myIntent.putExtra("itemName", FINUtil.deCapFirstChar(((TextView) v).getText().toString()));
+    			myIntent.putExtra("itemName", ((TextView) v).getText().toString());
     			startActivity(myIntent);
     		}
     	});
@@ -69,9 +69,9 @@ public class CategoryList extends ListActivity {
      */
 	private static ArrayList<String> supplies() {
 		ArrayList<String> list = new ArrayList<String>();
-		list.add("blue_books");
-		list.add("scantrons");
-		list.add("printing");
+		list.add("Blue Books");
+		list.add("Scantrons");
+		list.add("Printing");
 		return list;
 	}
 	
