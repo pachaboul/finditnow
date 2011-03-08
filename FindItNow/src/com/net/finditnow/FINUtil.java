@@ -49,7 +49,11 @@ public class FINUtil {
 	 * @return A new string with the above operations undone
 	 */
 	public static String deCapFirstChar(String str) {
-		return str.toLowerCase().replace(" ", "_");
+		if (str != null) {
+			return str.toLowerCase().replace(" ", "_");
+		} else {
+			return str;
+		}
 	}
 	
 	/**
@@ -58,7 +62,7 @@ public class FINUtil {
 	 * @return A singular string
 	 */
 	public static String depluralize(String str) {
-		if (str.endsWith("s")) {
+		if (str != null && str.endsWith("s")) {
 			return str.substring(0, str.length() - 1);
 		} else {
 			return str;
