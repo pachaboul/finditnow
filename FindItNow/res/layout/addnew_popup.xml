@@ -7,7 +7,7 @@
 	
 	<TextView
 		android:id="@+id/addnew_header"
-		android:text="Choose one"
+		android:text="Add New Item"
 		android:textColor="#FFFFFF"
 		android:textSize="25dp"
 		android:textStyle="bold"  
