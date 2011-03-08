@@ -35,8 +35,8 @@ public final class R {
         public static final int mailboxes_big=0x7f020012;
         public static final int restrooms=0x7f020013;
         public static final int restrooms_big=0x7f020014;
-        public static final int supplies=0x7f020015;
-        public static final int supplies_big=0x7f020016;
+        public static final int school_supplies=0x7f020015;
+        public static final int school_supplies_big=0x7f020016;
         public static final int vending=0x7f020017;
         public static final int vending_big=0x7f020018;
     }
