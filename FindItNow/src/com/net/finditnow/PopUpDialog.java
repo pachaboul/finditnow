@@ -41,7 +41,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.util.Log;
 /*
  * Design Principle: inheritance
  *   inherit most of the methods from Dialog. We only override those methods that
