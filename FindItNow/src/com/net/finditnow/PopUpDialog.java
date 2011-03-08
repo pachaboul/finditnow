@@ -41,6 +41,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.util.Log;
 /*
  * Design Principle: inheritance
  *   inherit most of the methods from Dialog. We only override those methods that
@@ -138,12 +139,11 @@ public class PopUpDialog extends Dialog{
 
 	    				item = catItem;
 	    				flrNames = allFlrName;
+	    				//auto scrolls to the item in view into the screen zone
 	    				lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 							public void onGroupExpand(int groupPosition) {
 				    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
-				    			
-				    			if (lv.getExpandableListAdapter().getChildrenCount(groupPosition) != 0)
-				    				lv.scrollBy(0, (groupPosition+1)*lv.getDividerHeight());			
+				    			lv.setSelectedGroup(groupPosition);		
 							}
 						});
 	    			}
