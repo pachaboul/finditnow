@@ -45,8 +45,9 @@ public class FINMenu extends Activity {
 	private static HashMap<GeoPoint, Building> buildingsMap;
 	private static HashMap<String, Integer> iconsMap;
 	private static ArrayList<String> categories;
-	
 	private static ArrayList<String> buildings;
+	
+	public static GeoPoint lastLocation;
 	
 	/**
      * Check for a connection, generate our categories and buildings list
@@ -59,6 +60,7 @@ public class FINMenu extends Activity {
 		
         // Check connection of Android device
 		checkConnection();
+		lastLocation = null;
 		
 		// Generate our list of categories from the database
 		JSONArray listOfCategories = Get.requestFromDB(null, null, null);
