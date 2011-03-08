@@ -65,7 +65,7 @@ public class Get {
 		  			// If the itemName is not null, this is a request for school supplies
 		  			if (item != null) {
 		  				nameValuePairs.add(new BasicNameValuePair("cat", "supplies"));
-		  				nameValuePairs.add(new BasicNameValuePair("item", FINUtil.depluralize(item)));
+		  				nameValuePairs.add(new BasicNameValuePair("item", FINUtil.deCapFirstChar(FINUtil.depluralize(item))));
 		  			} else {
 		  				nameValuePairs.add(new BasicNameValuePair("cat", category));
 		  			}
