@@ -221,7 +221,6 @@ public class FINMap extends MapActivity {
         locOverlay.enableMyLocation();
         
         // Attempt to detect the user's current location
-    	Toast.makeText(this, "Detecting your location, please wait...", Toast.LENGTH_SHORT).show();
     	location = locOverlay.getMyLocation();
     	
     	// Define an Android Runnable
@@ -233,7 +232,10 @@ public class FINMap extends MapActivity {
         		mapController.animateTo(location);
         	}
         }; 
-        locOverlay.runOnFirstFix(runnable);
+        if (!category.equals("buildings")) {
+        	Toast.makeText(this, "Getting a fix on your location...", Toast.LENGTH_SHORT).show();
+        	locOverlay.runOnFirstFix(runnable);
+        }
     }
     
     /**
@@ -308,6 +310,7 @@ public class FINMap extends MapActivity {
     		}
 
     		geoPointItem.put(point, item);
+    		mapController.animateTo(point);
     	}
     	
     	// Loop over the locations that we have retrieved and add them
