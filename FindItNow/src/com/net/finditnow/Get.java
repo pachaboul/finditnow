@@ -61,13 +61,11 @@ public class Get {
 		        if (location != null) {
 		        	
 		  			List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();		  			
+		  			nameValuePairs.add(new BasicNameValuePair("cat", category));
 		  			
 		  			// If the itemName is not null, this is a request for school supplies
 		  			if (item != null) {
-		  				nameValuePairs.add(new BasicNameValuePair("cat", "supplies"));
-		  				nameValuePairs.add(new BasicNameValuePair("item", FINUtil.deCapFirstChar(FINUtil.depluralize(item))));
-		  			} else {
-		  				nameValuePairs.add(new BasicNameValuePair("cat", category));
+		  				nameValuePairs.add(new BasicNameValuePair("item", item));
 		  			}
 		  			
 		  			// Add the lat and long of the user's location
