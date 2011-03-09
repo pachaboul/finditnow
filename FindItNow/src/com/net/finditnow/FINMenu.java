@@ -19,8 +19,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,23 +56,29 @@ public class FINMenu extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
 		
-		// Generate our list of categories from the database
-		JSONArray listOfCategories = Get.requestFromDB(null, null, null);
-		categories = getCategoriesList(listOfCategories);
-		Collections.sort(categories);
-		
-        // Store a map from categories to icons so that other modules can use it
-        iconsMap = createIconsList(categories, getApplicationContext());
-		
-		// Generate list of buildings from the database
-		JSONArray listOfBuildings = Get.requestFromDB("", null, null);
-		buildingsMap = JsonParser.parseBuildingJson(listOfBuildings.toString());
-		buildings = createBuildingList(buildingsMap);
-		Collections.sort(buildings);
-		
-		// Populate the grid with category buttons.
-		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
-        buttonGrid.setAdapter(new ButtonAdapter(this));
+        // Check connection of Android device
+		if (isOnline(this)) {
+			
+			// Generate our list of categories from the database
+			JSONArray listOfCategories = Get.requestFromDB(null, null, null);
+			categories = getCategoriesList(listOfCategories);
+			Collections.sort(categories);
+			
+	        // Store a map from categories to icons so that other modules can use it
+	        iconsMap = createIconsList(categories, getApplicationContext());
+			
+			// Generate list of buildings from the database
+			JSONArray listOfBuildings = Get.requestFromDB("", null, null);
+			buildingsMap = JsonParser.parseBuildingJson(listOfBuildings.toString());
+			buildings = createBuildingList(buildingsMap);
+			Collections.sort(buildings);
+			
+			// Populate the grid with category buttons.
+			GridView buttonGrid = (GridView) findViewById(R.id.gridview);
+	        buttonGrid.setAdapter(new ButtonAdapter(this));
+		} else {
+			connectionError();
+		}
 	}
 	
 	/**
@@ -330,6 +340,43 @@ public class FINMenu extends Activity {
 	            return super.onOptionsItemSelected(item);
         }
     }
+    
+	/**
+	 * This method returns whether the user's internet connection is functioning
+	 * 
+	 * @param context The context with which to do the check
+	 * 
+	 * @return True if the internet connection is functional
+	 */
+	public static boolean isOnline(Context context) {
+		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		
+		return (netInfo != null && netInfo.isConnected());
+	}
+	
+	/**
+     * Checks for an Internet connection.
+     * If there is no connection, or we are unable to retrieve information about our connection,
+     * display a message alerting the user about lack of connection.
+     * 
+     * @param context The context with which to do the check
+     * 
+	 * @return True if the internet connection is functional
+     */
+	public void connectionError() {	
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Error: You must enable your data connection (Wifi or 3G) to use this app")
+		
+			.setNeutralButton("Exit", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					FINMenu.this.finish();
+				}
+			});
+		
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
     
     /**
      * Prepares the options menu before being displayed.
