@@ -75,11 +75,11 @@ public class FINAddIndoor extends Activity {
 			if (selectedCategory.equals("School Supplies") && supplyTypes[2])
 				pr = "print";
 
-			Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), null, map.get(selectedFloor), "", bb, sc, pr);
+			String response = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), null, map.get(selectedFloor), "", bb, sc, pr);
 
 			Intent myIntent = new Intent(v.getContext(), FINMenu.class);
 			startActivity(myIntent);
-			Toast.makeText(getBaseContext(), selectedCategory + " location added successfully!", Toast.LENGTH_LONG).show();
+			Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG).show();
 		}
 	};
 

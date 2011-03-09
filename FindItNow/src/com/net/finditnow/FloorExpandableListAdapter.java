@@ -128,9 +128,9 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	    			//confirms the action and perform the update accordingly 
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
-	    		        	    Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos));
+	    		        	    String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos));
 	    		                dialog.dismiss();
-	    		                Toast.makeText(context, "Your report was sent.", Toast.LENGTH_LONG).show();
+	    		                Toast.makeText(context, response, Toast.LENGTH_LONG).show();
 	    		           }
 	    		       });
 	    			//cancels the action if the user didn't mean to do it
