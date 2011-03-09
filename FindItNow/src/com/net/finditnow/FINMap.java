@@ -46,14 +46,14 @@ public class FINMap extends MapActivity {
 	private UWOverlay itemizedOverlay;
 
 	// Shared static variables that the other modules can access
-	private static String category;    
-	private static String itemName;
+	private String category;    
+	private String itemName;
 
 	// Location and GeoPoint Variables
 	// DESIGN PATTERN: Encapsulation.  Location is sensitive information, and thus private
 	// 				   But can be accessed via getLocations()
-	private static GeoPoint location;    
-	private static HashMap<GeoPoint, CategoryItem> geoPointItem;
+	private GeoPoint location;    
+	private HashMap<GeoPoint, CategoryItem> geoPointItem;
 
 	// A constant representing the default location of the user
 	// Change this the coordinates of another campus if desired (defaults to UW Seattle)
@@ -82,9 +82,6 @@ public class FINMap extends MapActivity {
 			setTitle("FindItNow > " + FINUtil.capFirstChar(category) + " > " + FINUtil.capFirstChar(itemName));
 		}
 
-		// Create the map and the map view and detect user location
-		createMap();
-		locateUser();
 
 		// Retrieve locations from the database and parse them
 		JSONArray listOfLocations = Get.requestFromDB(category, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), DEFAULT_LOCATION);
@@ -93,6 +90,10 @@ public class FINMap extends MapActivity {
 		} else {
 			geoPointItem = JsonParser.parseCategoryJson(listOfLocations.toString());
 		}
+		
+		// Create the map and the map view and detect user location
+		createMap();
+		locateUser();
 
 		// Add these locations to the map view
 		placeOverlays();
@@ -120,11 +121,11 @@ public class FINMap extends MapActivity {
 	public void onResume() {
 		super.onResume();
 		locOverlay.enableMyLocation();
-		
-		location = FINSplash.lastLocation;
-		mapController.setCenter(FINSplash.mapCenter);
-		mapController.setZoom(FINSplash.zoomLevel);
-		
+
+        location = FINSplash.lastLocation;
+        mapController.setCenter(FINSplash.mapCenter);
+        mapController.setZoom(FINSplash.zoomLevel);
+        
 		mapOverlays.add(locOverlay);
 	}
 
@@ -165,7 +166,7 @@ public class FINMap extends MapActivity {
 	 * This method returns the category selected by the user
 	 * @return A String representing the category chosen
 	 */
-	public static String getCategory() {
+	public String getCategory() {
 		return category;
 	}
 	/**
@@ -173,7 +174,7 @@ public class FINMap extends MapActivity {
 	 * @param p A GeoPoint representing the location to retrieve the category item
 	 * @return A CategoryItem object containing the list of locations
 	 */
-	public static CategoryItem getCategoryItem(GeoPoint p){
+	public CategoryItem getCategoryItem(GeoPoint p){
 		return geoPointItem.get(p);
 	}
 
@@ -181,14 +182,14 @@ public class FINMap extends MapActivity {
 	 * This method returns the item name selected by the user if supplies is chosen
 	 * @return A String representing the item name, null if supplies is not chosen
 	 */
-	public static String getItemName() {
+	public String getItemName() {
 		return itemName;
 	}
 	/**
 	 * This method returns the user's current location
 	 * @return GeoPoint representing the user's location
 	 */
-	public static GeoPoint getLocation() {
+	public GeoPoint getLocation() {
 		return location;
 	}
 	/**
@@ -217,7 +218,7 @@ public class FINMap extends MapActivity {
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
 		drawable = this.getResources().getDrawable(FINMenu.getIcon(getCategory()));
-		itemizedOverlay = new UWOverlay(drawable, this);
+		itemizedOverlay = new UWOverlay(drawable, this, category, itemName, location,geoPointItem);
 	}
 
 	/**
