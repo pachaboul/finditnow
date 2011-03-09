@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /*
  * Design Principle: inheritance
@@ -129,6 +130,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	    		           public void onClick(DialogInterface dialog, int id) {
 	    		        	    Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos));
 	    		                dialog.dismiss();
+	    		                Toast.makeText(context, "Your report was sent.", Toast.LENGTH_LONG).show();
 	    		           }
 	    		       });
 	    			//cancels the action if the user didn't mean to do it

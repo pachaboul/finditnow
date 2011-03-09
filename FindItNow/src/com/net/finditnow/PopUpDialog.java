@@ -41,6 +41,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 /*
  * Design Principle: inheritance
  *   inherit most of the methods from Dialog. We only override those methods that
@@ -188,6 +189,7 @@ public class PopUpDialog extends Dialog{
 	    		           public void onClick(DialogInterface dialog, int id) {
 	    		        	   Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0));
 	    		        	   dialog.dismiss();
+	    		               Toast.makeText(getContext(), "Your report was sent.", Toast.LENGTH_LONG).show();
 	    		           }
 	    		       });
 	    			//cancels the action if the user didn't mean to do it
