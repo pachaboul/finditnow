@@ -195,9 +195,9 @@ public class PopUpDialog extends Dialog{
 	    			//confirms the action and perform the update accordingly 
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
-	    		        	   Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0));
+	    		        	   String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0));
 	    		        	   dialog.dismiss();
-	    		               Toast.makeText(getContext(), "Your report was sent.", Toast.LENGTH_LONG).show();
+	    		               Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 	    		           }
 	    		       });
 	    			//cancels the action if the user didn't mean to do it
