@@ -23,7 +23,7 @@
 		            android:layout_height="wrap_content"
 		            android:textColor="#E07E1B"
 		            android:textStyle="bold"
-		            android:text="Report Item Missing"
+		            android:text="Not Here?"
 		            android:layout_alignParentRight="true"
 		            android:background="@drawable/fin_clickable_button2"
 		    /> 
