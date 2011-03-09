@@ -95,8 +95,9 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 
 		// Retrieve the floors, special info, and category of the location
 		int iconId = FINMenu.getIcon(category);
+		String newCategory = category;
 		if (category.equals("school_supplies")) {
-			category = itemName;
+			 newCategory = itemName;
 		}
 		CategoryItem catItem = items.get(itemLocation);
 
@@ -111,7 +112,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		}
 
 		// Building the pop-up dialog with this information and then show it
-		Dialog popUp = new PopUpDialog(context, buildingName, category,
+		Dialog popUp = new PopUpDialog(context, buildingName, newCategory,
 				catItem, distance, walkingTime, iconId, isOutdoor,allFlrName);
 		popUp.show();
 
