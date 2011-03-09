@@ -19,12 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,10 +43,6 @@ public class FINMenu extends Activity {
 	private static ArrayList<String> categories;
 	private static ArrayList<String> buildings;
 	
-	public static GeoPoint lastLocation;
-	public static GeoPoint mapCenter;
-	public static int zoomLevel;
-	
 	/**
      * Check for a connection, generate our categories and buildings list
      * from the database, and set up the grid layout of buttons.
@@ -59,12 +51,6 @@ public class FINMenu extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
-		
-        // Check connection of Android device
-		checkConnection();
-		lastLocation = null;
-		mapCenter = FINMap.DEFAULT_LOCATION;
-		zoomLevel = 17;
 		
 		// Generate our list of categories from the database
 		JSONArray listOfCategories = Get.requestFromDB(null, null, null);
@@ -316,48 +302,6 @@ public class FINMenu extends Activity {
     		return icon;
     	}
     }
-	
-    /**
-	 * This method returns whether the user's internet connection is functioning
-	 * 
-	 * @param context The context with which to do the check
-	 * 
-	 * @return True if the internet connection is functional
-	 */
-	public static boolean isOnline(Context context) {
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-     * Checks for an Internet connection.
-     * If there is no connection, or we are unable to retrieve information about our connection,
-     * display a message alerting the user about lack of connection.
-     * 
-     * @param context The context with which to do the check
-     * 
-	 * @return True if the internet connection is functional
-     */
-	public void checkConnection() {
-		if (!isOnline(this)) {		
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("Error: You must enable your data connection (Wifi or 3G) to use this app")
-			
-				.setNeutralButton("Exit", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						FINMenu.this.finish();
-					}
-				});
-			
-			AlertDialog alert = builder.create();
-			alert.show();
-		}
-	}
     
     /**
      * Creates the Android options menu

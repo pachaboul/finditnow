@@ -106,9 +106,9 @@ public class FINMap extends MapActivity {
 		super.onPause();
 		locOverlay.disableMyLocation();
 		
-		FINMenu.lastLocation = location;
-		FINMenu.mapCenter = mapView.getMapCenter();
-		FINMenu.zoomLevel = mapView.getZoomLevel();
+		FINSplash.lastLocation = location;
+		FINSplash.mapCenter = mapView.getMapCenter();
+		FINSplash.zoomLevel = mapView.getZoomLevel();
 		
 		mapOverlays.remove(locOverlay);
 	}
@@ -121,9 +121,9 @@ public class FINMap extends MapActivity {
 		super.onResume();
 		locOverlay.enableMyLocation();
 		
-		location = FINMenu.lastLocation;
-		mapController.setCenter(FINMenu.mapCenter);
-		mapController.setZoom(FINMenu.zoomLevel);
+		location = FINSplash.lastLocation;
+		mapController.setCenter(FINSplash.mapCenter);
+		mapController.setZoom(FINSplash.zoomLevel);
 		
 		mapOverlays.add(locOverlay);
 	}
@@ -253,7 +253,8 @@ public class FINMap extends MapActivity {
 			}
 		};
 
-		if (!category.equals("buildings") && location == null) {
+		// In this case, we have cleanly started the app and should fix on user location
+		if (!category.equals("buildings") && FINSplash.lastLocation == null) {
 			Toast.makeText(this, "Getting a fix on your location...", Toast.LENGTH_SHORT).show();
 			locOverlay.runOnFirstFix(runnable);
 		}
