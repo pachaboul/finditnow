@@ -27,6 +27,7 @@ package com.net.finditnow;
 
 //Necessary for using certain methods
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -127,8 +128,6 @@ public class PopUpDialog extends Dialog{
 	    			//Button toggle = (Button) findViewById(R.id.showFlrButt);
 	    			TextView toggle = (TextView) findViewById(R.id.showFlrButt);
 	    			
-	    			CategoryItem item = new CategoryItem();
-	    			String[] flrNames = new String[0];
 	    			// Show all the floor info.
 	    			if (lv.getCount() == 0)
 	    			{
@@ -137,8 +136,7 @@ public class PopUpDialog extends Dialog{
 	    				if (allFlrName.length > 3)
 	    					lv.getLayoutParams().height = 150;
 
-	    				item = catItem;
-	    				flrNames = allFlrName;
+	    				
 	    				//auto scrolls to the item in view into the screen zone
 	    				lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 							public void onGroupExpand(int groupPosition) {
@@ -146,14 +144,25 @@ public class PopUpDialog extends Dialog{
 				    			lv.setSelectedGroup(groupPosition);		
 							}
 						});
+	    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),catItem,
+		    					iconId, category, allFlrName));
+	    				
+	    				//scrolls the view to the lowest floor which contains the category
+	    				int pos = 0;
+	    				String target = catItem.getFloor_names().get(catItem.getFloor_names().size()-1);
+	    				for (int i = allFlrName.length -1 ; i >= 0;i--)
+	    					if ( target.equals(allFlrName[i]))
+	    						pos = i;
+	    				lv.setSelectedGroup(pos);
 	    			}
 	    			// Hide all the floor info.
 	    			else {
 	    				toggle.setText("Show Floors");
 	    				lv.getLayoutParams().height = 0;
+	    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),new CategoryItem(),
+		    					iconId, category, new String[0]));
 	    			}
-	    			lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),item,
-	    					iconId, category, flrNames));
+	    			
 	    		}
 	    	});
 	    	//outdoor information is not needed in this case, make
