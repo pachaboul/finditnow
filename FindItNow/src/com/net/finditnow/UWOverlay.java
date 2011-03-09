@@ -86,8 +86,8 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	protected boolean onTap(int index) {
 
 		// Retrieve the item that was tapped
-		OverlayItem item = mapOverlays.get(index);
-		GeoPoint itemLocation = item.getPoint();
+		OverlayItem overlay = mapOverlays.get(index);
+		GeoPoint itemLocation = overlay.getPoint();
 
 		// Calculate the distance and the walking time to this location
 		BigDecimal distance = FINMap.distanceBetween(FINMap.getLocation(), itemLocation);
@@ -95,9 +95,9 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 
 		// Retrieve the floors, special info, and category of the location
 		int iconId = FINMenu.getIcon(category);
-		String newCategory = category;
+		String item = category;
 		if (category.equals("school_supplies")) {
-			 newCategory = itemName;
+			item = itemName;
 		}
 		CategoryItem catItem = items.get(itemLocation);
 
@@ -112,8 +112,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		}
 
 		// Building the pop-up dialog with this information and then show it
-		Dialog popUp = new PopUpDialog(context, buildingName, newCategory,
-				catItem, distance, walkingTime, iconId, isOutdoor,allFlrName);
+		Dialog popUp = new PopUpDialog(context, buildingName, item, category, catItem, distance, walkingTime, iconId, isOutdoor, allFlrName);
 		popUp.show();
 
 		return true;

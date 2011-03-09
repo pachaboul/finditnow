@@ -55,6 +55,7 @@ public class PopUpDialog extends Dialog{
 	private BigDecimal distance;
 	private int walkTime;
 	private String category;
+	private String dbCategory;
 	private int iconId;
 	private boolean isOutdoor;
 	private String[] allFlrName;
@@ -76,7 +77,7 @@ public class PopUpDialog extends Dialog{
 	 * 
 	 */
 	public PopUpDialog(Context context,
-				String buildName, String category, CategoryItem catItem, BigDecimal distance, int walkingTime,
+				String buildName, String category, String dbCategory, CategoryItem catItem, BigDecimal distance, int walkingTime,
 				int iconId, boolean isOutdoor, String[] allFlrName)
 	{
 		super(context);
@@ -86,6 +87,7 @@ public class PopUpDialog extends Dialog{
 		this.distance = distance;
 		this.walkTime = walkingTime;
 		this.category = category;
+		this.dbCategory = dbCategory;
 		this.iconId = iconId;
 		this.isOutdoor = isOutdoor;
 		this.allFlrName = allFlrName;
@@ -143,7 +145,7 @@ public class PopUpDialog extends Dialog{
 							}
 						});
 	    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),catItem,
-		    					iconId, category, allFlrName));
+		    					iconId, category, dbCategory, allFlrName));
 	    				
 	    				//scrolls the view to the lowest floor which contains the category
 	    				int pos = 0;
@@ -158,7 +160,7 @@ public class PopUpDialog extends Dialog{
 	    				toggle.setText("Show Floors");
 	    				lv.getLayoutParams().height = 0;
 	    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),new CategoryItem(),
-		    					iconId, category, new String[0]));
+		    					iconId, category, dbCategory, new String[0]));
 	    			}
 	    			
 	    		}
@@ -184,7 +186,7 @@ public class PopUpDialog extends Dialog{
 	    			//confirms the action and perform the update accordingly 
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
-	    		        	   Update.updateDB(FINUtil.deCapFirstChar(category), catItem.getId().get(0));
+	    		        	   Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0));
 	    		        	   dialog.dismiss();
 	    		           }
 	    		       });
