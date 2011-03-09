@@ -48,6 +48,8 @@ public class FINMenu extends Activity {
 	private static ArrayList<String> buildings;
 	
 	public static GeoPoint lastLocation;
+	public static GeoPoint mapCenter;
+	public static int zoomLevel;
 	
 	/**
      * Check for a connection, generate our categories and buildings list
@@ -61,6 +63,8 @@ public class FINMenu extends Activity {
         // Check connection of Android device
 		checkConnection();
 		lastLocation = null;
+		mapCenter = FINMap.DEFAULT_LOCATION;
+		zoomLevel = 17;
 		
 		// Generate our list of categories from the database
 		JSONArray listOfCategories = Get.requestFromDB(null, null, null);

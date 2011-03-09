@@ -105,8 +105,12 @@ public class FINMap extends MapActivity {
 	public void onPause() {
 		super.onPause();
 		locOverlay.disableMyLocation();
+		
 		FINMenu.lastLocation = location;
-		mapOverlays.clear();
+		FINMenu.mapCenter = mapView.getMapCenter();
+		FINMenu.zoomLevel = mapView.getZoomLevel();
+		
+		mapOverlays.remove(locOverlay);
 	}
 
 	/**
@@ -116,7 +120,11 @@ public class FINMap extends MapActivity {
 	public void onResume() {
 		super.onResume();
 		locOverlay.enableMyLocation();
+		
 		location = FINMenu.lastLocation;
+		mapController.setCenter(FINMenu.mapCenter);
+		mapController.setZoom(FINMenu.zoomLevel);
+		
 		mapOverlays.add(locOverlay);
 	}
 
@@ -210,10 +218,6 @@ public class FINMap extends MapActivity {
 		mapOverlays = mapView.getOverlays();
 		drawable = this.getResources().getDrawable(FINMenu.getIcon(getCategory()));
 		itemizedOverlay = new UWOverlay(drawable, this);
-
-		// Zoom out enough
-		mapController.setZoom(17);
-		mapController.setCenter(DEFAULT_LOCATION);
 	}
 
 	/**
@@ -228,6 +232,7 @@ public class FINMap extends MapActivity {
 	 * This method locates the user and displays the user's location in an overlay icon
 	 */
 	private void locateUser() {
+		
 		// Define a new LocationOverlay and enable it
 		locOverlay = new MyLocationOverlay(this, mapView) {
 
