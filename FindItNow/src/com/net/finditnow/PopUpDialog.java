@@ -172,7 +172,15 @@ public class PopUpDialog extends Dialog{
 	    	outDoor.getLayoutParams().height = 0;
     	} else {
     		String spInfo = catItem.getInfo().get(0).replace("\n", "<br />");
-			outDoor.setText(Html.fromHtml(spInfo));
+    		
+    		// If there's no special info, hide the outdoor info section
+    		// (it would have added unnecessary padding)
+    		if (spInfo == null || spInfo.equals("")) {
+    			outDoor.setVisibility(View.INVISIBLE);
+    	    	outDoor.getLayoutParams().height = 0;
+    		} else {
+    			outDoor.setText(Html.fromHtml(spInfo));
+    		}
 
 			butt.setText("Nothing Here?");
 			
