@@ -26,12 +26,12 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:textColor="#FFF"
-			android:layout_marginBottom="15dp"
    		/>
     <TextView android:id="@+id/distanceText"
     		  android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:textColor="#FFF"
+			  android:layout_marginTop="15dp"
               />
 	<TextView android:id="@+id/timeReachText"
     		  android:layout_width="fill_parent"
