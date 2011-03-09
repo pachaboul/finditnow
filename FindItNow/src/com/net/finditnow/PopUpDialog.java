@@ -171,7 +171,7 @@ public class PopUpDialog extends Dialog{
     		String spInfo = catItem.getInfo().get(0).replace("\n", "<br />");
 			outDoor.setText(Html.fromHtml(spInfo));
 
-			butt.setText("Report Item Missing");
+			butt.setText("Not Here?");
 			
 			butt.setOnClickListener( new View.OnClickListener()
 	    	{
