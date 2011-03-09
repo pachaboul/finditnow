@@ -181,7 +181,7 @@ public class PopUpDialog extends Dialog{
 	    		{
 	    			//pops a Dialog to confirm the user's intent
 	    			AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-	    			builder.setMessage("Are you sure that this " + category.replace("_", " ") + " location is not here?");
+	    			builder.setMessage("Are you sure that this " + category.replace("_", " ").toLowerCase() + " location is not here?");
 	    			builder.setCancelable(false);
 	    			//confirms the action and perform the update accordingly 
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
