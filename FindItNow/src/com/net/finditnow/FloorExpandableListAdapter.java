@@ -33,6 +33,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	private Context context;			
 	private int iconId;				//id of the category's icon
 	private String category;		//category
+	private String dbCategory;
 	private String[] allFlrName;
 	
 	private int pos;
@@ -47,12 +48,13 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @param category - the category currently displaying
 	 */
 	public FloorExpandableListAdapter(Context context,CategoryItem catItem,
-			int iconId, String category, String[] allFlrName) {
+			int iconId, String category, String dbCategory, String[] allFlrName) {
 		super();
 		this.context = context;
 		this.catItem = catItem;
 		this.iconId = iconId;
 		this.category = category;
+		this.dbCategory = dbCategory;
 		this.allFlrName = allFlrName;
 	}
 
@@ -125,7 +127,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	    			//confirms the action and perform the update accordingly 
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
-	    		        	    Update.updateDB(FINUtil.deCapFirstChar(category), catItem.getId().get(pos));
+	    		        	    Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos));
 	    		                dialog.dismiss();
 	    		           }
 	    		       });
