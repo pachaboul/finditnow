@@ -8,6 +8,7 @@ package com.net.finditnow;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -22,6 +23,10 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
         // Define a list of overlay items and the context for the overlay
         private ArrayList<OverlayItem> mapOverlays;
         private Context context;
+        private String category;
+        private String itemName;
+        private GeoPoint location;
+        private HashMap<GeoPoint, CategoryItem> items;
        
         /**
          * A constructor of the UWOverlay class
@@ -44,7 +49,22 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
                 mapOverlays = new ArrayList<OverlayItem>();
                 this.context = context;
         }
-
+        /**
+         * A custom constructor of the UWOverlay class which accepts lots of information
+         *
+         * @param defaultMarker The default icon to use on the overlay
+         * @param context The context in which the overlay is created
+         */
+        public UWOverlay(Drawable defaultMarker, Context context, String category, 
+        			String itemName, GeoPoint location, HashMap<GeoPoint, CategoryItem> items) {
+                super(boundCenterBottom(defaultMarker));
+                mapOverlays = new ArrayList<OverlayItem>();
+                this.context = context;
+                this.category = category;
+                this.itemName = itemName;
+                this.location = location;
+                this.items = items;
+        }
         /**
          * This method adds the given overlay to the map and then repopulates it
          * @param overlay The overlay to add
@@ -73,16 +93,15 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
             GeoPoint itemLocation = item.getPoint();
            
             // Calculate the distance and the walking time to this location
-            BigDecimal distance = FINMap.distanceBetween(FINMap.getLocation(), itemLocation);
+            BigDecimal distance = FINMap.distanceBetween(location, itemLocation);
             int walkingTime = FINMap.walkingTime(distance, 35);
 
             // Retrieve the floors, special info, and category of the location
-            String category = FINMap.getCategory();
             int iconId = FINMenu.getIcon(category);
             if (category.equals("school_supplies")) {
-                    category = FINMap.getItemName();
+                    category = itemName;
             }
-            CategoryItem catItem = FINMap.getCategoryItem(itemLocation);
+            CategoryItem catItem = items.get(itemLocation);
             
             // Assume it is an outdoor location, but if it is not, grab the building name
             String buildingName = "Outdoor Location"; 
