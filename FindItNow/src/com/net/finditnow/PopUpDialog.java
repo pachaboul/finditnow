@@ -171,7 +171,7 @@ public class PopUpDialog extends Dialog{
     		String spInfo = catItem.getInfo().get(0).replace("\n", "<br />");
 			outDoor.setText(Html.fromHtml(spInfo));
 
-			butt.setText("Not Here?");
+			butt.setText("Nothing Here?");
 			
 			butt.setOnClickListener( new View.OnClickListener()
 	    	{
