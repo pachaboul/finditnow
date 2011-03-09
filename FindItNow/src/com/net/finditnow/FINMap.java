@@ -51,8 +51,8 @@ public class FINMap extends MapActivity {
 
 	// Location and GeoPoint Variables
 	// DESIGN PATTERN: Encapsulation.  Location is sensitive information, and thus private
-	// 				   But can be accessed via getLocations()
-	private GeoPoint location;    
+	// 				   But can be accessed via getLocation()
+	private static GeoPoint location;    
 	private HashMap<GeoPoint, CategoryItem> geoPointItem;
 
 	// A constant representing the default location of the user
@@ -189,7 +189,7 @@ public class FINMap extends MapActivity {
 	 * This method returns the user's current location
 	 * @return GeoPoint representing the user's location
 	 */
-	public GeoPoint getLocation() {
+	public static GeoPoint getLocation() {
 		return location;
 	}
 	/**
@@ -218,7 +218,7 @@ public class FINMap extends MapActivity {
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
 		drawable = this.getResources().getDrawable(FINMenu.getIcon(getCategory()));
-		itemizedOverlay = new UWOverlay(drawable, this, category, itemName, location,geoPointItem);
+		itemizedOverlay = new UWOverlay(drawable, this, category, itemName, geoPointItem);
 	}
 
 	/**
