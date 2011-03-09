@@ -87,11 +87,11 @@ public class FINAddOutdoor extends MapActivity {
 			        public void onClick(DialogInterface dialog, int id) {
 						String bb = "", sc = "", pr = "";
 						if (selectedCategory.equals("School Supplies") && supplyTypes[0])
-							bb = "bb";
+							bb = "bb"; 
 						if (selectedCategory.equals("School Supplies") && supplyTypes[1])
 							sc = "sc";
 						if (selectedCategory.equals("School Supplies") && supplyTypes[2])
-							pr = "print";
+	 						pr = "print";
 
 			        	Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr);
 			        	
