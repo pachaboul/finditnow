@@ -90,7 +90,7 @@ public class FINMap extends MapActivity {
 		} else {
 			geoPointItem = JsonParser.parseCategoryJson(listOfLocations.toString());
 		}
-		
+
 		// Create the map and the map view and detect user location
 		createMap();
 		locateUser();
@@ -106,11 +106,11 @@ public class FINMap extends MapActivity {
 	public void onPause() {
 		super.onPause();
 		locOverlay.disableMyLocation();
-		
+
 		FINSplash.lastLocation = location;
 		FINSplash.mapCenter = mapView.getMapCenter();
 		FINSplash.zoomLevel = mapView.getZoomLevel();
-		
+
 		mapOverlays.remove(locOverlay);
 	}
 
@@ -122,10 +122,10 @@ public class FINMap extends MapActivity {
 		super.onResume();
 		locOverlay.enableMyLocation();
 
-        location = FINSplash.lastLocation;
-        mapController.setCenter(FINSplash.mapCenter);
-        mapController.setZoom(FINSplash.zoomLevel);
-        
+		location = FINSplash.lastLocation;
+		mapController.setCenter(FINSplash.mapCenter);
+		mapController.setZoom(FINSplash.zoomLevel);
+
 		mapOverlays.add(locOverlay);
 	}
 
@@ -233,7 +233,7 @@ public class FINMap extends MapActivity {
 	 * This method locates the user and displays the user's location in an overlay icon
 	 */
 	private void locateUser() {
-		
+
 		// Define a new LocationOverlay and enable it
 		locOverlay = new MyLocationOverlay(this, mapView) {
 
