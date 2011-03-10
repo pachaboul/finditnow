@@ -20,13 +20,14 @@ public class FINAddIndoor extends Activity {
 	String selectedFloor;
 	String selectedCategory;
 	boolean[] supplyTypes;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_indoor);
 		setTitle("FindItNow > Add New Item > Indoor Item");
 
+		// Set up spinner for building selection
 		Spinner bSpinner = (Spinner) findViewById(R.id.addnew_bspinner);
 		ArrayAdapter<String> bAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, FINMenu
@@ -36,25 +37,26 @@ public class FINAddIndoor extends Activity {
 		bSpinner.setAdapter(bAdapter);
 		bSpinner.setOnItemSelectedListener(bspinner_listener);
 		selectedBuilding = FINMenu.getBuilding(FINMenu
-				.getGeoPointFromBuilding(FINMenu.getBuildingsList().get(0))); // uhhhh
-																				// well
-																				// it
-																				// works...
+				.getGeoPointFromBuilding(FINMenu.getBuildingsList().get(0)));
 
+		//Get category and types of school supplies from previous activity
 		Bundle extras = getIntent().getExtras();
 		selectedCategory = extras.getString("selectedCategory");
 		supplyTypes = extras.getBooleanArray("supplyTypes");
 
+		//Set up "add item" button
 		Button addItem = (Button) findViewById(R.id.addnew_additem);
 		addItem.setOnClickListener(additem_listener);
 	}
 
+	//Listener for building spinner
 	private OnItemSelectedListener bspinner_listener = new OnItemSelectedListener() {
 		public void onItemSelected(AdapterView<?> parent, View arg1, int pos,
 				long arg3) {
 			selectedBuilding = FINMenu.getBuilding(FINMenu
 					.getGeoPointFromBuilding(parent.getItemAtPosition(pos)
 							.toString()));
+			//Set floor spinner accordingly
 			setFloorSpinner();
 		}
 
@@ -64,6 +66,7 @@ public class FINAddIndoor extends Activity {
 		}
 	};
 
+	//Listener for "add item" button
 	private OnClickListener additem_listener = new OnClickListener() {
 		public void onClick(View v) {
 			HashMap<String, Integer> map = selectedBuilding.floorMap();
@@ -74,15 +77,22 @@ public class FINAddIndoor extends Activity {
 				sc = "sc";
 			if (selectedCategory.equals("School Supplies") && supplyTypes[2])
 				pr = "print";
+			
+			//Send new item to database
+			String response = Create.sendToDB(FINUtil
+					.deCapFirstChar(selectedCategory), null, map
+					.get(selectedFloor), "", bb, sc, pr);
 
-			String response = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), null, map.get(selectedFloor), "", bb, sc, pr);
-
+			//Return to categories menu
 			Intent myIntent = new Intent(v.getContext(), FINMenu.class);
 			startActivity(myIntent);
-			Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG).show();
+			//Display response from server in popup
+			Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG)
+					.show();
 		}
 	};
 
+	//Listener for floor spinner
 	private OnItemSelectedListener fspinner_listener = new OnItemSelectedListener() {
 		public void onItemSelected(AdapterView<?> parent, View arg1, int pos,
 				long arg3) {
@@ -90,11 +100,12 @@ public class FINAddIndoor extends Activity {
 		}
 
 		public void onNothingSelected(AdapterView<?> arg0) {
-			// TODO Auto-generated method stub
-
 		}
 	};
 
+	/**
+	 * Set up the spinner for selecting a floor based on current choice of building
+	 */
 	protected void setFloorSpinner() {
 		Spinner fSpinner = (Spinner) findViewById(R.id.addnew_fspinner);
 		ArrayAdapter<String> fAdapter = new ArrayAdapter<String>(this,

@@ -1,5 +1,5 @@
 package com.net.finditnow;
-//Blah
+
 import java.util.ArrayList;
 
 import android.app.Activity;

@@ -79,29 +79,37 @@ public class FINAddOutdoor extends MapActivity {
 	    public boolean onTap(GeoPoint p, MapView mapView) {   
         	tappedPoint = p;
         	
+        	//Setup and show confirmation dialog for tapped point
         	AlertDialog.Builder builder = new AlertDialog.Builder(mapView.getContext());
 			builder.setMessage("Is this Location Correct?")
 			
 				.setCancelable(false)
 			    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int id) {
+			        	//Point is confirmed
+			        	
 						String bb = "", sc = "", pr = "";
+						//Handle special case of school supplies
 						if (selectedCategory.equals("School Supplies") && supplyTypes[0])
 							bb = "bb"; 
 						if (selectedCategory.equals("School Supplies") && supplyTypes[1])
 							sc = "sc";
 						if (selectedCategory.equals("School Supplies") && supplyTypes[2])
 	 						pr = "print";
-
+						
+						//Send new item to database
 			        	String response = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr);
 			        	
+			        	//Return to categories screen
 				    	Intent myIntent = new Intent(getBaseContext(), FINMenu.class);
 			            startActivity(myIntent);
+			            //Display popup message with response from server
 			            Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG).show();
 			        }
 			    })
 			    .setNegativeButton("No", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int id) {
+			        	//New location not confirmed, try again
 			        	Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
 			            dialog.cancel();
 			        }
@@ -119,7 +127,6 @@ public class FINAddOutdoor extends MapActivity {
 	
     @Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
