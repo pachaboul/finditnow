@@ -110,7 +110,7 @@ public class Get {
 		} catch (JSONException e) {
 			Log.e("log_tag", "Error converting response to JSON " + e.toString());
 		}
-		Log.v("Test", infoArray.toString());
+
 	  	return infoArray;
 	}
 }
