@@ -57,8 +57,12 @@ public class FINMenu extends Activity {
 		setContentView(R.layout.menu);
 		
         // Check connection of Android device
-		if (isOnline(this)) {
-			
+		ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectionChecker conCheck = new ConnectionChecker(this, cm, FINMenu.this);
+		if (!conCheck.isOnline()) {
+			conCheck.connectionError();
+		} else {
+				
 			// Generate our list of categories from the database
 			JSONArray listOfCategories = Get.requestFromDB(null, null, null);
 			categories = getCategoriesList(listOfCategories);
@@ -76,8 +80,6 @@ public class FINMenu extends Activity {
 			// Populate the grid with category buttons.
 			GridView buttonGrid = (GridView) findViewById(R.id.gridview);
 	        buttonGrid.setAdapter(new ButtonAdapter(this));
-		} else {
-			connectionError();
 		}
 	}
 	
