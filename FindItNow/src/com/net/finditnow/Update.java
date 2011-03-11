@@ -26,6 +26,10 @@ import org.apache.http.message.BasicNameValuePair;
 import android.util.Log;
 
 public class Update {
+	
+	// A Constant representing the location of the Update.php file
+	public static final String UPDATE_LOCATION = "http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/update.php";
+	
 	/**
 	 * Communicate with the database for updating the counts
 	 * for things that is not present at the supposed location.
@@ -45,7 +49,7 @@ public class Update {
 	  	//				   This also allows us to localize errors that occur during the process
 	  	try{
 		        HttpClient httpclient = new DefaultHttpClient();
-		        HttpPost httppost = new HttpPost("http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/update.php");
+		        HttpPost httppost = new HttpPost(UPDATE_LOCATION);
 		  			
 		        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 		        
