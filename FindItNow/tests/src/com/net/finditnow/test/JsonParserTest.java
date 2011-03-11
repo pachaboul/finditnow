@@ -12,11 +12,15 @@ public class JsonParserTest extends TestCase {
         
         protected String json1;
         protected String json2;
+        protected String json3;
+        protected String json4;
         
         protected void setUp() {
         	json1 ="[{\"id\":13,\"long\":-122309098,\"floor_names\":[],\"lat\":47656582,\"info\":\"Curbside 8, Siganos \n Mon to Fri, 10:30am to 3pm\"}," +
 			"{\"id\":14,\"long\":-122309098,\"floor_names\":[],\"lat\":47656582,\"info\":\"Hot Dawgs, Motosurf, Red Square BBQ \n Mon to Fri, 10:30am to 3pm\"}]";
         	json2 = "[{\"id\":17,\"long\":-122309098,\"floor_names\":[\"Basement\"],\"lat\":47656582,\"info\":\"\"}]";       	
+        	json3="";
+        	json4=null;
         }
         
         public void testCategory1() {
@@ -49,7 +53,18 @@ public class JsonParserTest extends TestCase {
             assertTrue(categoryEquals(map,expected));
         }
     
-        
+        public void testEmptyString(){
+            HashMap<GeoPoint, CategoryItem> map = JsonParser.parseCategoryJson(json3);
+            HashMap<GeoPoint, CategoryItem> expected = new  HashMap<GeoPoint, CategoryItem>();
+            
+            assertTrue(categoryEquals(map,expected));
+        }
+        public void testNullString(){
+            HashMap<GeoPoint, CategoryItem> map = JsonParser.parseCategoryJson(json4);
+            HashMap<GeoPoint, CategoryItem> expected = new  HashMap<GeoPoint, CategoryItem>();
+            
+            assertTrue(categoryEquals(map,expected));
+        }
         private boolean categoryEquals(HashMap<GeoPoint,CategoryItem> a, HashMap<GeoPoint,CategoryItem> b) {
                 Iterator<HashMap.Entry<GeoPoint, CategoryItem>> iterA = a.entrySet().iterator();
                 Iterator<HashMap.Entry<GeoPoint, CategoryItem>> iterB = b.entrySet().iterator();
