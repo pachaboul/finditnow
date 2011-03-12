@@ -99,10 +99,17 @@ public class FINMenu extends Activity {
     	}
     	
     	/**
-    	 * The number of items in the list
+    	 * Returns the amount of items in the list.
+    	 * Note: if there's an odd amount, we add 1 to make
+    	 * the bottom row appears to have two colored cells.
     	 */
     	public int getCount() {
-    		return categories.size();
+    		int size = categories.size();
+    		if (size % 2 == 0) {
+    			return size;
+    		} else {
+    			return size + 1;
+    		}
     	}
 
     	/**
@@ -150,36 +157,41 @@ public class FINMenu extends Activity {
     			myView = convertView;
     		}
     		
-    		// Add image button
-			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
-			
-			final String category = categories.get(position);
-			ib.setImageResource(getBigIcon(category));
-			
-			if (category.equals("buildings") || category.equals("school_supplies")) {
-				// Jump to CategoryList
-				ib.setOnClickListener(new OnClickListener() {
-					public void onClick(View v) {
-						Intent myIntent = new Intent(v.getContext(), CategoryList.class);
-		                myIntent.putExtra("category", category);
-		                startActivity(myIntent);
-					}
-    			});
-			} else {
-				// Otherwise, jump to map
-    			ib.setOnClickListener(new OnClickListener() {
-					public void onClick(View v) {
-						Intent myIntent = new Intent(v.getContext(), FINMap.class);
-		                myIntent.putExtra("category", category);
-		                startActivity(myIntent);
-					}
-    			});
-			}
-			
-			// Add text above button.
-			TextView tv = (TextView) myView.findViewById(R.id.grid_item_text);
-	    	tv.setText(FINUtil.capFirstChar(category));
-    		
+    		if (position < categories.size()) {
+	    		// Add image button
+				ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
+				
+				final String category = categories.get(position);
+				ib.setImageResource(getBigIcon(category));
+				
+				if (category.equals("buildings") || category.equals("school_supplies")) {
+					// Jump to CategoryList
+					ib.setOnClickListener(new OnClickListener() {
+						public void onClick(View v) {
+							Intent myIntent = new Intent(v.getContext(), CategoryList.class);
+			                myIntent.putExtra("category", category);
+			                startActivity(myIntent);
+						}
+	    			});
+				} else {
+					// Otherwise, jump to map
+	    			ib.setOnClickListener(new OnClickListener() {
+						public void onClick(View v) {
+							Intent myIntent = new Intent(v.getContext(), FINMap.class);
+			                myIntent.putExtra("category", category);
+			                startActivity(myIntent);
+						}
+	    			});
+				}
+				
+				// Add text above button.
+				TextView tv = (TextView) myView.findViewById(R.id.grid_item_text);
+		    	tv.setText(FINUtil.capFirstChar(category));
+    		} else {
+    			// This is just a blank placeholder cell, so hide the button.
+    			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
+    			ib.setVisibility(View.INVISIBLE);
+    		}
     		return myView;
     	}
 
