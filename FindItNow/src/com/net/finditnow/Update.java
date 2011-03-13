@@ -28,7 +28,7 @@ import android.util.Log;
 public class Update {
 	
 	// A Constant representing the location of the Update.php file
-	public static final String UPDATE_LOCATION = "http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/update.php";
+	public static final String UPDATE_LOCATION = "http://yinnopiano.com/fin/update.php";
 	
 	/**
 	 * Communicate with the database for updating the counts

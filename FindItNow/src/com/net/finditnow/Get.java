@@ -30,7 +30,7 @@ import com.google.android.maps.GeoPoint;
 public class Get {
 	
 	// A Constant representing the location of the root of the get files
-	private static final String GET_LOCATIONS_ROOT = "http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/";
+	private static final String GET_LOCATIONS_ROOT = "http://yinnopiano.com/fin/";
 	
 	/**
 	 * This method processes a request to retrieve locations from the database
