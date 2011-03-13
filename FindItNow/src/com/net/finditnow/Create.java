@@ -27,7 +27,7 @@ import com.google.android.maps.GeoPoint;
 public class Create {
 	
 	// A Constant representing the location of the Create.php file
-	public static final String CREATE_LOCATION = "http://cubist.cs.washington.edu/projects/11wi/cse403/RecycleLocator/FINsert/create.php";
+	public static final String CREATE_LOCATION = "http://yinnopiano.com/fin/FINsert/create.php";
 	
 	/**
 	 * This method processes a request to add an item to the database
