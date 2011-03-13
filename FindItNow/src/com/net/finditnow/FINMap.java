@@ -250,7 +250,9 @@ public class FINMap extends MapActivity {
 
 			// Run this method with a fix on location has been received
 			public void run() { 
-				mapController.animateTo(locOverlay.getMyLocation());
+				// Only update to new location if user has not moved the map
+				if (mapView.getMapCenter().equals(FINSplash.mapCenter))
+					mapController.animateTo(locOverlay.getMyLocation());
 			}
 		};
 
