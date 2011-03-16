@@ -15,8 +15,7 @@
         </activity>
         <activity android:name=".FINMenu"></activity>
         <activity android:name=".FINMap"
-        android:configChanges="orientation|keyboardHidden"
-        >
+        android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity android:name=".CategoryList"></activity>
         <activity android:name=".FINHelp"></activity>
