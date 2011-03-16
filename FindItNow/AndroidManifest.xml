@@ -14,7 +14,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".FINMenu"></activity>
-        <activity android:name=".FINMap"></activity>
+        <activity android:name=".FINMap"
+        android:configChanges="orientation|keyboardHidden"
+        >
+        </activity>
         <activity android:name=".CategoryList"></activity>
         <activity android:name=".FINHelp"></activity>
         <activity android:name=".FINAddNew"></activity>
