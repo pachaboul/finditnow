@@ -1,4 +1,8 @@
-// This section here is under construction.  It'll be cleaned up soon.
+/**
+ * This class displays the help guide.
+ * Included sections: questions, troubleshooting tips,
+ * disclaimers, and about/version information.
+ */
 
 package com.net.finditnow;
 
@@ -44,12 +48,12 @@ public class FINHelp extends Activity {
 		
 		// Link
 		TextView link = (TextView) findViewById(R.id.help_link);
-		link.setText(Html.fromHtml("<a href=\"http://code.google.com/p/recycle-locator\">FindItNow on Google Code</a>"));
+		link.setText(Html.fromHtml("<a href=\"http://code.google.com/p/finditnow\">FindItNow on Google Code</a>"));
 		link.setMovementMethod(LinkMovementMethod.getInstance()); 
 	}
 	
 	/**
-	 * Adds a help item to the FINHelp page (a header title and text body)
+	 * Adds a help item to the FINHelp page (includes a header title and text body)
 	 */
 	private View addTextHelpSection(String title, String info) {
 		LayoutInflater li = getLayoutInflater();
@@ -63,6 +67,9 @@ public class FINHelp extends Activity {
 		return section;
 	}
 	
+    /**
+     * Creates the Android options menu
+     */
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -70,6 +77,9 @@ public class FINHelp extends Activity {
         return true;
     }
     
+    /**
+     * Expand and define the Android options menu
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -82,6 +92,11 @@ public class FINHelp extends Activity {
         }
     }
     
+    /**
+     * Prepares the options menu before being displayed.
+     * Removes redundant Category option, and centering location
+     * option (special for the Map only).
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.findItem(R.id.add_new_button).setVisible(false);
