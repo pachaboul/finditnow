@@ -355,6 +355,18 @@ public class FINMenu extends Activity {
         }
     }
     
+    /**
+     * Prepares the options menu before being displayed.
+     * Removes redundant Category option, and centering location
+     * option (special for the Map only).
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.findItem(R.id.categories_button).setVisible(false);
+    	menu.findItem(R.id.my_location_button).setVisible(false);
+    	return true;
+    }
+    
 	/**
 	 * This method returns whether the user's internet connection is functioning
 	 * 
@@ -391,16 +403,4 @@ public class FINMenu extends Activity {
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
-    
-    /**
-     * Prepares the options menu before being displayed.
-     * Removes redundant Category option, and centering location
-     * option (special for the Map only).
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(R.id.categories_button).setVisible(false);
-    	menu.findItem(R.id.my_location_button).setVisible(false);
-    	return true;
-    }
 }
