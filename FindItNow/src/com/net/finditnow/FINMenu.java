@@ -188,7 +188,7 @@ public class FINMenu extends Activity {
 					// Otherwise, jump to map
 	    			ib.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
-							myDialog = ProgressDialog.show(FINMenu.this, "Items Loading" , " Loading " + FINUtil.capFirstChar(category) + " Items...", true);
+							myDialog = ProgressDialog.show(FINMenu.this, "Items Loading" , "Loading " + FINUtil.capFirstChar(category) + "...", true);
 							Intent myIntent = new Intent(v.getContext(), FINMap.class);
 			                myIntent.putExtra("category", category);
 			                startActivity(myIntent);
