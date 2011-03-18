@@ -20,6 +20,7 @@ import org.json.JSONException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +47,8 @@ public class FINMenu extends Activity {
 	private static HashMap<String, Integer> iconsMap;
 	private static ArrayList<String> categories;
 	private static ArrayList<String> buildings;
+	
+	private ProgressDialog myDialog;
 	
 	/**
      * Check for a connection, generate our categories and buildings list
@@ -80,6 +83,14 @@ public class FINMenu extends Activity {
 			// Populate the grid with category buttons.
 			GridView buttonGrid = (GridView) findViewById(R.id.gridview);
 	        buttonGrid.setAdapter(new ButtonAdapter(this));
+		}
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (myDialog != null) {
+			myDialog.dismiss();
 		}
 	}
 	
@@ -177,6 +188,7 @@ public class FINMenu extends Activity {
 					// Otherwise, jump to map
 	    			ib.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
+							myDialog = ProgressDialog.show(FINMenu.this, "Items Loading" , " Loading " + FINUtil.capFirstChar(category) + " Items...", true);
 							Intent myIntent = new Intent(v.getContext(), FINMap.class);
 			                myIntent.putExtra("category", category);
 			                startActivity(myIntent);

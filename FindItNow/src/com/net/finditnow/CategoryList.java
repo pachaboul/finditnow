@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -31,6 +32,9 @@ public class CategoryList extends ListActivity {
      * and displays the appropriate list.
      * Defaults to supplies if category is unrecognized.
      */
+	
+	private ProgressDialog myDialog;
+	
     @Override
 	public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -55,6 +59,7 @@ public class CategoryList extends ListActivity {
     	// Every item will launch the map
     	lv.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				myDialog = ProgressDialog.show(CategoryList.this, "Items Loading" , " Loading " + FINUtil.capFirstChar(((TextView) v).getText().toString()) + " Items... ", true);
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			myIntent.putExtra("category", category);
     			myIntent.putExtra("itemName", ((TextView) v).getText().toString());
@@ -62,6 +67,14 @@ public class CategoryList extends ListActivity {
     		}
     	});
     }
+    
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (myDialog != null) {
+			myDialog.dismiss();
+		}
+	}
 	
 	/**
      * List of school supplies item types
