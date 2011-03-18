@@ -81,8 +81,7 @@ public class FINMap extends MapActivity {
 		} else {
 			setTitle("FindItNow > " + FINUtil.capFirstChar(category) + " > " + FINUtil.capFirstChar(itemName));
 		}
-
-
+		
 		// Retrieve locations from the database and parse them
 		JSONArray listOfLocations = Get.requestFromDB(category, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), DEFAULT_LOCATION);
 		if (listOfLocations == null) {
@@ -90,7 +89,7 @@ public class FINMap extends MapActivity {
 		} else {
 			geoPointItem = JsonParser.parseCategoryJson(listOfLocations.toString());
 		}
-
+		
 		// Create the map and the map view and detect user location
 		createMap();
 		locateUser();
