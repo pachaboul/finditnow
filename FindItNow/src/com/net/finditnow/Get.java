@@ -56,6 +56,9 @@ public class Get {
 		        HttpClient httpclient = new DefaultHttpClient();
 		        String suffix = (location == null? (category == null? "getCategories.php" : "getBuildings.php") : "getLocations.php");
 		        HttpPost httppost = new HttpPost(GET_LOCATIONS_ROOT + suffix);
+		        if (category.equals("buildings")) {
+		        	httppost = new HttpPost("http://dawgsforum.com/fin/getAllLocations.php");
+		        }
 		        
 		        // If the location is not null, this is a request for items in a category
 		        if (location != null) {
