@@ -57,6 +57,7 @@ public class Get {
 		        String suffix = (location == null? (category == null? "getCategories.php" : "getBuildings.php") : "getLocations.php");
 		        HttpPost httppost = new HttpPost(GET_LOCATIONS_ROOT + suffix);
 		        if (category.equals("buildings")) {
+		        	category = FINUtil.allCategories(FINMenu.getCategoriesList());
 		        	httppost = new HttpPost("http://dawgsforum.com/fin/getAllLocations.php");
 		        }
 		        
