@@ -82,4 +82,18 @@ public class FINUtil {
 			return str + "s";
 		}
 	}
+	
+	/**
+	 * Returns a String of the categories separated by "|"
+	 * @param categories An ArrayList of Strings containing the categories
+	 * @return A String of categories each separated by "|"
+	 */
+	public static String allCategories(ArrayList<String> categories) {
+		String cats = "";
+		for (String s : categories) {
+			cats = cats + s + " | ";
+		}
+
+		return cats.substring(0, cats.length() - 3);
+	}
 }

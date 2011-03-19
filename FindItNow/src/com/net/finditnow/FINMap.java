@@ -83,6 +83,10 @@ public class FINMap extends MapActivity {
 		}
 		
 		// Retrieve locations from the database and parse them
+		String category = getCategory();
+		if (category.equals("buildings")) {
+			category = FINUtil.allCategories(FINMenu.getCategoriesList());
+		}
 		JSONArray listOfLocations = Get.requestFromDB(category, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), DEFAULT_LOCATION);
 		if (listOfLocations == null) {
 			geoPointItem = JsonParser.parseCategoryJson("");	
