@@ -1,7 +1,9 @@
 package com.net.finditnow.test;
 
-import junit.framework.TestCase;
 import java.util.ArrayList;
+
+import junit.framework.TestCase;
+
 import com.net.finditnow.FINUtil;
 
 public class FINUtilTest extends TestCase {
