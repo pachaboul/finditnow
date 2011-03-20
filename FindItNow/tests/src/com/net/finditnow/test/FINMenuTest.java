@@ -11,8 +11,6 @@ package com.net.finditnow.test;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-
 import android.test.AndroidTestCase;
 
 import com.google.android.maps.GeoPoint;
@@ -32,15 +30,14 @@ public class FINMenuTest extends AndroidTestCase {
 	protected void setUp() {
 		
 		// category stuff
-		JSONArray listOfCategories = Get.requestFromDB(null, null, null);
-		categories = FINMenu.getCategoriesList(listOfCategories);
+		categories = FINMenu.getCategoriesList();
 	
 		// icons stuff
 		iconsMap = FINMenu.createIconsList(categories, getContext());
 
 		// buildings stuff
-		JSONArray listOfBuildings = Get.requestFromDB("", null, null);
-		buildingsMap = JsonParser.parseBuildingJson(listOfBuildings.toString());
+		String listOfBuildings = Get.requestFromDB("", null, null);
+		buildingsMap = JsonParser.parseBuildingJson(listOfBuildings);
 		
 		gp = new GeoPoint(47657186, -122306194);
 		building = new Building(15, "Miller Hall", null, null);

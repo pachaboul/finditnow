@@ -1,12 +1,13 @@
 package com.net.finditnow.test;
 
-import junit.framework.TestCase;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import junit.framework.TestCase;
+
 import com.google.android.maps.GeoPoint;
-import com.net.finditnow.JsonParser;
 import com.net.finditnow.CategoryItem;
+import com.net.finditnow.JsonParser;
 
 public class JsonParserTest extends TestCase {
         

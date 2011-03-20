@@ -1,11 +1,11 @@
 package com.net.finditnow.test;
 
-import com.net.finditnow.FINMenu;
-
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.KeyEvent;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+
+import com.net.finditnow.FINMenu;
 
 public class FINMenuActivityTest extends ActivityInstrumentationTestCase2<FINMenu> {
 
