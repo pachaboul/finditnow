@@ -12,8 +12,6 @@ import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 
-import org.json.JSONArray;
-
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -83,11 +81,11 @@ public class FINMap extends MapActivity {
 		}
 		
 		// Retrieve locations from the database and parse them
-		JSONArray listOfLocations = Get.requestFromDB(category, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), DEFAULT_LOCATION);
+		String listOfLocations = Get.requestFromDB(category, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), DEFAULT_LOCATION);
 		if (listOfLocations == null) {
 			geoPointItem = JsonParser.parseCategoryJson("");	
 		} else {
-			geoPointItem = JsonParser.parseCategoryJson(listOfLocations.toString());
+			geoPointItem = JsonParser.parseCategoryJson(listOfLocations);
 		}
 		
 		// Create the map and the map view and detect user location

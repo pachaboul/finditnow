@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -67,16 +64,16 @@ public class FINMenu extends Activity {
 		} else {
 				
 			// Generate our list of categories from the database
-			JSONArray listOfCategories = Get.requestFromDB(null, null, null);
-			categories = getCategoriesList(listOfCategories);
+			String listOfCategories = Get.requestFromDB(null, null, null);
+			categories = JsonParser.getCategoriesList(listOfCategories);
 			Collections.sort(categories);
 			
 	        // Store a map from categories to icons so that other modules can use it
 	        iconsMap = createIconsList(categories, getApplicationContext());
 			
 			// Generate list of buildings from the database
-			JSONArray listOfBuildings = Get.requestFromDB("", null, null);
-			buildingsMap = JsonParser.parseBuildingJson(listOfBuildings.toString());
+			String listOfBuildings = Get.requestFromDB("", null, null);
+			buildingsMap = JsonParser.parseBuildingJson(listOfBuildings);
 			buildings = createBuildingList(buildingsMap);
 			Collections.sort(buildings);
 			
@@ -284,27 +281,6 @@ public class FINMenu extends Activity {
 		return categories;
 	}
 	
-    /**
-     * Returns an ArrayList of categories, duplicated from the given JSONArray list.
-     * The list is almost exactly the same, with the exclusion of regions, floors,
-     * and exception of "school_supplies" (which is added as "supplies").
-     * 
-     * @param listOfCategories List of categories, in JSONArray form.
-     */
-	public static ArrayList<String> getCategoriesList(JSONArray listOfCategories) {
-		ArrayList<String> category_list = new ArrayList<String>();
-		for (int i = 0; i < listOfCategories.length(); i++) {
-		    try {
-		    	String category = listOfCategories.getString(i);
-		    	if (!category.equals("regions") && !category.equals("floors")) {
-		    		category_list.add(category);
-		    	}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		return category_list;
-	}
 
 	/**
      * Returns the GeoPoint associated with the building.
