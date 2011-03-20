@@ -11,6 +11,8 @@
  */
 package com.net.finditnow;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,8 +59,7 @@ public class FINMenu extends Activity {
 		setContentView(R.layout.menu);
 		
         // Check connection of Android device
-		ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-		ConnectionChecker conCheck = new ConnectionChecker(this, cm, FINMenu.this);
+		ConnectionChecker conCheck = new ConnectionChecker(this, FINMenu.this);
 		if (!conCheck.isOnline()) {
 			conCheck.connectionError();
 		} else {
@@ -354,41 +355,4 @@ public class FINMenu extends Activity {
     	menu.findItem(R.id.my_location_button).setVisible(false);
     	return true;
     }
-    
-	/**
-	 * This method returns whether the user's internet connection is functioning
-	 * 
-	 * @param context The context with which to do the check
-	 * 
-	 * @return True if the internet connection is functional
-	 */
-	public static boolean isOnline(Context context) {
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		
-		return (netInfo != null && netInfo.isConnected());
-	}
-	
-	/**
-     * Checks for an Internet connection.
-     * If there is no connection, or we are unable to retrieve information about our connection,
-     * display a message alerting the user about lack of connection.
-     * 
-     * @param context The context with which to do the check
-     * 
-	 * @return True if the internet connection is functional
-     */
-	public void connectionError() {	
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Error: You must enable your data connection (Wifi or 3G) to use this app")
-		
-			.setNeutralButton("Exit", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					FINMenu.this.finish();
-				}
-			});
-		
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
 }

@@ -25,29 +25,36 @@ public class FINAddIndoor extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_indoor);
-		setTitle("FindItNow > Add New Item > Indoor Item");
-
-		// Set up spinner for building selection
-		Spinner bSpinner = (Spinner) findViewById(R.id.addnew_bspinner);
-		ArrayAdapter<String> bAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, FINMenu
-						.getBuildingsList());
-		bAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		bSpinner.setAdapter(bAdapter);
-		bSpinner.setOnItemSelectedListener(bspinner_listener);
-		selectedBuilding = FINMenu.getBuilding(FINMenu
-				.getGeoPointFromBuilding(FINMenu.getBuildingsList().get(0)));
-
-		//Get category and types of school supplies from previous activity
-		Bundle extras = getIntent().getExtras();
-		selectedCategory = extras.getString("selectedCategory");
-		supplyTypes = extras.getBooleanArray("supplyTypes");
-
-		//Set up "add item" button
-		Button addItem = (Button) findViewById(R.id.addnew_additem);
-		addItem.setOnClickListener(additem_listener);
-	}
+		// Check connection of Android device
+		ConnectionChecker conCheck = new ConnectionChecker(this, FINAddIndoor.this);
+		if (!conCheck.isOnline()) {
+			conCheck.connectionError();
+		} else {
+			
+			setTitle("FindItNow > Add New Item > Indoor Item");
+	
+			// Set up spinner for building selection
+			Spinner bSpinner = (Spinner) findViewById(R.id.addnew_bspinner);
+			ArrayAdapter<String> bAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item, FINMenu
+							.getBuildingsList());
+			bAdapter
+					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			bSpinner.setAdapter(bAdapter);
+			bSpinner.setOnItemSelectedListener(bspinner_listener);
+			selectedBuilding = FINMenu.getBuilding(FINMenu
+					.getGeoPointFromBuilding(FINMenu.getBuildingsList().get(0)));
+	
+			//Get category and types of school supplies from previous activity
+			Bundle extras = getIntent().getExtras();
+			selectedCategory = extras.getString("selectedCategory");
+			supplyTypes = extras.getBooleanArray("supplyTypes");
+	
+			//Set up "add item" button
+			Button addItem = (Button) findViewById(R.id.addnew_additem);
+			addItem.setOnClickListener(additem_listener);
+		}
+	}		
 
 	//Listener for building spinner
 	private OnItemSelectedListener bspinner_listener = new OnItemSelectedListener() {

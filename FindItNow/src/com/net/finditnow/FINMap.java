@@ -67,33 +67,40 @@ public class FINMap extends MapActivity {
 		// Restore the saved instance and generate the primary (main) layout
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
-
-		// Get the item name for buildings, supplies:
-		Bundle extras = getIntent().getExtras(); 
-		category = extras.getString("category");
-		itemName = extras.getString("itemName");
-
-		// Set the Breadcrumb in the titlebar
-		if (itemName == null) {
-			setTitle("FindItNow > " + FINUtil.capFirstChar(category));
-		} else {
-			setTitle("FindItNow > " + FINUtil.capFirstChar(category) + " > " + FINUtil.capFirstChar(itemName));
-		}
 		
-		// Retrieve locations from the database and parse them
-		String listOfLocations = Get.requestFromDB(category, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), DEFAULT_LOCATION);
-		if (listOfLocations == null) {
-			geoPointItem = JsonParser.parseCategoryJson("");	
+		// Check connection of Android device
+		ConnectionChecker conCheck = new ConnectionChecker(this, FINMap.this);
+		if (!conCheck.isOnline()) {
+			conCheck.connectionError();
 		} else {
-			geoPointItem = JsonParser.parseCategoryJson(listOfLocations);
-		}
-		
-		// Create the map and the map view and detect user location
-		createMap();
-		locateUser();
 
-		// Add these locations to the map view
-		placeOverlays();
+			// Get the item name for buildings, supplies:
+			Bundle extras = getIntent().getExtras(); 
+			category = extras.getString("category");
+			itemName = extras.getString("itemName");
+	
+			// Set the Breadcrumb in the titlebar
+			if (itemName == null) {
+				setTitle("FindItNow > " + FINUtil.capFirstChar(category));
+			} else {
+				setTitle("FindItNow > " + FINUtil.capFirstChar(category) + " > " + FINUtil.capFirstChar(itemName));
+			}
+			
+			// Retrieve locations from the database and parse them
+			String listOfLocations = Get.requestFromDB(category, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), DEFAULT_LOCATION);
+			if (listOfLocations == null) {
+				geoPointItem = JsonParser.parseCategoryJson("");	
+			} else {
+				geoPointItem = JsonParser.parseCategoryJson(listOfLocations);
+			}
+			
+			// Create the map and the map view and detect user location
+			createMap();
+			locateUser();
+	
+			// Add these locations to the map view
+			placeOverlays();
+		}
 	}
 
 	/**
@@ -102,13 +109,16 @@ public class FINMap extends MapActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		locOverlay.disableMyLocation();
-
-		FINSplash.lastLocation = location;
-		FINSplash.mapCenter = mapView.getMapCenter();
-		FINSplash.zoomLevel = mapView.getZoomLevel();
-
-		mapOverlays.remove(locOverlay);
+		
+		if (mapController != null) {
+			locOverlay.disableMyLocation();
+	
+			FINSplash.lastLocation = location;
+			FINSplash.mapCenter = mapView.getMapCenter();
+			FINSplash.zoomLevel = mapView.getZoomLevel();
+	
+			mapOverlays.remove(locOverlay);
+		}
 	}
 
 	/**
@@ -117,13 +127,16 @@ public class FINMap extends MapActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		locOverlay.enableMyLocation();
+		
+		if (mapController != null) {
+			locOverlay.enableMyLocation();
 
-		location = FINSplash.lastLocation;
-		mapController.setCenter(FINSplash.mapCenter);
-		mapController.setZoom(FINSplash.zoomLevel);
-
-		mapOverlays.add(locOverlay);
+			location = FINSplash.lastLocation;
+			mapController.setCenter(FINSplash.mapCenter);
+			mapController.setZoom(FINSplash.zoomLevel);
+			
+			mapOverlays.add(locOverlay);
+		}
 	}
 
 	/**
