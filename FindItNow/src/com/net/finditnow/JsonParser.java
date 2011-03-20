@@ -11,15 +11,16 @@ package com.net.finditnow;
  */
 
 //packages for handling JSON
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonStreamParser;
-import android.util.Log;
 public class JsonParser {
 	 /*
 	 * Design Principle: Information Hiding
