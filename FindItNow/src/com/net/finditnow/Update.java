@@ -79,6 +79,10 @@ public class Update {
 	  	    Log.e("log_tag", "Error converting result "+e.toString());
 	  	}
 		
-	  	return data;
+	  	if (data.equals("")) {
+	  		return "Error: Internet connectivity lost.  Please try again";
+	  	} else {
+	  		return data;
+	  	}
 	}
 }

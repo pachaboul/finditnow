@@ -37,27 +37,34 @@ public class FINAddOutdoor extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_outdoor);
 		
-		tappedPoint = new GeoPoint(0, 0);
+		// Check connection of Android device
+		ConnectionChecker conCheck = new ConnectionChecker(this, FINAddOutdoor.this);
+		if (!conCheck.isOnline()) {
+			conCheck.connectionError();
+		} else {
 		
-        // Initialize our MapView and MapController
-        mapView = (MapView)findViewById(R.id.mapview);
-        mapView.setBuiltInZoomControls(true);
-        mapController = mapView.getController();
-        
-        mapOverlay = new FINAddOverlay();
-        
-        mapOverlays = mapView.getOverlays();
-        mapOverlays.add(mapOverlay);
-        
-        Bundle extras = getIntent().getExtras(); 
-		selectedCategory = extras.getString("selectedCategory");
-		supplyTypes = extras.getBooleanArray("supplyTypes");
-        
-        // Zoom out enough
-        mapController.animateTo(FINMap.DEFAULT_LOCATION);
-        mapController.setZoom(17);
-        Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
-	}
+			tappedPoint = new GeoPoint(0, 0);
+			
+	        // Initialize our MapView and MapController
+	        mapView = (MapView)findViewById(R.id.mapview);
+	        mapView.setBuiltInZoomControls(true);
+	        mapController = mapView.getController();
+	        
+	        mapOverlay = new FINAddOverlay();
+	        
+	        mapOverlays = mapView.getOverlays();
+	        mapOverlays.add(mapOverlay);
+	        
+	        Bundle extras = getIntent().getExtras(); 
+			selectedCategory = extras.getString("selectedCategory");
+			supplyTypes = extras.getBooleanArray("supplyTypes");
+	        
+	        // Zoom out enough
+	        mapController.animateTo(FINMap.DEFAULT_LOCATION);
+	        mapController.setZoom(17);
+	        Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
+		}
+    }
 	
 	public class FINAddOverlay extends Overlay {
 		
