@@ -36,35 +36,28 @@ public class FINAddOutdoor extends MapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_outdoor);
+
+		tappedPoint = new GeoPoint(0, 0);
 		
-		// Check connection of Android device
-		ConnectionChecker conCheck = new ConnectionChecker(this, FINAddOutdoor.this);
-		if (!conCheck.isOnline()) {
-			conCheck.connectionError();
-		} else {
-		
-			tappedPoint = new GeoPoint(0, 0);
-			
-	        // Initialize our MapView and MapController
-	        mapView = (MapView)findViewById(R.id.mapview);
-	        mapView.setBuiltInZoomControls(true);
-	        mapController = mapView.getController();
-	        
-	        mapOverlay = new FINAddOverlay();
-	        
-	        mapOverlays = mapView.getOverlays();
-	        mapOverlays.add(mapOverlay);
-	        
-	        Bundle extras = getIntent().getExtras(); 
-			selectedCategory = extras.getString("selectedCategory");
-			supplyTypes = extras.getBooleanArray("supplyTypes");
-	        
-	        // Zoom out enough
-	        mapController.animateTo(FINMap.DEFAULT_LOCATION);
-	        mapController.setZoom(17);
-	        Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
-		}
-    }
+        // Initialize our MapView and MapController
+        mapView = (MapView)findViewById(R.id.mapview);
+        mapView.setBuiltInZoomControls(true);
+        mapController = mapView.getController();
+        
+        mapOverlay = new FINAddOverlay();
+        
+        mapOverlays = mapView.getOverlays();
+        mapOverlays.add(mapOverlay);
+        
+        Bundle extras = getIntent().getExtras(); 
+		selectedCategory = extras.getString("selectedCategory");
+		supplyTypes = extras.getBooleanArray("supplyTypes");
+        
+        // Zoom out enough
+        mapController.animateTo(FINMap.DEFAULT_LOCATION);
+        mapController.setZoom(17);
+        Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
+	}
 	
 	public class FINAddOverlay extends Overlay {
 		
@@ -105,7 +98,7 @@ public class FINAddOutdoor extends MapActivity {
 	 						pr = "print";
 						
 						//Send new item to database
-			        	String response = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr);
+			        	String response = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr, getBaseContext());
 			        	
 			        	//Return to categories screen
 				    	Intent myIntent = new Intent(getBaseContext(), FINMenu.class);

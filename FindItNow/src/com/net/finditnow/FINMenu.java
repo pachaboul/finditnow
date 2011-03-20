@@ -52,29 +52,33 @@ public class FINMenu extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
 		
-        // Check connection of Android device
+		// Check connection of Android
 		ConnectionChecker conCheck = new ConnectionChecker(this, FINMenu.this);
-		if (!conCheck.isOnline()) {
+				
+		// Generate our list of categories from the database
+		String listOfCategories = Get.requestFromDB(null, null, null, this);
+		if (listOfCategories.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
 		} else {
-				
-			// Generate our list of categories from the database
-			String listOfCategories = Get.requestFromDB(null, null, null);
 			categories = JsonParser.getCategoriesList(listOfCategories);
 			Collections.sort(categories);
 			
 	        // Store a map from categories to icons so that other modules can use it
 	        iconsMap = createIconsList(categories, getApplicationContext());
-			
-			// Generate list of buildings from the database
-			String listOfBuildings = Get.requestFromDB("", null, null);
-			buildingsMap = JsonParser.parseBuildingJson(listOfBuildings);
-			buildings = createBuildingList(buildingsMap);
-			Collections.sort(buildings);
-			
+	        
 			// Populate the grid with category buttons.
 			GridView buttonGrid = (GridView) findViewById(R.id.gridview);
 	        buttonGrid.setAdapter(new ButtonAdapter(this));
+			
+			// Generate list of buildings from the database
+			String listOfBuildings = Get.requestFromDB("", null, null, this);
+			if (listOfBuildings.equals(getString(R.string.timeout))) {
+				conCheck.connectionError();
+			} else {
+				buildingsMap = JsonParser.parseBuildingJson(listOfBuildings);
+				buildings = createBuildingList(buildingsMap);
+				Collections.sort(buildings);
+			}
 		}
 	}
 	

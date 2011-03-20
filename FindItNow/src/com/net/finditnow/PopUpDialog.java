@@ -195,7 +195,7 @@ public class PopUpDialog extends Dialog{
 	    			//confirms the action and perform the update accordingly 
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
-	    		        	   String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0));
+	    		        	   String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0), getContext());
 	    		        	   dialog.dismiss();
 	    		               Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 	    		           }
