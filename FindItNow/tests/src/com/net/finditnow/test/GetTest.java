@@ -17,9 +17,9 @@ public class GetTest extends TestCase {
 	protected void setUp() {
 		location = FINMap.DEFAULT_LOCATION;
 		category = "vending";
-		json1 = Get.requestFromDB(category, "", location);
-		json2 = Get.requestFromDB("dfljhadsf", "", location);
-		json3 = Get.requestFromDB("", "", location);
+		json1 = Get.requestFromDB(category, "", location, null);
+		json2 = Get.requestFromDB("dfljhadsf", "", location, null);
+		json3 = Get.requestFromDB("", "", location, null);
 	}
 
 	public void test1() {

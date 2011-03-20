@@ -17,12 +17,15 @@ import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
+import android.content.Context;
 import android.util.Log;
 
 public class Update {
@@ -38,7 +41,7 @@ public class Update {
 	 * @param id - id of the object to be update
 	 * @return String that represents the db response
 	 */
-	public static String updateDB(String category,int id) {
+	public static String updateDB(String category, int id, Context context) {
 		/*
 		   * HTTP Post request
 		   */
@@ -48,19 +51,31 @@ public class Update {
 	  	// DESIGN PATTERN: Exceptions.  In Get/Update/Create, we catch any exception in PHP communication
 	  	//				   This also allows us to localize errors that occur during the process
 	  	try{
-		        HttpClient httpclient = new DefaultHttpClient();
 		        HttpPost httppost = new HttpPost(UPDATE_LOCATION);
-		  			
+		        
 		        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-		        
-	  			nameValuePairs.add(new BasicNameValuePair("category", category));
-	  			nameValuePairs.add(new BasicNameValuePair("id", id+""));
-	  			
-	  			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		        
-		        HttpResponse response = httpclient.execute(httppost);
-		        HttpEntity entity = response.getEntity();
-		        iStream = entity.getContent();
+                
+                nameValuePairs.add(new BasicNameValuePair("category", category));
+                nameValuePairs.add(new BasicNameValuePair("id", id+""));
+                
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		  			
+				HttpParams httpParameters = new BasicHttpParams();
+				
+				// Set the timeout in milliseconds until a connection is established.
+				int timeoutConnection = 3000;
+				HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+				
+				// Set the default socket timeout (SO_TIMEOUT) 
+				// in milliseconds which is the timeout for waiting for data.
+				int timeoutSocket = 3000;
+				HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+				
+				DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+				HttpResponse httpResponse = httpClient.execute(httppost);
+				
+				HttpEntity entity = httpResponse.getEntity();
+				iStream = entity.getContent();
 	  	}catch(Exception e){
 	  	    Log.e("log_tag", "Error in http connection "+e.toString());
 	  	}
@@ -77,12 +92,9 @@ public class Update {
 		        data = sb.toString();
 	  	}catch(Exception e){
 	  	    Log.e("log_tag", "Error converting result "+e.toString());
+	  	    return context.getString(R.string.timeout);
 	  	}
-		
-	  	if (data.equals("")) {
-	  		return "Error: Internet connectivity lost.  Please try again";
-	  	} else {
-	  		return data;
-	  	}
+
+  		return data;
 	}
 }

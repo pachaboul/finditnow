@@ -36,7 +36,7 @@ public class FINMenuTest extends AndroidTestCase {
 		iconsMap = FINMenu.createIconsList(categories, getContext());
 
 		// buildings stuff
-		String listOfBuildings = Get.requestFromDB("", null, null);
+		String listOfBuildings = Get.requestFromDB("", null, null, null);
 		buildingsMap = JsonParser.parseBuildingJson(listOfBuildings);
 		
 		gp = new GeoPoint(47657186, -122306194);

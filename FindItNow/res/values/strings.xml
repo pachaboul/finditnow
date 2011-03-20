@@ -17,5 +17,6 @@
         <item>Scantron</item>
         <item>Printing</item>
 	</string-array>
+	<string name="timeout">Error: Could not detect an internet connection.  Please ensure Wifi or 3G is enabled and working</string>
 
 </resources>

@@ -68,32 +68,28 @@ public class FINMap extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
 		
-		// Check connection of Android device
+		// Get the item name for buildings, supplies:
+		Bundle extras = getIntent().getExtras(); 
+		category = extras.getString("category");
+		itemName = extras.getString("itemName");
+
+		// Set the Breadcrumb in the titlebar
+		if (itemName == null) {
+			setTitle("FindItNow > " + FINUtil.capFirstChar(category));
+		} else {
+			setTitle("FindItNow > " + FINUtil.capFirstChar(category) + " > " + FINUtil.capFirstChar(itemName));
+		}
+		
+		// Check connection of Android
 		ConnectionChecker conCheck = new ConnectionChecker(this, FINMap.this);
-		if (!conCheck.isOnline()) {
+		
+		// Retrieve locations from the database and parse them
+		String listOfLocations = Get.requestFromDB(category, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), DEFAULT_LOCATION, this);
+		if (listOfLocations.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
 		} else {
-
-			// Get the item name for buildings, supplies:
-			Bundle extras = getIntent().getExtras(); 
-			category = extras.getString("category");
-			itemName = extras.getString("itemName");
-	
-			// Set the Breadcrumb in the titlebar
-			if (itemName == null) {
-				setTitle("FindItNow > " + FINUtil.capFirstChar(category));
-			} else {
-				setTitle("FindItNow > " + FINUtil.capFirstChar(category) + " > " + FINUtil.capFirstChar(itemName));
-			}
-			
-			// Retrieve locations from the database and parse them
-			String listOfLocations = Get.requestFromDB(category, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), DEFAULT_LOCATION);
-			if (listOfLocations == null) {
-				geoPointItem = JsonParser.parseCategoryJson("");	
-			} else {
-				geoPointItem = JsonParser.parseCategoryJson(listOfLocations);
-			}
-			
+			geoPointItem = JsonParser.parseCategoryJson(listOfLocations);
+		
 			// Create the map and the map view and detect user location
 			createMap();
 			locateUser();
