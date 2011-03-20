@@ -12,13 +12,14 @@ package com.net.finditnow;
 
 //packages for handling JSON
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import com.google.android.maps.GeoPoint;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonStreamParser;
-
+import android.util.Log;
 public class JsonParser {
 	 /*
 	 * Design Principle: Information Hiding
@@ -39,7 +40,7 @@ public class JsonParser {
 		"name",
 		"fid",
 	"floor_names"};
-
+	
 	/**
 	 * parse a json string into a map of GeoPoint to Building
 	 *  
@@ -83,6 +84,20 @@ public class JsonParser {
 		return map;
 	}
 
+	public static ArrayList<String> getCategoriesList(String json){
+		
+		String[] arr = json.split(",");
+		ArrayList<String> result = new ArrayList<String>();
+
+		for(int i = 0; i < arr.length; i++)
+		{
+			if (!arr[i].equals("floors") && !arr[i].equals("regions"))
+				result.add(arr[i]);
+		}
+		Log.i("WTF", result.toString());
+		return result;
+	}
+	
 	/**
 	 * parses a Json Array into a map of locations and its corresponding CategoryItem
 	 * 

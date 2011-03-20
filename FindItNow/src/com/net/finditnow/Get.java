@@ -19,9 +19,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONTokener;
 
 import android.util.Log;
 
@@ -42,13 +39,12 @@ public class Get {
 	 * 
 	 * @return A JSONArray of locations, categories, or buildings from the database
 	 */
-	public static JSONArray requestFromDB(String category, String item, GeoPoint location) {
+	public static String requestFromDB(String category, String item, GeoPoint location) {
 
 		// Initialize input stream and response variables
 		String data = "";
 	  	InputStream iStream = null;
-	  	JSONArray infoArray = null;
-	  	
+	  		  	
 	  	// Attempt to make the HTTPPOST to the given location
 	  	// DESIGN PATTERN: Exceptions.  In Get/Update/Create, we catch any exception in PHP communication
 	  	//				   This also allows us to localize errors that occur during the process
@@ -56,10 +52,11 @@ public class Get {
 		        HttpClient httpclient = new DefaultHttpClient();
 		        String suffix = (location == null? (category == null? "getCategories.php" : "getBuildings.php") : "getLocations.php");
 		        HttpPost httppost = new HttpPost(GET_LOCATIONS_ROOT + suffix);
-		        if (category.equals("buildings")) {
-		        	category = FINUtil.allCategories(FINMenu.getCategoriesList());
-		        	httppost = new HttpPost("http://dawgsforum.com/fin/getAllLocations.php");
+		        if (category!=null && category.equals("buildings")) {
+                    category = FINUtil.allCategories(FINMenu.getCategoriesList());
+                    httppost = new HttpPost("http://dawgsforum.com/fin/getAllLocations.php");
 		        }
+
 		        
 		        // If the location is not null, this is a request for items in a category
 		        if (location != null) {
@@ -101,20 +98,13 @@ public class Get {
 	  	    Log.e("log_tag", "Error converting result " + e.toString());
 	  	}
 	  	
-	  	// Now try to convert it to a JSONArray
-	  	try {
-	  		
-	  		// If the category is null, we need to retrieve a comma separated list
-		  	if (category == null) {
-		  		JSONTokener jsontok = new JSONTokener(data);
-		  		infoArray = CDL.rowToJSONArray(jsontok);
-		  	} else {
-		  		infoArray = new JSONArray(data);
-		  	}
-		} catch (JSONException e) {
-			Log.e("log_tag", "Error converting response to JSON " + e.toString());
-		}
-
-	  	return infoArray;
+	  	
+	  	
+	  	//if category if null, it meant we're retriving the list of categories
+	  	//slightly modify it to make it a JSON representation
+	  	Log.i("WTF", data);
+	  	
+	  	
+	  	return data.trim();
 	}
 }
