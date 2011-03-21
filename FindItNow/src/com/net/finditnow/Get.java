@@ -54,11 +54,13 @@ public class Get {
 		try {
 			String suffix = (location == null? (category == null? "getCategories.php" : "getBuildings.php") : "getLocations.php");
 			
-			HttpPost httppost = new HttpPost(GET_LOCATIONS_ROOT + suffix);
+			HttpPost httppost = null;
 
-			if (category!=null && category.equals("buildings")) {
+			if (category!=null && category.contains(" ")) {
 				category = FINUtil.allCategories(FINMenu.getCategoriesList());
 				httppost = new HttpPost("http://dawgsforum.com/fin/getAllLocations.php");
+			} else {
+				httppost = new HttpPost(GET_LOCATIONS_ROOT + suffix);
 			}
 
 
@@ -67,6 +69,7 @@ public class Get {
 
 				List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();		  			
 				nameValuePairs.add(new BasicNameValuePair("cat", category));
+				Log.v("asdfksadfilsd", category);
 
 				// If the itemName is not null, this is a request for school supplies
 				if (item != null) {

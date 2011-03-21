@@ -91,9 +91,9 @@ public class FINUtil {
 	public static String allCategories(ArrayList<String> categories) {
 		String cats = "";
 		for (String s : categories) {
-			cats = cats + s + " | ";
+			cats = cats + s + " ";
 		}
 
-		return cats.substring(0, cats.length() - 3);
+		return cats.substring(0, cats.length() - 1);
 	}
 }
