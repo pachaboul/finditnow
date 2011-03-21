@@ -61,6 +61,7 @@ public class FINMenu extends Activity {
 			conCheck.connectionError();
 		} else {
 			categories = JsonParser.getCategoriesList(listOfCategories);
+			categories.add("buildings");
 			Collections.sort(categories);
 			
 	        // Store a map from categories to icons so that other modules can use it

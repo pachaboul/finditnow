@@ -9,6 +9,7 @@ package com.net.finditnow;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,7 +85,17 @@ public class FINMap extends MapActivity {
 		ConnectionChecker conCheck = new ConnectionChecker(this, FINMap.this);
 		
 		// Retrieve locations from the database and parse them
-		String listOfLocations = Get.requestFromDB(category, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), DEFAULT_LOCATION, this);
+		String passedCat = category;
+		GeoPoint loc = DEFAULT_LOCATION;
+		if (category.equals("buildings")) {
+			ArrayList<String> cats = FINMenu.getCategoriesList();
+			cats.remove("buildings");
+			passedCat = FINUtil.allCategories(cats);
+			loc = FINMenu.getGeoPointFromBuilding(itemName);
+		}
+		
+		String listOfLocations = Get.requestFromDB(passedCat, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), loc, this);
+		
 		if (listOfLocations.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
 		} else {
