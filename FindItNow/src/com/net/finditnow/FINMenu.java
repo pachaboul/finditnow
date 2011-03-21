@@ -334,6 +334,9 @@ public class FINMenu extends Activity {
         	case R.id.add_new_button:
         		startActivity(new Intent(this, FINAddNew.class));
         		return true;
+        	case R.id.settings_button:
+	        	startActivity(new Intent(this, FINSettings.class));
+	            return true;
 	        case R.id.help_button:
 	        	startActivity(new Intent(this, FINHelp.class));
 	            return true;

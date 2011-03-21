@@ -92,7 +92,6 @@ public class JsonParser {
 
 		for(int i = 0; i < arr.length; i++)
 		{
-			if (!arr[i].equals("floors") && !arr[i].equals("regions"))
 				result.add(arr[i]);
 		}
 		Log.i("WTF", result.toString());

@@ -26,6 +26,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.content.Context;
+import android.provider.Settings.Secure;
 import android.util.Log;
 
 public class Update {
@@ -57,6 +58,9 @@ public class Update {
                 
                 nameValuePairs.add(new BasicNameValuePair("category", category));
                 nameValuePairs.add(new BasicNameValuePair("id", id+""));
+                
+                final String android_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID); 
+                nameValuePairs.add(new BasicNameValuePair("phone_id", android_id));
                 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 		  			
