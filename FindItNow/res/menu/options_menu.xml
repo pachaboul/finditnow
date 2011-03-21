@@ -3,6 +3,9 @@
  	<item android:id="@+id/categories_button"
           android:icon="@android:drawable/ic_menu_agenda"
           android:title="@string/categories" />
+    <item android:id="@+id/settings_button"
+          android:icon="@android:drawable/ic_menu_preferences"
+          android:title="@string/settings" />
     <item android:id="@+id/my_location_button"
           android:icon="@android:drawable/ic_menu_mylocation"
           android:title="@string/my_location" />
