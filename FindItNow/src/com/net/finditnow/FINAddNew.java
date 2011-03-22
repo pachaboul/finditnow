@@ -145,7 +145,7 @@ public class FINAddNew extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-	        case R.id.categories_button:
+	        case R.id.home_button:
                 startActivityForResult(new Intent(this, FINMenu.class), 0);
 	            return true;
 	        default:
