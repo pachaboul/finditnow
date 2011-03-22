@@ -265,7 +265,7 @@ public class FINMap extends MapActivity {
 		};
 
 		// In this case, we have cleanly started the app and should fix on user location
-		if (!category.equals("buildings") && FINSplash.lastLocation == null) {
+		if (category != null && FINSplash.lastLocation == null) {
 			Toast.makeText(this, "Getting a fix on your location...", Toast.LENGTH_SHORT).show();
 			locOverlay.runOnFirstFix(runnable);
 		}
@@ -325,7 +325,7 @@ public class FINMap extends MapActivity {
 	private void placeOverlays() {
 
 		// If the category is buildings, then we only put the single point on the map
-		if (getCategory().equals("buildings")) {
+		if (category == null) {
 			GeoPoint point = FINMenu.getGeoPointFromBuilding(building);
 
 			CategoryItem item = new CategoryItem();

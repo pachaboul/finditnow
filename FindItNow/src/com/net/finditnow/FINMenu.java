@@ -20,6 +20,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -174,7 +175,7 @@ public class FINMenu extends Activity {
     			ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
 						if (!category.equals("school_supplies")) {
-							myDialog = ProgressDialog.show(FINMenu.this, "Items Loading" , "Loading " + FINUtil.capFirstChar(category) + "...", true);
+							myDialog = ProgressDialog.show(FINMenu.this, "Category Loading" , "Loading " + FINUtil.capFirstChar(category) + "...", true);
 						}
 						
 						Class<? extends Activity> nextClass = (category.equals("school_supplies")? CategoryList.class : FINMap.class);
@@ -298,12 +299,13 @@ public class FINMenu extends Activity {
 	 * otherwise, return the appropriate category icon.
      */
     public static Integer getIcon(String category) {
-    	int icon = iconsMap.get(category);
-    	if (icon == 0) {
-    		return R.drawable.android;
-    	} else {
-    		return icon;
+    	if (!category.equals("")) {
+    		int icon = iconsMap.get(category);
+    		if (icon != 0) {
+    			return icon;
+    		}
     	}
+    	return R.drawable.android;
     }
     
     /**

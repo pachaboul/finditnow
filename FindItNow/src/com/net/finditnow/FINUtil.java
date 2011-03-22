@@ -30,7 +30,9 @@ public class FINUtil {
 	 */
 	public static String capFirstChar(String str)
 	{
-		if (str.equals("atms")) {
+		if (str.equals("")) {
+			return str;
+		} else if (str.equals("atms")) {
 			return "ATMs";
 		} else {
 			StringBuffer buffer = new StringBuffer();
