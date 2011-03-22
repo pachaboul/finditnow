@@ -61,7 +61,6 @@ public class FINMenu extends Activity {
 			conCheck.connectionError();
 		} else {
 			categories = JsonParser.getCategoriesList(listOfCategories);
-			categories.add("buildings");
 			Collections.sort(categories);
 			
 	        // Store a map from categories to icons so that other modules can use it
@@ -174,15 +173,13 @@ public class FINMenu extends Activity {
 				// Otherwise, jump to map
     			ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
-						if (!category.equals("buildings") && !category.equals("school_supplies")) {
+						if (!category.equals("school_supplies")) {
 							myDialog = ProgressDialog.show(FINMenu.this, "Items Loading" , "Loading " + FINUtil.capFirstChar(category) + "...", true);
 						}
 						
-						Class nextClass = (!category.equals("buildings")? (!category.equals("school_supplies")? 
-										  FINMap.class : CategoryList.class) : BuildingList.class);
+						Class<? extends Activity> nextClass = (category.equals("school_supplies")? CategoryList.class : FINMap.class);
 						Intent myIntent = new Intent(v.getContext(), nextClass);
 		                myIntent.putExtra("category", category);
-		                categories.remove("buildings");
 		                startActivity(myIntent);
 					}
     			});
