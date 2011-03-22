@@ -146,7 +146,7 @@ public class FINAddNew extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
 	        case R.id.home_button:
-                startActivityForResult(new Intent(this, FINMenu.class), 0);
+                startActivity(new Intent(this, FINHome.class));
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
