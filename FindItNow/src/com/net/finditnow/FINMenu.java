@@ -20,7 +20,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -347,7 +346,7 @@ public class FINMenu extends Activity {
      */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(R.id.categories_button).setVisible(false);
+    	menu.findItem(R.id.home_button).setVisible(false);
     	menu.findItem(R.id.my_location_button).setVisible(false);
     	return true;
     }

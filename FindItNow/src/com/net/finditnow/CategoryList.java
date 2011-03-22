@@ -104,7 +104,7 @@ public class CategoryList extends ListActivity {
 	        case R.id.help_button:
 	        	startActivity(new Intent(this, FINHelp.class));
 	            return true;
-	        case R.id.categories_button:
+	        case R.id.home_button:
 	        	startActivity(new Intent(this, FINMenu.class));
 	            return true;
 	        default:

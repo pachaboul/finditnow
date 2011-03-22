@@ -265,7 +265,7 @@ public class FINMap extends MapActivity {
 		};
 
 		// In this case, we have cleanly started the app and should fix on user location
-		if (category != null && FINSplash.lastLocation == null) {
+		if (!category.equals("") && FINSplash.lastLocation == null) {
 			Toast.makeText(this, "Getting a fix on your location...", Toast.LENGTH_SHORT).show();
 			locOverlay.runOnFirstFix(runnable);
 		}
@@ -291,7 +291,7 @@ public class FINMap extends MapActivity {
 		switch (item.getItemId()) {
 
 		// Return to the categories screen
-		case R.id.categories_button:
+		case R.id.home_button:
 			startActivity(new Intent(this, FINMenu.class));
 			return true;
 
