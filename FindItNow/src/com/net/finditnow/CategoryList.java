@@ -105,7 +105,7 @@ public class CategoryList extends ListActivity {
 	        	startActivity(new Intent(this, FINHelp.class));
 	            return true;
 	        case R.id.home_button:
-	        	startActivity(new Intent(this, FINMenu.class));
+	        	startActivity(new Intent(this, FINHome.class));
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
