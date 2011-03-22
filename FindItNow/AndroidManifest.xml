@@ -13,6 +13,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".FINHome"></activity>
         <activity android:name=".FINMenu"></activity>
         <activity android:name=".FINMap"
         android:configChanges="orientation|keyboardHidden">

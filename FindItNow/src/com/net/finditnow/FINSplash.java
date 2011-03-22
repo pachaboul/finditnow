@@ -43,7 +43,7 @@ public class FINSplash extends Activity {
                     // do nothing
                 } finally {
                     finish();
-                    startActivity(new Intent(getBaseContext(), FINMenu.class));
+                    startActivity(new Intent(getBaseContext(), FINHome.class));
                     stop();
                 }
             }
