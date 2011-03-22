@@ -85,7 +85,7 @@ public class FINHelp extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
 	        case R.id.home_button:
-                startActivity(new Intent(this, FINMenu.class));
+                startActivity(new Intent(this, FINHome.class));
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

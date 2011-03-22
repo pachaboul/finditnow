@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FindItNow</string>
-    <string name="categories">Categories</string>
     <string name="my_location">My Location</string>
     <string name="add_new">Add New Item</string>
     <string name="help">Help</string>
