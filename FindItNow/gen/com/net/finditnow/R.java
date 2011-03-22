@@ -44,7 +44,7 @@ public final class R {
     }
     public static final class id {
         public static final int GridItem=0x7f070016;
-        public static final int add_new_button=0x7f070028;
+        public static final int add_new_button=0x7f070029;
         public static final int addmap_confirm=0x7f070007;
         public static final int addnew_additem=0x7f070005;
         public static final int addnew_bspinner=0x7f070002;
@@ -60,7 +60,6 @@ public final class R {
         public static final int addnew_out=0x7f07000d;
         public static final int addnew_radio=0x7f07000b;
         public static final int addnew_radiolabel=0x7f07000a;
-        public static final int categories_button=0x7f070026;
         public static final int categoryName=0x7f070020;
         public static final int dialogTitle=0x7f07001f;
         public static final int distanceText=0x7f070022;
@@ -72,17 +71,19 @@ public final class R {
         public static final int grid_item_button=0x7f070018;
         public static final int grid_item_text=0x7f070017;
         public static final int gridview=0x7f07001d;
-        public static final int help_button=0x7f070029;
+        public static final int help_button=0x7f07002a;
         public static final int help_contents=0x7f070019;
         public static final int help_link=0x7f07001a;
         public static final int help_section_body=0x7f07001c;
         public static final int help_section_header=0x7f07001b;
+        public static final int home_button=0x7f070026;
         public static final int layout_rootflr=0x7f070011;
         public static final int mainlayout=0x7f070006;
         public static final int mapview=0x7f070008;
-        public static final int my_location_button=0x7f070027;
+        public static final int my_location_button=0x7f070028;
         public static final int outDoorText=0x7f070021;
         public static final int popupLayout=0x7f07001e;
+        public static final int settings_button=0x7f070027;
         public static final int showFlrButt=0x7f070024;
         public static final int timeReachText=0x7f070023;
     }
@@ -90,32 +91,37 @@ public final class R {
         public static final int addnew_indoor=0x7f030000;
         public static final int addnew_outdoor=0x7f030001;
         public static final int addnew_popup=0x7f030002;
-        public static final int fin_splash=0x7f030003;
-        public static final int flrlist_child=0x7f030004;
-        public static final int flrlist_item=0x7f030005;
-        public static final int grid_item=0x7f030006;
-        public static final int help=0x7f030007;
-        public static final int help_item=0x7f030008;
-        public static final int list_item=0x7f030009;
-        public static final int map=0x7f03000a;
-        public static final int menu=0x7f03000b;
-        public static final int popupdialog=0x7f03000c;
+        public static final int building_list=0x7f030003;
+        public static final int category_list=0x7f030004;
+        public static final int fin_splash=0x7f030005;
+        public static final int flrlist_child=0x7f030006;
+        public static final int flrlist_item=0x7f030007;
+        public static final int grid_item=0x7f030008;
+        public static final int help=0x7f030009;
+        public static final int help_item=0x7f03000a;
+        public static final int home=0x7f03000b;
+        public static final int map=0x7f03000c;
+        public static final int menu=0x7f03000d;
+        public static final int popupdialog=0x7f03000e;
+        public static final int settings=0x7f03000f;
     }
     public static final class menu {
         public static final int options_menu=0x7f060000;
     }
     public static final class string {
-        public static final int add_new=0x7f040003;
+        public static final int add_new=0x7f040002;
         public static final int app_name=0x7f040000;
-        public static final int categories=0x7f040001;
-        public static final int help=0x7f040004;
-        public static final int help_about=0x7f040008;
-        public static final int help_disclaimers=0x7f040007;
-        public static final int help_questions=0x7f040005;
-        public static final int help_troubleshooting=0x7f040006;
-        public static final int my_location=0x7f040002;
-        public static final int spinner_building=0x7f04000a;
-        public static final int spinner_category=0x7f040009;
-        public static final int spinner_floor=0x7f04000b;
+        public static final int help=0x7f040003;
+        public static final int help_about=0x7f040007;
+        public static final int help_disclaimers=0x7f040006;
+        public static final int help_questions=0x7f040004;
+        public static final int help_troubleshooting=0x7f040005;
+        public static final int home=0x7f04000d;
+        public static final int my_location=0x7f040001;
+        public static final int settings=0x7f04000c;
+        public static final int spinner_building=0x7f040009;
+        public static final int spinner_category=0x7f040008;
+        public static final int spinner_floor=0x7f04000a;
+        public static final int timeout=0x7f04000b;
     }
 }
