@@ -42,16 +42,9 @@ public class CategoryList extends ListActivity {
     	Bundle extras = getIntent().getExtras(); 
     	final String category = extras.getString("category");
     	setTitle("FindItNow > " + FINUtil.capFirstChar(category));
-    	List<String> list = new ArrayList<String>();
+    	List<String> list = FINUtil.capFirstChar(supplies());
     	
-    	// Grab the correct list to show.
-    	if (category.equals("buildings")) {
-    		list = FINMenu.getBuildingsList();
-    	} else {
-    		list = FINUtil.capFirstChar(supplies());
-    	}
-    	
-    	setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, list));
+    	setListAdapter(new ArrayAdapter<String>(this, R.layout.category_list, list));
     	
     	ListView lv = getListView();
     	lv.setTextFilterEnabled(true);

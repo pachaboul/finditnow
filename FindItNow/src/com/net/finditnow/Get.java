@@ -52,17 +52,9 @@ public class Get {
 		// DESIGN PATTERN: Exceptions.  In Get/Update/Create, we catch any exception in PHP communication
 		//				   This also allows us to localize errors that occur during the process
 		try {
-			String suffix = (location == null? (category == null? "getCategories.php" : "getBuildings.php") : "getLocations.php");
+			String suffix = (location == null? (category == null? "getCategories.php" : "getBuildings.php") : (category.contains(" ")? "getAllLocations.php" : "getLocations.php"));
 			
-			HttpPost httppost = null;
-
-			if (category!=null && category.contains(" ")) {
-				category = FINUtil.allCategories(FINMenu.getCategoriesList());
-				httppost = new HttpPost("http://dawgsforum.com/fin/getAllLocations.php");
-			} else {
-				httppost = new HttpPost(GET_LOCATIONS_ROOT + suffix);
-			}
-
+			HttpPost httppost = new HttpPost(GET_LOCATIONS_ROOT + suffix);
 
 			// If the location is not null, this is a request for items in a category
 			if (location != null) {

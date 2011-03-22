@@ -47,6 +47,7 @@ public class FINMap extends MapActivity {
 	// Shared static variables that the other modules can access
 	private String category;    
 	private String itemName;
+	private String buildingName;
 
 	// Location and GeoPoint Variables
 	// DESIGN PATTERN: Encapsulation.  Location is sensitive information, and thus private
@@ -73,28 +74,19 @@ public class FINMap extends MapActivity {
 		Bundle extras = getIntent().getExtras(); 
 		category = extras.getString("category");
 		itemName = extras.getString("itemName");
+		buildingName = extras.getString("buildingName");
 
 		// Set the Breadcrumb in the titlebar
-		if (itemName == null) {
-			setTitle("FindItNow > " + FINUtil.capFirstChar(category));
-		} else {
-			setTitle("FindItNow > " + FINUtil.capFirstChar(category) + " > " + FINUtil.capFirstChar(itemName));
-		}
-		
+		// TODO
+
 		// Check connection of Android
 		ConnectionChecker conCheck = new ConnectionChecker(this, FINMap.this);
 		
 		// Retrieve locations from the database and parse them
-		String passedCat = category;
-		GeoPoint loc = DEFAULT_LOCATION;
-		if (category.equals("buildings")) {
-			ArrayList<String> cats = FINMenu.getCategoriesList();
-			cats.remove("buildings");
-			passedCat = FINUtil.allCategories(cats);
-			loc = FINMenu.getGeoPointFromBuilding(itemName);
-		}
-		
-		String listOfLocations = Get.requestFromDB(passedCat, FINUtil.deCapFirstChar(FINUtil.depluralize(itemName)), loc, this);
+		GeoPoint loc = (buildingName == null? DEFAULT_LOCATION : FINMenu.getGeoPointFromBuilding(buildingName));
+		String cat = (buildingName == null? category : FINUtil.allCategories(FINMenu.getCategoriesList()));
+		String item = FINUtil.deCapFirstChar(FINUtil.depluralize(itemName));
+		String listOfLocations = Get.requestFromDB(cat, item, loc, this);
 		
 		if (listOfLocations.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
@@ -335,7 +327,7 @@ public class FINMap extends MapActivity {
 
 		// If the category is buildings, then we only put the single point on the map
 		if (getCategory().equals("buildings")) {
-			GeoPoint point = FINMenu.getGeoPointFromBuilding(itemName);
+			GeoPoint point = FINMenu.getGeoPointFromBuilding(buildingName);
 
 			CategoryItem item = new CategoryItem();
 			for (String flr : FINMenu.getBuilding(point).getFloorNames()) {

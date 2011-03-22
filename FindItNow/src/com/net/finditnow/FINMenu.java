@@ -171,27 +171,21 @@ public class FINMenu extends Activity {
 				
 				final String category = categories.get(position);
 				ib.setImageResource(getBigIcon(category));
-				
-				if (category.equals("buildings") || category.equals("school_supplies")) {
-					// Jump to CategoryList
-					ib.setOnClickListener(new OnClickListener() {
-						public void onClick(View v) {
-							Intent myIntent = new Intent(v.getContext(), CategoryList.class);
-			                myIntent.putExtra("category", category);
-			                startActivity(myIntent);
-						}
-	    			});
-				} else {
-					// Otherwise, jump to map
-	    			ib.setOnClickListener(new OnClickListener() {
-						public void onClick(View v) {
+				// Otherwise, jump to map
+    			ib.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						if (!category.equals("buildings") && !category.equals("school_supplies")) {
 							myDialog = ProgressDialog.show(FINMenu.this, "Items Loading" , "Loading " + FINUtil.capFirstChar(category) + "...", true);
-							Intent myIntent = new Intent(v.getContext(), FINMap.class);
-			                myIntent.putExtra("category", category);
-			                startActivity(myIntent);
 						}
-	    			});
-				}
+						
+						Class nextClass = (!category.equals("buildings")? (!category.equals("school_supplies")? 
+										  FINMap.class : CategoryList.class) : BuildingList.class);
+						Intent myIntent = new Intent(v.getContext(), nextClass);
+		                myIntent.putExtra("category", category);
+		                categories.remove("buildings");
+		                startActivity(myIntent);
+					}
+    			});
 				
 				// Add text above button.
 				TextView tv = (TextView) myView.findViewById(R.id.grid_item_text);
