@@ -150,11 +150,13 @@ public class PopUpDialog extends Dialog{
 	    				
 	    				//scrolls the view to the lowest floor which contains the category
 	    				int pos = 0;
-	    				String target = catItem.getFloor_names().get(catItem.getFloor_names().size()-1);
-	    				for (int i = allFlrName.length -1 ; i >= 0;i--)
-	    					if ( target.equals(allFlrName[i]))
-	    						pos = i;
-	    				lv.setSelectedGroup(pos);
+	    				if (!category.equals("")) {
+	    					String target = catItem.getFloor_names().get(catItem.getFloor_names().size()-1);
+		    				for (int i = allFlrName.length -1 ; i >= 0;i--)
+		    					if ( target.equals(allFlrName[i]))
+		    						pos = i;
+		    				lv.setSelectedGroup(pos);
+	    				}
 	    			}
 	    			// Hide all the floor info.
 	    			else {

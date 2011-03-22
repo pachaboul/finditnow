@@ -43,6 +43,7 @@ public class BuildingList extends ListActivity {
 				myDialog = ProgressDialog.show(BuildingList.this, "Building Loading" , "Loading " + FINUtil.capFirstChar(((TextView) v).getText().toString()) + "...", true);
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			myIntent.putExtra("building", ((TextView) v).getText().toString());
+    			myIntent.putExtra("category", "");
     			startActivity(myIntent);
     		}
     	});
