@@ -101,7 +101,7 @@ public class FINAddOutdoor extends MapActivity {
 			        	String response = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr, getBaseContext());
 			        	
 			        	//Return to categories screen
-				    	Intent myIntent = new Intent(getBaseContext(), FINMenu.class);
+				    	Intent myIntent = new Intent(getBaseContext(), FINHome.class);
 			            startActivity(myIntent);
 			            //Display popup message with response from server
 			            Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG).show();

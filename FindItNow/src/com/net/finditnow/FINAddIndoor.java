@@ -83,7 +83,7 @@ public class FINAddIndoor extends Activity {
 					.get(selectedFloor), "", bb, sc, pr, getBaseContext());
 
 			//Return to categories menu
-			Intent myIntent = new Intent(v.getContext(), FINMenu.class);
+			Intent myIntent = new Intent(v.getContext(), FINHome.class);
 			startActivity(myIntent);
 			//Display response from server in popup
 			Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG)
