@@ -11,6 +11,8 @@ package com.net.finditnow;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.net.finditnow.R.array;
+
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -42,9 +44,8 @@ public class CategoryList extends ListActivity {
     	Bundle extras = getIntent().getExtras(); 
     	final String category = extras.getString("category");
     	setTitle("FindItNow > " + FINUtil.capFirstChar(category));
-    	List<String> list = FINUtil.capFirstChar(supplies());
     	
-    	setListAdapter(new ArrayAdapter<String>(this, R.layout.category_list, list));
+    	setListAdapter(new ArrayAdapter<String>(this, R.layout.category_list, getResources().getStringArray(R.array.specific_supplies)));
     	
     	ListView lv = getListView();
     	lv.setTextFilterEnabled(true);
@@ -55,6 +56,7 @@ public class CategoryList extends ListActivity {
 				myDialog = ProgressDialog.show(CategoryList.this, "Items Loading" , "Loading " + FINUtil.capFirstChar(((TextView) v).getText().toString()) + "...", true);
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			myIntent.putExtra("category", category);
+                myIntent.putExtra("building", "");
     			myIntent.putExtra("itemName", ((TextView) v).getText().toString());
     			startActivity(myIntent);
     		}
@@ -67,18 +69,6 @@ public class CategoryList extends ListActivity {
 		if (myDialog != null) {
 			myDialog.dismiss();
 		}
-	}
-	
-	/**
-     * List of school supplies item types
-     * Note: this is hard-coded in our application
-     */
-	private static ArrayList<String> supplies() {
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("Blue Books");
-		list.add("Scantrons");
-		list.add("Printing");
-		return list;
 	}
 	
 	/**
@@ -98,14 +88,14 @@ public class CategoryList extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+        	case R.id.home_button:
+        		startActivity(new Intent(this, FINHome.class));
+        		return true;
         	case R.id.add_new_button:
 	    		startActivity(new Intent(this, FINAddNew.class));
 	    		return true;
 	        case R.id.help_button:
 	        	startActivity(new Intent(this, FINHelp.class));
-	            return true;
-	        case R.id.home_button:
-	        	startActivity(new Intent(this, FINHome.class));
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
