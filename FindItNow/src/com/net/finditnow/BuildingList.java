@@ -40,9 +40,6 @@ public class BuildingList extends ListActivity {
     	super.onCreate(savedInstanceState);
     	setListAdapter(new ArrayAdapter<String>(this, R.layout.building_list, FINMenu.getBuildingsList()));
     	
-    	Bundle extras = getIntent().getExtras(); 
-    	final String category = extras.getString("category");
-    	
     	ListView lv = getListView();
     	lv.setTextFilterEnabled(true);
     	
@@ -51,8 +48,7 @@ public class BuildingList extends ListActivity {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				myDialog = ProgressDialog.show(BuildingList.this, "Building Loading" , "Loading " + FINUtil.capFirstChar(((TextView) v).getText().toString()) + "...", true);
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
-    			myIntent.putExtra("category", category);
-    			myIntent.putExtra("buildingName", ((TextView) v).getText().toString());
+    			myIntent.putExtra("building", ((TextView) v).getText().toString());
     			startActivity(myIntent);
     		}
     	});
