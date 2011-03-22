@@ -82,8 +82,8 @@ public class FINMap extends MapActivity {
 		ConnectionChecker conCheck = new ConnectionChecker(this, FINMap.this);
 		
 		// Retrieve locations from the database and parse them
-		GeoPoint loc = (building == null? DEFAULT_LOCATION : FINMenu.getGeoPointFromBuilding(building));
-		String cat = (building == null? category : FINUtil.allCategories(FINMenu.getCategoriesList()));
+		GeoPoint loc = (building.equals("")? DEFAULT_LOCATION : FINMenu.getGeoPointFromBuilding(building));
+		String cat = (building.equals("")? category : FINUtil.allCategories(FINMenu.getCategoriesList()));
 		String item = FINUtil.deCapFirstChar(FINUtil.depluralize(itemName));
 		String listOfLocations = Get.requestFromDB(cat, item, loc, this);
 		
@@ -325,7 +325,7 @@ public class FINMap extends MapActivity {
 	private void placeOverlays() {
 
 		// If the category is buildings, then we only put the single point on the map
-		if (category == null) {
+		if (!building.equals("")) {
 			GeoPoint point = FINMenu.getGeoPointFromBuilding(building);
 
 			CategoryItem item = new CategoryItem();
