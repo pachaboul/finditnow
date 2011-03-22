@@ -292,7 +292,7 @@ public class FINMap extends MapActivity {
 
 		// Return to the categories screen
 		case R.id.home_button:
-			startActivity(new Intent(this, FINMenu.class));
+			startActivity(new Intent(this, FINHome.class));
 			return true;
 
 			// Center the map on the user's location if it is possible
