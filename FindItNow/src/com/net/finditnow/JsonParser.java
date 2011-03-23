@@ -13,6 +13,7 @@ package com.net.finditnow;
 //packages for handling JSON
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import com.google.android.maps.GeoPoint;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
