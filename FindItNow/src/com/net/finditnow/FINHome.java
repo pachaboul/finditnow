@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 public class FINHome extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
@@ -28,5 +29,11 @@ public class FINHome extends TabActivity {
 	    tabHost.addTab(spec);
 
 	    tabHost.setCurrentTab(0);
+	    
+	    if (FINSplash.isLoggedIn) {
+	    	Bundle extras = getIntent().getExtras(); 
+			String username = extras.getString("username");
+	    	Toast.makeText(getBaseContext(), "Welcome back " + username, Toast.LENGTH_LONG).show();
+	    }
 	}
 }
