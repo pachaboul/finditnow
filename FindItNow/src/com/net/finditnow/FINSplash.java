@@ -3,6 +3,7 @@ package com.net.finditnow;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.view.MotionEvent;
 
 import com.google.android.maps.GeoPoint;
@@ -10,11 +11,12 @@ import com.google.android.maps.GeoPoint;
 public class FINSplash extends Activity {
 	
 	protected boolean active = true;
-	protected int splashTime = 1500; // time to display the splash screen in ms
+	protected int splashTime = 2000; // time to display the splash screen in ms
 	
 	public static GeoPoint lastLocation;
 	public static GeoPoint mapCenter;
 	public static int zoomLevel;
+	public static boolean isLoggedIn;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,11 @@ public class FINSplash extends Activity {
                 } catch (InterruptedException e) {
                     // do nothing
                 } finally {
-                    finish();
+                	// Check logged in status
+            		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+            		isLoggedIn = Login.logStar(phone_id, null, null, getBaseContext()).equals(getString(R.string.login_already));
                     startActivity(new Intent(getBaseContext(), FINHome.class));
+            		finish();
                     stop();
                 }
             }

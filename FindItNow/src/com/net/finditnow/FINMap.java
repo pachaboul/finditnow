@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -289,6 +290,18 @@ public class FINMap extends MapActivity {
 
 		// Handle the item selected
 		switch (item.getItemId()) {
+		
+		
+		case R.id.login_button:
+    		startActivity(new Intent(this, FINLogin.class));
+    		return true;
+    		
+		case R.id.logout_button:
+    		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+    		String result = Login.logStar(phone_id, null, null, getBaseContext());
+    		FINSplash.isLoggedIn = false;
+    		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+    		return true;
 
 		// Return to the categories screen
 		case R.id.home_button:
@@ -308,6 +321,10 @@ public class FINMap extends MapActivity {
 		case R.id.add_new_button:
 			startActivity(new Intent(this, FINAddNew.class));
 			return true;
+			
+		case R.id.settings_button:
+        	startActivity(new Intent(this, FINSettings.class));
+            return true;
 
 			// Open up our help documentation
 		case R.id.help_button:
@@ -318,6 +335,23 @@ public class FINMap extends MapActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+    
+    /**
+     * Prepares the options menu before being displayed.
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	if (FINSplash.isLoggedIn) {
+    		menu.findItem(R.id.login_button).setVisible(false);
+    		menu.findItem(R.id.logout_button).setVisible(true);
+    	} else {
+    		menu.findItem(R.id.logout_button).setVisible(false);
+    		menu.findItem(R.id.login_button).setVisible(true);
+    	}
+    	
+    	return true;
+    }
 
 	/**
 	 * This method places the locations retrieved from the database onto the map
