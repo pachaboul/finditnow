@@ -25,6 +25,7 @@
         <activity android:name=".FINAddNew"></activity>
         <activity android:name=".FINAddIndoor"></activity>
         <activity android:name=".FINAddOutdoor"></activity>
+        <activity android:name=".FINLogin"></activity>
 		<uses-library android:name="com.google.android.maps" />
     </application>
 
