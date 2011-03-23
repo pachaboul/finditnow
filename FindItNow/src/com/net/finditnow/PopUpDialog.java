@@ -159,44 +159,47 @@ public class PopUpDialog extends Dialog{
 	    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
 	    			//Button toggle = (Button) findViewById(R.id.showFlrButt);
 	    			TextView toggle = (TextView) findViewById(R.id.showFlrButt);
-	    			
-	    			// Show all the floor info.
-	    			if (lv.getCount() == 0)
-	    			{
-	    				toggle.setText("Hide Floors");
-	    				lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-	    				if (allFlrName.length > 3)
-	    					lv.getLayoutParams().height = 150;
-
+	    			if (category.equals("")){
 	    				
-	    				//auto scrolls to the item in view into the screen zone
-	    				lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-							public void onGroupExpand(int groupPosition) {
-				    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
-				    			lv.setSelectedGroup(groupPosition);		
-							}
-						});
-	    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),catItem,
-		    					iconId, category, dbCategory, allFlrName));
-	    				
-	    				//scrolls the view to the lowest floor which contains the category
-	    				int pos = 0;
-	    				if (!category.equals("")) {
-	    					String target = catItem.getFloor_names().get(catItem.getFloor_names().size()-1);
-		    				for (int i = allFlrName.length -1 ; i >= 0;i--)
-		    					if ( target.equals(allFlrName[i]))
-		    						pos = i;
-		    				lv.setSelectedGroup(pos);
-	    				}
 	    			}
-	    			// Hide all the floor info.
-	    			else {
-	    				toggle.setText("Show Floors");
-	    				lv.getLayoutParams().height = 0;
-	    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),new CategoryItem(),
-		    					iconId, category, dbCategory, new String[0]));
+	    			else{
+		    			// Show all the floor info.
+		    			if (lv.getCount() == 0)
+		    			{
+		    				toggle.setText("Hide Floors");
+		    				lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
+		    				if (allFlrName.length > 3)
+		    					lv.getLayoutParams().height = 150;
+	
+		    				
+		    				//auto scrolls to the item in view into the screen zone
+		    				lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+								public void onGroupExpand(int groupPosition) {
+					    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
+					    			lv.setSelectedGroup(groupPosition);		
+								}
+							});
+		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),catItem,
+			    					iconId, category, dbCategory, allFlrName));
+		    				
+		    				//scrolls the view to the lowest floor which contains the category
+		    				int pos = 0;
+		    				if (!category.equals("")) {
+		    					String target = catItem.getFloor_names().get(catItem.getFloor_names().size()-1);
+			    				for (int i = allFlrName.length -1 ; i >= 0;i--)
+			    					if ( target.equals(allFlrName[i]))
+			    						pos = i;
+			    				lv.setSelectedGroup(pos);
+		    				}
+		    			}
+		    			// Hide all the floor info.
+		    			else {
+		    				toggle.setText("Show Floors");
+		    				lv.getLayoutParams().height = 0;
+		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),new CategoryItem(),
+			    					iconId, category, dbCategory, new String[0]));
+		    			}
 	    			}
-	    			
 	    		}
 	    	});
 	    	//outdoor information is not needed in this case, make
