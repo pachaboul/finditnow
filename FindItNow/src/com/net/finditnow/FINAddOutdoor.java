@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -98,7 +99,8 @@ public class FINAddOutdoor extends MapActivity {
 	 						pr = "print";
 						
 						//Send new item to database
-			        	String response = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr, getBaseContext());
+						final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+			        	String response = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr, phone_id, getBaseContext());
 			        	
 			        	//Return to categories screen
 				    	Intent myIntent = new Intent(getBaseContext(), FINHome.class);

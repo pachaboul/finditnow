@@ -47,7 +47,8 @@ public class Create {
 	 * @return A String indicating if the request was successful
 	 */
 	public static String sendToDB(String category, GeoPoint location, int fid, 
-								  String special_info, String bb, String sc, String print, Context context) {
+								  String special_info, String bb, String sc, String print,
+								  String phone_id, Context context) {
 
 		// Initialize input stream and response variables
 	  	InputStream iStream = null;
