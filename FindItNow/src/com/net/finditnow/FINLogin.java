@@ -1,13 +1,14 @@
 package com.net.finditnow;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class FINLogin extends Activity {
 
@@ -33,21 +34,17 @@ public class FINLogin extends Activity {
 				// the getText() gets the current value of the text box
 				// the toString() converts the value to String data type
 				// then assigns it to a variable of type String
-				String sUserName = usernameEditText.getText().toString();
-				String sPassword = passwordEditText.getText().toString();
+				String userName = usernameEditText.getText().toString();
+				String userPass = passwordEditText.getText().toString();
+				final String android_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID); 
 
-				// this just catches the error if the program cant locate the GUI stuff
-				AlertDialog.Builder builder = new AlertDialog.Builder(FINLogin.this);
+				String result = Login.login(android_id, userName, userPass, getBaseContext());
+				Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
 
-				if (usernameEditText == null || passwordEditText == null) {
-					builder.setMessage("Oops, fail");
-				} else {
-					// display the username and the password in string format
-					builder.setMessage("Yay!");
+				if (result.equals(getString(R.string.login_success))) {
+					Intent myIntent = new Intent(getBaseContext(), FINHome.class);
+		            startActivity(myIntent);
 				}
-
-				AlertDialog alert = builder.create();
-				alert.show();
 			}
 		};
 

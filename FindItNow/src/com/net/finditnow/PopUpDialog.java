@@ -37,6 +37,7 @@ package com.net.finditnow;
 
 //Necessary for using certain methods
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -52,11 +53,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-//ver3.5 improts
-import java.util.HashMap;
-
-import android.util.Log;
 /*
  * Design Principle: inheritance
  *   inherit most of the methods from Dialog. We only override those methods that

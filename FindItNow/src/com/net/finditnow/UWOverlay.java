@@ -17,8 +17,6 @@ import android.graphics.drawable.Drawable;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
-
-import android.util.Log;
 public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 
 	// Define a list of overlay items and the context for the overlay

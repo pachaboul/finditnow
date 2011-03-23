@@ -8,11 +8,6 @@
 
 package com.net.finditnow;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.net.finditnow.R.array;
-
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
