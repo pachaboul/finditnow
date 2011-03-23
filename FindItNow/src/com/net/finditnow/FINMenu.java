@@ -325,6 +325,9 @@ public class FINMenu extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+        	case R.id.login_button:
+        		startActivity(new Intent(this, FINLogin.class));
+        		return true;
         	case R.id.add_new_button:
         		startActivity(new Intent(this, FINAddNew.class));
         		return true;
