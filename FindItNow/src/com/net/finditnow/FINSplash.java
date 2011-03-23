@@ -50,7 +50,6 @@ public class FINSplash extends Activity {
             		isLoggedIn = SuperUser.login(phone_id, "", "", getBaseContext()).equals(getString(R.string.login_already));
                     startActivity(new Intent(getBaseContext(), FINHome.class));
             		finish();
-                    stop();
                 }
             }
         };

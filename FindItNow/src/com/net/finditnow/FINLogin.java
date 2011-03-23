@@ -1,7 +1,6 @@
 package com.net.finditnow;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.view.View;
@@ -22,6 +21,7 @@ public class FINLogin extends Activity {
 
 		// get the button resource in the xml file and assign it to a local variable of type Button
 		Button launch = (Button)findViewById(R.id.login_button);
+		Button launch2 = (Button)findViewById(R.id.cancel_button);
 
 		// this is the action listener
 		OnClickListener listener = new OnClickListener() {
@@ -49,13 +49,22 @@ public class FINLogin extends Activity {
 	
 					if (result.equals(getString(R.string.login_success))) {
 						FINSplash.isLoggedIn = true;
+						setResult(RESULT_OK);
 						finish();
 					}
 				}
 			}
 		};
+		
+		OnClickListener listener2 = new OnClickListener() {
+
+			public void onClick(View viewParam) {
+				setResult(RESULT_CANCELED);
+				finish();
+			}
+		};
 
 		launch.setOnClickListener(listener);
-		setResult(RESULT_OK);
+		launch2.setOnClickListener(listener2);
 	}
 }
