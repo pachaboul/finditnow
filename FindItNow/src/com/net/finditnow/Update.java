@@ -42,7 +42,7 @@ public class Update {
 	 * @param id - id of the object to be update
 	 * @return String that represents the db response
 	 */
-	public static String updateDB(String category, int id, Context context) {
+	public static String updateDB(String category, int id, String phone_id, Context context) {
 		/*
 		   * HTTP Post request
 		   */

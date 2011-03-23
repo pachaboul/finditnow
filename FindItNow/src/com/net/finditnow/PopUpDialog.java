@@ -45,6 +45,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Region;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
@@ -212,7 +213,8 @@ public class PopUpDialog extends Dialog{
 	    			//confirms the action and perform the update accordingly 
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
-	    		        	   String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0), getContext());
+	    		        	   final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
+	    		        	   String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0), phone_id, getContext());
 	    		        	   dialog.dismiss();
 	    		               Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 	    		           }

@@ -10,6 +10,7 @@ package com.net.finditnow;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.provider.Settings.Secure;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,7 @@ import android.widget.Toast;
  *   override those that should have different behavior.
  */
 public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
-	
+
 	//data for populating the list
 	private CategoryItem catItem;		//information associated w/ this location
 	private Context context;			
@@ -36,9 +37,9 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	private String category;		//category
 	private String dbCategory;
 	private String[] allFlrName;
-	
+
 	private int pos;
-	
+
 	/**
 	 * Creates a new FloorExpandableListAdapter with each variable initialized
 	 * 
@@ -97,54 +98,55 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 */
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
-		
+
 		if (catItem.getFloor_names().contains(allFlrName[groupPosition])){
 			pos = catItem.getFloor_names().indexOf(allFlrName[groupPosition]);
 
 			//the layout/view which is defined by a layout XML
 			View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
-	
+
 			//This is the text for any additional information associated with this
 			// particular object
 			TextView text = (TextView) relative.findViewById(R.id.floorDetailText);
 			String specialInfo = "";
 			if (catItem.getInfo().get(pos) != null)
 				specialInfo = catItem.getInfo().get(pos).replace("\n", "<br />");
-	
+
 			//sets it to the text field
 			text.setText(Html.fromHtml(specialInfo));
-			
-			
+
+
 			//This is the button for reporting something to be missing
 			TextView button = (TextView) relative.findViewById(R.id.flrDetailButton);
 			button.setOnClickListener( new View.OnClickListener()
-	    	{
-	    		public void onClick(View v)
-	    		{
-	    			//pops a Dialog to confirm the user's intent
-	    			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-	    			builder.setMessage("Are you sure that this " + category.replace("_", " ").toLowerCase() + " location is not here?");
-	    			builder.setCancelable(false);
-	    			//confirms the action and perform the update accordingly 
-	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
-	    		           public void onClick(DialogInterface dialog, int id) {
-	    		        	    String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos), context);
-	    		                dialog.dismiss();
-	    		                Toast.makeText(context, response, Toast.LENGTH_LONG).show();
-	    		           }
-	    		       });
-	    			//cancels the action if the user didn't mean to do it
-	    			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-	    		           public void onClick(DialogInterface dialog, int id) {
-	    		                dialog.cancel();
-	    		           }
-	    		       });
-	
-	    			AlertDialog dailog = builder.create();
-	    			dailog.show();
-	    		}
-	    	});
-			
+			{
+				public void onClick(View v)
+				{
+					//pops a Dialog to confirm the user's intent
+					AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					builder.setMessage("Are you sure that this " + category.replace("_", " ").toLowerCase() + " location is not here?");
+					builder.setCancelable(false);
+					//confirms the action and perform the update accordingly 
+					builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+							String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos), phone_id, context);
+							dialog.dismiss();
+							Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+						}
+					});
+					//cancels the action if the user didn't mean to do it
+					builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+
+					AlertDialog dailog = builder.create();
+					dailog.show();
+				}
+			});
+
 			return relative;
 		}
 		return null;
@@ -184,20 +186,20 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 */
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
-		
+
 		//the layout/view which is defined by a layout XML
 		View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);
-				
+
 		//Text for displaying the floor name
 		TextView text = (TextView) relative.findViewById(R.id.flrName);
 		text.setText(allFlrName[groupPosition]);
-	
+
 		//the icon associated with the category
 		if (catItem.getFloor_names().contains(allFlrName[groupPosition])){
 			ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
 			img.setImageResource(iconId);
 		}
-		
+
 		return relative;
 	}
 

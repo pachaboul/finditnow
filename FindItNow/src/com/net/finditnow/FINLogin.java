@@ -36,9 +36,9 @@ public class FINLogin extends Activity {
 				// then assigns it to a variable of type String
 				String userName = usernameEditText.getText().toString();
 				String userPass = passwordEditText.getText().toString();
-				final String android_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID); 
+				final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID); 
 
-				String result = Login.login(android_id, userName, userPass, getBaseContext());
+				String result = Login.login(phone_id, userName, userPass, getBaseContext());
 				Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
 
 				if (result.equals(getString(R.string.login_success))) {

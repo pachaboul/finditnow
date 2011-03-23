@@ -5,6 +5,7 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -78,9 +79,10 @@ public class FINAddIndoor extends Activity {
 				pr = "print";
 			
 			//Send new item to database
+			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 			String response = Create.sendToDB(FINUtil
 					.deCapFirstChar(selectedCategory), null, map
-					.get(selectedFloor), "", bb, sc, pr, getBaseContext());
+					.get(selectedFloor), "", bb, sc, pr, phone_id, getBaseContext());
 
 			//Return to categories menu
 			Intent myIntent = new Intent(v.getContext(), FINHome.class);
