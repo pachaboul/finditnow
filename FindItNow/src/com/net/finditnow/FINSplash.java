@@ -47,8 +47,13 @@ public class FINSplash extends Activity {
                 } finally {
                 	// Check logged in status
             		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-            		isLoggedIn = SuperUser.login(phone_id, "", "", getBaseContext()).equals(getString(R.string.login_already));
-                    startActivity(new Intent(getBaseContext(), FINHome.class));
+            		String result = SuperUser.loggedin(phone_id, getBaseContext());
+            		
+            		isLoggedIn = result.substring(0, 17).equals(getString(R.string.login_already));
+            		Intent myIntent = new Intent(getBaseContext(), FINHome.class);
+            		myIntent.putExtra("username", result.substring(21, result.length()));
+            		
+            		startActivity(myIntent);
             		finish();
                 }
             }

@@ -33,7 +33,7 @@ public class SuperUser {
 	// A Constant representing the location of the Update.php file
 	public static final String LOGIN_LOCATION = "http://yinnopiano.com/fin/login.php";
 	public static final String LOGOUT_LOCATION = "http://yinnopiano.com/fin/logout.php";
-	public static final String LOGGEDIN_LOCATION = "http://yinnopiano.com/fin/loggedin.php";
+	public static final String LOGGEDIN_LOCATION = "http://yinnopiano.com/fin/loggedIn.php";
 	
 	public static String login(String phone_id, String username, String userpass, Context context) {
 		/*
