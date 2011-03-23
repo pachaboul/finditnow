@@ -159,19 +159,45 @@ public class PopUpDialog extends Dialog{
 	    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
 	    			//Button toggle = (Button) findViewById(R.id.showFlrButt);
 	    			TextView toggle = (TextView) findViewById(R.id.showFlrButt);
-	    			if (category.equals("")){
-	    				
-	    			}
-	    			else{
-		    			// Show all the floor info.
-		    			if (lv.getCount() == 0)
-		    			{
-		    				toggle.setText("Hide Floors");
-		    				lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-		    				if (allFlrName.length > 3)
-		    					lv.getLayoutParams().height = 150;
-	
-		    				
+	    			
+	    			// Show all the floor info.
+	    			if (lv.getCount() == 0)
+	    			{
+	    				toggle.setText("Hide Floors");
+	    				lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
+	    				if (allFlrName.length > 3)
+	    					lv.getLayoutParams().height = 150;
+
+	    				if (category.equals("")){
+	    					/*Building bui = new Building(1,"Test",new int[]{2,3,4,56}, new String[]{"Flr 1","Flr 2","Flr 3","Flr 4"});
+	    					String[] cateogries = new String[]{"Coffee1", "Restroom2", "Vending3"};
+	    					HashMap<String,CategoryItem> data = new HashMap<String,CategoryItem>();
+	    					
+	    					CategoryItem catItem = new CategoryItem();
+	    					catItem.addFloor_names("Flr 1");
+	    					catItem.addId(2);
+	    					catItem.addInfo("No Coffee!");
+	    					data.put("Coffee1", catItem);
+	    					
+	    					catItem = new CategoryItem();
+	    					catItem.addFloor_names("Flr 2");
+	    					catItem.addId(3);
+	    					catItem.addInfo("Male");
+	    					catItem.addFloor_names("Flr 3");
+	    					catItem.addId(4);
+	    					catItem.addInfo("Female");
+	    					data.put("Restroom2", catItem);	
+	    					
+	    					catItem = new CategoryItem();
+	    					catItem.addFloor_names("Flr 4");
+	    					catItem.addId(56);
+	    					catItem.addInfo("Milk!");
+	    					data.put("Vending3", catItem);
+	    					
+	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),bui,cateogries,data));
+	    					*/
+	    				}
+	    				else{
 		    				//auto scrolls to the item in view into the screen zone
 		    				lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 								public void onGroupExpand(int groupPosition) {
@@ -180,7 +206,7 @@ public class PopUpDialog extends Dialog{
 								}
 							});
 		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),catItem,
-			    					iconId, category, dbCategory, allFlrName));
+			    					iconId, category, dbCategory, allFlrName,"flrName"));
 		    				
 		    				//scrolls the view to the lowest floor which contains the category
 		    				int pos = 0;
@@ -191,15 +217,14 @@ public class PopUpDialog extends Dialog{
 			    						pos = i;
 			    				lv.setSelectedGroup(pos);
 		    				}
-		    			}
-		    			// Hide all the floor info.
-		    			else {
-		    				toggle.setText("Show Floors");
-		    				lv.getLayoutParams().height = 0;
-		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),new CategoryItem(),
-			    					iconId, category, dbCategory, new String[0]));
-		    			}
+	    				}
 	    			}
+	    			// Hide all the floor info.
+	    			else {
+	    				toggle.setText("Show Floors");
+	    				lv.getLayoutParams().height = 0;
+	    			}
+	    			
 	    		}
 	    	});
 	    	//outdoor information is not needed in this case, make
