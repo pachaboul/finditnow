@@ -30,7 +30,7 @@ public class FINHome extends TabActivity {
 
 	    tabHost.setCurrentTab(0);
 	    
-	    if (FINSplash.isLoggedIn) {
+	    if (getIntent().hasExtra("username")) {
 	    	Bundle extras = getIntent().getExtras(); 
 			String username = extras.getString("username");
 	    	Toast.makeText(getBaseContext(), "Welcome back " + username, Toast.LENGTH_LONG).show();
