@@ -26,12 +26,14 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.content.Context;
+import android.provider.Settings.Secure;
 import android.util.Log;
 
 public class Login {
 	
 	// A Constant representing the location of the Update.php file
 	public static final String LOGIN_LOCATION = "http://yinnopiano.com/fin/login.php";
+	public static final String LOGOUT_LOCATION = "http://yinnopiano.com/fin/logout.php";
 	
 	/**
 	 * Communicate with the database for updating the counts
@@ -41,7 +43,7 @@ public class Login {
 	 * @param id - id of the object to be update
 	 * @return String that represents the db response
 	 */
-	public static String login(String phone_id, String username, String userpass, Context context) {
+	public static String logStar(String phone_id, String username, String userpass, Context context) {
 		/*
 		   * HTTP Post request
 		   */
@@ -51,13 +53,18 @@ public class Login {
 	  	// DESIGN PATTERN: Exceptions.  In Get/Update/Create, we catch any exception in PHP communication
 	  	//				   This also allows us to localize errors that occur during the process
 	  	try{
-		        HttpPost httppost = new HttpPost(LOGIN_LOCATION);
-		        
+		        HttpPost httppost = null;
 		        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+		        
+                if (username != null) {
+                	httppost = new HttpPost(LOGIN_LOCATION);
+	                nameValuePairs.add(new BasicNameValuePair("username", username));
+	                nameValuePairs.add(new BasicNameValuePair("userpass", userpass));
+                } else {
+                	httppost = new HttpPost(LOGOUT_LOCATION);
+                }
                 
                 nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
-                nameValuePairs.add(new BasicNameValuePair("username", username));
-                nameValuePairs.add(new BasicNameValuePair("userpass", userpass));
                 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 		  			
@@ -98,4 +105,5 @@ public class Login {
 
   		return data.trim();
 	}
+	
 }

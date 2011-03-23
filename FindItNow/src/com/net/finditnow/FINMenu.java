@@ -20,6 +20,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 
@@ -328,6 +330,12 @@ public class FINMenu extends Activity {
         	case R.id.login_button:
         		startActivity(new Intent(this, FINLogin.class));
         		return true;
+        	case R.id.logout_button:
+        		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+        		String result = Login.logStar(phone_id, null, null, getBaseContext());
+        		FINSplash.isLoggedIn = false;
+        		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+        		return true;
         	case R.id.add_new_button:
         		startActivity(new Intent(this, FINAddNew.class));
         		return true;
@@ -351,6 +359,15 @@ public class FINMenu extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.findItem(R.id.home_button).setVisible(false);
     	menu.findItem(R.id.my_location_button).setVisible(false);
+
+    	if (FINSplash.isLoggedIn) {
+    		menu.findItem(R.id.login_button).setVisible(false);
+    		menu.findItem(R.id.logout_button).setVisible(true);
+    	} else {
+    		menu.findItem(R.id.logout_button).setVisible(false);
+    		menu.findItem(R.id.login_button).setVisible(true);
+    	}
+    	
     	return true;
     }
 }

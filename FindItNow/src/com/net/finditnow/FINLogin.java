@@ -38,12 +38,12 @@ public class FINLogin extends Activity {
 				String userPass = passwordEditText.getText().toString();
 				final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID); 
 
-				String result = Login.login(phone_id, userName, userPass, getBaseContext());
+				String result = Login.logStar(phone_id, userName, userPass, getBaseContext());
 				Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
 
 				if (result.equals(getString(R.string.login_success))) {
-					Intent myIntent = new Intent(getBaseContext(), FINHome.class);
-		            startActivity(myIntent);
+					FINSplash.isLoggedIn = true;
+					FINLogin.this.finish();
 				}
 			}
 		};

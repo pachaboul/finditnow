@@ -6,6 +6,9 @@
     <item android:id="@+id/login_button"
           android:icon="@android:drawable/ic_menu_info_details"
           android:title="@string/login" />
+    <item android:id="@+id/logout_button"
+          android:icon="@android:drawable/ic_menu_info_details"
+          android:title="@string/logout" />
     <item android:id="@+id/settings_button"
           android:icon="@android:drawable/ic_menu_preferences"
           android:title="@string/settings" />
