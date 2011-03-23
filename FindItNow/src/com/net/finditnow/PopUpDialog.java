@@ -108,6 +108,21 @@ public class PopUpDialog extends Dialog{
 		this.isOutdoor = isOutdoor;
 		this.allFlrName = allFlrName;
 	}
+	public PopUpDialog(Context context, HashMap<String,CategoryItem> dataMap,
+			String buildName, String category, BigDecimal distance, int walkingTime,
+			 String[] allFlrName){
+		super(context);
+		this.buildName = buildName;
+		this.catItem = null;
+		this.distance = distance;
+		this.walkTime = walkingTime;
+		this.category = category;
+		this.dbCategory = "";
+		this.iconId = -1;
+		this.isOutdoor = false;
+		this.allFlrName = allFlrName;
+		this.dataMap = dataMap;
+	}
 	
 	/**
 	 * called when PopUpDialog is first created
