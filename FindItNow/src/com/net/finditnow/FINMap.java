@@ -314,6 +314,19 @@ public class FINMap extends MapActivity {
             return super.onOptionsItemSelected(item);
 		}
 	}
+	
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	if (FINSplash.isLoggedIn) {
+    		menu.findItem(R.id.login_button).setVisible(false);
+    		menu.findItem(R.id.logout_button).setVisible(true);
+    	} else {
+    		menu.findItem(R.id.logout_button).setVisible(false);
+    		menu.findItem(R.id.login_button).setVisible(true);
+    	}
+    	
+    	return true;
+    }
 
 	/**
 	 * This method places the locations retrieved from the database onto the map
