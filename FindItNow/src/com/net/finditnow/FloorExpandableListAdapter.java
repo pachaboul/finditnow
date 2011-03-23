@@ -36,7 +36,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	private int iconId;				//id of the category's icon
 	private String category;		//category
 	private String dbCategory;
-	private String[] allFlrName;
+	private String[] parentText;
+	private String parentMode;
 
 	private int pos;
 
@@ -50,14 +51,15 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @param category - the category currently displaying
 	 */
 	public FloorExpandableListAdapter(Context context,CategoryItem catItem,
-			int iconId, String category, String dbCategory, String[] allFlrName) {
+			int iconId, String category, String dbCategory, String[] parentText, String parentMode) {
 		super();
 		this.context = context;
 		this.catItem = catItem;
 		this.iconId = iconId;
 		this.category = category;
 		this.dbCategory = dbCategory;
-		this.allFlrName = allFlrName;
+		this.parentText = parentText;
+		this.parentMode = parentMode;
 	}
 
 	/**
@@ -82,7 +84,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	public int getChildrenCount(int groupPosition) {
 		//every group (parent) only has 1 child, which is the information display.
 		return (category.equals("") ? 0 : 
-			(catItem.getFloor_names().contains(allFlrName[groupPosition]) ? 1 :0  ) );
+			(catItem.getFloor_names().contains(parentText[groupPosition]) ? 1 :0  ) );
 	}
 
 	/**
@@ -99,8 +101,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 
-		if (catItem.getFloor_names().contains(allFlrName[groupPosition])){
-			pos = catItem.getFloor_names().indexOf(allFlrName[groupPosition]);
+		if (catItem.getFloor_names().contains(parentText[groupPosition])){
+			pos = catItem.getFloor_names().indexOf(parentText[groupPosition]);
 
 			//the layout/view which is defined by a layout XML
 			View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
@@ -167,7 +169,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @return the number of groups
 	 */
 	public int getGroupCount() {
-		return allFlrName.length;
+		return parentText.length;
 	}
 
 	//The following methods are suppose to be override, but is not
@@ -186,20 +188,29 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 */
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
+		View relative;
+		
+		if (parentMode.equals("categoryView")){
+			relative = LayoutInflater.from(context).inflate(R.layout.multi_cat_list_item, parent,false);
 
-		//the layout/view which is defined by a layout XML
-		View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);
-
-		//Text for displaying the floor name
-		TextView text = (TextView) relative.findViewById(R.id.flrName);
-		text.setText(allFlrName[groupPosition]);
-
-		//the icon associated with the category
-		if (catItem.getFloor_names().contains(allFlrName[groupPosition])){
-			ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
-			img.setImageResource(iconId);
+			//Text for displaying the floor name
+			TextView text = (TextView) relative.findViewById(R.id.multiCatText);
+			text.setText(category);
 		}
+		else{
+			//the layout/view which is defined by a layout XML
+			relative = LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);
 
+			//Text for displaying the floor name
+			TextView text = (TextView) relative.findViewById(R.id.flrName);
+			text.setText(parentText[groupPosition]);
+
+			//the icon associated with the category
+			if (catItem.getFloor_names().contains(parentText[groupPosition])){
+				ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
+				img.setImageResource(iconId);
+			}
+		}
 		return relative;
 	}
 
