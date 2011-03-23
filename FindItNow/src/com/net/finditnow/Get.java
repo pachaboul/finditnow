@@ -109,11 +109,7 @@ public class Get {
 			Log.e("log_tag", "Error converting result " + e.toString());
 			return context.getString(R.string.timeout);
 		}
-
-		//if category if null, it meant we're retrieving the list of categories
-		//slightly modify it to make it a JSON representation
-		Log.i("WTF", data);
-
+		Log.i("Get",data);
 		return data.trim();
 	}
 }
