@@ -81,6 +81,8 @@ public class FINAddNew extends Activity {
 
 			    overridePendingTransition(0, 0);
 			    startActivity(intent);
+			} else {
+				finish();
 			}
 		}
 	}
