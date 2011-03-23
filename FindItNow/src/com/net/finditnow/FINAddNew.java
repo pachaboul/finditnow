@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class FINAddNew extends Activity {
@@ -33,32 +35,54 @@ public class FINAddNew extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		// Restore the saved instance and generate the primary (main) layout
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.addnew_popup);
 		
-		// Set the text in the titlebar
-		setTitle("FindItNow > Add New Item");
-		
-		//Set up interface for indoor/outdoor and category selection screen
-		geopointConfirm = findViewById(R.id.addmap_confirm);
-		
-		//Set up radio buttons for indoor/outdoor
-		radioSelection = (RadioButton) findViewById(R.id.addnew_in);
-		final RadioButton radio_in = (RadioButton) findViewById(R.id.addnew_in);
-		final RadioButton radio_out = (RadioButton) findViewById(R.id.addnew_out);
-		radio_in.setOnClickListener(radio_listener);
-		radio_out.setOnClickListener(radio_listener);
-		
-		//Set up the category spinner
-		Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
-		ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, parseForUserSubmittableCategories(FINUtil.capFirstChar(FINMenu.getCategoriesList())));
-		cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		cSpinner.setAdapter(cAdapter);
-		cSpinner.setOnItemSelectedListener(cspinner_listener);
-		selectedCategory = FINMenu.getCategoriesList().get(0);
-		
-		//Set up "next" button for indoor/outdoor and category selection screen
-		final Button next = (Button) findViewById(R.id.addnew_next);
-		next.setOnClickListener(next_listener);
+		if (!FINSplash.isLoggedIn) {
+			Toast.makeText(getBaseContext(), "You must login to access this function", Toast.LENGTH_LONG).show();
+			
+			Intent myIntent = new Intent(this, FINLogin.class);
+			startActivityForResult(myIntent, 0);
+		} else {
+			setContentView(R.layout.addnew_popup);
+			
+			// Set the text in the titlebar
+			setTitle("FindItNow > Add New Item");
+			
+			//Set up interface for indoor/outdoor and category selection screen
+			geopointConfirm = findViewById(R.id.addmap_confirm);
+			
+			//Set up radio buttons for indoor/outdoor
+			radioSelection = (RadioButton) findViewById(R.id.addnew_in);
+			final RadioButton radio_in = (RadioButton) findViewById(R.id.addnew_in);
+			final RadioButton radio_out = (RadioButton) findViewById(R.id.addnew_out);
+			radio_in.setOnClickListener(radio_listener);
+			radio_out.setOnClickListener(radio_listener);
+			
+			//Set up the category spinner
+			Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
+			ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, parseForUserSubmittableCategories(FINUtil.capFirstChar(FINMenu.getCategoriesList())));
+			cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			cSpinner.setAdapter(cAdapter);
+			cSpinner.setOnItemSelectedListener(cspinner_listener);
+			selectedCategory = FINMenu.getCategoriesList().get(0);
+			
+			//Set up "next" button for indoor/outdoor and category selection screen
+			final Button next = (Button) findViewById(R.id.addnew_next);
+			next.setOnClickListener(next_listener);
+		}
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 0) {
+			if (resultCode == RESULT_OK) {
+				Intent intent = getIntent();
+			    overridePendingTransition(0, 0);
+			    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			    finish();
+
+			    overridePendingTransition(0, 0);
+			    startActivity(intent);
+			}
+		}
 	}
 	
 	//Listener for spinner, called when item in spinner is selected
