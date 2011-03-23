@@ -9,22 +9,15 @@ package com.net.finditnow;
  * TODO: all the comments in this class need to be updated
  * 
  */
-import android.app.AlertDialog;
+import java.util.HashMap;
+
 import android.content.Context;
-import android.content.DialogInterface;
-import android.provider.Settings.Secure;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ExpandableListView;
-
-
-import java.util.HashMap;
+import android.widget.TextView;
 
 public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 

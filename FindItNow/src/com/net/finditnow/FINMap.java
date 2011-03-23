@@ -290,68 +290,30 @@ public class FINMap extends MapActivity {
 
 		// Handle the item selected
 		switch (item.getItemId()) {
-		
-		
+
+		// Return to the categories screen
 		case R.id.login_button:
     		startActivity(new Intent(this, FINLogin.class));
     		return true;
-    		
-		case R.id.logout_button:
+    	case R.id.logout_button:
     		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-    		String result = Login.logStar(phone_id, null, null, getBaseContext());
+    		String result = SuperUser.logout(phone_id, getBaseContext());
     		FINSplash.isLoggedIn = false;
     		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
     		return true;
-
-		// Return to the categories screen
-		case R.id.home_button:
-			startActivity(new Intent(this, FINHome.class));
-			return true;
-
-			// Center the map on the user's location if it is possible
-		case R.id.my_location_button:
-			if (location != null) {
-				mapController.animateTo(location);
-			} else {
-				Toast.makeText(this, "Error: Could not detect your location", Toast.LENGTH_SHORT).show();
-			}
-			return true;
-
-			// Add a new location to the map
-		case R.id.add_new_button:
-			startActivity(new Intent(this, FINAddNew.class));
-			return true;
-			
-		case R.id.settings_button:
+    	case R.id.add_new_button:
+    		startActivity(new Intent(this, FINAddNew.class));
+    		return true;
+    	case R.id.settings_button:
         	startActivity(new Intent(this, FINSettings.class));
             return true;
-
-			// Open up our help documentation
-		case R.id.help_button:
-			startActivity(new Intent(this, FINHelp.class));
-			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
+        case R.id.help_button:
+        	startActivity(new Intent(this, FINHelp.class));
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
 		}
 	}
-	
-    
-    /**
-     * Prepares the options menu before being displayed.
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	if (FINSplash.isLoggedIn) {
-    		menu.findItem(R.id.login_button).setVisible(false);
-    		menu.findItem(R.id.logout_button).setVisible(true);
-    	} else {
-    		menu.findItem(R.id.logout_button).setVisible(false);
-    		menu.findItem(R.id.login_button).setVisible(true);
-    	}
-    	
-    	return true;
-    }
 
 	/**
 	 * This method places the locations retrieved from the database onto the map

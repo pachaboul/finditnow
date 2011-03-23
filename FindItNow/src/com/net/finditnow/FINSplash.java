@@ -27,6 +27,7 @@ public class FINSplash extends Activity {
 		lastLocation = null;
 		mapCenter = FINMap.DEFAULT_LOCATION;
 		zoomLevel = 17;
+		isLoggedIn = false;
         
         // thread for displaying the SplashScreen
         Thread splashThread = new Thread() {
@@ -46,7 +47,7 @@ public class FINSplash extends Activity {
                 } finally {
                 	// Check logged in status
             		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-            		isLoggedIn = Login.logStar(phone_id, null, null, getBaseContext()).equals(getString(R.string.login_already));
+            		isLoggedIn = SuperUser.login(phone_id, "", "", getBaseContext()).equals(getString(R.string.login_already));
                     startActivity(new Intent(getBaseContext(), FINHome.class));
             		finish();
                     stop();

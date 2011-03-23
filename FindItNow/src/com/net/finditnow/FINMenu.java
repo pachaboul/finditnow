@@ -332,7 +332,7 @@ public class FINMenu extends Activity {
         		return true;
         	case R.id.logout_button:
         		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-        		String result = Login.logStar(phone_id, null, null, getBaseContext());
+        		String result = SuperUser.logout(phone_id, getBaseContext());
         		FINSplash.isLoggedIn = false;
         		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
         		return true;

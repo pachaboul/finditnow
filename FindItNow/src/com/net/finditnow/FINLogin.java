@@ -37,17 +37,25 @@ public class FINLogin extends Activity {
 				String userName = usernameEditText.getText().toString();
 				String userPass = passwordEditText.getText().toString();
 				final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID); 
-
-				String result = Login.logStar(phone_id, userName, userPass, getBaseContext());
-				Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-
-				if (result.equals(getString(R.string.login_success))) {
-					FINSplash.isLoggedIn = true;
-					FINLogin.this.finish();
+				
+				// Check connection of Android
+				ConnectionChecker conCheck = new ConnectionChecker(getBaseContext(), FINLogin.this);
+				
+				String result = SuperUser.login(phone_id, userName, userPass, getBaseContext());
+				if (result.equals(getString(R.string.timeout))) {
+					conCheck.connectionError();
+				} else {
+					Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+	
+					if (result.equals(getString(R.string.login_success))) {
+						FINSplash.isLoggedIn = true;
+						finish();
+					}
 				}
 			}
 		};
 
 		launch.setOnClickListener(listener);
+		setResult(RESULT_OK);
 	}
 }
