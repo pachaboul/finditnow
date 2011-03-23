@@ -65,6 +65,7 @@ public class Create {
 		        
 		        // Special case for supplies.  Handle the optional parameters as needed
 		        nameValuePairs.add(new BasicNameValuePair("category", category));
+		        nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 		        if (category.equals("school_supplies")) {
 		        	nameValuePairs.add(new BasicNameValuePair("bb", bb));
 		        	nameValuePairs.add(new BasicNameValuePair("sc", sc));
