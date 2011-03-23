@@ -13,9 +13,6 @@ package com.net.finditnow;
 //packages for handling JSON
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import android.util.Log;
-
 import com.google.android.maps.GeoPoint;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -101,7 +98,6 @@ public class JsonParser {
 		{
 				result.add(arr[i]);
 		}
-		Log.i("WTF", result.toString());
 		return result;
 	}
 	

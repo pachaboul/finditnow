@@ -1,26 +1,36 @@
 /***
  * PopUpDialog.java by Chanel Huang
- * version 3.0:
- * Dispalys information differently for outdoor location and
- * location inside a building.
- * For location inside a building:
- * 	a button to show more details about each floor, where
- * 	more information about each floor will be displayed
- *  as well as a button for reporting something to be not
- *  there.
- * For out door location:
- * 	displays information and a button to report
- * 	something that is not there.
+ * current version: 3.5
+ * Log:
+ * 	March 22 2011:
+ * 		begin the work on version 4.0 while providing backward
+ * 		compatiablity with the current version.
  * 
- * version 2.0:
- * Still displays information about the location.
- * However, unlike version 1, it displays detail about each floor
- * in the same dialog box.
+ * Version:
+ *  version 3.5:
+ *  	make the popUp behave differently for buildings category.
+ *   	any function present in ver. 3.0 still works properly.
+ * 	version 3.0:
+ * 		Displays information differently for outdoor location and
+ * 		location inside a building.
+ * 		For location inside a building:
+ * 		a button to show more details about each floor, where
+ * 		more information about each floor will be displayed
+ *  	as well as a button for reporting something to be not
+ *  	there.
+ * 		For out door location:
+ * 		displays information and a button to report
+ * 		something that is not there.
  * 
- * version 1.0 (beta) :
- * A pop up dialog that displays information about the location,
- * where clicking on a button will pop up another dialog
- * with more detail information about each floor.
+ * 	version 2.0:
+ * 		Still displays information about the location.
+ *		 However, unlike version 1, it displays detail about each floor
+ * 		in the same dialog box.
+ * 
+ * 	version 1.0 (beta) :
+ * 		A pop up dialog that displays information about the location,
+ * 		where clicking on a button will pop up another dialog
+ * 		with more detail information about each floor.
  * 
  */
 package com.net.finditnow;
@@ -42,6 +52,11 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+//ver3.5 improts
+import java.util.HashMap;
+
+import android.util.Log;
 /*
  * Design Principle: inheritance
  *   inherit most of the methods from Dialog. We only override those methods that
@@ -60,6 +75,9 @@ public class PopUpDialog extends Dialog{
 	private int iconId;
 	private boolean isOutdoor;
 	private String[] allFlrName;
+	
+	//version 3.5 added stuff.
+	private HashMap<String,CategoryItem> dataMap;
 
 	//creates a PopUpDialog with the given fields, should use this one
 	/**
@@ -104,6 +122,7 @@ public class PopUpDialog extends Dialog{
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		
 		setContentView(R.layout.popupdialog);
 
 		//sets the title of this dialog

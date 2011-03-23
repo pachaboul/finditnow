@@ -18,6 +18,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
+import android.util.Log;
 public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 
 	// Define a list of overlay items and the context for the overlay
@@ -110,9 +111,18 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 			isOutdoor = false;
 			allFlrName = FINMenu.getBuilding(itemLocation).getFloorNames();
 		}
-
+		
 		// Building the pop-up dialog with this information and then show it
-		Dialog popUp = new PopUpDialog(context, buildingName, item, category, catItem, distance, walkingTime, iconId, isOutdoor, allFlrName);
+		Dialog popUp;
+		if (category.equals("")){
+			//note: the category selected is buildings
+			//behaves differently from other.
+			popUp = new PopUpDialog(context, buildingName, item, category, catItem, distance, walkingTime, iconId, isOutdoor, allFlrName);
+
+		}else{
+			popUp = new PopUpDialog(context, buildingName, item, category, catItem, distance, walkingTime, iconId, isOutdoor, allFlrName);
+		}
+		
 		popUp.show();
 
 		return true;
