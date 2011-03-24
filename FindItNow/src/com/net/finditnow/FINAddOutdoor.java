@@ -27,6 +27,7 @@ public class FINAddOutdoor extends MapActivity {
 	private static FINAddOverlay mapOverlay;
 	private static List<Overlay> mapOverlays;
 	String selectedCategory;
+	String special_info;
 	
 	boolean[] supplyTypes;
 	
@@ -53,6 +54,7 @@ public class FINAddOutdoor extends MapActivity {
         Bundle extras = getIntent().getExtras(); 
 		selectedCategory = extras.getString("selectedCategory");
 		supplyTypes = extras.getBooleanArray("supplyTypes");
+		special_info = extras.getString("special_info");
         
         // Zoom out enough
         mapController.animateTo(FINMap.DEFAULT_LOCATION);
@@ -101,7 +103,7 @@ public class FINAddOutdoor extends MapActivity {
 						//Send new item to database
 						final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 			        	
-						String result = DBCommunicator.create(phone_id, FINUtil.deCapFirstChar(selectedCategory), 0+"", "", tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"",  bb,  sc,  pr, getBaseContext());
+						String result = DBCommunicator.create(phone_id, FINUtil.deCapFirstChar(selectedCategory), 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"",  bb,  sc,  pr, getBaseContext());
 			        	if (result.equals(getString(R.string.not_logged_in))) {
 			        		FINSplash.isLoggedIn = false;
 			        	}

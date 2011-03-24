@@ -20,6 +20,7 @@ public class FINAddIndoor extends Activity {
 	String selectedFloor;
 	String selectedCategory;
 	boolean[] supplyTypes;
+	String special_info;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class FINAddIndoor extends Activity {
 		Bundle extras = getIntent().getExtras();
 		selectedCategory = extras.getString("selectedCategory");
 		supplyTypes = extras.getBooleanArray("supplyTypes");
+		special_info = extras.getString("special_info");
 
 		//Set up "add item" button
 		Button addItem = (Button) findViewById(R.id.addnew_additem);
@@ -81,7 +83,7 @@ public class FINAddIndoor extends Activity {
 			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 			String result = DBCommunicator.create(phone_id, FINUtil
 					.deCapFirstChar(selectedCategory), map
-					.get(selectedFloor)+"", "", "", "", bb, sc, pr, getBaseContext());
+					.get(selectedFloor)+"", special_info, "", "", bb, sc, pr, getBaseContext());
 			
         	if (result.equals(getString(R.string.not_logged_in))) {
         		FINSplash.isLoggedIn = false;
