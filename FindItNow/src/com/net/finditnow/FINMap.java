@@ -299,10 +299,15 @@ public class FINMap extends MapActivity {
 			return true;
 		case R.id.logout_button:
 			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-			String result = DBCommunicator.logout(phone_id, getBaseContext());
-			FINSplash.isLoggedIn = false;
-			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-			return true;
+    		
+    		String result = DBCommunicator.logout(phone_id, getBaseContext());
+    		if (result.equals(getString(R.string.logged_out))) {
+    			FINSplash.isLoggedIn = false;
+    		}
+    		
+    		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+    		
+    		return true;
 			// Center the map on the user's location if it is possible		
 		case R.id.my_location_button:		
 			if (location != null) {		
