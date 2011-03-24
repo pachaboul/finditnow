@@ -169,7 +169,7 @@ public class PopUpDialog extends Dialog{
 	    					lv.getLayoutParams().height = 150;
 
 	    				if (category.equals("")){
-	    				/*	Building bui = new Building(1,"Test",new int[]{2,3,4,56}, new String[]{"Flr 1","Flr 2","Flr 3","Flr 4"});
+	    					Building bui = new Building(1,"Test",new int[]{2,3,4,56}, new String[]{"Flr 1","Flr 2","Flr 3","Flr 4"});
 	    					String[] cateogries = new String[]{"Coffee1", "Restroom2", "Vending3"};
 	    					HashMap<String,CategoryItem> data = new HashMap<String,CategoryItem>();
 	    					
@@ -189,13 +189,13 @@ public class PopUpDialog extends Dialog{
 	    					data.put("Restroom2", catItem);	
 	    					
 	    					catItem = new CategoryItem();
-	    					catItem.addFloor_names("Flr 4");
+	    					catItem.addFloor_names("Flr 3");
 	    					catItem.addId(56);
 	    					catItem.addInfo("Milk!");
 	    					data.put("Vending3", catItem);
 	    					
 	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),bui,cateogries,data));
-	    					*/
+	    					
 	    				}
 	    				else{
 		    				//auto scrolls to the item in view into the screen zone
@@ -223,6 +223,9 @@ public class PopUpDialog extends Dialog{
 	    			else {
 	    				toggle.setText("Show Floors");
 	    				lv.getLayoutParams().height = 0;
+    				    lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),new CategoryItem(),
+                               iconId, category, dbCategory, new String[0],"flrName"));
+
 	    			}
 	    			
 	    		}
@@ -257,8 +260,7 @@ public class PopUpDialog extends Dialog{
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
 	    		        	   final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-	    		        	   String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0), phone_id, getContext());
-	    		        	   dialog.dismiss();
+	    		        	   String response = DBCommunicator.update(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0)+"", getContext());	    		        	   dialog.dismiss();
 	    		               Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 	    		           }
 	    		       });
