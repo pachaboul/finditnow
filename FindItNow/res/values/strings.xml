@@ -23,5 +23,6 @@
 	<string name="logout">SuperUser Logout</string>
 	<string name="login_already">Already logged in</string>
 	<string name="login_success">You have logged in</string>
+	<string name="not_logged_in">"Not logged in."</string>
 
 </resources>
