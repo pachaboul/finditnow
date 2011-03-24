@@ -82,6 +82,10 @@ public class FINAddIndoor extends Activity {
 			String result = DBCommunicator.create(phone_id, FINUtil
 					.deCapFirstChar(selectedCategory), map
 					.get(selectedFloor)+"", "", "", "", bb, sc, pr, getBaseContext());
+			
+        	if (result.equals(getString(R.string.not_logged_in))) {
+        		FINSplash.isLoggedIn = false;
+        	}
        	
         	//Return to categories screen
 	    	Intent myIntent = new Intent(getBaseContext(), FINHome.class);
