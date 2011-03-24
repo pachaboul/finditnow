@@ -45,6 +45,7 @@ public class BuildingList extends FINListActivity {
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			myIntent.putExtra("building", ((TextView) v).getText().toString());
     			myIntent.putExtra("category", "");
+    			myIntent.putExtra("itemName", "");
     			startActivity(myIntent);
     		}
     	});
