@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class FINAddIndoor extends Activity {
@@ -80,16 +79,15 @@ public class FINAddIndoor extends Activity {
 			
 			//Send new item to database
 			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-			String response = Create.sendToDB(FINUtil
+			String result = Create.sendToDB(FINUtil
 					.deCapFirstChar(selectedCategory), null, map
 					.get(selectedFloor), "", bb, sc, pr, phone_id, getBaseContext());
-
-			//Return to categories menu
-			Intent myIntent = new Intent(v.getContext(), FINHome.class);
-			startActivity(myIntent);
-			//Display response from server in popup
-			Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG)
-					.show();
+       	
+        	//Return to categories screen
+	    	Intent myIntent = new Intent(getBaseContext(), FINHome.class);
+	    	myIntent.putExtra("result", result);
+	    	
+            startActivity(myIntent);
 		}
 	};
 
