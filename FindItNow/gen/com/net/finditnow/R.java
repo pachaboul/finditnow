@@ -39,12 +39,18 @@ public final class R {
         public static final int restrooms_big=0x7f020016;
         public static final int school_supplies=0x7f020017;
         public static final int school_supplies_big=0x7f020018;
-        public static final int vending=0x7f020019;
-        public static final int vending_big=0x7f02001a;
+        public static final int tab_bg_selected=0x7f020019;
+        public static final int tab_bg_selector=0x7f02001a;
+        public static final int tab_bg_unselected=0x7f02001b;
+        public static final int tab_bottom_strip=0x7f02001c;
+        public static final int tab_divider=0x7f02001d;
+        public static final int tab_text_selector=0x7f02001e;
+        public static final int vending=0x7f02001f;
+        public static final int vending_big=0x7f020020;
     }
     public static final class id {
         public static final int GridItem=0x7f070016;
-        public static final int add_new_button=0x7f070033;
+        public static final int add_new_button=0x7f070034;
         public static final int addmap_confirm=0x7f070007;
         public static final int addnew_additem=0x7f070005;
         public static final int addnew_bspinner=0x7f070002;
@@ -73,24 +79,25 @@ public final class R {
         public static final int grid_item_button=0x7f070018;
         public static final int grid_item_text=0x7f070017;
         public static final int gridview=0x7f070024;
-        public static final int help_button=0x7f070034;
+        public static final int help_button=0x7f070035;
         public static final int help_contents=0x7f070019;
         public static final int help_link=0x7f07001a;
         public static final int help_section_body=0x7f07001c;
         public static final int help_section_header=0x7f07001b;
-        public static final int home_button=0x7f07002f;
+        public static final int home_button=0x7f070030;
         public static final int layout_rootflr=0x7f070011;
         public static final int login_button=0x7f070022;
-        public static final int logout_button=0x7f070030;
+        public static final int logout_button=0x7f070031;
         public static final int mainlayout=0x7f070006;
         public static final int mapview=0x7f070008;
         public static final int multiCatText=0x7f070025;
-        public static final int my_location_button=0x7f070032;
+        public static final int my_location_button=0x7f070033;
         public static final int outDoorText=0x7f07002a;
         public static final int password_text=0x7f070020;
         public static final int popupLayout=0x7f070027;
-        public static final int settings_button=0x7f070031;
+        public static final int settings_button=0x7f070032;
         public static final int showFlrButt=0x7f07002d;
+        public static final int tabLabel=0x7f07002f;
         public static final int timeReachText=0x7f07002c;
         public static final int txt_password=0x7f070021;
         public static final int txt_username=0x7f07001f;
@@ -117,6 +124,7 @@ public final class R {
         public static final int multi_category_list=0x7f030010;
         public static final int popupdialog=0x7f030011;
         public static final int settings=0x7f030012;
+        public static final int tab_background=0x7f030013;
     }
     public static final class menu {
         public static final int options_menu=0x7f060000;
@@ -135,6 +143,7 @@ public final class R {
         public static final int login_success=0x7f040011;
         public static final int logout=0x7f04000f;
         public static final int my_location=0x7f040001;
+        public static final int not_logged_in=0x7f040012;
         public static final int settings=0x7f04000c;
         public static final int spinner_building=0x7f040009;
         public static final int spinner_category=0x7f040008;
