@@ -270,7 +270,15 @@ public class PopUpDialog extends Dialog{
 	    		                dialog.cancel();
 	    		           }
 	    		       });
-
+	    			if (FINSplash.isLoggedIn) {
+		    			builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
+		    				 public void onClick(DialogInterface dialog, int id) {
+		    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
+		    				       String result = DBCommunicator.delete(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0)+"", getContext());
+		    		               Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+		    				   }
+		    			});
+	    			}
 	    			AlertDialog dailog = builder.create();
 	    			dailog.show();
 	    		}

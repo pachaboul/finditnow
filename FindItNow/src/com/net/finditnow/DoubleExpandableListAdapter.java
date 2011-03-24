@@ -7,6 +7,7 @@ package com.net.finditnow;
  * of expandalbe to display the floor details of multiple category.
  * 
  * TODO: all the comments in this class need to be updated
+ * 		modifies so it scroll to the current position when clicked onExpand.
  * 
  */
 import java.util.HashMap;
@@ -29,7 +30,6 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	private Building building;				
 	private String[] categories;
 	private HashMap<String,CategoryItem> dataMap;
-	private View currentView;
 
 	public static final int HEIGHT = 45;
 	/**
@@ -105,21 +105,14 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		ExpandableListView lv = (ExpandableListView) relative.findViewById(R.id.cateList);
 		
 		int iconId = 0;
-		String category = categories[childPosition];
-		String dbCategory = category;
 		String[] parentText = { building.getFloorNames()[groupPosition]};
+		String category = categoryOf(parentText[0])[childPosition];
+		String dbCategory = category;
 		String parentMode = "categoryView";
 		relative.getLayoutParams().height= HEIGHT;
-		currentView = relative;
-		lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-			public void onGroupExpand(int groupPosition) {
-				ExpandableListView lv = (ExpandableListView) currentView.findViewById(R.id.cateList);
-			
-				Log.i("DOUBL", "~"+lv.getTop()+","+lv.getBottom());
-				
-				currentView.getLayoutParams().height = HEIGHT+(HEIGHT);
-    		}
-		});
+		
+		lv.setOnGroupExpandListener(new DoubleOnExpandListener(relative));
+		lv.setOnGroupCollapseListener(new DoubleOnCollapseListener(relative));
 		lv.setAdapter(new FloorExpandableListAdapter( context, dataMap.get(category),
 				 iconId,  category,  dbCategory,  parentText,  parentMode) );
 
@@ -177,5 +170,29 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return false;
+	}
+	
+	private class DoubleOnExpandListener implements ExpandableListView.OnGroupExpandListener{
+		private View currentView ;
+		public DoubleOnExpandListener(View view){
+			currentView = view;
+		}
+		public void onGroupExpand(int groupPosition) {
+			currentView.getLayoutParams().height = HEIGHT+(HEIGHT+15);
+			
+			ExpandableListView lv = (ExpandableListView) currentView.findViewById(R.id.cateList);
+			lv.setSelectedGroup(groupPosition);		
+		}
+		
+	}
+	private class DoubleOnCollapseListener implements ExpandableListView.OnGroupCollapseListener{
+		private View currentView ;
+		public DoubleOnCollapseListener(View view){
+			currentView = view;
+		}
+		public void onGroupCollapse(int groupPosition) {
+			currentView.getLayoutParams().height = HEIGHT;
+		}
+		
 	}
 }
