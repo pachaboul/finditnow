@@ -3,21 +3,26 @@
     android:id="@android:id/tabhost"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#000000"
-    android:paddingTop="5dp">
-    <LinearLayout
+    android:background="#CCCCCC">
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <TabWidget
-            android:id="@android:id/tabs"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-			android:layout_margin="0dp"/>
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent">
+
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:paddingTop="5dp"/>
-    </LinearLayout>
+            android:layout_marginTop="42dp"
+            android:background="#FFFFFF"/>
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="40dp"
+			android:tabStripEnabled="true"
+			android:layout_above="@android:id/tabcontent"/>
+    </RelativeLayout>
 </TabHost>
