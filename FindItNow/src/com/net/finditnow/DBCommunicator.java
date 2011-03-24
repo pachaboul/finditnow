@@ -21,7 +21,7 @@ import android.util.Log;
 
 public class DBCommunicator {
 
-	// A Constant representing the location of the Create.php file
+	// A Constant representing the location of FIN
 	private static final String FIN_ROOT = "http://yinnopiano.com/fin/";
 
 	public static String create(String phone_id, String category, String fid, String special_info, String latitude, String longitude, String bb, String sc, String print, Context context) {
@@ -39,6 +39,17 @@ public class DBCommunicator {
         nameValuePairs.add(new BasicNameValuePair("print", print));
 		
 		return common("FINsert/create.php", nameValuePairs, context);
+	}
+	
+	public static String delete(String phone_id, String category, String id, Context context) {
+		// Initialize the array of name value pairs
+		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+
+		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
+		nameValuePairs.add(new BasicNameValuePair("category", category));
+		nameValuePairs.add(new BasicNameValuePair("id", id));
+		
+		return common("delete.php", nameValuePairs, context);
 	}
 	
 	public static String getCategories(Context context) {
@@ -161,5 +172,4 @@ public class DBCommunicator {
 
 		return data.trim();
 	}
-
 }
