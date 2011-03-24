@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 public class ConnectionChecker {
 
@@ -77,17 +78,8 @@ public class ConnectionChecker {
 	 * @return True if the internet connection is functional
 	 */
 	public void connectionError() {	
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage("Error: Could not detect an internet connection.  Please ensure Wifi or 3G is enabled and working")
-		
-		.setNeutralButton("Exit", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				activity.finish();
-			}
-		});
-
-		AlertDialog alert = builder.create();
-		alert.show();
+		Toast.makeText(context, context.getString(R.string.timeout), Toast.LENGTH_LONG).show();
+		activity.finish();
 	}
 
 	/**

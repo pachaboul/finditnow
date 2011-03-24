@@ -23,6 +23,8 @@ public class DBCommunicator {
 
 	// A Constant representing the location of FIN
 	private static final String FIN_ROOT = "http://yinnopiano.com/fin/";
+	private static final int CONNECTION_TIMEOUT = 6000;
+	private static final int SOCKET_TIMEOUT = 6000;
 
 	public static String create(String phone_id, String category, String fid, String special_info, String latitude, String longitude, String bb, String sc, String print, Context context) {
 		// Initialize the array of name value pairs
@@ -134,18 +136,12 @@ public class DBCommunicator {
 
 			// Process the response from the server
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			
 			HttpParams httpParameters = new BasicHttpParams();
-
-			// Set the timeout in milliseconds until a connection is established.
-			int timeoutConnection = 5000;
-			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
-
-			// Set the default socket timeout (SO_TIMEOUT) 
-			// in milliseconds which is the timeout for waiting for data.
-			int timeoutSocket = 5000;
-			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
-
+			HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(httpParameters, SOCKET_TIMEOUT);
 			DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+			
 			HttpResponse httpResponse = httpClient.execute(httppost);
 
 			HttpEntity entity = httpResponse.getEntity();
