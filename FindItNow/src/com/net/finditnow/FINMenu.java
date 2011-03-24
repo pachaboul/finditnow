@@ -58,7 +58,7 @@ public class FINMenu extends Activity {
 		ConnectionChecker conCheck = new ConnectionChecker(this, FINMenu.this);
 				
 		// Generate our list of categories from the database
-		String listOfCategories = Get.requestFromDB(null, null, null, this);
+		String listOfCategories = DBCommunicator.getCategories(this);
 		if (listOfCategories.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
 		} else {
@@ -73,7 +73,7 @@ public class FINMenu extends Activity {
 	        buttonGrid.setAdapter(new ButtonAdapter(this));
 			
 			// Generate list of buildings from the database
-			String listOfBuildings = Get.requestFromDB("", null, null, this);
+			String listOfBuildings = DBCommunicator.getBuildings(this);
 			if (listOfBuildings.equals(getString(R.string.timeout))) {
 				conCheck.connectionError();
 			} else {
@@ -332,7 +332,7 @@ public class FINMenu extends Activity {
         		return true;
         	case R.id.logout_button:
         		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-        		String result = SuperUser.logout(phone_id, getBaseContext());
+        		String result = DBCommunicator.logout(phone_id, getBaseContext());
         		FINSplash.isLoggedIn = false;
         		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
         		return true;

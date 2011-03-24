@@ -74,7 +74,7 @@ public class FINMap extends MapActivity {
 		Bundle extras = getIntent().getExtras(); 
 		category = extras.getString("category");
 		building = extras.getString("building");
-		itemName = extras.getString("itemName");
+		itemName = FINUtil.deCapFirstChar(FINUtil.depluralize(extras.getString("itemName")));
 
 		// Set the Breadcrumb in the titlebar
 		// TODO
@@ -83,10 +83,13 @@ public class FINMap extends MapActivity {
 		ConnectionChecker conCheck = new ConnectionChecker(this, FINMap.this);
 
 		// Retrieve locations from the database and parse them
-		GeoPoint loc = (building.equals("")? DEFAULT_LOCATION : FINMenu.getGeoPointFromBuilding(building));
-		String cat = (building.equals("")? category : FINUtil.allCategories(FINMenu.getCategoriesList()));
-		String item = FINUtil.deCapFirstChar(FINUtil.depluralize(itemName));
-		String listOfLocations = Get.requestFromDB(cat, item, loc, this);
+		String listOfLocations;
+		if (building.equals("")) {
+			listOfLocations = DBCommunicator.getLocations(category, itemName, DEFAULT_LOCATION.getLatitudeE6()+"", DEFAULT_LOCATION.getLongitudeE6()+"", this);
+		} else {
+			GeoPoint loc = FINMenu.getGeoPointFromBuilding(building);
+			listOfLocations = DBCommunicator.getAllLocations(FINUtil.allCategories(FINMenu.getCategoriesList()), loc.getLatitudeE6()+"", loc.getLongitudeE6()+"", this);
+		}
 
 		if (listOfLocations.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
@@ -296,7 +299,7 @@ public class FINMap extends MapActivity {
 			return true;
 		case R.id.logout_button:
 			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-			String result = SuperUser.logout(phone_id, getBaseContext());
+			String result = DBCommunicator.logout(phone_id, getBaseContext());
 			FINSplash.isLoggedIn = false;
 			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
 			return true;

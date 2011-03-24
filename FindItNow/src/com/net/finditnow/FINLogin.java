@@ -41,7 +41,7 @@ public class FINLogin extends Activity {
 				// Check connection of Android
 				ConnectionChecker conCheck = new ConnectionChecker(getBaseContext(), FINLogin.this);
 				
-				String result = SuperUser.login(phone_id, userName, userPass, getBaseContext());
+				String result = DBCommunicator.login(phone_id, userName, userPass, getBaseContext());
 				if (result.equals(getString(R.string.timeout))) {
 					conCheck.connectionError();
 				} else {

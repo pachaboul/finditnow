@@ -257,7 +257,7 @@ public class PopUpDialog extends Dialog{
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
 	    		        	   final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-	    		        	   String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0), phone_id, getContext());
+	    		        	   String response = DBCommunicator.update(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0)+"", getContext());
 	    		        	   dialog.dismiss();
 	    		               Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 	    		           }

@@ -100,7 +100,7 @@ public class FINAddOutdoor extends MapActivity {
 						
 						//Send new item to database
 						final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-			        	String result = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr, phone_id, getBaseContext());
+			        	String result = DBCommunicator.create(phone_id, FINUtil.deCapFirstChar(selectedCategory), 0+"", "", tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"",  bb,  sc,  pr, getBaseContext());
 			        	
 			        	//Return to categories screen
 				    	Intent myIntent = new Intent(getBaseContext(), FINHome.class);
