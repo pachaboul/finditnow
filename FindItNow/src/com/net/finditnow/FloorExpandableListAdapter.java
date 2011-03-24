@@ -132,7 +132,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 					builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-							String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos), phone_id, context);
+	    		        	String response = DBCommunicator.update(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos)+"", context);
 							dialog.dismiss();
 							Toast.makeText(context, response, Toast.LENGTH_LONG).show();
 						}

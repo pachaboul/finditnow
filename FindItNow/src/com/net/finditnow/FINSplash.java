@@ -47,7 +47,7 @@ public class FINSplash extends Activity {
                 } finally {
                 	// Check logged in status
             		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-            		String result = SuperUser.loggedin(phone_id, getBaseContext());
+            		String result = DBCommunicator.loggedIn(phone_id, getBaseContext());
             		
             		isLoggedIn = result.contains(getString(R.string.login_already));
             		Intent myIntent = new Intent(getBaseContext(), FINHome.class);
