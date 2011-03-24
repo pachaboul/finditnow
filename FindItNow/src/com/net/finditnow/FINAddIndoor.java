@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -14,7 +15,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class FINAddIndoor extends Activity {
+public class FINAddIndoor extends FINBaseActivity {
 
 	Building selectedBuilding;
 	String selectedFloor;
@@ -120,5 +121,13 @@ public class FINAddIndoor extends Activity {
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		fSpinner.setAdapter(fAdapter);
 		fSpinner.setOnItemSelectedListener(fspinner_listener);
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);		
+		menu.findItem(R.id.add_new_button).setVisible(false);
+
+		return true;
 	}
 }

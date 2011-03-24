@@ -36,7 +36,7 @@ import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 
-public class FINMenu extends Activity {
+public class FINMenu extends FINBaseActivity {
 	
 	private static HashMap<GeoPoint, Building> buildingsMap;
 	private static HashMap<String, Integer> iconsMap;
@@ -310,69 +310,11 @@ public class FINMenu extends Activity {
     	return R.drawable.android;
     }
     
-    /**
-     * Creates the Android options menu
-     */
 	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-        return true;
-    }
-    
-    /**
-     * Expand and define the Android options menu
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-        	case R.id.login_button:
-        		startActivity(new Intent(this, FINLogin.class));
-        		return true;
-        	case R.id.logout_button:
-        		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-        		
-        		String result = DBCommunicator.logout(phone_id, getBaseContext());
-        		if (result.equals(getString(R.string.logged_out))) {
-        			FINSplash.isLoggedIn = false;
-        		}
-        		
-        		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-        		
-        		return true;
-        	case R.id.add_new_button:
-        		startActivity(new Intent(this, FINAddNew.class));
-        		return true;
-        	case R.id.settings_button:
-	        	startActivity(new Intent(this, FINSettings.class));
-	            return true;
-	        case R.id.help_button:
-	        	startActivity(new Intent(this, FINHelp.class));
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-        }
-    }
-    
-    /**
-     * Prepares the options menu before being displayed.
-     * Removes redundant Category option, and centering location
-     * option (special for the Map only).
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(R.id.home_button).setVisible(false);
-    	menu.findItem(R.id.my_location_button).setVisible(false);
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);		
+		menu.findItem(R.id.home_button).setVisible(false);
 
-    	if (FINSplash.isLoggedIn) {
-    		menu.findItem(R.id.login_button).setVisible(false);
-    		menu.findItem(R.id.logout_button).setVisible(true);
-    	} else {
-    		menu.findItem(R.id.logout_button).setVisible(false);
-    		menu.findItem(R.id.login_button).setVisible(true);
-    	}
-    	
-    	return true;
-    }
+		return true;
+	}
 }

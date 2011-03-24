@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class FINLogin extends Activity {
+public class FINLogin extends FINBaseActivity {
 
 	/** Called when the activity is first created. */
 	@Override

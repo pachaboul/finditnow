@@ -50,7 +50,7 @@ public final class R {
     }
     public static final class id {
         public static final int GridItem=0x7f070018;
-        public static final int add_new_button=0x7f070036;
+        public static final int add_new_button=0x7f070035;
         public static final int addmap_confirm=0x7f070007;
         public static final int addnew_additem=0x7f070005;
         public static final int addnew_bspinner=0x7f070002;
@@ -81,7 +81,7 @@ public final class R {
         public static final int grid_item_button=0x7f07001a;
         public static final int grid_item_text=0x7f070019;
         public static final int gridview=0x7f070026;
-        public static final int help_button=0x7f070037;
+        public static final int help_button=0x7f070036;
         public static final int help_contents=0x7f07001b;
         public static final int help_link=0x7f07001c;
         public static final int help_section_body=0x7f07001e;
@@ -93,7 +93,6 @@ public final class R {
         public static final int mainlayout=0x7f070006;
         public static final int mapview=0x7f070008;
         public static final int multiCatText=0x7f070027;
-        public static final int my_location_button=0x7f070035;
         public static final int outDoorText=0x7f07002c;
         public static final int password_text=0x7f070022;
         public static final int popupLayout=0x7f070029;

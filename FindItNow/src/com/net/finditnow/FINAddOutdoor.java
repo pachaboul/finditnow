@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
+import android.view.Menu;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -19,7 +20,7 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-public class FINAddOutdoor extends MapActivity {
+public class FINAddOutdoor extends FINBaseMapActivity {
 	
 	// Map and Location Variables
 	private static MapView mapView;
@@ -136,5 +137,13 @@ public class FINAddOutdoor extends MapActivity {
     @Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+    
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);		
+		menu.findItem(R.id.add_new_button).setVisible(false);
+
+		return true;
 	}
 }
