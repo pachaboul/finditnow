@@ -132,8 +132,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 					builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-							String response = Update.updateDB(FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos), phone_id, context);
-							dialog.dismiss();
+							String response = DBCommunicator.update(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos)+"", context);							dialog.dismiss();
 							Toast.makeText(context, response, Toast.LENGTH_LONG).show();
 						}
 					});
@@ -196,6 +195,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 			//Text for displaying the floor name
 			TextView text = (TextView) relative.findViewById(R.id.multiCatText);
 			text.setText(category);
+			text.getLayoutParams().height = DoubleExpandableListAdapter.HEIGHT;
 		}
 		else{
 			//the layout/view which is defined by a layout XML

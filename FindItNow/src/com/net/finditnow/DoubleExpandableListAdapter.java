@@ -20,6 +20,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import android.util.Log;
+
 public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 
 	//data for populating the list
@@ -27,7 +29,9 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	private Building building;				
 	private String[] categories;
 	private HashMap<String,CategoryItem> dataMap;
+	private View currentView;
 
+	public static final int HEIGHT = 45;
 	/**
 	 * Creates a new FloorExpandableListAdapter with each variable initialized
 	 * 
@@ -105,7 +109,17 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		String dbCategory = category;
 		String[] parentText = { building.getFloorNames()[groupPosition]};
 		String parentMode = "categoryView";
-
+		relative.getLayoutParams().height= HEIGHT;
+		currentView = relative;
+		lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+			public void onGroupExpand(int groupPosition) {
+				ExpandableListView lv = (ExpandableListView) currentView.findViewById(R.id.cateList);
+			
+				Log.i("DOUBL", "~"+lv.getTop()+","+lv.getBottom());
+				
+				currentView.getLayoutParams().height = HEIGHT+(HEIGHT);
+    		}
+		});
 		lv.setAdapter(new FloorExpandableListAdapter( context, dataMap.get(category),
 				 iconId,  category,  dbCategory,  parentText,  parentMode) );
 
