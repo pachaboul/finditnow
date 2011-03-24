@@ -57,7 +57,7 @@
 	</RelativeLayout>
 	
    	<ExpandableListView android:id="@+id/flrList"
-   			android:layout_height="fill_parent"
+   			android:layout_height="wrap_content"
     		android:layout_width="fill_parent"
     		android:background="#409EFC23"
 	    	/>
