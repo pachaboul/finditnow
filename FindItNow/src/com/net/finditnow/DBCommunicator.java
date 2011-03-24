@@ -8,14 +8,24 @@ import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
@@ -134,11 +144,7 @@ public class DBCommunicator {
         HttpGet httpGet = new HttpGet(FIN_ROOT + suffix);
      
         // Process the response from the server
-		HttpParams httpParameters = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);
-		HttpConnectionParams.setSoTimeout(httpParameters, SOCKET_TIMEOUT);
-		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
-		
+        HttpClient httpClient = createHttpClient();		
 		HttpResponse httpResponse = null;
 
         try {
@@ -149,7 +155,7 @@ public class DBCommunicator {
             return context.getString(R.string.timeout);
         }
 
-        return data;
+        return data.trim();
     }
 
 	private static String Post(String suffix, List<BasicNameValuePair> nameValuePairs, Context context) {
@@ -163,12 +169,7 @@ public class DBCommunicator {
 
 			// Process the response from the server
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			
-			HttpParams httpParameters = new BasicHttpParams();
-			HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);
-			HttpConnectionParams.setSoTimeout(httpParameters, SOCKET_TIMEOUT);
-			DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
-			
+			HttpClient httpClient = createHttpClient();
 			HttpResponse httpResponse = httpClient.execute(httppost);
 
 			HttpEntity entity = httpResponse.getEntity();
@@ -194,5 +195,23 @@ public class DBCommunicator {
 		}
 
 		return data.trim();
+	}
+	
+	private static HttpClient createHttpClient() {
+	    HttpParams params = new BasicHttpParams();
+	    
+	    HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+	    HttpProtocolParams.setContentCharset(params, HTTP.DEFAULT_CONTENT_CHARSET);
+	    HttpProtocolParams.setUseExpectContinue(params, true);
+	    
+		HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
+
+	    SchemeRegistry schReg = new SchemeRegistry();
+	    schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+	    schReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
+	    ClientConnectionManager conMgr = new ThreadSafeClientConnManager(params, schReg);
+
+	    return new DefaultHttpClient(conMgr, params);
 	}
 }
