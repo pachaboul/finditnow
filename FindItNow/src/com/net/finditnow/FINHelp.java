@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class FINHelp extends Activity {
+public class FINHelp extends FINBaseActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,41 +67,11 @@ public class FINHelp extends Activity {
 		return section;
 	}
 	
-    /**
-     * Creates the Android options menu
-     */
 	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-        return true;
-    }
-    
-    /**
-     * Expand and define the Android options menu
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-	        case R.id.home_button:
-                startActivity(new Intent(this, FINHome.class));
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-        }
-    }
-    
-    /**
-     * Prepares the options menu before being displayed.
-     * Removes redundant Category option, and centering location
-     * option (special for the Map only).
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(R.id.add_new_button).setVisible(false);
-    	menu.findItem(R.id.my_location_button).setVisible(false);
-    	menu.findItem(R.id.help_button).setVisible(false);
-    	return true;
-    }
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);		
+		menu.findItem(R.id.help_button).setVisible(false);
+
+		return true;
+	}
 }

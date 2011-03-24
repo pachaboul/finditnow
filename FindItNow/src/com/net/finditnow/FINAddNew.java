@@ -20,7 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class FINAddNew extends Activity {
+public class FINAddNew extends FINBaseActivity {
 
 	//Interface (View) variables
 	private RadioButton radioSelection;
@@ -153,40 +153,12 @@ public class FINAddNew extends Activity {
 		AlertDialog alert = builder.create();
 		alert.show();	
 	}
-
-	/**
-	 * Creates the Android options menu
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.options_menu, menu);
-		return true;
-	}
-
-	/**
-	 * Expand and define the Android options menu
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		switch (item.getItemId()) {
-		case R.id.home_button:
-			startActivity(new Intent(this, FINHome.class));
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-	/**
-	 * Prepares the options menu before being displayed.
-	 * Leaves only the "Categories" button enabled
-	 */
+	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);		
 		menu.findItem(R.id.add_new_button).setVisible(false);
-		menu.findItem(R.id.my_location_button).setVisible(false);
+
 		return true;
 	}
 }

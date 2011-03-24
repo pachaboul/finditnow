@@ -32,7 +32,7 @@ import com.google.android.maps.OverlayItem;
 
 // DESIGN PATTERN: Sub-Classing.  This module extends the MapActivity class to implement a map view
 //				   It adds some non-standard functionality, including location and item overlays
-public class FINMap extends MapActivity {
+public class FINMap extends FINBaseMapActivity {
 
 	// Map and Location Variables
 	private MapView mapView;
@@ -269,78 +269,6 @@ public class FINMap extends MapActivity {
 			Toast.makeText(this, "Getting a fix on your location...", Toast.LENGTH_SHORT).show();
 			locOverlay.runOnFirstFix(runnable);
 		}
-	}
-
-	/**
-	 * Create the Android options menu
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.options_menu, menu);
-		return true;
-	}
-
-	/**
-	 * Expand and define the Android options menu
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		// Handle the item selected
-		switch (item.getItemId()) {
-
-		// Return to the categories screen
-		case R.id.home_button:
-			startActivity(new Intent(this, FINHome.class));
-			return true;
-		case R.id.login_button:
-			startActivity(new Intent(this, FINLogin.class));
-			return true;
-		case R.id.logout_button:
-			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-    		
-    		String result = DBCommunicator.logout(phone_id, getBaseContext());
-    		if (result.equals(getString(R.string.logged_out))) {
-    			FINSplash.isLoggedIn = false;
-    		}
-    		
-    		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-    		
-    		return true;
-			// Center the map on the user's location if it is possible		
-		case R.id.my_location_button:		
-			if (location != null) {		
-				mapController.animateTo(location);		
-			} else {		
-				Toast.makeText(this, "Error: Could not detect your location", Toast.LENGTH_SHORT).show();		
-			}		
-			return true;
-		case R.id.add_new_button:
-			startActivity(new Intent(this, FINAddNew.class));
-			return true;
-		case R.id.settings_button:
-			startActivity(new Intent(this, FINSettings.class));
-			return true;
-		case R.id.help_button:
-			startActivity(new Intent(this, FINHelp.class));
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (FINSplash.isLoggedIn) {
-			menu.findItem(R.id.login_button).setVisible(false);
-			menu.findItem(R.id.logout_button).setVisible(true);
-		} else {
-			menu.findItem(R.id.logout_button).setVisible(false);
-			menu.findItem(R.id.login_button).setVisible(true);
-		}
-
-		return true;
 	}
 
 	/**

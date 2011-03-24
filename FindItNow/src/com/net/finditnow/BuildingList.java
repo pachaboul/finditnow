@@ -12,6 +12,7 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,7 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class BuildingList extends ListActivity {
+public class BuildingList extends FINBaseListActivity {
 	
 	/**
      * On launch, determines which category type was passed
@@ -55,5 +56,13 @@ public class BuildingList extends ListActivity {
 		if (myDialog != null) {
 			myDialog.dismiss();
 		}
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);		
+		menu.findItem(R.id.home_button).setVisible(false);
+
+		return true;
 	}
 }

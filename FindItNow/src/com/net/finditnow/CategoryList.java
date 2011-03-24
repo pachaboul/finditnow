@@ -8,13 +8,9 @@
 
 package com.net.finditnow;
 
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class CategoryList extends ListActivity {
+public class CategoryList extends FINBaseListActivity {
 	
 	/**
      * On launch, determines which category type was passed
@@ -65,45 +61,4 @@ public class CategoryList extends ListActivity {
 			myDialog.dismiss();
 		}
 	}
-	
-	/**
-     * Creates the Android options menu
-     */
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-        return true;
-    }
-    
-	/**
-     * Expand and define the Android options menu
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-        	case R.id.home_button:
-        		startActivity(new Intent(this, FINHome.class));
-        		return true;
-        	case R.id.add_new_button:
-	    		startActivity(new Intent(this, FINAddNew.class));
-	    		return true;
-	        case R.id.help_button:
-	        	startActivity(new Intent(this, FINHelp.class));
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-        }
-    }
-    
-    /**
-     * Prepares the options menu before being displayed.
-     * Removes centering location option (special for the Map only).
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(R.id.my_location_button).setVisible(false);
-    	return true;
-    }
 }

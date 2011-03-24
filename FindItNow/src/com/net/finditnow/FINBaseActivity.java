@@ -2,41 +2,13 @@ package com.net.finditnow;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class FINSettings extends PreferenceActivity {
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.layout.settings);
-		
-		// Get the custom preference
-		Preference customPref = (Preference) findPreference("customPref");
-		customPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-			public boolean onPreferenceClick(Preference preference) {
-				Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
-				
-				SharedPreferences customSharedPreference = getSharedPreferences("myCustomSharedPrefs", Activity.MODE_PRIVATE);
-				SharedPreferences.Editor editor = customSharedPreference.edit();
-			
-				editor.putString("myCustomPref", "The preference has been clicked");
-				editor.commit();
-				
-				return true;
-			}
-
-		});
-	}
+public class FINBaseActivity extends Activity {
 	
 	/**
 	 * Create the Android options menu
@@ -91,9 +63,6 @@ public class FINSettings extends PreferenceActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		
-		menu.findItem(R.id.settings_button).setVisible(false);
-		
 		if (FINSplash.isLoggedIn) {
 			menu.findItem(R.id.login_button).setVisible(false);
 			menu.findItem(R.id.logout_button).setVisible(true);
