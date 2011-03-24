@@ -10,6 +10,7 @@ package com.net.finditnow;
  * 
  */
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -64,9 +65,20 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @return the children count in the specified group 
 	 */
 	public int getChildrenCount(int groupPosition) {
-		return categories.length;
+		return categoryOf(building.getFloorNames()[groupPosition]).length;
 	}
 
+	private String[] categoryOf(String floor)
+	{
+		ArrayList<String> temp = new ArrayList<String>();
+		for (String cate: dataMap.keySet()){
+			if (dataMap.get(cate).getFloor_names().contains(floor))
+				temp.add(cate);
+		}
+		String[] result = new String[temp.size()];
+		result = temp.toArray(result);
+		return result;
+	}
 	/**
 	 * Gets a View that displays the data for the given child within the given group.
 	 * 
@@ -91,7 +103,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		int iconId = 0;
 		String category = categories[childPosition];
 		String dbCategory = category;
-		String[] parentText = building.getFloorNames();
+		String[] parentText = { building.getFloorNames()[groupPosition]};
 		String parentMode = "categoryView";
 
 		lv.setAdapter(new FloorExpandableListAdapter( context, dataMap.get(category),

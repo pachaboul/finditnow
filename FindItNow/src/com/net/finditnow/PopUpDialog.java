@@ -169,7 +169,7 @@ public class PopUpDialog extends Dialog{
 	    					lv.getLayoutParams().height = 150;
 
 	    				if (category.equals("")){
-	    					/*Building bui = new Building(1,"Test",new int[]{2,3,4,56}, new String[]{"Flr 1","Flr 2","Flr 3","Flr 4"});
+	    				/*	Building bui = new Building(1,"Test",new int[]{2,3,4,56}, new String[]{"Flr 1","Flr 2","Flr 3","Flr 4"});
 	    					String[] cateogries = new String[]{"Coffee1", "Restroom2", "Vending3"};
 	    					HashMap<String,CategoryItem> data = new HashMap<String,CategoryItem>();
 	    					
