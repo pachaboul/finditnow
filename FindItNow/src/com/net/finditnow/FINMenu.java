@@ -20,11 +20,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings.Secure;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -32,11 +29,10 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 
-public class FINMenu extends FINBaseActivity {
+public class FINMenu extends FINActivity {
 	
 	private static HashMap<GeoPoint, Building> buildingsMap;
 	private static HashMap<String, Integer> iconsMap;
@@ -183,6 +179,7 @@ public class FINMenu extends FINBaseActivity {
 						Intent myIntent = new Intent(v.getContext(), nextClass);
 		                myIntent.putExtra("category", category);
 		                myIntent.putExtra("building", "");
+		                myIntent.putExtra("itemName", "");
 		                startActivity(myIntent);
 					}
     			});

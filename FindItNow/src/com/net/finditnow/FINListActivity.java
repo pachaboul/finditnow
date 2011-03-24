@@ -1,5 +1,6 @@
 package com.net.finditnow;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.provider.Settings.Secure;
 import android.view.Menu;
@@ -7,9 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.maps.MapActivity;
-
-public class FINBaseMapActivity extends MapActivity {
+public class FINListActivity extends ListActivity {
 
 	/**
 	 * Create the Android options menu
@@ -73,10 +72,5 @@ public class FINBaseMapActivity extends MapActivity {
 		}
 
 		return true;
-	}
-	
-	@Override
-	protected boolean isRouteDisplayed() {
-		return false;
 	}
 }

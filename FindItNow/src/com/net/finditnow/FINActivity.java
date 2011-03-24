@@ -1,14 +1,25 @@
 package com.net.finditnow;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class FINBaseListActivity extends ListActivity {
+public class FINActivity extends Activity {
+	
+	/** 
+	 * Called when the activity is first created.
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setTitle(getString(R.string.app_name));
+	}
+	
 	/**
 	 * Create the Android options menu
 	 */

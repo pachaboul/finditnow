@@ -15,12 +15,11 @@ import android.view.Menu;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-public class FINAddOutdoor extends FINBaseMapActivity {
+public class FINAddOutdoor extends FINMapActivity {
 	
 	// Map and Location Variables
 	private static MapView mapView;
@@ -39,6 +38,9 @@ public class FINAddOutdoor extends FINBaseMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_outdoor);
+		
+		// Set the text in the titlebar
+		setTitle(getString(R.string.app_name) + " > Add New Item > Outdoor Item");
 
 		tappedPoint = new GeoPoint(0, 0);
 		

@@ -8,7 +8,6 @@
 
 package com.net.finditnow;
 
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class BuildingList extends FINBaseListActivity {
+public class BuildingList extends FINListActivity {
 	
 	/**
      * On launch, determines which category type was passed
@@ -33,6 +32,7 @@ public class BuildingList extends FINBaseListActivity {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
+    			
     	setListAdapter(new ArrayAdapter<String>(this, R.layout.building_list, FINMenu.getBuildingsList()));
     	
     	ListView lv = getListView();

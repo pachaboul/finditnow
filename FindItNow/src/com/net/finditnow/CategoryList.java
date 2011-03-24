@@ -18,7 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class CategoryList extends FINBaseListActivity {
+public class CategoryList extends FINListActivity {
 	
 	/**
      * On launch, determines which category type was passed
@@ -34,7 +34,7 @@ public class CategoryList extends FINBaseListActivity {
     	
     	Bundle extras = getIntent().getExtras(); 
     	final String category = extras.getString("category");
-    	setTitle("FindItNow > " + FINUtil.capFirstChar(category));
+    	setTitle(getString(R.string.app_name) + " > " + FINUtil.capFirstChar(category));
     	
     	setListAdapter(new ArrayAdapter<String>(this, R.layout.category_list, getResources().getStringArray(R.array.specific_supplies)));
     	
@@ -48,7 +48,7 @@ public class CategoryList extends FINBaseListActivity {
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			myIntent.putExtra("category", category);
                 myIntent.putExtra("building", "");
-    			myIntent.putExtra("itemName", ((TextView) v).getText().toString());
+    			myIntent.putExtra("itemName", FINUtil.deCapFirstChar(FINUtil.depluralize(((TextView) v).getText().toString())));
     			startActivity(myIntent);
     		}
     	});
