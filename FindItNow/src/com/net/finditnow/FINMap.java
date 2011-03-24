@@ -69,7 +69,7 @@ public class FINMap extends MapActivity {
 		// Restore the saved instance and generate the primary (main) layout
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
-		
+
 		// Get the item name for buildings, supplies:
 		Bundle extras = getIntent().getExtras(); 
 		category = extras.getString("category");
@@ -81,22 +81,22 @@ public class FINMap extends MapActivity {
 
 		// Check connection of Android
 		ConnectionChecker conCheck = new ConnectionChecker(this, FINMap.this);
-		
+
 		// Retrieve locations from the database and parse them
 		GeoPoint loc = (building.equals("")? DEFAULT_LOCATION : FINMenu.getGeoPointFromBuilding(building));
 		String cat = (building.equals("")? category : FINUtil.allCategories(FINMenu.getCategoriesList()));
 		String item = FINUtil.deCapFirstChar(FINUtil.depluralize(itemName));
 		String listOfLocations = Get.requestFromDB(cat, item, loc, this);
-		
+
 		if (listOfLocations.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
 		} else {
 			geoPointItem = JsonParser.parseCategoryJson(listOfLocations);
-		
+
 			// Create the map and the map view and detect user location
 			createMap();
 			locateUser();
-	
+
 			// Add these locations to the map view
 			placeOverlays();
 		}
@@ -108,16 +108,14 @@ public class FINMap extends MapActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		
-		if (mapController != null) {
-			locOverlay.disableMyLocation();
-	
-			FINSplash.lastLocation = location;
-			FINSplash.mapCenter = mapView.getMapCenter();
-			FINSplash.zoomLevel = mapView.getZoomLevel();
-	
-			mapOverlays.remove(locOverlay);
-		}
+
+		locOverlay.disableMyLocation();
+
+		FINSplash.lastLocation = location;
+		FINSplash.mapCenter = mapView.getMapCenter();
+		FINSplash.zoomLevel = mapView.getZoomLevel();
+
+		mapOverlays.remove(locOverlay);
 	}
 
 	/**
@@ -126,16 +124,14 @@ public class FINMap extends MapActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		if (mapController != null) {
-			locOverlay.enableMyLocation();
 
-			location = FINSplash.lastLocation;
-			mapController.setCenter(FINSplash.mapCenter);
-			mapController.setZoom(FINSplash.zoomLevel);
-			
-			mapOverlays.add(locOverlay);
-		}
+		locOverlay.enableMyLocation();
+
+		location = FINSplash.lastLocation;
+		mapController.setCenter(FINSplash.mapCenter);
+		mapController.setZoom(FINSplash.zoomLevel);
+
+		mapOverlays.add(locOverlay);
 	}
 
 	/**
@@ -292,41 +288,52 @@ public class FINMap extends MapActivity {
 		switch (item.getItemId()) {
 
 		// Return to the categories screen
+		case R.id.home_button:
+			startActivity(new Intent(this, FINHome.class));
+			return true;
 		case R.id.login_button:
-    		startActivity(new Intent(this, FINLogin.class));
-    		return true;
-    	case R.id.logout_button:
-    		final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-    		String result = SuperUser.logout(phone_id, getBaseContext());
-    		FINSplash.isLoggedIn = false;
-    		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-    		return true;
-    	case R.id.add_new_button:
-    		startActivity(new Intent(this, FINAddNew.class));
-    		return true;
-    	case R.id.settings_button:
-        	startActivity(new Intent(this, FINSettings.class));
-            return true;
-        case R.id.help_button:
-        	startActivity(new Intent(this, FINHelp.class));
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+			startActivity(new Intent(this, FINLogin.class));
+			return true;
+		case R.id.logout_button:
+			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+			String result = SuperUser.logout(phone_id, getBaseContext());
+			FINSplash.isLoggedIn = false;
+			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+			return true;
+			// Center the map on the user's location if it is possible		
+		case R.id.my_location_button:		
+			if (location != null) {		
+				mapController.animateTo(location);		
+			} else {		
+				Toast.makeText(this, "Error: Could not detect your location", Toast.LENGTH_SHORT).show();		
+			}		
+			return true;
+		case R.id.add_new_button:
+			startActivity(new Intent(this, FINAddNew.class));
+			return true;
+		case R.id.settings_button:
+			startActivity(new Intent(this, FINSettings.class));
+			return true;
+		case R.id.help_button:
+			startActivity(new Intent(this, FINHelp.class));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	if (FINSplash.isLoggedIn) {
-    		menu.findItem(R.id.login_button).setVisible(false);
-    		menu.findItem(R.id.logout_button).setVisible(true);
-    	} else {
-    		menu.findItem(R.id.logout_button).setVisible(false);
-    		menu.findItem(R.id.login_button).setVisible(true);
-    	}
-    	
-    	return true;
-    }
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (FINSplash.isLoggedIn) {
+			menu.findItem(R.id.login_button).setVisible(false);
+			menu.findItem(R.id.logout_button).setVisible(true);
+		} else {
+			menu.findItem(R.id.logout_button).setVisible(false);
+			menu.findItem(R.id.login_button).setVisible(true);
+		}
+
+		return true;
+	}
 
 	/**
 	 * This method places the locations retrieved from the database onto the map

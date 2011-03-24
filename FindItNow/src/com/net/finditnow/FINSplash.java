@@ -26,7 +26,7 @@ public class FINSplash extends Activity {
         // Initialize shared map data
 		lastLocation = null;
 		mapCenter = FINMap.DEFAULT_LOCATION;
-		zoomLevel = 17;
+		zoomLevel = 18;
 		isLoggedIn = false;
         
         // thread for displaying the SplashScreen
