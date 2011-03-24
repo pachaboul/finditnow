@@ -9,12 +9,14 @@ import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
 import android.util.Log;
@@ -40,7 +42,7 @@ public class DBCommunicator {
         nameValuePairs.add(new BasicNameValuePair("sc", sc));
         nameValuePairs.add(new BasicNameValuePair("print", print));
 		
-		return common("FINsert/create.php", nameValuePairs, context);
+		return Post("FINsert/create.php", nameValuePairs, context);
 	}
 	
 	public static String delete(String phone_id, String category, String id, Context context) {
@@ -51,15 +53,15 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("category", category));
 		nameValuePairs.add(new BasicNameValuePair("id", id));
 		
-		return common("delete.php", nameValuePairs, context);
+		return Post("delete.php", nameValuePairs, context);
 	}
 	
 	public static String getCategories(Context context) {
-		return common("getCategories.php", new ArrayList<BasicNameValuePair>(), context);
+		return Get("getCategories.php", context);
 	}
 	
 	public static String getBuildings(Context context) {
-		return common("getBuildings.php", new ArrayList<BasicNameValuePair>(), context);
+		return Get("getBuildings.php", context);
 	}
 	
 	public static String getLocations(String cat, String item, String lat, String lon, Context context) {
@@ -71,7 +73,7 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("long", lon));
 		
-		return common("getLocations.php", nameValuePairs, context);
+		return Post("getLocations.php", nameValuePairs, context);
 	}
 	
 	public static String getAllLocations(String cat, String lat, String lon, Context context) {
@@ -82,7 +84,7 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("long", lon));
 		
-		return common("getAllLocations.php", nameValuePairs, context);
+		return Post("getAllLocations.php", nameValuePairs, context);
 	}
 	
 	public static String login(String phone_id, String username, String userpass, Context context) {
@@ -93,7 +95,7 @@ public class DBCommunicator {
         nameValuePairs.add(new BasicNameValuePair("userpass", userpass));
         nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
         
-        return common("login.php", nameValuePairs, context);
+        return Post("login.php", nameValuePairs, context);
 	}
 	
 	public static String loggedIn(String phone_id, Context context) {
@@ -102,7 +104,7 @@ public class DBCommunicator {
 		
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 		
-		return common("loggedIn.php", nameValuePairs, context);
+		return Post("loggedIn.php", nameValuePairs, context);
 	}
 	
 	public static String logout(String phone_id, Context context) {
@@ -111,7 +113,7 @@ public class DBCommunicator {
 		
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 		
-		return common("logout.php", nameValuePairs, context);
+		return Post("logout.php", nameValuePairs, context);
 	}
 	
 	public static String update(String phone_id, String category, String id, Context context) {
@@ -122,10 +124,35 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("category", category));
 		nameValuePairs.add(new BasicNameValuePair("id", id));
 		
-		return common("update.php", nameValuePairs, context);
+		return Post("update.php", nameValuePairs, context);
 	}
+	
+	private static String Get(String suffix, Context context) {
+		
+		String data = "";
+		
+        HttpGet httpGet = new HttpGet(FIN_ROOT + suffix);
+     
+        // Process the response from the server
+		HttpParams httpParameters = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(httpParameters, SOCKET_TIMEOUT);
+		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+		
+		HttpResponse httpResponse = null;
 
-	private static String common(String suffix, List<BasicNameValuePair> nameValuePairs, Context context) {
+        try {
+            httpResponse = httpClient.execute(httpGet);  
+    		data = EntityUtils.toString(httpResponse.getEntity());
+        } catch (Exception e) {
+            Log.e("FIN", e.getMessage());
+            return context.getString(R.string.timeout);
+        }
+
+        return data;
+    }
+
+	private static String Post(String suffix, List<BasicNameValuePair> nameValuePairs, Context context) {
 
 		// Initialize input stream and response variables
 		InputStream iStream = null;
