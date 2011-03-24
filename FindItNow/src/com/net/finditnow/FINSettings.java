@@ -18,6 +18,7 @@ public class FINSettings extends PreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.settings);
+		setTitle(getString(R.string.app_name) + " > Settings");
 		
 		// Get the custom preference
 		Preference customPref = (Preference) findPreference("customPref");

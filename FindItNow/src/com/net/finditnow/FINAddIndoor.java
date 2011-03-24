@@ -2,7 +2,6 @@ package com.net.finditnow;
 
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
@@ -15,7 +14,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class FINAddIndoor extends FINBaseActivity {
+public class FINAddIndoor extends FINActivity {
 
 	Building selectedBuilding;
 	String selectedFloor;
@@ -27,7 +26,9 @@ public class FINAddIndoor extends FINBaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_indoor);
-		setTitle("FindItNow > Add New Item > Indoor Item");
+		
+		// Set the text in the titlebar
+		setTitle(getString(R.string.app_name) + " > Add New Item > Indoor Item");
 
 		// Set up spinner for building selection
 		Spinner bSpinner = (Spinner) findViewById(R.id.addnew_bspinner);

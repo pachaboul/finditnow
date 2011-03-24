@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -20,7 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class FINAddNew extends FINBaseActivity {
+public class FINAddNew extends FINActivity {
 
 	//Interface (View) variables
 	private RadioButton radioSelection;
@@ -44,7 +42,7 @@ public class FINAddNew extends FINBaseActivity {
 			setContentView(R.layout.addnew_popup);
 
 			// Set the text in the titlebar
-			setTitle("FindItNow > Add New Item");
+			setTitle(super.getTitle() + " > Add New Item");
 
 			//Set up interface for indoor/outdoor and category selection screen
 			geopointConfirm = findViewById(R.id.addmap_confirm);

@@ -10,8 +10,8 @@ package com.net.finditnow;
  * 		modifies so it scroll to the current position when clicked onExpand.
  * 
  */
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,8 +20,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-
-import android.util.Log;
 
 public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 

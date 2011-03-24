@@ -12,18 +12,12 @@ import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.Settings.Secure;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
@@ -32,7 +26,7 @@ import com.google.android.maps.OverlayItem;
 
 // DESIGN PATTERN: Sub-Classing.  This module extends the MapActivity class to implement a map view
 //				   It adds some non-standard functionality, including location and item overlays
-public class FINMap extends FINBaseMapActivity {
+public class FINMap extends FINMapActivity {
 
 	// Map and Location Variables
 	private MapView mapView;
@@ -74,10 +68,11 @@ public class FINMap extends FINBaseMapActivity {
 		Bundle extras = getIntent().getExtras(); 
 		category = extras.getString("category");
 		building = extras.getString("building");
-		itemName = FINUtil.deCapFirstChar(FINUtil.depluralize(extras.getString("itemName")));
+		itemName = extras.getString("itemName");
 
 		// Set the Breadcrumb in the titlebar
-		// TODO
+		String title = itemName.equals("")? FINUtil.capFirstChar(category) : FINUtil.capFirstChar(itemName);
+		setTitle(getString(R.string.app_name) + " > " + title);
 
 		// Check connection of Android
 		ConnectionChecker conCheck = new ConnectionChecker(this, FINMap.this);

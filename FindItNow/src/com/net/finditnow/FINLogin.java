@@ -1,6 +1,5 @@
 package com.net.finditnow;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.view.View;
@@ -9,12 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class FINLogin extends FINBaseActivity {
+public class FINLogin extends FINActivity {
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle(getString(R.string.app_name) + " > SuperUser Login");
 
 		// load up the layout
 		setContentView(R.layout.login);

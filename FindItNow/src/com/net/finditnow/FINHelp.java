@@ -6,26 +6,22 @@
 
 package com.net.finditnow;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class FINHelp extends FINBaseActivity {
+public class FINHelp extends FINActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.help);
-		setTitle("FindItNow > Help Guide");
+		setTitle(getString(R.string.app_name) + " > Help Guide");
 		
 		LinearLayout helpBody = (LinearLayout) findViewById(R.id.help_contents);
 		
