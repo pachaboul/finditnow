@@ -35,5 +35,11 @@ public class FINHome extends TabActivity {
 			String username = extras.getString("username");
 	    	Toast.makeText(getBaseContext(), "Welcome back " + username, Toast.LENGTH_LONG).show();
 	    }
+	    
+	    if (getIntent().hasExtra("result")) {
+	    	Bundle extras = getIntent().getExtras(); 
+			String result = extras.getString("result");
+            Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+	    }
 	}
 }

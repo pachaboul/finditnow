@@ -100,13 +100,13 @@ public class FINAddOutdoor extends MapActivity {
 						
 						//Send new item to database
 						final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-			        	String response = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr, phone_id, getBaseContext());
+			        	String result = Create.sendToDB(FINUtil.deCapFirstChar(selectedCategory), tappedPoint, 0, "",  bb,  sc,  pr, phone_id, getBaseContext());
 			        	
 			        	//Return to categories screen
 				    	Intent myIntent = new Intent(getBaseContext(), FINHome.class);
+				    	myIntent.putExtra("result", result);
+				    	
 			            startActivity(myIntent);
-			            //Display popup message with response from server
-			            Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG).show();
 			        }
 			    })
 			    .setNegativeButton("No", new DialogInterface.OnClickListener() {
