@@ -73,13 +73,11 @@ public class FINAddIndoor extends FINActivity {
 	private OnClickListener additem_listener = new OnClickListener() {
 		public void onClick(View v) {
 			HashMap<String, Integer> map = selectedBuilding.floorMap();
-			String bb = "", sc = "", pr = "";
-			if (selectedCategory.equals("School Supplies") && supplyTypes[0])
-				bb = "bb";
-			if (selectedCategory.equals("School Supplies") && supplyTypes[1])
-				sc = "sc";
-			if (selectedCategory.equals("School Supplies") && supplyTypes[2])
-				pr = "print";
+			
+			String bb = supplyTypes[0]? "bb" : "";
+			String sc = supplyTypes[1]? "sc" : "";
+			String pr = supplyTypes[2]? "print" : "";
+			String item = bb.length() > 0? "blue_book" : sc.length() > 0? "scantron" : pr.length() > 0? "printing" : "";
 			
 			//Send new item to database
 			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
@@ -92,7 +90,7 @@ public class FINAddIndoor extends FINActivity {
 	    	myIntent.putExtra("result", result);
 	    	myIntent.putExtra("category", FINUtil.deCapFirstChar(selectedCategory));
 			myIntent.putExtra("building", "");
-			myIntent.putExtra("itemName", "");
+			myIntent.putExtra("itemName", item);
 			myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLatitudeE6());
 			myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLongitudeE6());
 	    	
