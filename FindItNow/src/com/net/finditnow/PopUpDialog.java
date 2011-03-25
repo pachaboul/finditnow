@@ -192,13 +192,13 @@ public class PopUpDialog extends Dialog{
 					    			lv.setSelectedGroup(groupPosition);		
 								}
 							});
-		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),dataMap.get(category),
+		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),dataMap.get(dbCategory),
 			    					iconId, category, dbCategory, building.getFloorNames(),"flrName"));
 		    				
 		    				//scrolls the view to the lowest floor which contains the category
 		    				int pos = 0;
 		    				if (!category.equals("")) {
-		    					String target = dataMap.get(category).getFloor_names().get(dataMap.get(category).getFloor_names().size()-1);
+		    					String target = dataMap.get(dbCategory).getFloor_names().get(dataMap.get(dbCategory).getFloor_names().size()-1);
 			    				for (int i = building.getFloorNames().length -1 ; i >= 0;i--)
 			    					if ( target.equals(building.getFloorNames()[i]))
 			    						pos = i;
@@ -224,7 +224,7 @@ public class PopUpDialog extends Dialog{
     	} else {
     		title.setText("Outdoor Location");
 
-    		String spInfo = dataMap.get(category).getInfo().get(0).replace("\n", "<br />");
+    		String spInfo = dataMap.get(dbCategory).getInfo().get(0).replace("\n", "<br />");
     		
     		// If there's no special info, hide the outdoor info section
     		// (it would have added unnecessary padding)
@@ -249,7 +249,7 @@ public class PopUpDialog extends Dialog{
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
 	    		        	   final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-	    		        	   String result = DBCommunicator.update(phone_id, dbCategory, dataMap.get(category).getId().get(0)+"", getContext());	    		        	   
+	    		        	   String result = DBCommunicator.update(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());	    		        	   
 	    		        	   dialog.dismiss();
 	    		               Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
 	    		           }
@@ -264,7 +264,7 @@ public class PopUpDialog extends Dialog{
 		    			builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
 		    				 public void onClick(DialogInterface dialog, int id) {
 		    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-		    				       String result = DBCommunicator.delete(phone_id, dbCategory, dataMap.get(category).getId().get(0)+"", getContext());
+		    				       String result = DBCommunicator.delete(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());
 		    				       
 		    				       Intent myIntent = new Intent(getContext(), FINMap.class);
 		    				       myIntent.putExtra("result", result);
