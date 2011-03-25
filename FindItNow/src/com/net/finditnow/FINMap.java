@@ -16,7 +16,6 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -85,7 +84,6 @@ public class FINMap extends FINMapActivity {
 
 		// Retrieve locations from the database and parse them
 		String listOfLocations;
-		Log.v("building", building);
 		if (building.equals("")) {
 			listOfLocations = DBCommunicator.getLocations(category, itemName, DEFAULT_LOCATION.getLatitudeE6()+"", DEFAULT_LOCATION.getLongitudeE6()+"", this);
 		} else {
@@ -175,21 +173,7 @@ public class FINMap extends FINMapActivity {
 			return new BigDecimal(-1);
 		}
 	}
-	/**
-	 * This method returns the category selected by the user
-	 * @return A String representing the category chosen
-	 */
-	public String getCategory() {
-		return category;
-	}
-
-	/**
-	 * This method returns the item name selected by the user if supplies is chosen
-	 * @return A String representing the item name, null if supplies is not chosen
-	 */
-	public String getItemName() {
-		return itemName;
-	}
+	
 	/**
 	 * This method returns the user's current location
 	 * @return GeoPoint representing the user's location
@@ -197,6 +181,7 @@ public class FINMap extends FINMapActivity {
 	public static GeoPoint getLocation() {
 		return location;
 	}
+	
 	/**
 	 * This method computes the walking time for a given distance based on the mile time
 	 * 
@@ -236,7 +221,7 @@ public class FINMap extends FINMapActivity {
 
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
-		drawable = this.getResources().getDrawable(FINHome.getIcon(getCategory()));
+		drawable = this.getResources().getDrawable(FINHome.getIcon(category));
 		itemizedOverlay = new UWOverlay(drawable, this, category, itemName, geoPointItem);
 		
 		// Setup the ImageButtons
