@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/popupLayout"
+              android:orientation="vertical"
+              android:layout_width="275dp"
+              android:layout_height="wrap_content"
+              android:paddingLeft="15dp"
+              android:paddingRight="15dp"
+              android:paddingTop="10dp"
+              android:paddingBottom="15dp"
+              >
+    <TextView android:id="@+id/dialogTitle"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:textColor="#5EC22D"
+              android:textSize="18dp"
+              android:textStyle="bold"
+              />
+	<TextView android:id="@+id/categoryName"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textColor="#FFF"
+              />
+	<TextView android:id="@+id/outDoorText"
+			android:layout_below="@id/categoryName"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#FFF"
+   		/>
+    <TextView android:id="@+id/distanceText"
+    		  android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:textColor="#FFF"
+			  android:layout_marginTop="15dp"
+              />
+	<TextView android:id="@+id/timeReachText"
+    		  android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:textColor="#FFF"
+              />
+	<RelativeLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="15dp"
+			android:layout_marginBottom="5dp">
+			
+		<TextView android:id="@+id/showFlrButt"
+				android:layout_alignParentRight="true"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+	    		android:background="@drawable/fin_clickable_button"
+	    		android:text="Show Floors"
+	    		android:textColor="#5EC22D"
+	    		android:textStyle="bold"
+	    		android:textSize="18dp"/>
+	    		
+	</RelativeLayout>
+	
+   	<ExpandableListView android:id="@+id/flrList"
+   			android:layout_height="wrap_content"
+    		android:layout_width="fill_parent"
+    		android:background="#409EFC23"
+	    	/>
+</LinearLayout>
