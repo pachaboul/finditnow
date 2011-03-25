@@ -94,14 +94,10 @@ public class FINAddOutdoor extends FINMapActivity {
 			        public void onClick(DialogInterface dialog, int id) {
 			        	//Point is confirmed
 			        	
-						String bb = "", sc = "", pr = "";
-						//Handle special case of school supplies
-						if (selectedCategory.equals("School Supplies") && supplyTypes[0])
-							bb = "bb"; 
-						if (selectedCategory.equals("School Supplies") && supplyTypes[1])
-							sc = "sc";
-						if (selectedCategory.equals("School Supplies") && supplyTypes[2])
-	 						pr = "print";
+			        	String bb = supplyTypes[0]? "bb" : "";
+						String sc = supplyTypes[1]? "sc" : "";
+						String pr = supplyTypes[2]? "print" : "";
+						String item = bb.length() > 0? "blue_book" : sc.length() > 0? "scantron" : pr.length() > 0? "printing" : "";
 						
 						//Send new item to database
 						final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
@@ -113,7 +109,7 @@ public class FINAddOutdoor extends FINMapActivity {
 				    	myIntent.putExtra("result", result);
 				    	myIntent.putExtra("category", FINUtil.deCapFirstChar(selectedCategory));
 						myIntent.putExtra("building", "");
-						myIntent.putExtra("itemName", "");
+						myIntent.putExtra("itemName", item);
 						myIntent.putExtra("centerLat", tappedPoint.getLatitudeE6());
 						myIntent.putExtra("centerLon", tappedPoint.getLongitudeE6());
 				    	
