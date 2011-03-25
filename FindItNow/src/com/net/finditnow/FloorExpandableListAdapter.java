@@ -10,6 +10,7 @@ package com.net.finditnow;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.provider.Settings.Secure;
 import android.text.Html;
 import android.util.Log;
@@ -147,6 +148,23 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 						}
 					});
 
+					if (FINHome.isLoggedIn()) {
+		    			builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
+		    				 public void onClick(DialogInterface dialog, int id) {
+		    				       final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+		    				       String result = DBCommunicator.delete(phone_id, dbCategory, catItem.getId().get(0)+"", context);
+
+		    				       Intent myIntent = new Intent(context, FINMap.class);
+		    				       myIntent.putExtra("result", result);
+			   					   myIntent.putExtra("category", dbCategory);
+			   					   myIntent.putExtra("building", "");
+			   					   myIntent.putExtra("itemName", item);
+			   					   
+			   					   context.startActivity(myIntent);
+		    				   }
+		    			});
+	    			}
+					
 					AlertDialog dailog = builder.create();
 					dailog.show();
 				}

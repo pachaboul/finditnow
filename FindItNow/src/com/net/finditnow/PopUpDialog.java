@@ -100,7 +100,7 @@ public class PopUpDialog extends Dialog{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.building = building;
-		this.dataMap = dataMap;
+		this.dataMap = (dataMap == null? new HashMap<String,CategoryItem>() : dataMap);
 		this.distance = distance;
 		this.walkTime = walkingTime;
 		this.category = category;
@@ -182,7 +182,7 @@ public class PopUpDialog extends Dialog{
 	    					catItem.addInfo("Milk!");
 	    					data.put("Vending3", catItem);*/
 	    					
-	    					String[] categories = dataMap.keySet().toArray(new String[0]);
+	    					String[] categories =dataMap.keySet().toArray(new String[0]);
 	    					
 ;	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),building,categories,dataMap));
 	    					
