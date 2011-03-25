@@ -12,8 +12,8 @@
 	<string name="spinner_building">Select Building</string>
 	<string name="spinner_floor">Select Floor</string>
 	<string-array name="specific_supplies">
-        <item>Blue Book</item>
-        <item>Scantron</item>
+        <item>Blue Books</item>
+        <item>Scantrons</item>
         <item>Printing</item>
 	</string-array>
 	<string name="timeout">Error: Could not detect an internet connection.  Please ensure Wifi or 3G is enabled and working</string>
