@@ -139,7 +139,7 @@ public class FINMenu extends FINActivity {
 							myDialog = ProgressDialog.show(FINMenu.this, "Category Loading" , "Loading " + category + "...", true);
 						}
 
-						Class<? extends Activity> nextClass = (category.equals("school_supplies")? CategoryList.class : FINMap.class);
+						Class<? extends Activity> nextClass = (category.equals("School Supplies")? CategoryList.class : FINMap.class);
 						Intent myIntent = new Intent(v.getContext(), nextClass);
 						myIntent.putExtra("category", category);
 						myIntent.putExtra("building", "");
