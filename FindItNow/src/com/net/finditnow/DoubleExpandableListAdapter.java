@@ -183,9 +183,11 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			currentView = view;
 		}
 		public void onGroupExpand(int groupPosition) {
-			currentView.getLayoutParams().height = HEIGHT+(HEIGHT+15);
-			
 			ExpandableListView lv = (ExpandableListView) currentView.findViewById(R.id.cateList);
+
+			int textHeight = ((String)lv.getExpandableListAdapter().getChild(groupPosition, 0)).length() / 35;
+			currentView.getLayoutParams().height = HEIGHT+(HEIGHT+15+(textHeight*18));
+			
 			lv.setSelectedGroup(groupPosition);		
 		}
 		
