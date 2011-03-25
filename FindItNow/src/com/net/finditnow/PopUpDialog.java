@@ -154,7 +154,7 @@ public class PopUpDialog extends Dialog{
 	    					lv.getLayoutParams().height = 150;
 
 	    				if (category.equals("")){
-	    					Building bui = new Building(1,"Test",new int[]{2,3,4,56}, new String[]{"Flr 1","Flr 2","Flr 3","Flr 4"});
+	    					/*Building bui = new Building(1,"Test",new int[]{2,3,4,56}, new String[]{"Flr 1","Flr 2","Flr 3","Flr 4"});
 	    					String[] cateogries = new String[]{"Coffee1", "Restroom2", "Vending3"};
 	    					HashMap<String,CategoryItem> data = new HashMap<String,CategoryItem>();
 	    					
@@ -177,9 +177,11 @@ public class PopUpDialog extends Dialog{
 	    					catItem.addFloor_names("Flr 3");
 	    					catItem.addId(56);
 	    					catItem.addInfo("Milk!");
-	    					data.put("Vending3", catItem);
+	    					data.put("Vending3", catItem);*/
 	    					
-	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),bui,cateogries,data));
+	    					String[] categories = dataMap.keySet().toArray(new String[0]);
+	    					
+;	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),building,categories,dataMap));
 	    					
 	    				}
 	    				else{
