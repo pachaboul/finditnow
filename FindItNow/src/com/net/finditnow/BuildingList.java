@@ -41,11 +41,15 @@ public class BuildingList extends FINListActivity {
     	// Every item will launch the map
     	lv.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				myDialog = ProgressDialog.show(BuildingList.this, "Building Loading" , "Loading " + FINUtil.capFirstChar(((TextView) v).getText().toString()) + "...", true);
+    			String selectedBuilding = ((TextView) v).getText().toString();
+    			
+				myDialog = ProgressDialog.show(BuildingList.this, "Building Loading" , "Loading " + selectedBuilding + "...", true);
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
-    			myIntent.putExtra("building", ((TextView) v).getText().toString());
+    			
+    			myIntent.putExtra("building", selectedBuilding);
     			myIntent.putExtra("category", "");
     			myIntent.putExtra("itemName", "");
+    			
     			startActivity(myIntent);
     		}
     	});
