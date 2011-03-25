@@ -65,7 +65,6 @@ public class PopUpDialog extends Dialog{
 
 	//Local variable for displaying
 	private Building building;
-	private CategoryItem catItem;	
 	private BigDecimal distance;
 	private int walkTime;
 	private String category;
@@ -93,13 +92,13 @@ public class PopUpDialog extends Dialog{
 	 * 
 	 */
 	public PopUpDialog(Context context,
-				Building building, String category, String dbCategory, CategoryItem catItem, BigDecimal distance, int walkingTime,
+				Building building, String category, String dbCategory, HashMap<String,CategoryItem> dataMap, BigDecimal distance, int walkingTime,
 				int iconId, boolean isOutdoor)
 	{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.building = building;
-		this.catItem = catItem;
+		this.dataMap = dataMap;
 		this.distance = distance;
 		this.walkTime = walkingTime;
 		this.category = category;
@@ -191,13 +190,13 @@ public class PopUpDialog extends Dialog{
 					    			lv.setSelectedGroup(groupPosition);		
 								}
 							});
-		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),catItem,
+		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),dataMap.get(category),
 			    					iconId, category, dbCategory, building.getFloorNames(),"flrName"));
 		    				
 		    				//scrolls the view to the lowest floor which contains the category
 		    				int pos = 0;
 		    				if (!category.equals("")) {
-		    					String target = catItem.getFloor_names().get(catItem.getFloor_names().size()-1);
+		    					String target = dataMap.get(category).getFloor_names().get(dataMap.get(category).getFloor_names().size()-1);
 			    				for (int i = building.getFloorNames().length -1 ; i >= 0;i--)
 			    					if ( target.equals(building.getFloorNames()[i]))
 			    						pos = i;
@@ -223,7 +222,7 @@ public class PopUpDialog extends Dialog{
     	} else {
     		title.setText("Outdoor Location");
 
-    		String spInfo = catItem.getInfo().get(0).replace("\n", "<br />");
+    		String spInfo = dataMap.get(category).getInfo().get(0).replace("\n", "<br />");
     		
     		// If there's no special info, hide the outdoor info section
     		// (it would have added unnecessary padding)
@@ -248,7 +247,7 @@ public class PopUpDialog extends Dialog{
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
 	    		        	   final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-	    		        	   String result = DBCommunicator.update(phone_id, dbCategory, catItem.getId().get(0)+"", getContext());	    		        	   
+	    		        	   String result = DBCommunicator.update(phone_id, dbCategory, dataMap.get(category).getId().get(0)+"", getContext());	    		        	   
 	    		        	   dialog.dismiss();
 	    		               Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
 	    		           }
@@ -263,7 +262,7 @@ public class PopUpDialog extends Dialog{
 		    			builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
 		    				 public void onClick(DialogInterface dialog, int id) {
 		    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-		    				       String result = DBCommunicator.delete(phone_id, dbCategory, catItem.getId().get(0)+"", getContext());
+		    				       String result = DBCommunicator.delete(phone_id, dbCategory, dataMap.get(category).getId().get(0)+"", getContext());
 		    				       
 		    				       Intent myIntent = new Intent(getContext(), FINMap.class);
 		    				       myIntent.putExtra("result", result);
