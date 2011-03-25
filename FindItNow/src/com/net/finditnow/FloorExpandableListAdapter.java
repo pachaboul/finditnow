@@ -73,7 +73,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @return the data of the child 
 	 */
 	public Object getChild(int groupPosition, int childPosition) {
-		return catItem.getInfo().get(groupPosition);
+		return catItem.getInfo().get(catItem.getFloor_names().indexOf(parentText[groupPosition]));
 	}
 	public long getChildId(int groupPosition, int childPosition) {
 		return 0;
