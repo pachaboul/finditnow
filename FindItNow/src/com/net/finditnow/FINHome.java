@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import com.google.android.maps.GeoPoint;
-import com.net.finditnow.FINMenu.ButtonAdapter;
-
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +11,12 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.TabHost.TabSpec;
+
+import com.google.android.maps.GeoPoint;
 
 public class FINHome extends TabActivity {
 	
