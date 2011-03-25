@@ -69,6 +69,10 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		mapOverlays.add(overlay);
 		populate();
 	}
+	
+	public void removeOverlay(int index) {
+		mapOverlays.remove(index);
+	}
 
 	/**
 	 * This method creates an item at the given index

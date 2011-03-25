@@ -43,6 +43,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Region;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
@@ -72,6 +73,7 @@ public class PopUpDialog extends Dialog{
 	private int iconId;
 	private boolean isOutdoor;
 	private String[] allFlrName;
+	private int index;
 	
 	//version 3.5 added stuff.
 	private HashMap<String,CategoryItem> dataMap;
@@ -276,6 +278,13 @@ public class PopUpDialog extends Dialog{
 		    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
 		    				       String result = DBCommunicator.delete(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0)+"", getContext());
 		    		               Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+		    				       
+		    				       Intent myIntent = new Intent(getContext(), FINMap.class);
+			   					   myIntent.putExtra("category", category);
+			   					   myIntent.putExtra("building", "");
+			   					   myIntent.putExtra("itemName", "");
+			   					   
+			   					   getContext().startActivity(myIntent);
 		    				   }
 		    			});
 	    			}
