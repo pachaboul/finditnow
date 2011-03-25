@@ -72,7 +72,6 @@ public class PopUpDialog extends Dialog{
 	private String dbCategory;
 	private int iconId;
 	private boolean isOutdoor;
-	private int index;
 	
 	//version 3.5 added stuff.
 	private HashMap<String,CategoryItem> dataMap;
@@ -249,7 +248,8 @@ public class PopUpDialog extends Dialog{
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
 	    		        	   final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-	    		        	   String result = DBCommunicator.update(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0)+"", getContext());	    		        	   dialog.dismiss();
+	    		        	   String result = DBCommunicator.update(phone_id, dbCategory, catItem.getId().get(0)+"", getContext());	    		        	   
+	    		        	   dialog.dismiss();
 	    		               Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
 	    		           }
 	    		       });
@@ -263,13 +263,13 @@ public class PopUpDialog extends Dialog{
 		    			builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
 		    				 public void onClick(DialogInterface dialog, int id) {
 		    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-		    				       String result = DBCommunicator.delete(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0)+"", getContext());
+		    				       String result = DBCommunicator.delete(phone_id, dbCategory, catItem.getId().get(0)+"", getContext());
 		    				       
 		    				       Intent myIntent = new Intent(getContext(), FINMap.class);
 		    				       myIntent.putExtra("result", result);
-			   					   myIntent.putExtra("category", category);
+			   					   myIntent.putExtra("category", dbCategory);
 			   					   myIntent.putExtra("building", "");
-			   					   myIntent.putExtra("itemName", "");
+			   					   myIntent.putExtra("itemName", category);
 			   					   
 			   					   getContext().startActivity(myIntent);
 		    				   }
