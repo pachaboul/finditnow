@@ -151,7 +151,9 @@ public class DBCommunicator {
             httpResponse = httpClient.execute(httpGet);  
     		data = EntityUtils.toString(httpResponse.getEntity());
         } catch (Exception e) {
-            Log.e("log_tag", e.getMessage());
+        	if (e != null) {
+        		Log.e("log_tag", e.getMessage());
+        	}
             return context.getString(R.string.timeout);
         }
 
@@ -175,7 +177,9 @@ public class DBCommunicator {
 			HttpEntity entity = httpResponse.getEntity();
 			iStream = entity.getContent();
 		} catch(Exception e) {
-			Log.e("log_tag", "Error in http connection " + e.toString());
+			if (e != null) {
+				Log.e("log_tag", "Error in http connection " + e.toString());
+			}
 		}
 
 		// Convert server's response to a String
@@ -190,7 +194,9 @@ public class DBCommunicator {
 
 			data = sb.toString();
 		} catch(Exception e) {
-			Log.e("log_tag", "Error converting result " + e.toString());
+			if (e != null) {
+				Log.e("log_tag", "Error converting result " + e.toString());
+			}
 			return context.getString(R.string.timeout);
 		}
 		
