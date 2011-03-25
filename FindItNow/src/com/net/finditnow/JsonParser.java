@@ -234,10 +234,10 @@ public class JsonParser {
 						
 						//grab the category and its corresponding CategoryItem if it is in the map
 						//else make a new one
-						String cat = ob.get(LOCATION_NAMES[5]).getAsString();
+						String cat = FINUtil.displayCategory(ob.get(LOCATION_NAMES[5]).getAsString());
 						if (ob.has(LOCATION_NAMES[6]))
 						{
-							String item = ob.get(LOCATION_NAMES[6]).getAsString();
+							String item = FINUtil.displayItemName(ob.get(LOCATION_NAMES[6]).getAsString());
 							//the floor id associated with this point
 							cat = (item.equals("")? cat:item);
 						}
