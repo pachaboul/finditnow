@@ -97,7 +97,7 @@ public class FINAddOutdoor extends FINMapActivity {
 			        	String bb = supplyTypes[0]? "bb" : "";
 						String sc = supplyTypes[1]? "sc" : "";
 						String pr = supplyTypes[2]? "print" : "";
-						String item = bb.length() > 0? "blue_book" : sc.length() > 0? "scantron" : pr.length() > 0? "printing" : "";
+						String item = bb.length() > 0? "Blue Books" : sc.length() > 0? "Scantrons" : pr.length() > 0? "Printing" : "";
 						
 						//Send new item to database
 						final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
