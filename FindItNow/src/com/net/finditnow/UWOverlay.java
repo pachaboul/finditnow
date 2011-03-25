@@ -24,7 +24,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	private Context context;
 	private String category;
 	private String itemName;
-	private HashMap<GeoPoint, CategoryItem> items;
+	private HashMap<GeoPoint,HashMap<String,CategoryItem>> items;
 
 	/**
 	 * A constructor of the UWOverlay class
@@ -53,7 +53,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	 * @param defaultMarker The default icon to use on the overlay
 	 * @param context The context in which the overlay is created
 	 */
-	public UWOverlay(Drawable defaultMarker, Context context, String category, String itemName, HashMap<GeoPoint, CategoryItem> items) {
+	public UWOverlay(Drawable defaultMarker, Context context, String category, String itemName, HashMap<GeoPoint,HashMap<String,CategoryItem>> items) {
 		super(boundCenterBottom(defaultMarker));
 		mapOverlays = new ArrayList<OverlayItem>();
 		this.context = context;
@@ -102,7 +102,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		if (category.equals("school_supplies")) {
 			item = itemName;
 		}
-		CategoryItem catItem = items.get(itemLocation);
+		CategoryItem catItem = items.get(itemLocation).get(category);
 
 		// Assume it is an outdoor location, but if it is not, grab the building name
 		Building building = FINHome.getBuilding(itemLocation); 

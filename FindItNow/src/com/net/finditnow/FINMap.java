@@ -51,7 +51,7 @@ public class FINMap extends FINMapActivity {
 	// DESIGN PATTERN: Encapsulation.  Location is sensitive information, and thus private
 	// 				   But can be accessed via getLocation()
 	private static GeoPoint location;    
-	private HashMap<GeoPoint, CategoryItem> geoPointItem;
+	private HashMap<GeoPoint,HashMap<String,CategoryItem>> geoPointItem;
 
 	// A constant representing the default location of the user
 	// Change this the coordinates of another campus if desired (defaults to UW Seattle)
@@ -94,7 +94,7 @@ public class FINMap extends FINMapActivity {
 		if (listOfLocations.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
 		} else {
-			geoPointItem = JsonParser.parseCategoryJson(listOfLocations);
+			geoPointItem = JsonParser.parseCategoryJson(listOfLocations,category);
 
 			// Create the map and the map view and detect user location
 			createMap();
@@ -179,14 +179,6 @@ public class FINMap extends FINMapActivity {
 	 */
 	public String getCategory() {
 		return category;
-	}
-	/**
-	 * This method returns an item located at the point p
-	 * @param p A GeoPoint representing the location to retrieve the category item
-	 * @return A CategoryItem object containing the list of locations
-	 */
-	public CategoryItem getCategoryItem(GeoPoint p){
-		return geoPointItem.get(p);
 	}
 
 	/**
@@ -301,12 +293,6 @@ public class FINMap extends FINMapActivity {
 		if (!building.equals("")) {
 			GeoPoint point = FINHome.getGeoPointFromBuilding(building);
 
-			CategoryItem item = new CategoryItem();
-			for (String flr : FINHome.getBuilding(point).getFloorNames()) {
-				item.addFloor_names(flr);
-			}
-
-			geoPointItem.put(point, item);
 			mapController.animateTo(point);
 		}
 
