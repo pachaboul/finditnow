@@ -11,10 +11,6 @@
  */
 package com.net.finditnow;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -29,8 +25,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.google.android.maps.GeoPoint;
 
 public class FINMenu extends FINActivity {
 

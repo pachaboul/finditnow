@@ -1,14 +1,10 @@
 package com.net.finditnow;
 
-import java.util.Collections;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.view.MotionEvent;
-
-import com.google.android.maps.GeoPoint;
 
 public class FINSplash extends Activity {
 	
