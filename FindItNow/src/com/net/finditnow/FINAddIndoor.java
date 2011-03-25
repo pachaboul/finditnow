@@ -86,10 +86,6 @@ public class FINAddIndoor extends FINActivity {
 			String result = DBCommunicator.create(phone_id, FINUtil
 					.deCapFirstChar(selectedCategory), map
 					.get(selectedFloor)+"", special_info, "", "", bb, sc, pr, getBaseContext());
-			
-        	if (result.equals(getString(R.string.not_logged_in))) {
-        		FINHome.setLoggedIn(false);
-        	}
        	
         	// Load the map with the new item
 	    	Intent myIntent = new Intent(getBaseContext(), FINMap.class);

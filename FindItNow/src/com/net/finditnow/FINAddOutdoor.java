@@ -107,9 +107,6 @@ public class FINAddOutdoor extends FINMapActivity {
 						final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 			        	
 						String result = DBCommunicator.create(phone_id, FINUtil.deCapFirstChar(selectedCategory), 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"",  bb,  sc,  pr, getBaseContext());
-			        	if (result.equals(getString(R.string.not_logged_in))) {
-			        		FINHome.setLoggedIn(false);
-			        	}
 			        	
 			        	// Load the map with the new item
 				    	Intent myIntent = new Intent(getBaseContext(), FINMap.class);

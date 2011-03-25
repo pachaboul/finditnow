@@ -193,6 +193,10 @@ public class DBCommunicator {
 			Log.e("log_tag", "Error converting result " + e.toString());
 			return context.getString(R.string.timeout);
 		}
+		
+		if (data.trim().equals(context.getString(R.string.not_logged_in))) {
+			FINHome.setLoggedIn(false);
+		}
 
 		return data.trim();
 	}
