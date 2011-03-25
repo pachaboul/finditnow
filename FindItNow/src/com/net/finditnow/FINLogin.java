@@ -1,6 +1,5 @@
 package com.net.finditnow;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.view.View;
@@ -46,17 +45,15 @@ public class FINLogin extends FINActivity {
 				if (result.equals(getString(R.string.timeout))) {
 					conCheck.connectionError();
 				} else {
+					
+					Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
 
 					if (result.equals(getString(R.string.login_success)) || result.contains(getString(R.string.login_already))) {
 						FINHome.setLoggedIn(true);
 						
-						Intent myIntent = new Intent(getBaseContext(), FINAddNew.class);
-						myIntent.putExtra("result", result);
-						
-						startActivity(myIntent);
-					} else {
-						Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-					}
+						setResult(RESULT_OK);
+						finish();
+					} 
 				}
 			}
 		};

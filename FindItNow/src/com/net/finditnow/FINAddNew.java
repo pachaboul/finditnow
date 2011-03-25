@@ -31,32 +31,57 @@ public class FINAddNew extends FINActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		// Restore the saved instance and generate the primary (main) layout
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.addnew_popup);
-
-		// Set the text in the titlebar
-		setTitle(getString(R.string.app_name) + " > Add New Item");
-
-		//Set up interface for indoor/outdoor and category selection screen
-		geopointConfirm = findViewById(R.id.addmap_confirm);
-
-		//Set up radio buttons for indoor/outdoor
-		radioSelection = (RadioButton) findViewById(R.id.addnew_in);
-		final RadioButton radio_in = (RadioButton) findViewById(R.id.addnew_in);
-		final RadioButton radio_out = (RadioButton) findViewById(R.id.addnew_out);
-		radio_in.setOnClickListener(radio_listener);
-		radio_out.setOnClickListener(radio_listener);
-
-		//Set up the category spinner
-		Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
-		ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINUtil.capFirstChar(FINHome.getCategoriesList()));
-		cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		cSpinner.setAdapter(cAdapter);
-		cSpinner.setOnItemSelectedListener(cspinner_listener);
-		selectedCategory = FINHome.getCategoriesList().get(0);
-
-		//Set up "next" button for indoor/outdoor and category selection screen
-		final Button next = (Button) findViewById(R.id.addnew_next);
-		next.setOnClickListener(next_listener);
+		
+		if (!FINHome.isLoggedIn()) {
+			Intent myIntent = new Intent(this, FINLogin.class);
+			myIntent.putExtra("result", getString(R.string.must_login));
+			
+			startActivityForResult(myIntent, 0);
+		} else {
+		
+			setContentView(R.layout.addnew_popup);
+	
+			// Set the text in the titlebar
+			setTitle(getString(R.string.app_name) + " > Add New Item");
+	
+			//Set up interface for indoor/outdoor and category selection screen
+			geopointConfirm = findViewById(R.id.addmap_confirm);
+	
+			//Set up radio buttons for indoor/outdoor
+			radioSelection = (RadioButton) findViewById(R.id.addnew_in);
+			final RadioButton radio_in = (RadioButton) findViewById(R.id.addnew_in);
+			final RadioButton radio_out = (RadioButton) findViewById(R.id.addnew_out);
+			radio_in.setOnClickListener(radio_listener);
+			radio_out.setOnClickListener(radio_listener);
+	
+			//Set up the category spinner
+			Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
+			ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINUtil.capFirstChar(FINHome.getCategoriesList()));
+			cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			cSpinner.setAdapter(cAdapter);
+			cSpinner.setOnItemSelectedListener(cspinner_listener);
+			selectedCategory = FINHome.getCategoriesList().get(0);
+	
+			//Set up "next" button for indoor/outdoor and category selection screen
+			final Button next = (Button) findViewById(R.id.addnew_next);
+			next.setOnClickListener(next_listener);
+		}
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {		
+		if (requestCode == 0) {		
+			if (resultCode == RESULT_OK) {		
+				Intent intent = getIntent();		
+				overridePendingTransition(0, 0);		
+				intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);		
+				finish();		
+		
+				overridePendingTransition(0, 0);		
+				startActivity(intent);		
+			} else {		
+				finish();		
+			}		
+		}		
 	}
 
 	//Listener for spinner, called when item in spinner is selected

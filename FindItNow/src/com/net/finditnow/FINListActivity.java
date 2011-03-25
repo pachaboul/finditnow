@@ -62,14 +62,7 @@ public class FINListActivity extends ListActivity {
     		
     		return true;
 		case R.id.add_new_button:
-			if (FINHome.isLoggedIn()) {
-				startActivity(new Intent(this, FINAddNew.class));
-			} else {
-				Intent myIntent = new Intent(this, FINLogin.class);
-				myIntent.putExtra("result", getString(R.string.must_login));
-				
-				startActivity(myIntent);
-			}
+			startActivity(new Intent(this, FINAddNew.class));
 			return true;
 		case R.id.settings_button:
 			startActivity(new Intent(this, FINSettings.class));
