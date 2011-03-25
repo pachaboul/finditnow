@@ -18,6 +18,10 @@ public class FINActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(getString(R.string.app_name));
+		
+	    if (getIntent().hasExtra("result")) {
+	    	Toast.makeText(getBaseContext(), getIntent().getExtras().getString("result"), Toast.LENGTH_LONG).show();
+	    }
 	}
 	
 	/**

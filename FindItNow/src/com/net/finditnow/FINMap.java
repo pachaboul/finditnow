@@ -12,6 +12,7 @@ import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ public class FINMap extends FINMapActivity {
 	// A constant representing the default location of the user
 	// Change this the coordinates of another campus if desired (defaults to UW Seattle)
 	public static final GeoPoint DEFAULT_LOCATION = new GeoPoint(47654799,-122307776);
+	public static final String PREFS_NAME = "MyPrefsFile";
 
 	/** 
 	 * Called when the activity is first created.
@@ -106,6 +108,17 @@ public class FINMap extends FINMapActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
+		
+		// We need an Editor object to make preference changes.
+	    // All objects are from android.context.Context
+	    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+	    SharedPreferences.Editor editor = settings.edit();
+	    editor.putInt("centerLat", mapView.getMapCenter().getLatitudeE6());
+	    editor.putInt("centerLon", mapView.getMapCenter().getLongitudeE6());
+	    editor.putInt("zoomLevel", mapView.getZoomLevel());
+
+	    // Commit the edits!
+	    editor.commit();
 
 		locOverlay.disableMyLocation();
 
@@ -204,11 +217,25 @@ public class FINMap extends FINMapActivity {
 	 * This method creates the map and displays the overlays on top of it 
 	 */
 	private void createMap() {
+		
+		// Restore preferences
+	    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+	    int latitude = settings.getInt("centerLat", DEFAULT_LOCATION.getLatitudeE6());
+	    int longitude = settings.getInt("centerLon", DEFAULT_LOCATION.getLongitudeE6());
+	    int zoomLevel = settings.getInt("zoomLevel", 18);
 
 		// Initialize our MapView and MapController
 		mapView = (MapView) findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
+		
 		mapController = mapView.getController();
+		mapController.setZoom(zoomLevel);
+		mapController.setCenter(new GeoPoint(latitude, longitude));
+		
+		Bundle extras = getIntent().getExtras();
+		if (getIntent().hasExtra("centerLat") && getIntent().hasExtra("centerLon")) {
+			mapController.animateTo(new GeoPoint(extras.getInt("centerLat"), extras.getInt("centerLon")));
+		}
 
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
@@ -245,14 +272,20 @@ public class FINMap extends FINMapActivity {
 
 			// Run this method with a fix on location has been received
 			public void run() { 
+				// Restore preferences
+			    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+			    int latitude = settings.getInt("centerLat", DEFAULT_LOCATION.getLatitudeE6());
+			    int longitude = settings.getInt("centerLon", DEFAULT_LOCATION.getLongitudeE6());
+			    
 				// Only update to new location if user has not moved the map TODO
-				//if (mapView.getMapCenter().equals(FINSplash.mapCenter))
-				//	mapController.animateTo(locOverlay.getMyLocation());
+				if (mapView.getMapCenter().equals(new GeoPoint(latitude, longitude))) {
+					mapController.animateTo(locOverlay.getMyLocation());
+				}
 			}
 		};
 
 		// In this case, we have cleanly started the app and should fix on user location
-		if (building.equals("")) {
+		if (building.equals("") && !(getIntent().hasExtra("centerLat") && getIntent().hasExtra("centerLon"))) {
 			Toast.makeText(this, "Getting a fix on your location...", Toast.LENGTH_SHORT).show();
 			locOverlay.runOnFirstFix(runnable);
 		}

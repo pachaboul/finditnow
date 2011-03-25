@@ -52,10 +52,6 @@ public class FINHome extends TabActivity {
 			}
 	    }
 	    
-	    if (getIntent().hasExtra("result")) {
-	    	Toast.makeText(getBaseContext(), extras.getString("result"), Toast.LENGTH_LONG).show();
-	    }
-	    
 	    Resources res = getResources();
 	    TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
 	    tabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);

@@ -262,8 +262,8 @@ public class PopUpDialog extends Dialog{
 	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 	    		           public void onClick(DialogInterface dialog, int id) {
 	    		        	   final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-	    		        	   String response = DBCommunicator.update(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0)+"", getContext());	    		        	   dialog.dismiss();
-	    		               Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+	    		        	   String result = DBCommunicator.update(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0)+"", getContext());	    		        	   dialog.dismiss();
+	    		               Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
 	    		           }
 	    		       });
 	    			//cancels the action if the user didn't mean to do it
@@ -277,9 +277,9 @@ public class PopUpDialog extends Dialog{
 		    				 public void onClick(DialogInterface dialog, int id) {
 		    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
 		    				       String result = DBCommunicator.delete(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(0)+"", getContext());
-		    		               Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
 		    				       
 		    				       Intent myIntent = new Intent(getContext(), FINMap.class);
+		    				       myIntent.putExtra("result", result);
 			   					   myIntent.putExtra("category", category);
 			   					   myIntent.putExtra("building", "");
 			   					   myIntent.putExtra("itemName", "");
