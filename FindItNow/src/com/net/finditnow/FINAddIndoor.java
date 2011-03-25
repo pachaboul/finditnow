@@ -91,9 +91,14 @@ public class FINAddIndoor extends FINActivity {
         		FINHome.setLoggedIn(false);
         	}
        	
-        	//Return to categories screen
-	    	Intent myIntent = new Intent(getBaseContext(), FINHome.class);
+        	// Load the map with the new item
+	    	Intent myIntent = new Intent(getBaseContext(), FINMap.class);
 	    	myIntent.putExtra("result", result);
+	    	myIntent.putExtra("category", FINUtil.deCapFirstChar(selectedCategory));
+			myIntent.putExtra("building", "");
+			myIntent.putExtra("itemName", "");
+			myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLatitudeE6());
+			myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLongitudeE6());
 	    	
             startActivity(myIntent);
 		}

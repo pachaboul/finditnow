@@ -2,6 +2,7 @@ package com.net.finditnow;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,6 +10,19 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class FINListActivity extends ListActivity {
+	
+	/** 
+	 * Called when the activity is first created.
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setTitle(getString(R.string.app_name));
+		
+	    if (getIntent().hasExtra("result")) {
+	    	Toast.makeText(getBaseContext(), getIntent().getExtras().getString("result"), Toast.LENGTH_LONG).show();
+	    }
+	}
 
 	/**
 	 * Create the Android options menu

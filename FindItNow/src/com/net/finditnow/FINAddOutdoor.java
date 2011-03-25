@@ -111,9 +111,14 @@ public class FINAddOutdoor extends FINMapActivity {
 			        		FINHome.setLoggedIn(false);
 			        	}
 			        	
-			        	//Return to categories screen
-				    	Intent myIntent = new Intent(getBaseContext(), FINHome.class);
+			        	// Load the map with the new item
+				    	Intent myIntent = new Intent(getBaseContext(), FINMap.class);
 				    	myIntent.putExtra("result", result);
+				    	myIntent.putExtra("category", FINUtil.deCapFirstChar(selectedCategory));
+						myIntent.putExtra("building", "");
+						myIntent.putExtra("itemName", "");
+						myIntent.putExtra("centerLat", tappedPoint.getLatitudeE6());
+						myIntent.putExtra("centerLon", tappedPoint.getLongitudeE6());
 				    	
 			            startActivity(myIntent);
 			        }
