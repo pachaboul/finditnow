@@ -35,7 +35,8 @@ public class JsonParser {
 		"floor_names",
 		"info",
 		"id",
-		"cat"};
+		"cat",
+		"item"};
 	private static final String[] BUILDING_NAMES = { "bid",
 		"lat",
 		"long",
@@ -234,6 +235,12 @@ public class JsonParser {
 						//grab the category and its corresponding CategoryItem if it is in the map
 						//else make a new one
 						String cat = FINUtil.capFirstChar(ob.get(LOCATION_NAMES[5]).getAsString());
+						if (ob.has(LOCATION_NAMES[6]))
+						{
+							String item = ob.get(LOCATION_NAMES[6]).getAsString();
+							//the floor id associated with this point
+							cat = (item.equals("")? cat:cat + ": "+FINUtil.capFirstChar(item));
+						}
 						CategoryItem item;
 						if (oneMap.get(cat) != null){
 							item = oneMap.get(cat);
