@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,14 +106,20 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		int iconId = 0;
 		String[] parentText = { building.getFloorNames()[groupPosition]};
 		String category = categoryOf(parentText[0])[childPosition];
-		String dbCategory = category;
+		String dbCategory = FINUtil.deCapFirstChar(FINUtil.depluralize(category));
+		String item = "";
+		if (dbCategory.equals("blue_book") || dbCategory.equals("scantron") || dbCategory.equals("printing")) {
+			item = dbCategory;
+			dbCategory = "school_supplies";
+		}
+
 		String parentMode = "categoryView";
 		relative.getLayoutParams().height= HEIGHT;
 		
 		lv.setOnGroupExpandListener(new DoubleOnExpandListener(relative));
 		lv.setOnGroupCollapseListener(new DoubleOnCollapseListener(relative));
 		lv.setAdapter(new FloorExpandableListAdapter( context, dataMap.get(category),
-				 iconId,  category,  dbCategory,  parentText,  parentMode) );
+				 iconId,  category,  dbCategory, item,  parentText,  parentMode) );
 
 		return relative;
 	}

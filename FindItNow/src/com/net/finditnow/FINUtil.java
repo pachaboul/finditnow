@@ -78,7 +78,7 @@ public class FINUtil {
 	 * @return The noun in singular if num is equal to 1; otherwise, appends an "s" to make it plural.
 	 */
 	public static String pluralize(String str, int num) {
-		if (num == 1 || str.toLowerCase().equals("printing")) {
+		if (num == 1 || str.toLowerCase().endsWith("printing")) {
 			return str;
 		} else {
 			return str + "s";

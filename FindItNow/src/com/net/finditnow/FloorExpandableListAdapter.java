@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.provider.Settings.Secure;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	private int iconId;				//id of the category's icon
 	private String category;		//category
 	private String dbCategory;
+	private String item;
 	private String[] parentText;
 	private String parentMode;
 
@@ -51,13 +53,14 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @param category - the category currently displaying
 	 */
 	public FloorExpandableListAdapter(Context context,CategoryItem catItem,
-			int iconId, String category, String dbCategory, String[] parentText, String parentMode) {
+			int iconId, String category, String dbCategory, String item, String[] parentText, String parentMode) {
 		super();
 		this.context = context;
 		this.catItem = catItem;
 		this.iconId = iconId;
 		this.category = category;
 		this.dbCategory = dbCategory;
+		this.item = item;
 		this.parentText = parentText;
 		this.parentMode = parentMode;
 	}
@@ -132,7 +135,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 					builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-							String response = DBCommunicator.update(phone_id, FINUtil.deCapFirstChar(dbCategory), catItem.getId().get(pos)+"", context);							dialog.dismiss();
+							String response = DBCommunicator.update(phone_id, dbCategory, catItem.getId().get(pos)+"", context);							
+							dialog.dismiss();
 							Toast.makeText(context, response, Toast.LENGTH_LONG).show();
 						}
 					});

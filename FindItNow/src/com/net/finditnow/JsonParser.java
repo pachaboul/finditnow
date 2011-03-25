@@ -239,7 +239,7 @@ public class JsonParser {
 						{
 							String item = ob.get(LOCATION_NAMES[6]).getAsString();
 							//the floor id associated with this point
-							cat = (item.equals("")? cat:cat + ": "+FINUtil.capFirstChar(item));
+							cat = (item.equals("")? cat:FINUtil.capFirstChar(FINUtil.pluralize(item, 2)));
 						}
 						CategoryItem item;
 						if (oneMap.get(cat) != null){
