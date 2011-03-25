@@ -64,7 +64,7 @@ import android.widget.Toast;
 public class PopUpDialog extends Dialog{
 
 	//Local variable for displaying
-	private String buildName;
+	private Building building;
 	private CategoryItem catItem;	
 	private BigDecimal distance;
 	private int walkTime;
@@ -72,7 +72,6 @@ public class PopUpDialog extends Dialog{
 	private String dbCategory;
 	private int iconId;
 	private boolean isOutdoor;
-	private String[] allFlrName;
 	private int index;
 	
 	//version 3.5 added stuff.
@@ -95,12 +94,12 @@ public class PopUpDialog extends Dialog{
 	 * 
 	 */
 	public PopUpDialog(Context context,
-				String buildName, String category, String dbCategory, CategoryItem catItem, BigDecimal distance, int walkingTime,
-				int iconId, boolean isOutdoor, String[] allFlrName)
+				Building building, String category, String dbCategory, CategoryItem catItem, BigDecimal distance, int walkingTime,
+				int iconId, boolean isOutdoor)
 	{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.buildName = buildName;
+		this.building = building;
 		this.catItem = catItem;
 		this.distance = distance;
 		this.walkTime = walkingTime;
@@ -108,23 +107,8 @@ public class PopUpDialog extends Dialog{
 		this.dbCategory = dbCategory;
 		this.iconId = iconId;
 		this.isOutdoor = isOutdoor;
-		this.allFlrName = allFlrName;
 	}
-	public PopUpDialog(Context context, HashMap<String,CategoryItem> dataMap,
-			String buildName, String category, BigDecimal distance, int walkingTime,
-			 String[] allFlrName){
-		super(context);
-		this.buildName = buildName;
-		this.catItem = null;
-		this.distance = distance;
-		this.walkTime = walkingTime;
-		this.category = category;
-		this.dbCategory = "";
-		this.iconId = -1;
-		this.isOutdoor = false;
-		this.allFlrName = allFlrName;
-		this.dataMap = dataMap;
-	}
+
 	
 	/**
 	 * called when PopUpDialog is first created
@@ -141,7 +125,6 @@ public class PopUpDialog extends Dialog{
 
 		//sets the title of this dialog
     	TextView title = (TextView) findViewById(R.id.dialogTitle);
-		title.setText(buildName);
 
 		//the button that 1) displays the list of floor
 		//            or  2) unconfirms an outdoor location
@@ -152,6 +135,8 @@ public class PopUpDialog extends Dialog{
     	TextView outDoor = (TextView) findViewById(R.id.outDoorText);
     	
     	if ( !isOutdoor) {
+    		title.setText(building.getName());
+
     		//This location is indoor
     		//the button will show/hide the floor list when clicked on
 	    	butt.setOnClickListener( new View.OnClickListener()
@@ -167,7 +152,7 @@ public class PopUpDialog extends Dialog{
 	    			{
 	    				toggle.setText("Hide Floors");
 	    				lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-	    				if (allFlrName.length > 3)
+	    				if (building.getFloorNames().length > 3)
 	    					lv.getLayoutParams().height = 150;
 
 	    				if (category.equals("")){
@@ -208,14 +193,14 @@ public class PopUpDialog extends Dialog{
 								}
 							});
 		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),catItem,
-			    					iconId, category, dbCategory, allFlrName,"flrName"));
+			    					iconId, category, dbCategory, building.getFloorNames(),"flrName"));
 		    				
 		    				//scrolls the view to the lowest floor which contains the category
 		    				int pos = 0;
 		    				if (!category.equals("")) {
 		    					String target = catItem.getFloor_names().get(catItem.getFloor_names().size()-1);
-			    				for (int i = allFlrName.length -1 ; i >= 0;i--)
-			    					if ( target.equals(allFlrName[i]))
+			    				for (int i = building.getFloorNames().length -1 ; i >= 0;i--)
+			    					if ( target.equals(building.getFloorNames()[i]))
 			    						pos = i;
 			    				lv.setSelectedGroup(pos);
 		    				}
@@ -237,6 +222,8 @@ public class PopUpDialog extends Dialog{
 	    	outDoor.setVisibility(View.INVISIBLE);
 	    	outDoor.getLayoutParams().height = 0;
     	} else {
+    		title.setText("Outdoor Location");
+
     		String spInfo = catItem.getInfo().get(0).replace("\n", "<br />");
     		
     		// If there's no special info, hide the outdoor info section
