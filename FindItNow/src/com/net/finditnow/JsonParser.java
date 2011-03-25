@@ -102,6 +102,24 @@ public class JsonParser {
 		return result;
 	}
 	
+	public HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json,String category){
+		
+		if (category.equals(""))
+			return parseAllCategoryJson(json);
+		else{
+			HashMap<GeoPoint,HashMap<String,CategoryItem>> result = new HashMap<GeoPoint,HashMap<String,CategoryItem>>();
+			
+			HashMap<GeoPoint, CategoryItem> map = parseCategoryJson(json);
+			
+			for (GeoPoint key:map.keySet()){
+				HashMap<String,CategoryItem> oneMap = new HashMap<String,CategoryItem>();
+				
+				oneMap.put(category, map.get(key));
+				result.put(key,oneMap);
+			}
+			return result;
+		}
+	}
 	/**
 	 * parses a Json Array into a map of locations and its corresponding CategoryItem for one category
 	 * 
