@@ -150,6 +150,7 @@ public final class R {
         public static final int login_already=0x7f040010;
         public static final int login_success=0x7f040011;
         public static final int logout=0x7f04000f;
+        public static final int must_login=0x7f040014;
         public static final int my_location=0x7f040001;
         public static final int not_logged_in=0x7f040013;
         public static final int settings=0x7f04000c;
