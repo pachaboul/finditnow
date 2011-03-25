@@ -16,6 +16,9 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -241,6 +244,27 @@ public class FINMap extends FINMapActivity {
 		mapOverlays = mapView.getOverlays();
 		drawable = this.getResources().getDrawable(FINHome.getIcon(getCategory()));
 		itemizedOverlay = new UWOverlay(drawable, this, category, itemName, geoPointItem);
+		
+		// Setup the ImageButtons
+		ImageButton myLocation = (ImageButton) findViewById(R.id.my_location_button);
+		ImageButton defaultLocation = (ImageButton) findViewById(R.id.default_location_button);
+		myLocation.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (location != null) {
+					mapController.animateTo(location);
+					Toast.makeText(getBaseContext(), "Centering on your location...", Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getBaseContext(), "Error: Could not detect your location", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		
+		defaultLocation.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				mapController.animateTo(DEFAULT_LOCATION);
+				Toast.makeText(getBaseContext(), "Centering on the default location...", Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	/**
@@ -266,29 +290,6 @@ public class FINMap extends FINMapActivity {
 				location = new GeoPoint((int)(loc.getLatitude()*1E6), (int)(loc.getLongitude()*1E6));
 			}
 		};
-
-		// Define an Android Runnable
-		Runnable runnable = new Runnable() { 
-
-			// Run this method with a fix on location has been received
-			public void run() { 
-				// Restore preferences
-			    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-			    int latitude = settings.getInt("centerLat", DEFAULT_LOCATION.getLatitudeE6());
-			    int longitude = settings.getInt("centerLon", DEFAULT_LOCATION.getLongitudeE6());
-			    
-				// Only update to new location if user has not moved the map TODO
-				if (mapView.getMapCenter().equals(new GeoPoint(latitude, longitude))) {
-					mapController.animateTo(locOverlay.getMyLocation());
-				}
-			}
-		};
-
-		// In this case, we have cleanly started the app and should fix on user location
-		if (building.equals("") && !(getIntent().hasExtra("centerLat") && getIntent().hasExtra("centerLon"))) {
-			Toast.makeText(this, "Getting a fix on your location...", Toast.LENGTH_SHORT).show();
-			locOverlay.runOnFirstFix(runnable);
-		}
 	}
 
 	/**
