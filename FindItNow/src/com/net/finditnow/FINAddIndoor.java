@@ -81,14 +81,13 @@ public class FINAddIndoor extends FINActivity {
 			
 			//Send new item to database
 			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-			String result = DBCommunicator.create(phone_id, FINUtil
-					.deCapFirstChar(selectedCategory), map
+			String result = DBCommunicator.create(phone_id, selectedCategory, map
 					.get(selectedFloor)+"", special_info, "", "", bb, sc, pr, getBaseContext());
        	
         	// Load the map with the new item
 	    	Intent myIntent = new Intent(getBaseContext(), FINMap.class);
 	    	myIntent.putExtra("result", result);
-	    	myIntent.putExtra("category", FINUtil.deCapFirstChar(selectedCategory));
+	    	myIntent.putExtra("category", selectedCategory);
 			myIntent.putExtra("building", "");
 			myIntent.putExtra("itemName", item);
 			myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLatitudeE6());

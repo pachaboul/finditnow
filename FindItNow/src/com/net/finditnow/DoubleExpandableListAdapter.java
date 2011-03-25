@@ -106,7 +106,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		int iconId = 0;
 		String[] parentText = { building.getFloorNames()[groupPosition]};
 		String category = categoryOf(parentText[0])[childPosition];
-		String dbCategory = FINUtil.deCapFirstChar(FINUtil.depluralize(category));
+		String dbCategory = category;
 		String item = "";
 		if (dbCategory.equals("blue_book") || dbCategory.equals("scantron") || dbCategory.equals("printing")) {
 			item = dbCategory;

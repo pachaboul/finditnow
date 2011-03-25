@@ -288,7 +288,7 @@ public class PopUpDialog extends Dialog{
  
     	//Converts the first letter of category to upper case and
     	//adds the name of the service provided if it exist
-    	String specialInfo = "<b>" + FINUtil.capFirstChar(category) + "</b>";
+    	String specialInfo = "<b>" + category + "</b>";
 
     	//sets the text into the textView for category name
     	cate.setText(Html.fromHtml(specialInfo));
