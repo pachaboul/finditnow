@@ -48,6 +48,7 @@ import android.graphics.Region;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.text.Html;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -267,7 +268,7 @@ public class PopUpDialog extends Dialog{
 		    				 public void onClick(DialogInterface dialog, int id) {
 		    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
 		    				       String result = DBCommunicator.delete(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());
-		    				       
+
 		    				       Intent myIntent = new Intent(getContext(), FINMap.class);
 		    				       myIntent.putExtra("result", result);
 			   					   myIntent.putExtra("category", dbCategory);
