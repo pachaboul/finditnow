@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -84,6 +85,7 @@ public class FINMap extends FINMapActivity {
 
 		// Retrieve locations from the database and parse them
 		String listOfLocations;
+		Log.v("building", building);
 		if (building.equals("")) {
 			listOfLocations = DBCommunicator.getLocations(category, itemName, DEFAULT_LOCATION.getLatitudeE6()+"", DEFAULT_LOCATION.getLongitudeE6()+"", this);
 		} else {
@@ -94,7 +96,7 @@ public class FINMap extends FINMapActivity {
 		if (listOfLocations.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
 		} else {
-			geoPointItem = JsonParser.parseCategoryJson(listOfLocations,category);
+			geoPointItem = JsonParser.parseCategoryJson(listOfLocations, category);
 
 			// Create the map and the map view and detect user location
 			createMap();
@@ -292,20 +294,19 @@ public class FINMap extends FINMapActivity {
 		// If the category is buildings, then we only put the single point on the map
 		if (!building.equals("")) {
 			GeoPoint point = FINHome.getGeoPointFromBuilding(building);
-
 			mapController.animateTo(point);
-		}
-
-		// Loop over the locations that we have retrieved and add them
-		// DESIGN PATTERN: Iteration.  We iterate over the set of GeoPoints corresponding to items
-		//				   We designed geoPointItem to allow for simple iteration for this purpose
-		for (GeoPoint point : geoPointItem.keySet()) {
-			OverlayItem overlayItem = new OverlayItem(point, "", "");
-			itemizedOverlay.addOverlay(overlayItem);
+			itemizedOverlay.addOverlay(new OverlayItem(point, "", ""));
+		
+		// Otherwise, we must loop over all the overlays
+		} else {
+			for (GeoPoint point : geoPointItem.keySet()) {
+				OverlayItem overlayItem = new OverlayItem(point, "", "");
+				itemizedOverlay.addOverlay(overlayItem);
+			}
 		}
 
 		// If we have retrieved items to display, add them to the overlay list
-		if (!geoPointItem.keySet().isEmpty()) {
+		if (itemizedOverlay.size() > 0) {
 			mapOverlays.add(itemizedOverlay);
 		}
 	}
