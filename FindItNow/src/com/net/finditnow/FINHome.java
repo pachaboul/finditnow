@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,12 +61,12 @@ public class FINHome extends TabActivity {
 
 			addTab(new TextView(this),
 					"Categories",
-					res.getIdentifier("@android:drawable/ic_menu_agenda", null, getPackageName()),
+					res.getIdentifier("@drawable/categories_tab_selector", null, getPackageName()),
 					tabHost,
 					new Intent().setClass(this, FINMenu.class));
 			addTab(new TextView(this),
 					"Buildings",
-					res.getIdentifier("@android:drawable/ic_dialog_dialer", null, getPackageName()),
+					res.getIdentifier("@drawable/buildings_tab_selector", null, getPackageName()),
 					tabHost,
 					new Intent().setClass(this, BuildingList.class));
 		}
@@ -80,11 +81,9 @@ public class FINHome extends TabActivity {
 	private static View createTabView(final Context context, final String text, Integer imageID) {
 		View view = LayoutInflater.from(context).inflate(R.layout.tab_background, null);
 
-		// Set up icon -- to be implemented later
-		/*
+		// Set up icon 
 		ImageView iv = (ImageView) view.findViewById(R.id.tabIcon);
 		iv.setImageResource(imageID);
-		 */
 
 		// Set up label
 		TextView tv = (TextView) view.findViewById(R.id.tabLabel);
