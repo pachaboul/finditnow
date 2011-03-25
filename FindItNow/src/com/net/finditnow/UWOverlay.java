@@ -100,7 +100,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		int iconId = FINHome.getIcon(category);
 		String displayCat = category;
 		if (category.equals("school_supplies")) {
-			displayCat = FINUtil.pluralize(itemName, 2);
+			displayCat = itemName;
 		}
 		HashMap<String,CategoryItem> data = items.get(itemLocation);
 

@@ -34,7 +34,7 @@ public class CategoryList extends FINListActivity {
     	
     	Bundle extras = getIntent().getExtras(); 
     	final String category = extras.getString("category");
-    	setTitle(getString(R.string.app_name) + " > " + FINUtil.capFirstChar(category));
+    	setTitle(getString(R.string.app_name) + " > " + category);
     	
     	setListAdapter(new ArrayAdapter<String>(this, R.layout.category_list, getResources().getStringArray(R.array.specific_supplies)));
     	
@@ -44,11 +44,11 @@ public class CategoryList extends FINListActivity {
     	// Every item will launch the map
     	lv.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				myDialog = ProgressDialog.show(CategoryList.this, "Items Loading" , "Loading " + FINUtil.capFirstChar(((TextView) v).getText().toString()) + "...", true);
+				myDialog = ProgressDialog.show(CategoryList.this, "Items Loading" , "Loading " + ((TextView) v).getText().toString() + "...", true);
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			myIntent.putExtra("category", category);
                 myIntent.putExtra("building", "");
-    			myIntent.putExtra("itemName", FINUtil.deCapFirstChar(FINUtil.depluralize(((TextView) v).getText().toString())));
+    			myIntent.putExtra("itemName", ((TextView) v).getText().toString());
     			startActivity(myIntent);
     		}
     	});

@@ -56,7 +56,7 @@ public class FINAddNew extends FINActivity {
 	
 			//Set up the category spinner
 			Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
-			ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINUtil.capFirstChar(FINHome.getCategoriesList()));
+			ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINHome.getCategoriesList());
 			cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			cSpinner.setAdapter(cAdapter);
 			cSpinner.setOnItemSelectedListener(cspinner_listener);

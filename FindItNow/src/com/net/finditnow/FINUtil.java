@@ -10,25 +10,11 @@ import java.util.ArrayList;
 public class FINUtil {
 	
 	/**
-	 * Capitalizes the first character of all strings in an ArrayList
-	 * @param strs ArrayList of strings
-	 * @return New ArrayList with copy of the strings that are in proper caps.
-	 */
-	public static ArrayList<String> capFirstChar(ArrayList<String> strs)
-	{
-		ArrayList<String> al = new ArrayList<String>();
-		for (String s : strs) {
-			al.add(capFirstChar(s));
-		}
-		return al;
-	}
-	
-	/**
 	 * Capitalizes the first character of the given string.
 	 * @param str String to capitalize
 	 * @return Copy of the string with the first character capitalized
 	 */
-	public static String capFirstChar(String str)
+	public static String displayCategory(String str)
 	{
 		if (str.equals("")) {
 			return str;
@@ -46,11 +32,43 @@ public class FINUtil {
 	}
 	
 	/**
+	 * Capitalizes the first character of all strings in an ArrayList
+	 * @param strs ArrayList of strings
+	 * @return New ArrayList with copy of the strings that are in proper caps.
+	 */
+	public static ArrayList<String> displayAllCategories(ArrayList<String> strs)
+	{
+		ArrayList<String> al = new ArrayList<String>();
+		for (String s : strs) {
+			al.add(displayCategory(s));
+		}
+		return al;
+	}
+	
+	public static String displayItemName(String str) {
+		if (str.equals("")) {
+			return str;
+		} else if (str.equals("blue_book") || str.equals("scantron")) {
+			return displayCategory(str) + "s";
+		} else {
+			return displayCategory(str);
+		}
+	}
+	
+	public static String pluralize(String str, int num) {
+		if (num == 1) {
+			return str;
+		} else {
+			return str + "s";
+		}
+	}
+	
+	/**
 	 * Undoes the above operation
 	 * @param str The string to decap
 	 * @return A new string with the above operations undone
 	 */
-	public static String deCapFirstChar(String str) {
+	public static String sendCategory(String str) {
 		if (str != null) {
 			return str.toLowerCase().replace(" ", "_");
 		} else {
@@ -59,29 +77,29 @@ public class FINUtil {
 	}
 	
 	/**
-	 * Returns the singular version of a plural string
-	 * @param str The plural string
-	 * @return A singular string
+	 * Capitalizes the first character of all strings in an ArrayList
+	 * @param strs ArrayList of strings
+	 * @return New ArrayList with copy of the strings that are in proper caps.
 	 */
-	public static String depluralize(String str) {
-		if (str != null && str.endsWith("s")) {
-			return str.substring(0, str.length() - 1);
-		} else {
-			return str;
+	public static ArrayList<String> sendAllCategories(ArrayList<String> strs)
+	{
+		ArrayList<String> al = new ArrayList<String>();
+		for (String s : strs) {
+			al.add(sendCategory(s));
 		}
+		return al;
 	}
 	
 	/**
-	 * Returns the proper pluralization of the given string noun
-	 * @param str The string noun (singular)
-	 * @param num The amount describing the noun
-	 * @return The noun in singular if num is equal to 1; otherwise, appends an "s" to make it plural.
+	 * Undoes the above operation
+	 * @param str The string to decap
+	 * @return A new string with the above operations undone
 	 */
-	public static String pluralize(String str, int num) {
-		if (num == 1 || str.toLowerCase().endsWith("printing")) {
-			return str;
+	public static String sendItemName(String str) {
+		if (str.endsWith("s")) {
+			return str.toLowerCase().replace(" ", "_").substring(0, str.length() - 1);
 		} else {
-			return str + "s";
+			return str.toLowerCase();
 		}
 	}
 	
@@ -93,7 +111,7 @@ public class FINUtil {
 	public static String allCategories(ArrayList<String> categories) {
 		String cats = "";
 		for (String s : categories) {
-			cats = cats + s + " ";
+			cats = cats + sendCategory(s) + " ";
 		}
 
 		return cats.substring(0, cats.length() - 1);

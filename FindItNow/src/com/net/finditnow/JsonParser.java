@@ -100,7 +100,7 @@ public class JsonParser {
 
 		for(int i = 0; i < arr.length; i++)
 		{
-				result.add(arr[i]);
+				result.add(FINUtil.displayCategory(arr[i]));
 		}
 		return result;
 	}
@@ -117,7 +117,7 @@ public class JsonParser {
 			for (GeoPoint key:map.keySet()){
 				HashMap<String,CategoryItem> oneMap = new HashMap<String,CategoryItem>();
 				
-				oneMap.put(category, map.get(key));
+				oneMap.put(FINUtil.displayCategory(category), map.get(key));
 				result.put(key,oneMap);
 			}
 			return result;
@@ -234,12 +234,12 @@ public class JsonParser {
 						
 						//grab the category and its corresponding CategoryItem if it is in the map
 						//else make a new one
-						String cat = FINUtil.capFirstChar(ob.get(LOCATION_NAMES[5]).getAsString());
+						String cat = ob.get(LOCATION_NAMES[5]).getAsString();
 						if (ob.has(LOCATION_NAMES[6]))
 						{
 							String item = ob.get(LOCATION_NAMES[6]).getAsString();
 							//the floor id associated with this point
-							cat = (item.equals("")? cat:FINUtil.capFirstChar(FINUtil.pluralize(item, 2)));
+							cat = (item.equals("")? cat:item);
 						}
 						CategoryItem item;
 						if (oneMap.get(cat) != null){

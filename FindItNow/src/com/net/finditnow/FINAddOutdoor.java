@@ -76,7 +76,7 @@ public class FINAddOutdoor extends FINMapActivity {
 	         mapView.getProjection().toPixels(tappedPoint, screenPts);
 	
 	         //---add the marker---
-	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINHome.getIcon(FINUtil.deCapFirstChar(selectedCategory)));            
+	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINHome.getIcon(selectedCategory));            
 	         canvas.drawBitmap(bmp, screenPts.x-12, screenPts.y-35, null);         
 	         return true;
 		 }
@@ -102,12 +102,12 @@ public class FINAddOutdoor extends FINMapActivity {
 						//Send new item to database
 						final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 			        	
-						String result = DBCommunicator.create(phone_id, FINUtil.deCapFirstChar(selectedCategory), 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"",  bb,  sc,  pr, getBaseContext());
+						String result = DBCommunicator.create(phone_id, selectedCategory, 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"",  bb,  sc,  pr, getBaseContext());
 			        	
 			        	// Load the map with the new item
 				    	Intent myIntent = new Intent(getBaseContext(), FINMap.class);
 				    	myIntent.putExtra("result", result);
-				    	myIntent.putExtra("category", FINUtil.deCapFirstChar(selectedCategory));
+				    	myIntent.putExtra("category", selectedCategory);
 						myIntent.putExtra("building", "");
 						myIntent.putExtra("itemName", item);
 						myIntent.putExtra("centerLat", tappedPoint.getLatitudeE6());

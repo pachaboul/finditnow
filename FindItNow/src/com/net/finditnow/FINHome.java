@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,7 +44,7 @@ public class FINHome extends TabActivity {
 				Collections.sort(categories);
 
 				// Store a map from categories to icons so that other modules can use it
-				iconsMap = createIconsList(categories, getApplicationContext());
+				iconsMap = createIconsList(categories);
 
 				buildingsMap = JsonParser.parseBuildingJson(extras.getString("buildings"));
 				buildings = createBuildingList(buildingsMap);
@@ -97,15 +98,15 @@ public class FINHome extends TabActivity {
 	 * Key for small icons: "<category>"
 	 * Key for big icons:  "<category>-big"
 	 */
-	public static HashMap<String, Integer> createIconsList(ArrayList<String> categories, Context c) {
+	public HashMap<String, Integer> createIconsList(ArrayList<String> categories) {
 		HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
 
 		// Loop over each category and map it to the icon file associated with it
 		for (String str : categories) {
-			iconsMap.put(str, c.getResources().getIdentifier("drawable/"+str, null, c.getPackageName()));
-			iconsMap.put(str + "-big", c.getResources().getIdentifier("drawable/"+str+"_big", null, c.getPackageName()));
+			iconsMap.put(str, getResources().getIdentifier("drawable/"+FINUtil.sendCategory(str), null, getPackageName()));
+			iconsMap.put(str + "-big", getResources().getIdentifier("drawable/"+FINUtil.sendCategory(str)+"_big", null, getPackageName()));
 		}
-
+		
 		return iconsMap;
 	}
 

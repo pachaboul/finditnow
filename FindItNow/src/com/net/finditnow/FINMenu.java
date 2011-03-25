@@ -136,7 +136,7 @@ public class FINMenu extends FINActivity {
 				ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
 						if (!category.equals("school_supplies")) {
-							myDialog = ProgressDialog.show(FINMenu.this, "Category Loading" , "Loading " + FINUtil.capFirstChar(category) + "...", true);
+							myDialog = ProgressDialog.show(FINMenu.this, "Category Loading" , "Loading " + category + "...", true);
 						}
 
 						Class<? extends Activity> nextClass = (category.equals("school_supplies")? CategoryList.class : FINMap.class);
@@ -150,7 +150,7 @@ public class FINMenu extends FINActivity {
 
 				// Add text above button.
 				TextView tv = (TextView) myView.findViewById(R.id.grid_item_text);
-				tv.setText(FINUtil.capFirstChar(category));
+				tv.setText(category);
 			} else {
 				// This is just a blank placeholder cell, so hide the button.
 				ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
