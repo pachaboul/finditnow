@@ -243,9 +243,9 @@ public class JsonParser {
 						}
 	
 						
-						if (ob.has("floor"))
+						if (ob.has(LOCATION_NAMES[2]))
 						{
-							JsonArray s = ob.get("floor").getAsJsonArray();
+							JsonArray s = ob.get(LOCATION_NAMES[2]).getAsJsonArray();
 							//the floor names associated with this point
 							String[] flrNames = gson.fromJson(s,String[].class);
 							if (flrNames.length == 0)
