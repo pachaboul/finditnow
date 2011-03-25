@@ -76,7 +76,7 @@ public class FINMap extends FINMapActivity {
 		itemName = extras.getString("itemName");
 
 		// Set the Breadcrumb in the titlebar
-		String title = (!building.equals("")? building : FINUtil.capFirstChar(category) + " > " + (!itemName.equals("")? FINUtil.pluralize(FINUtil.capFirstChar(itemName), 2) : ""));
+		String title = (!building.equals("")? building : FINUtil.capFirstChar(category) + (!itemName.equals("")? " > " + FINUtil.pluralize(FINUtil.capFirstChar(itemName), 2) : ""));
 		setTitle(getString(R.string.app_name) + " > " + title);
 
 		// Check connection of Android
