@@ -33,7 +33,7 @@ public class FINAddNew extends FINActivity {
 		// Restore the saved instance and generate the primary (main) layout
 		super.onCreate(savedInstanceState);
 
-		if (!FINSplash.isLoggedIn) {
+		if (!FINHome.isLoggedIn()) {
 			Toast.makeText(getBaseContext(), "You must login to access this function", Toast.LENGTH_LONG).show();
 
 			Intent myIntent = new Intent(this, FINLogin.class);
@@ -42,7 +42,7 @@ public class FINAddNew extends FINActivity {
 			setContentView(R.layout.addnew_popup);
 
 			// Set the text in the titlebar
-			setTitle(super.getTitle() + " > Add New Item");
+			setTitle(getString(R.string.app_name) + " > Add New Item");
 
 			//Set up interface for indoor/outdoor and category selection screen
 			geopointConfirm = findViewById(R.id.addmap_confirm);
@@ -56,11 +56,11 @@ public class FINAddNew extends FINActivity {
 
 			//Set up the category spinner
 			Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
-			ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINUtil.capFirstChar(FINMenu.getCategoriesList()));
+			ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINUtil.capFirstChar(FINHome.getCategoriesList()));
 			cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			cSpinner.setAdapter(cAdapter);
 			cSpinner.setOnItemSelectedListener(cspinner_listener);
-			selectedCategory = FINMenu.getCategoriesList().get(0);
+			selectedCategory = FINHome.getCategoriesList().get(0);
 
 			//Set up "next" button for indoor/outdoor and category selection screen
 			final Button next = (Button) findViewById(R.id.addnew_next);

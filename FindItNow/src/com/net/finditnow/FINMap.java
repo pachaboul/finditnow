@@ -82,8 +82,8 @@ public class FINMap extends FINMapActivity {
 		if (building.equals("")) {
 			listOfLocations = DBCommunicator.getLocations(category, itemName, DEFAULT_LOCATION.getLatitudeE6()+"", DEFAULT_LOCATION.getLongitudeE6()+"", this);
 		} else {
-			GeoPoint loc = FINMenu.getGeoPointFromBuilding(building);
-			listOfLocations = DBCommunicator.getAllLocations(FINUtil.allCategories(FINMenu.getCategoriesList()), loc.getLatitudeE6()+"", loc.getLongitudeE6()+"", this);
+			GeoPoint loc = FINHome.getGeoPointFromBuilding(building);
+			listOfLocations = DBCommunicator.getAllLocations(FINUtil.allCategories(FINHome.getCategoriesList()), loc.getLatitudeE6()+"", loc.getLongitudeE6()+"", this);
 		}
 
 		if (listOfLocations.equals(getString(R.string.timeout))) {
@@ -109,10 +109,6 @@ public class FINMap extends FINMapActivity {
 
 		locOverlay.disableMyLocation();
 
-		FINSplash.lastLocation = location;
-		FINSplash.mapCenter = mapView.getMapCenter();
-		FINSplash.zoomLevel = mapView.getZoomLevel();
-
 		mapOverlays.remove(locOverlay);
 	}
 
@@ -124,10 +120,6 @@ public class FINMap extends FINMapActivity {
 		super.onResume();
 
 		locOverlay.enableMyLocation();
-
-		location = FINSplash.lastLocation;
-		mapController.setCenter(FINSplash.mapCenter);
-		mapController.setZoom(FINSplash.zoomLevel);
 
 		mapOverlays.add(locOverlay);
 	}
@@ -220,7 +212,7 @@ public class FINMap extends FINMapActivity {
 
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
-		drawable = this.getResources().getDrawable(FINMenu.getIcon(getCategory()));
+		drawable = this.getResources().getDrawable(FINHome.getIcon(getCategory()));
 		itemizedOverlay = new UWOverlay(drawable, this, category, itemName, geoPointItem);
 	}
 
@@ -253,14 +245,14 @@ public class FINMap extends FINMapActivity {
 
 			// Run this method with a fix on location has been received
 			public void run() { 
-				// Only update to new location if user has not moved the map
-				if (mapView.getMapCenter().equals(FINSplash.mapCenter))
-					mapController.animateTo(locOverlay.getMyLocation());
+				// Only update to new location if user has not moved the map TODO
+				//if (mapView.getMapCenter().equals(FINSplash.mapCenter))
+				//	mapController.animateTo(locOverlay.getMyLocation());
 			}
 		};
 
 		// In this case, we have cleanly started the app and should fix on user location
-		if (!category.equals("") && FINSplash.lastLocation == null) {
+		if (building.equals("")) {
 			Toast.makeText(this, "Getting a fix on your location...", Toast.LENGTH_SHORT).show();
 			locOverlay.runOnFirstFix(runnable);
 		}
@@ -273,10 +265,10 @@ public class FINMap extends FINMapActivity {
 
 		// If the category is buildings, then we only put the single point on the map
 		if (!building.equals("")) {
-			GeoPoint point = FINMenu.getGeoPointFromBuilding(building);
+			GeoPoint point = FINHome.getGeoPointFromBuilding(building);
 
 			CategoryItem item = new CategoryItem();
-			for (String flr : FINMenu.getBuilding(point).getFloorNames()) {
+			for (String flr : FINHome.getBuilding(point).getFloorNames()) {
 				item.addFloor_names(flr);
 			}
 

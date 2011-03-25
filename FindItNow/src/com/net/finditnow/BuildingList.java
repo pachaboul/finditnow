@@ -33,7 +33,7 @@ public class BuildingList extends FINListActivity {
 	public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     			
-    	setListAdapter(new ArrayAdapter<String>(this, R.layout.building_list, FINMenu.getBuildingsList()));
+    	setListAdapter(new ArrayAdapter<String>(this, R.layout.building_list, FINHome.getBuildingsList()));
     	
     	ListView lv = getListView();
     	lv.setTextFilterEnabled(true);

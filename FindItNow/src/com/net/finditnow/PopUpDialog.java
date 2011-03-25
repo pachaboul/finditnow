@@ -270,7 +270,7 @@ public class PopUpDialog extends Dialog{
 	    		                dialog.cancel();
 	    		           }
 	    		       });
-	    			if (FINSplash.isLoggedIn) {
+	    			if (FINHome.isLoggedIn()) {
 		    			builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
 		    				 public void onClick(DialogInterface dialog, int id) {
 		    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);

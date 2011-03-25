@@ -33,14 +33,14 @@ public class FINAddIndoor extends FINActivity {
 		// Set up spinner for building selection
 		Spinner bSpinner = (Spinner) findViewById(R.id.addnew_bspinner);
 		ArrayAdapter<String> bAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, FINMenu
+				android.R.layout.simple_spinner_item, FINHome
 						.getBuildingsList());
 		bAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		bSpinner.setAdapter(bAdapter);
 		bSpinner.setOnItemSelectedListener(bspinner_listener);
-		selectedBuilding = FINMenu.getBuilding(FINMenu
-				.getGeoPointFromBuilding(FINMenu.getBuildingsList().get(0)));
+		selectedBuilding = FINHome.getBuilding(FINHome
+				.getGeoPointFromBuilding(FINHome.getBuildingsList().get(0)));
 
 		//Get category and types of school supplies from previous activity
 		Bundle extras = getIntent().getExtras();
@@ -57,7 +57,7 @@ public class FINAddIndoor extends FINActivity {
 	private OnItemSelectedListener bspinner_listener = new OnItemSelectedListener() {
 		public void onItemSelected(AdapterView<?> parent, View arg1, int pos,
 				long arg3) {
-			selectedBuilding = FINMenu.getBuilding(FINMenu
+			selectedBuilding = FINHome.getBuilding(FINHome
 					.getGeoPointFromBuilding(parent.getItemAtPosition(pos)
 							.toString()));
 			//Set floor spinner accordingly
@@ -88,7 +88,7 @@ public class FINAddIndoor extends FINActivity {
 					.get(selectedFloor)+"", special_info, "", "", bb, sc, pr, getBaseContext());
 			
         	if (result.equals(getString(R.string.not_logged_in))) {
-        		FINSplash.isLoggedIn = false;
+        		FINHome.setLoggedIn(false);
         	}
        	
         	//Return to categories screen

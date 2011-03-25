@@ -76,7 +76,7 @@ public class FINAddOutdoor extends FINMapActivity {
 	         mapView.getProjection().toPixels(tappedPoint, screenPts);
 	
 	         //---add the marker---
-	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINMenu.getIcon(FINUtil.deCapFirstChar(selectedCategory)));            
+	         Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINHome.getIcon(FINUtil.deCapFirstChar(selectedCategory)));            
 	         canvas.drawBitmap(bmp, screenPts.x-12, screenPts.y-35, null);         
 	         return true;
 		 }
@@ -108,7 +108,7 @@ public class FINAddOutdoor extends FINMapActivity {
 			        	
 						String result = DBCommunicator.create(phone_id, FINUtil.deCapFirstChar(selectedCategory), 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"",  bb,  sc,  pr, getBaseContext());
 			        	if (result.equals(getString(R.string.not_logged_in))) {
-			        		FINSplash.isLoggedIn = false;
+			        		FINHome.setLoggedIn(false);
 			        	}
 			        	
 			        	//Return to categories screen

@@ -33,53 +33,23 @@ import android.widget.TextView;
 import com.google.android.maps.GeoPoint;
 
 public class FINMenu extends FINActivity {
-	
-	private static HashMap<GeoPoint, Building> buildingsMap;
-	private static HashMap<String, Integer> iconsMap;
-	private static ArrayList<String> categories;
-	private static ArrayList<String> buildings;
-	
+
 	private ProgressDialog myDialog;
-	
+
 	/**
-     * Check for a connection, generate our categories and buildings list
-     * from the database, and set up the grid layout of buttons.
-     */
+	 * Check for a connection, generate our categories and buildings list
+	 * from the database, and set up the grid layout of buttons.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
-		
-		// Check connection of Android
-		ConnectionChecker conCheck = new ConnectionChecker(this, FINMenu.this);
-				
-		// Generate our list of categories from the database
-		String listOfCategories = DBCommunicator.getCategories(this);
-		if (listOfCategories.equals(getString(R.string.timeout))) {
-			conCheck.connectionError();
-		} else {
-			categories = JsonParser.getCategoriesList(listOfCategories);
-			Collections.sort(categories);
-			
-	        // Store a map from categories to icons so that other modules can use it
-	        iconsMap = createIconsList(categories, getApplicationContext());
-	        
-			// Populate the grid with category buttons.
-			GridView buttonGrid = (GridView) findViewById(R.id.gridview);
-	        buttonGrid.setAdapter(new ButtonAdapter(this));
-			
-			// Generate list of buildings from the database
-			String listOfBuildings = DBCommunicator.getBuildings(this);
-			if (listOfBuildings.equals(getString(R.string.timeout))) {
-				conCheck.connectionError();
-			} else {
-				buildingsMap = JsonParser.parseBuildingJson(listOfBuildings);
-				buildings = createBuildingList(buildingsMap);
-				Collections.sort(buildings);
-			}
-		}
+
+		// Populate the grid with category buttons.
+		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
+		buttonGrid.setAdapter(new ButtonAdapter(this));
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -87,226 +57,123 @@ public class FINMenu extends FINActivity {
 			myDialog.dismiss();
 		}
 	}
-	
+
 	/**
 	 * This class populates the grid view.
 	 * It is a list of image buttons
 	 */
 	public class ButtonAdapter extends BaseAdapter {
-    	private Context mContext;
-    	
-    	/**
-    	 * Constructor for ButtonAdapter
-    	 * @param c The context of the client class.
-    	 */
-    	public ButtonAdapter(Context c) {
-    		setmContext(c);
-    	}
-    	
-    	/**
-    	 * Returns the amount of items in the list.
-    	 * Note: if there's an odd amount, we add 1 to make
-    	 * the bottom row appears to have two colored cells.
-    	 */
-    	public int getCount() {
-    		int size = categories.size();
-    		if (size % 2 == 0) {
-    			return size;
-    		} else {
-    			return size + 1;
-    		}
-    	}
+		private Context mContext;
 
-    	/**
-    	 * Stub method; it doesn't matter what we return.
-    	 * @param position
-    	 * @return null (default)
-    	 */
-    	public Object getItem(int position) {
-    		return null;
-    	}
-    	
-    	/**
-    	 * Stub method; it doesn't matter what we return.
-    	 * @param position
-    	 * @return 0 (default)
-    	 */
-    	public long getItemId(int position) {
-    		return 0;
-    	}
+		/**
+		 * Constructor for ButtonAdapter
+		 * @param c The context of the client class.
+		 */
+		public ButtonAdapter(Context c) {
+			setmContext(c);
+		}
 
-    	/**
-    	 * Returns the class's own context
-    	 * @return Returns the class's private context
-    	 */
+		/**
+		 * Returns the amount of items in the list.
+		 * Note: if there's an odd amount, we add 1 to make
+		 * the bottom row appears to have two colored cells.
+		 */
+		public int getCount() {
+			int size = FINHome.getCategoriesList().size();
+			if (size % 2 == 0) {
+				return size;
+			} else {
+				return size + 1;
+			}
+		}
+
+		/**
+		 * Stub method; it doesn't matter what we return.
+		 * @param position
+		 * @return null (default)
+		 */
+		public Object getItem(int position) {
+			return null;
+		}
+
+		/**
+		 * Stub method; it doesn't matter what we return.
+		 * @param position
+		 * @return 0 (default)
+		 */
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		/**
+		 * Returns the class's own context
+		 * @return Returns the class's private context
+		 */
 		public Context getmContext() {
 			return mContext;
 		}
-    	
-    	/**
-    	 * Sets up the view shown in each grid cell:
-    	 * The image button and the text displayed on top
-    	 * @param position The index of the button
-    	 * @param convertView The view to be returned
-    	 * @param parent The parent ViewGroup that will house the view.
-    	 * @return The generated view for this position.
-    	 */
-    	public View getView(int position, View convertView, ViewGroup parent) {
-    		View myView;
-			
-    		// If not created yet, initialize it.
-    		if (convertView == null) {	
-    			LayoutInflater li = getLayoutInflater();
-    			myView = li.inflate(R.layout.grid_item, null);
-    		} else {
-    			myView = convertView;
-    		}
-    		
-    		if (position < categories.size()) {
-	    		// Add image button
+
+		/**
+		 * Sets up the view shown in each grid cell:
+		 * The image button and the text displayed on top
+		 * @param position The index of the button
+		 * @param convertView The view to be returned
+		 * @param parent The parent ViewGroup that will house the view.
+		 * @return The generated view for this position.
+		 */
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View myView;
+
+			// If not created yet, initialize it.
+			if (convertView == null) {	
+				LayoutInflater li = getLayoutInflater();
+				myView = li.inflate(R.layout.grid_item, null);
+			} else {
+				myView = convertView;
+			}
+
+			if (position < FINHome.getCategoriesList().size()) {
+				// Add image button
 				ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
-				
-				final String category = categories.get(position);
-				ib.setImageResource(getBigIcon(category));
+
+				final String category = FINHome.getCategoriesList().get(position);
+				ib.setImageResource(FINHome.getBigIcon(category));
 				// Otherwise, jump to map
-    			ib.setOnClickListener(new OnClickListener() {
+				ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
 						if (!category.equals("school_supplies")) {
 							myDialog = ProgressDialog.show(FINMenu.this, "Category Loading" , "Loading " + FINUtil.capFirstChar(category) + "...", true);
 						}
-						
+
 						Class<? extends Activity> nextClass = (category.equals("school_supplies")? CategoryList.class : FINMap.class);
 						Intent myIntent = new Intent(v.getContext(), nextClass);
-		                myIntent.putExtra("category", category);
-		                myIntent.putExtra("building", "");
-		                myIntent.putExtra("itemName", "");
-		                startActivity(myIntent);
+						myIntent.putExtra("category", category);
+						myIntent.putExtra("building", "");
+						myIntent.putExtra("itemName", "");
+						startActivity(myIntent);
 					}
-    			});
-				
+				});
+
 				// Add text above button.
 				TextView tv = (TextView) myView.findViewById(R.id.grid_item_text);
-		    	tv.setText(FINUtil.capFirstChar(category));
-    		} else {
-    			// This is just a blank placeholder cell, so hide the button.
-    			ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
-    			ib.setVisibility(View.INVISIBLE);
-    		}
-    		return myView;
-    	}
+				tv.setText(FINUtil.capFirstChar(category));
+			} else {
+				// This is just a blank placeholder cell, so hide the button.
+				ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
+				ib.setVisibility(View.INVISIBLE);
+			}
+			return myView;
+		}
 
 		/**
-    	 * Sets the passed context to be our own context
-    	 * @param mContext
-    	 */
+		 * Sets the passed context to be our own context
+		 * @param mContext
+		 */
 		public void setmContext(Context mContext) {
 			this.mContext = mContext;
 		}
-    }
-	
-	/**
-     * Returns an ArrayList of unique buildings from a HashMap of GeoPoints and buildings.
-     */
-	public static ArrayList<String> createBuildingList(HashMap<GeoPoint, Building> map) {
-		ArrayList<String> list = new ArrayList<String>();
-		for (GeoPoint point : map.keySet()) {
-			list.add(map.get(point).getName());
-		}
-		return list;
-	}
-    
-	/**
-     * Returns a map from categories to icons (icons must be the same lower-case string as the category)
-     * Populates the HashMap with both small icons and bigger icons.
-     * Key for small icons: "<category>"
-     * Key for big icons:  "<category>-big"
-	 */
-    public static HashMap<String, Integer> createIconsList(ArrayList<String> categories, Context c) {
-    	HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
-
-    	// Loop over each category and map it to the icon file associated with it
-    	for (String str : categories) {
-			iconsMap.put(str, c.getResources().getIdentifier("drawable/"+str, null, c.getPackageName()));
-			iconsMap.put(str + "-big", c.getResources().getIdentifier("drawable/"+str+"_big", null, c.getPackageName()));
-		}
-    	
-		return iconsMap;
-    }
-    
-    /**
-     * Returns a large-sized icon associated with the category
-     * These icons are used for the menu's grid buttons.
-     * 
-     * @param category The top-level category
-     * @return If no icon is found, return the default Android icon.
-     * Otherwise, return the appropriate category icon.
-     */
-    public static Integer getBigIcon(String category) {
-    	int bigIcon = iconsMap.get(category + "-big");
-    	if (bigIcon == 0) {
-    		return R.drawable.android;
-    	} else {
-    		return bigIcon;
-    	}
-    }
-	
-	/**
-     * Returns the building associated with the GeoPoint
-     */
-    public static Building getBuilding(GeoPoint point) {
-    	return buildingsMap.get(point);
-    }
-	
-	/**
-     * Returns an ArrayList of buildings
-     */
-	public static ArrayList<String> getBuildingsList() {
-		return buildings;
-	}
-	
-
-	/**
-     * Returns an ArrayList of top-level categories
-     */
-	public static ArrayList<String> getCategoriesList() {
-		return categories;
-	}
-	
-
-	/**
-     * Returns the GeoPoint associated with the building.
-     * Icon overlays are positioned on these GeoPoints.
-     * 
-     * @param buildingName The full name of the building.
-     * @return GeoPoint representing the 'center' of the building.
-     */
-	public static GeoPoint getGeoPointFromBuilding(String buildingName) {
-		for (GeoPoint point : buildingsMap.keySet()) {
-			if (getBuilding(point).getName().equals(buildingName)) {
-				return point;
-			}
-		}
-		return null;
 	}
 
-	/**
-     * Returns a miniature-sized icon associated with the category
-     * These icons are used for the map overlays and dialog windows.
-     * 
-     * @param category The top-level category
-     * @return If no icon is found, return the default Android icon.
-	 * otherwise, return the appropriate category icon.
-     */
-    public static Integer getIcon(String category) {
-    	if (!category.equals("")) {
-    		int icon = iconsMap.get(category);
-    		if (icon != 0) {
-    			return icon;
-    		}
-    	}
-    	return R.drawable.android;
-    }
-    
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);		
