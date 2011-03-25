@@ -23,7 +23,7 @@
         <activity android:name=".FINSettings"></activity>
         <activity android:name=".FINHelp"></activity>
         <activity android:name=".FINAddNew"
-        		  android:windowSoftInputMode="stateUnchanged">
+        		  android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".FINAddIndoor"></activity>
         <activity android:name=".FINAddOutdoor"></activity>
