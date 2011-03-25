@@ -135,7 +135,7 @@ public class FINMenu extends FINActivity {
 				// Otherwise, jump to map
 				ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
-						if (!category.equals("school_supplies")) {
+						if (!category.equals("School Supplies")) {
 							myDialog = ProgressDialog.show(FINMenu.this, "Category Loading" , "Loading " + category + "...", true);
 						}
 
