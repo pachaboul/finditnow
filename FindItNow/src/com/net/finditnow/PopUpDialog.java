@@ -69,6 +69,7 @@ public class PopUpDialog extends Dialog{
 	private int walkTime;
 	private String category;
 	private String dbCategory;
+	private String item;
 	private int iconId;
 	private boolean isOutdoor;
 	
@@ -92,7 +93,7 @@ public class PopUpDialog extends Dialog{
 	 * 
 	 */
 	public PopUpDialog(Context context,
-				Building building, String category, String dbCategory, HashMap<String,CategoryItem> dataMap, BigDecimal distance, int walkingTime,
+				Building building, String category, String dbCategory, String item, HashMap<String,CategoryItem> dataMap, BigDecimal distance, int walkingTime,
 				int iconId, boolean isOutdoor)
 	{
 		super(context);
@@ -103,6 +104,7 @@ public class PopUpDialog extends Dialog{
 		this.walkTime = walkingTime;
 		this.category = category;
 		this.dbCategory = dbCategory;
+		this.item = item;
 		this.iconId = iconId;
 		this.isOutdoor = isOutdoor;
 	}
@@ -270,7 +272,7 @@ public class PopUpDialog extends Dialog{
 		    				       myIntent.putExtra("result", result);
 			   					   myIntent.putExtra("category", dbCategory);
 			   					   myIntent.putExtra("building", "");
-			   					   myIntent.putExtra("itemName", category);
+			   					   myIntent.putExtra("itemName", item);
 			   					   
 			   					   getContext().startActivity(myIntent);
 		    				   }
