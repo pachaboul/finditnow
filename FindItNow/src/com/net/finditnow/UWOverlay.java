@@ -102,7 +102,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		if (category.equals("school_supplies")) {
 			item = itemName;
 		}
-		CategoryItem catItem = items.get(itemLocation).get(category);
+		HashMap<String,CategoryItem> data = items.get(itemLocation);
 
 		// Assume it is an outdoor location, but if it is not, grab the building name
 		Building building = FINHome.getBuilding(itemLocation); 
@@ -116,10 +116,10 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 		if (category.equals("")){
 			//note: the category selected is buildings
 			//behaves differently from other.
-			popUp = new PopUpDialog(context, building, item, category, catItem, distance, walkingTime, iconId, isOutdoor);
+			popUp = new PopUpDialog(context, building, item, category, data, distance, walkingTime, iconId, isOutdoor);
 
 		}else{
-			popUp = new PopUpDialog(context, building, item, category, catItem, distance, walkingTime, iconId, isOutdoor);
+			popUp = new PopUpDialog(context, building, item, category, data, distance, walkingTime, iconId, isOutdoor);
 		}
 		
 		popUp.show();
