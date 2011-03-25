@@ -2,6 +2,7 @@ package com.net.finditnow;
 
 import android.os.Bundle;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -46,9 +47,9 @@ public class FINLogin extends FINActivity {
 					conCheck.connectionError();
 				} else {
 					Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-	
-					if (result.equals(getString(R.string.login_success))) {
-						FINSplash.isLoggedIn = true;
+
+					if (result.equals(getString(R.string.login_success)) || result.contains(getString(R.string.login_already))) {
+						FINHome.setLoggedIn(true);
 						setResult(RESULT_OK);
 						finish();
 					}

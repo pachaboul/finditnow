@@ -70,7 +70,7 @@ public class FINSettings extends PreferenceActivity {
     		
     		String result = DBCommunicator.logout(phone_id, getBaseContext());
     		if (result.equals(getString(R.string.logged_out))) {
-    			FINSplash.isLoggedIn = false;
+    			FINHome.setLoggedIn(false);
     		}
     		
     		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
@@ -95,7 +95,7 @@ public class FINSettings extends PreferenceActivity {
 		
 		menu.findItem(R.id.settings_button).setVisible(false);
 		
-		if (FINSplash.isLoggedIn) {
+		if (FINHome.isLoggedIn()) {
 			menu.findItem(R.id.login_button).setVisible(false);
 			menu.findItem(R.id.logout_button).setVisible(true);
 		} else {
