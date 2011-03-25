@@ -102,7 +102,7 @@ public class JsonParser {
 		return result;
 	}
 	
-	public HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json,String category){
+	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json,String category){
 		
 		if (category.equals(""))
 			return parseAllCategoryJson(json);
