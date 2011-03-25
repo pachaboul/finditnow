@@ -19,6 +19,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonStreamParser;
+
+import android.util.Log;
 public class JsonParser {
 	 /*
 	 * Design Principle: Information Hiding
@@ -103,7 +105,7 @@ public class JsonParser {
 	}
 	
 	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json,String category){
-		
+		Log.i("Parser",json);
 		if (category.equals(""))
 			return parseAllCategoryJson(json);
 		else{
@@ -138,7 +140,8 @@ public class JsonParser {
 			Gson gson = new Gson();
 			JsonStreamParser parser = new JsonStreamParser(json);
 			JsonArray arr = parser.next().getAsJsonArray();
-
+			
+			
 			for (int i = 0; i < arr.size(); i++)
 			{
 				if (arr.get(i).isJsonObject())
@@ -203,63 +206,65 @@ public class JsonParser {
 			//used for parsing the JSON object
 			Gson gson = new Gson();
 			JsonStreamParser parser = new JsonStreamParser(json);
-			JsonArray arr = parser.next().getAsJsonArray();
-
-			for (int i = 0; i < arr.size(); i++)
-			{
-				if (arr.get(i).isJsonObject())
+			while (parser.hasNext()){
+				JsonArray arr = parser.next().getAsJsonArray();
+	
+				for (int i = 0; i < arr.size(); i++)
 				{
-					//Since the JsonArray contains whole bunch json array, we can get each one out
-					JsonObject ob = arr.get(i).getAsJsonObject();					
-					
-					//place the information in the map with GeoPoint as key
-					GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
-					HashMap<String,CategoryItem> oneMap;
-
-					
-					//Grab the Map of Location if it is in it or make a new one
-					if (map.get(point) != null)
+					if (arr.get(i).isJsonObject())
 					{
-						oneMap = map.get(point);
-					}
-					else{
-						oneMap = new HashMap<String,CategoryItem>();
-						map.put(point, oneMap);
-					}
-					
-					//grab the category and its corresponding CategoryItem if it is in the map
-					//else make a new one
-					String cat = ob.get(LOCATION_NAMES[5]).getAsString();
-					CategoryItem item;
-					if (oneMap.get(cat) != null){
-						item = oneMap.get(cat);
-					}else{
-						item = new CategoryItem();
-						oneMap.put(cat, item);
-					}
-
-					
-					if (ob.has(LOCATION_NAMES[2]))
-					{
-						JsonArray s = ob.get(LOCATION_NAMES[2]).getAsJsonArray();
-						//the floor names associated with this point
-						String[] flrNames = gson.fromJson(s,String[].class);
-						if (flrNames.length == 0)
-							item.addFloor_names("");
-						for (String flr: flrNames)
-							item.addFloor_names(flr);
-					}
-					if (ob.has(LOCATION_NAMES[3]))
-					{
-						String s = ob.get(LOCATION_NAMES[3]).getAsString();
-						//the floor info associated with this point
-						item.addInfo(s);
-					}
-					if (ob.has(LOCATION_NAMES[4]))
-					{
-						int id = ob.get(LOCATION_NAMES[4]).getAsInt();
-						//the floor id associated with this point
-						item.addId(id);
+						//Since the JsonArray contains whole bunch json array, we can get each one out
+						JsonObject ob = arr.get(i).getAsJsonObject();					
+						
+						//place the information in the map with GeoPoint as key
+						GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
+						HashMap<String,CategoryItem> oneMap;
+	
+						
+						//Grab the Map of Location if it is in it or make a new one
+						if (map.get(point) != null)
+						{
+							oneMap = map.get(point);
+						}
+						else{
+							oneMap = new HashMap<String,CategoryItem>();
+							map.put(point, oneMap);
+						}
+						
+						//grab the category and its corresponding CategoryItem if it is in the map
+						//else make a new one
+						String cat = FINUtil.capFirstChar(ob.get(LOCATION_NAMES[5]).getAsString());
+						CategoryItem item;
+						if (oneMap.get(cat) != null){
+							item = oneMap.get(cat);
+						}else{
+							item = new CategoryItem();
+							oneMap.put(cat, item);
+						}
+	
+						
+						if (ob.has("floor"))
+						{
+							JsonArray s = ob.get("floor").getAsJsonArray();
+							//the floor names associated with this point
+							String[] flrNames = gson.fromJson(s,String[].class);
+							if (flrNames.length == 0)
+								item.addFloor_names("");
+							for (String flr: flrNames)
+								item.addFloor_names(flr);
+						}
+						if (ob.has("info"))
+						{
+							String s = ob.get(LOCATION_NAMES[3]).getAsString();
+							//the floor info associated with this point
+							item.addInfo(s);
+						}
+						if (ob.has(LOCATION_NAMES[4]))
+						{
+							int id = ob.get(LOCATION_NAMES[4]).getAsInt();
+							//the floor id associated with this point
+							item.addId(id);
+						}
 					}
 				}
 			}
