@@ -108,7 +108,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		String category = categoryOf(parentText[0])[childPosition];
 		String dbCategory = category;
 		String item = "";
-		if (dbCategory.equals("blue_book") || dbCategory.equals("scantron") || dbCategory.equals("printing")) {
+		if (dbCategory.equals("Blue Books") || dbCategory.equals("Scantrons") || dbCategory.equals("Printing")) {
 			item = dbCategory;
 			dbCategory = "school_supplies";
 		}
