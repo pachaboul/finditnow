@@ -151,7 +151,7 @@ public class DBCommunicator {
             httpResponse = httpClient.execute(httpGet);  
     		data = EntityUtils.toString(httpResponse.getEntity());
         } catch (Exception e) {
-            Log.e("FIN", e.getMessage());
+            Log.e("log_tag", e.getMessage());
             return context.getString(R.string.timeout);
         }
 

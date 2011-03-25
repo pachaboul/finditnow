@@ -19,74 +19,79 @@ import android.widget.TabHost.TabSpec;
 import com.google.android.maps.GeoPoint;
 
 public class FINHome extends TabActivity {
-	
+
 	private static HashMap<GeoPoint, Building> buildingsMap;
 	private static HashMap<String, Integer> iconsMap;
 	private static ArrayList<String> categories;
 	private static ArrayList<String> buildings;
 	private static boolean loggedin;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.home);
-	    
-	    Bundle extras = getIntent().getExtras(); 
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.home);
 
-		// Generate our list of categories from the database
-	    if (getIntent().hasCategory("App Startup")) {
-			categories = JsonParser.getCategoriesList(extras.getString("categories"));
-			Collections.sort(categories);
-			
-			// Store a map from categories to icons so that other modules can use it
-			iconsMap = createIconsList(categories, getApplicationContext());
-			
-			buildingsMap = JsonParser.parseBuildingJson(extras.getString("buildings"));
-			buildings = createBuildingList(buildingsMap);
-			Collections.sort(buildings);
-			
-			loggedin = extras.getBoolean("loggedin");
-			if (isLoggedIn()) {
-		    	Toast.makeText(getBaseContext(), "Welcome back " + extras.getString("username"), Toast.LENGTH_LONG).show();
+		Bundle extras = getIntent().getExtras(); 
+
+		ConnectionChecker conCheck = new ConnectionChecker(this, FINHome.this);
+		if (getIntent().hasExtra("readytostart") && !extras.getBoolean("readytostart")) {
+			conCheck.connectionError();
+		} else {
+			// Generate our list of categories from the database
+			if (getIntent().hasCategory("App Startup")) {
+				categories = JsonParser.getCategoriesList(extras.getString("categories"));
+				Collections.sort(categories);
+
+				// Store a map from categories to icons so that other modules can use it
+				iconsMap = createIconsList(categories, getApplicationContext());
+
+				buildingsMap = JsonParser.parseBuildingJson(extras.getString("buildings"));
+				buildings = createBuildingList(buildingsMap);
+				Collections.sort(buildings);
+
+				loggedin = extras.getBoolean("loggedin");
+				if (isLoggedIn()) {
+					Toast.makeText(getBaseContext(), "Welcome back " + extras.getString("username"), Toast.LENGTH_LONG).show();
+				}
 			}
-	    }
-	    
-	    Resources res = getResources();
-	    TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
-	    tabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
 
-	    addTab(new TextView(this),
-	    		"Categories",
-	    		res.getIdentifier("@android:drawable/ic_menu_agenda", null, getPackageName()),
-	    		tabHost,
-	    		new Intent().setClass(this, FINMenu.class));
-	    addTab(new TextView(this),
-	    		"Buildings",
-	    		res.getIdentifier("@android:drawable/ic_dialog_dialer", null, getPackageName()),
-	    		tabHost,
-	    		new Intent().setClass(this, BuildingList.class));
+			Resources res = getResources();
+			TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
+			tabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
+
+			addTab(new TextView(this),
+					"Categories",
+					res.getIdentifier("@android:drawable/ic_menu_agenda", null, getPackageName()),
+					tabHost,
+					new Intent().setClass(this, FINMenu.class));
+			addTab(new TextView(this),
+					"Buildings",
+					res.getIdentifier("@android:drawable/ic_dialog_dialer", null, getPackageName()),
+					tabHost,
+					new Intent().setClass(this, BuildingList.class));
+		}
 	}
-	
+
 	private void addTab(final View view, final String tag, final Integer id, TabHost host, Intent intent) {
 		View tabview = createTabView(host.getContext(), tag, id);
 		TabSpec setContent = host.newTabSpec(tag).setIndicator(tabview).setContent(intent);
 		host.addTab(setContent);
 	}
-		
+
 	private static View createTabView(final Context context, final String text, Integer imageID) {
 		View view = LayoutInflater.from(context).inflate(R.layout.tab_background, null);
-		
+
 		// Set up icon -- to be implemented later
 		/*
 		ImageView iv = (ImageView) view.findViewById(R.id.tabIcon);
 		iv.setImageResource(imageID);
-		*/
-		
+		 */
+
 		// Set up label
 		TextView tv = (TextView) view.findViewById(R.id.tabLabel);
 		tv.setText(text);
 		return view;
 	}
-	
+
 	/**
 	 * Returns a map from categories to icons (icons must be the same lower-case string as the category)
 	 * Populates the HashMap with both small icons and bigger icons.
@@ -104,7 +109,7 @@ public class FINHome extends TabActivity {
 
 		return iconsMap;
 	}
-	
+
 	/**
 	 * Returns an ArrayList of unique buildings from a HashMap of GeoPoints and buildings.
 	 */
