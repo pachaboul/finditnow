@@ -42,7 +42,7 @@ public class FINAddIndoor extends FINActivity {
 		selectedBuilding = FINHome.getBuilding(FINHome
 				.getGeoPointFromBuilding(FINHome.getBuildingsList().get(0)));
 
-		//Get category and types of school supplies from previous activity
+		//Get category and types of items from previous activity
 		Bundle extras = getIntent().getExtras();
 		selectedCategory = extras.getString("selectedCategory");
 		supplyTypes = extras.getBooleanArray("supplyTypes");

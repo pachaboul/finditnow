@@ -69,7 +69,7 @@ public class FINMap extends FINMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
 
-		// Get the item name for buildings, supplies:
+		// Get the category, building, and potentially item name
 		Bundle extras = getIntent().getExtras(); 
 		category = extras.getString("category");
 		building = extras.getString("building");
@@ -221,7 +221,7 @@ public class FINMap extends FINMapActivity {
 
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
-		drawable = this.getResources().getDrawable(FINHome.getIcon(category));
+		drawable = getResources().getDrawable(FINHome.getIcon(category));
 		itemizedOverlay = new UWOverlay(drawable, this, category, itemName, geoPointItem);
 		
 		// Setup the ImageButtons

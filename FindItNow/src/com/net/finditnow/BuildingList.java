@@ -21,12 +21,6 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class BuildingList extends FINListActivity {
 	
-	/**
-     * On launch, determines which category type was passed
-     * and displays the appropriate list.
-     * Defaults to supplies if category is unrecognized.
-     */
-	
 	private ProgressDialog myDialog;
 	
     @Override

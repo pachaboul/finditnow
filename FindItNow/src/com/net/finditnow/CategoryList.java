@@ -1,6 +1,6 @@
 /*
  * This class provides the intermediate list screen
- * that is displayed for Buildings and Supplies.
+ * that is displayed for Items.
  * Selection of any option will launch the map class.
  * 
  * Auto-completion suggestions are enabled.
@@ -20,12 +20,6 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class CategoryList extends FINListActivity {
 	
-	/**
-     * On launch, determines which category type was passed
-     * and displays the appropriate list.
-     * Defaults to supplies if category is unrecognized.
-     */
-	
 	private ProgressDialog myDialog;
 	
     @Override
@@ -36,7 +30,7 @@ public class CategoryList extends FINListActivity {
     	final String category = extras.getString("category");
     	setTitle(getString(R.string.app_name) + " > " + category);
     	
-    	setListAdapter(new ArrayAdapter<String>(this, R.layout.category_list, getResources().getStringArray(R.array.specific_supplies)));
+    	setListAdapter(new ArrayAdapter<String>(this, R.layout.category_list, FINHome.getItems(category)));
     	
     	ListView lv = getListView();
     	lv.setTextFilterEnabled(true);

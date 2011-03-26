@@ -11,7 +11,7 @@
 	<string name="spinner_category">Select Category</string>
 	<string name="spinner_building">Select Building</string>
 	<string name="spinner_floor">Select Floor</string>
-	<string-array name="specific_supplies">
+	<string-array name="school_supplies_items">
         <item>Blue Books</item>
         <item>Scantrons</item>
         <item>Printing</item>

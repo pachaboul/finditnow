@@ -90,9 +90,9 @@ public class FINAddNew extends FINActivity {
 			//Assign selected category to variable
 			selectedCategory = parent.getItemAtPosition(pos).toString();
 
-			//Handle special case of school supplies
-			if(selectedCategory.equals("School Supplies")) {
-				showSuppliesPopup();
+			//Handle special case of categories with items
+			if(FINHome.getItems(selectedCategory) != null) {
+				showItemsPopup(selectedCategory);
 			}
 		}
 
@@ -138,10 +138,10 @@ public class FINAddNew extends FINActivity {
 	/**
 	 * Creates and displays a popup for specifying school supply types
 	 */
-	private void showSuppliesPopup() {
+	private void showItemsPopup(String catWithItems) {
 		builder = new AlertDialog.Builder(this);
-		builder.setTitle("What school supplies are offered?");
-		builder.setMultiChoiceItems(R.array.specific_supplies, supplyTypes, supply_listener);		
+		builder.setTitle("What " + catWithItems.toLowerCase() + " are offered?");
+		builder.setMultiChoiceItems(FINHome.getItems(catWithItems), supplyTypes, supply_listener);		
 		builder.setCancelable(false);		
 		builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
