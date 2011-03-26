@@ -4,7 +4,7 @@
 	android:layout_height="fill_parent"
 	android:background="@drawable/tab_bg_selector"
 	android:layout_margin="10dp"
-	android:paddingTop="10dp"
+	android:paddingTop="7dp"
 	android:paddingBottom="5dp"
 	android:gravity="center"
 	android:orientation="vertical">

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Don't even look at this ... completely hacked together -->
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
     android:layout_width="fill_parent"
@@ -14,15 +15,31 @@
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="60dp"
             android:background="#FFFFFF"/>
+        <LinearLayout
+        	android:id="@+id/backtab_strip"
+            android:layout_width="fill_parent"
+            android:layout_height="23dp"
+			android:layout_marginTop="50dp"
+			android:layout_marginBottom="40dp"
+			android:background="#CCCCCC"
+			android:layout_above="@android:id/tabcontent"/>
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
+			android:layout_marginTop="8dp"
 			android:layout_marginBottom="40dp"
-			android:tabStripEnabled="true"
-			android:layout_above="@android:id/tabcontent"/>
+			android:tabStripEnabled="false"
+			android:layout_above="@id/backtab_strip"/>
+		<LinearLayout
+        	android:id="@+id/fronttab_strip"
+            android:layout_width="fill_parent"
+            android:layout_height="8dp"
+			android:layout_marginTop="65dp"
+			android:layout_marginBottom="40dp"
+			android:background="#FFFFFF"
+			android:layout_above="@android:id/tabs"/>
     </RelativeLayout>
 </TabHost>
