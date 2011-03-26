@@ -34,7 +34,7 @@ import android.util.Log;
 public class DBCommunicator {
 
 	// A Constant representing the location of FIN
-	private static final String FIN_ROOT = "http://yinnopiano.com/fin/";
+	private static final String FIN_ROOT = "http://www.fincdn.org/";
 	private static final int CONNECTION_TIMEOUT = 6000;
 	private static final int SOCKET_TIMEOUT = 6000;
 
