@@ -7,16 +7,36 @@ package com.net.finditnow;
 
 import java.util.ArrayList;
 
+import com.google.android.maps.GeoPoint;
+
 public class FINUtil {
 	/**
-	 * returns true if the given category name is one of the sub-category under
-	 * supplies
+	 * returns true if the given category name has sub-categories (items)
 	 */
-	public static boolean isSchoolSupplies(String catgory){
-		if (catgory.equals("Blue Books") || catgory.equals("Scantrons") || catgory.equals("Printing"))
-			return true;
-		return false;
+	public static boolean hasItems(String category) {
+		return FINHome.getItems(category) != null;
 	}
+	
+	/**
+	 * Returns the GeoPoint associated with the building.
+	 * Icon overlays are positioned on these GeoPoints.
+	 * 
+	 * @param buildingName The full name of the building.
+	 * @return GeoPoint representing the 'center' of the building.
+	 */
+	public static String getCategoryFromItem(String item) {
+		for (String cat : FINHome.getCategoriesList()) {
+			if (hasItems(cat)) {
+				for (String itemOfCat : FINHome.getItems(cat)) {
+					if (itemOfCat.equals(item)) {
+						return cat;
+					}
+				}
+			}
+		}
+		return item;
+	}
+	
 	/**
 	 * Capitalizes the first character of the given string.
 	 * @param str String to capitalize

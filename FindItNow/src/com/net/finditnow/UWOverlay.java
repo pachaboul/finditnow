@@ -25,28 +25,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	private String category;
 	private String itemName;
 	private HashMap<GeoPoint,HashMap<String,CategoryItem>> items;
-
-	/**
-	 * A constructor of the UWOverlay class
-	 *
-	 * @param defaultMarker The default icon to use on the overlay
-	 */
-	public UWOverlay(Drawable defaultMarker) {
-		super(boundCenterBottom(defaultMarker));
-		mapOverlays = new ArrayList<OverlayItem>();
-	}
-
-	/**
-	 * A constructor of the UWOverlay class which accepts a context
-	 *
-	 * @param defaultMarker The default icon to use on the overlay
-	 * @param context The context in which the overlay is created
-	 */
-	public UWOverlay(Drawable defaultMarker, Context context) {
-		super(boundCenterBottom(defaultMarker));
-		mapOverlays = new ArrayList<OverlayItem>();
-		this.context = context;
-	}
+	
 	/**
 	 * A custom constructor of the UWOverlay class which accepts lots of information
 	 *
@@ -98,7 +77,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 
 		// Retrieve the floors, special info, and category of the location
 		String displayCat = category;
-		if (category.equals("School Supplies")) {
+		if (FINUtil.hasItems(category)) {
 			displayCat = itemName;
 		}
 		HashMap<String,CategoryItem> data = items.get(itemLocation);

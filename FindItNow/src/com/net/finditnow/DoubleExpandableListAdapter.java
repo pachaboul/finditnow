@@ -109,9 +109,9 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		String category = categoryOf(parentText[0])[childPosition];
 		String dbCategory = category;
 		String item = "";
-		if (FINUtil.isSchoolSupplies(dbCategory)) {
+		if (FINUtil.hasItems(dbCategory)) {
 			item = dbCategory;
-			dbCategory = "School Supplies";
+			dbCategory = FINUtil.getCategoryFromItem(item);
 		}
 
 		String parentMode = "categoryView";
@@ -176,10 +176,8 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		        imageView.setPadding(1,1, 1, 1);
 		        
-		        if (!FINUtil.isSchoolSupplies(icons[i]))
-		        	imageView.setImageResource(FINHome.getIcon(icons[i]));
-		        else
-		        	imageView.setImageResource(FINHome.getIcon("School Supplies"));
+		        String cat = FINUtil.getCategoryFromItem(icons[i]);
+		        imageView.setImageResource(FINHome.getIcon(cat));
 		        
 		        iconView.get(i%2).addView(imageView);
 			}

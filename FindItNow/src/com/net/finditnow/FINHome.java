@@ -1,6 +1,7 @@
 package com.net.finditnow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -24,8 +25,10 @@ public class FINHome extends TabActivity {
 
 	private static HashMap<GeoPoint, Building> buildingsMap;
 	private static HashMap<String, Integer> iconsMap;
-	private static ArrayList<String> categories;
+	private static HashMap<String, String[]> itemsMap;
 	private static ArrayList<String> buildings;
+	private static ArrayList<String> categories;
+	
 	private static boolean loggedin;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,9 +45,13 @@ public class FINHome extends TabActivity {
 			if (getIntent().hasCategory("App Startup")) {
 				categories = JsonParser.getCategoriesList(extras.getString("categories"));
 				Collections.sort(categories);
+				
+				// Grab the list of items and put it in the map
+				// TODO: Extend this so that we make no references in the frontend to school_supplies
+				itemsMap = createItemsMap(categories);
 
 				// Store a map from categories to icons so that other modules can use it
-				iconsMap = createIconsList(categories);
+				iconsMap = createIconsMap(categories);
 
 				buildingsMap = JsonParser.parseBuildingJson(extras.getString("buildings"));
 				buildings = createBuildingList(buildingsMap);
@@ -98,7 +105,7 @@ public class FINHome extends TabActivity {
 	 * Key for small icons: "<category>"
 	 * Key for big icons:  "<category>-big"
 	 */
-	public HashMap<String, Integer> createIconsList(ArrayList<String> categories) {
+	public HashMap<String, Integer> createIconsMap(ArrayList<String> categories) {
 		HashMap<String, Integer> iconsMap = new HashMap<String, Integer>();
 
 		// Loop over each category and map it to the icon file associated with it
@@ -108,6 +115,17 @@ public class FINHome extends TabActivity {
 		}
 		
 		return iconsMap;
+	}
+	
+	private HashMap<String, String[]> createItemsMap(ArrayList<String> categories) {
+		HashMap<String, String[]> itemsMap = new HashMap<String, String[]>();
+		String[] items = getResources().getStringArray(R.array.school_supplies_items);
+		
+		for (String cat : categories) {
+			itemsMap.put(cat, cat.equals("School Supplies")? items : null);
+		}
+		
+		return itemsMap;
 	}
 
 	/**
@@ -187,12 +205,20 @@ public class FINHome extends TabActivity {
 	 */
 	public static Integer getIcon(String category) {
 		if (!category.equals("")) {
+			Log.v("Test", category);
 			int icon = iconsMap.get(category);
 			if (icon != 0) {
 				return icon;
 			}
 		}
 		return R.drawable.android;
+	}
+	
+	/**
+	 * Returns the items associated with the category
+	 */
+	public static String[] getItems(String category) {
+		return itemsMap.get(category);
 	}
 
 	public static void setLoggedIn(boolean loggedin) {
