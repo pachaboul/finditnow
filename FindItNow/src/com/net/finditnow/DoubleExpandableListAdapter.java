@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -103,14 +105,13 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		// particular object
 		ExpandableListView lv = (ExpandableListView) relative.findViewById(R.id.cateList);
 		
-		int iconId = 0;
 		String[] parentText = { building.getFloorNames()[groupPosition]};
 		String category = categoryOf(parentText[0])[childPosition];
 		String dbCategory = category;
 		String item = "";
-		if (dbCategory.equals("Blue Books") || dbCategory.equals("Scantrons") || dbCategory.equals("Printing")) {
+		if (FINUtil.isSchoolSupplies(dbCategory)) {
 			item = dbCategory;
-			dbCategory = "school_supplies";
+			dbCategory = "School Supplies";
 		}
 
 		String parentMode = "categoryView";
@@ -119,7 +120,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		lv.setOnGroupExpandListener(new DoubleOnExpandListener(relative));
 		lv.setOnGroupCollapseListener(new DoubleOnCollapseListener(relative));
 		lv.setAdapter(new FloorExpandableListAdapter( context, dataMap.get(category),
-				 iconId,  category,  dbCategory, item,  parentText,  parentMode) );
+				  category,  dbCategory, item,  parentText,  parentMode) );
 
 		return relative;
 	}
@@ -165,7 +166,24 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			text.setText(building.getFloorNames()[groupPosition]);
 
 			//the icon comes later :)
-		
+			ArrayList<LinearLayout> iconView = new ArrayList<LinearLayout>();
+			iconView.add((LinearLayout) relative.findViewById(R.id.iconView1));
+			iconView.add((LinearLayout) relative.findViewById(R.id.iconView2));
+			String[] icons = categoryOf(building.getFloorNames()[groupPosition]);
+			for (int i = 0; i < icons.length; i++){
+				ImageView imageView = new ImageView(context);
+				imageView.setLayoutParams(new LinearLayout.LayoutParams(15, 15));
+		        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		        imageView.setPadding(1,1, 1, 1);
+		        
+		        if (!FINUtil.isSchoolSupplies(icons[i]))
+		        	imageView.setImageResource(FINHome.getIcon(icons[i]));
+		        else
+		        	imageView.setImageResource(FINHome.getIcon("School Supplies"));
+		        
+		        iconView.get(i%2).addView(imageView);
+			}
+
 		return relative;
 	}
 

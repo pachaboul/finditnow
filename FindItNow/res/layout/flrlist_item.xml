@@ -13,11 +13,32 @@
 			  />
 	<TextView 
 		android:id="@+id/flrName" 
-		android:layout_width="fill_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="fill_parent"
 		android:textColor="#FFF"
 		android:padding="10dp"
 		android:textSize="16sp"
 		android:layout_toRightOf="@id/flrIcon"
 		/>
+		<LinearLayout
+		  android:orientation="vertical"
+		  android:layout_width="wrap_content"
+		  android:layout_height="wrap_content"
+	      android:layout_toRightOf="@id/flrName"
+	      android:padding="3dp">
+	      <LinearLayout
+			  android:id="@+id/iconView1"
+		      android:orientation="horizontal"
+		      android:layout_width="fill_parent"
+		      android:layout_height="wrap_content"
+	      />
+	      <LinearLayout
+			  android:id="@+id/iconView2"
+		      android:orientation="horizontal"
+		      android:layout_width="fill_parent"
+		      android:layout_height="wrap_content"
+	      />
+	      </LinearLayout>
+
+
 </RelativeLayout>

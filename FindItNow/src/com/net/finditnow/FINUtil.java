@@ -8,7 +8,15 @@ package com.net.finditnow;
 import java.util.ArrayList;
 
 public class FINUtil {
-	
+	/**
+	 * returns true if the given category name is one of the sub-category under
+	 * supplies
+	 */
+	public static boolean isSchoolSupplies(String catgory){
+		if (catgory.equals("Blue Books") || catgory.equals("Scantrons") || catgory.equals("Printing"))
+			return true;
+		return false;
+	}
 	/**
 	 * Capitalizes the first character of the given string.
 	 * @param str String to capitalize

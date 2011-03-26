@@ -35,7 +35,6 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	//data for populating the list
 	private CategoryItem catItem;		//information associated w/ this location
 	private Context context;			
-	private int iconId;				//id of the category's icon
 	private String category;		//category
 	private String dbCategory;
 	private String item;
@@ -54,11 +53,10 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @param category - the category currently displaying
 	 */
 	public FloorExpandableListAdapter(Context context,CategoryItem catItem,
-			int iconId, String category, String dbCategory, String item, String[] parentText, String parentMode) {
+		 String category, String dbCategory, String item, String[] parentText, String parentMode) {
 		super();
 		this.context = context;
 		this.catItem = catItem;
-		this.iconId = iconId;
 		this.category = category;
 		this.dbCategory = dbCategory;
 		this.item = item;
@@ -209,28 +207,26 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 */
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
-		View relative;
+		//the layout/view which is defined by a layout XML
+		View relative= LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);;
+
+		ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
+		
+		//Text for displaying the floor name
+		TextView text = (TextView) relative.findViewById(R.id.flrName);
+		
 		
 		if (parentMode.equals("categoryView")){
-			relative = LayoutInflater.from(context).inflate(R.layout.multi_cat_list_item, parent,false);
-
-			//Text for displaying the floor name
-			TextView text = (TextView) relative.findViewById(R.id.multiCatText);
 			text.setText(category);
 			text.getLayoutParams().height = DoubleExpandableListAdapter.HEIGHT;
+			img.setImageResource(FINHome.getIcon(dbCategory));
 		}
 		else{
-			//the layout/view which is defined by a layout XML
-			relative = LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);
-
-			//Text for displaying the floor name
-			TextView text = (TextView) relative.findViewById(R.id.flrName);
 			text.setText(parentText[groupPosition]);
 
 			//the icon associated with the category
 			if (catItem.getFloor_names().contains(parentText[groupPosition])){
-				ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
-				img.setImageResource(iconId);
+				img.setImageResource(FINHome.getIcon(dbCategory));
 			}
 		}
 		return relative;

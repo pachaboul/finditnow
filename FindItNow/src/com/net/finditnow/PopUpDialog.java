@@ -71,7 +71,6 @@ public class PopUpDialog extends Dialog{
 	private String category;
 	private String dbCategory;
 	private String item;
-	private int iconId;
 	private boolean isOutdoor;
 	
 	//version 3.5 added stuff.
@@ -95,7 +94,7 @@ public class PopUpDialog extends Dialog{
 	 */
 	public PopUpDialog(Context context,
 				Building building, String category, String dbCategory, String item, HashMap<String,CategoryItem> dataMap, BigDecimal distance, int walkingTime,
-				int iconId, boolean isOutdoor)
+				 boolean isOutdoor)
 	{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -106,7 +105,6 @@ public class PopUpDialog extends Dialog{
 		this.category = category;
 		this.dbCategory = dbCategory;
 		this.item = item;
-		this.iconId = iconId;
 		this.isOutdoor = isOutdoor;
 	}
 
@@ -196,7 +194,7 @@ public class PopUpDialog extends Dialog{
 								}
 							});
 		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),dataMap.get(dbCategory),
-			    					iconId, category, dbCategory, item, building.getFloorNames(),"flrName"));
+			    					category, dbCategory, item, building.getFloorNames(),"flrName"));
 		    				
 		    				//scrolls the view to the lowest floor which contains the category
 		    				int pos = 0;
@@ -214,7 +212,7 @@ public class PopUpDialog extends Dialog{
 	    				toggle.setText("Show Floors");
 	    				lv.getLayoutParams().height = 0;
     				    lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),new CategoryItem(),
-                               iconId, category, dbCategory, item, new String[0],"flrName"));
+    				    		 category, dbCategory, item, new String[0],"flrName"));
 
 	    			}
 	    			
