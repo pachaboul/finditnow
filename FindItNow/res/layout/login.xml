@@ -1,66 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
- 
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-   android:orientation="horizontal"
-   android:layout_width="fill_parent"
-   android:layout_height="fill_parent"
-   >
-   
-    <TextView android:id="@+id/welcome_text"
-        android:text = "FIN Super User Login"           
-        android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-        />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:background="#FFFFFF">
+		
+    <TextView
+			android:id="@+id/welcome_text"
+			android:text="FIN Super User Login"
+			android:textColor="#FFFFFF"
+			android:textSize="25dp"
+			android:textStyle="bold"  
+			android:shadowColor="#000000"  
+	        android:shadowRadius="1.5"  
+			android:background="#59E01B"
+			android:layout_width="fill_parent"
+		    android:layout_height="40dp"
+		    android:gravity="center"/>
+		    
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:padding="15dp">
+			
+		<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:padding="10dp"
+				android:background="#809EFC23"
+				android:layout_marginBottom="15dp">	
+				
+				<TextView
+			    	android:id="@+id/username_text"
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:paddingLeft="10dp"
+			        android:text="Username:"
+			        android:textStyle="bold"
+			        android:textColor="#000000"
+			        android:textSize="16dp"/>
        
-    <TextView android:id="@+id/username_text"
-        android:text = "Username:"  
-        android:layout_centerHorizontal="true"  
-        android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/welcome_text"
-        />
-   
-    <EditText android:id="@+id/txt_username"
-             android:layout_height="wrap_content"
-             android:layout_width="250px"
-             android:layout_centerHorizontal="true"
-             android:layout_below="@+id/username_text"
-             android:singleLine="true" />
+			    <EditText android:id="@+id/txt_username"
+			             android:layout_height="wrap_content"
+			             android:layout_width="250px"
+			             android:singleLine="true" />
              
-             
-    <TextView android:id="@+id/password_text"
-        android:text = "Password:"  
-        android:layout_centerHorizontal="true"  
-        android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_username"
-        />
+             	<TextView
+			    	android:id="@+id/password_text"
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:paddingLeft="10dp"
+			        android:text="Password:"
+			        android:textStyle="bold"
+			        android:textColor="#000000"
+			        android:textSize="16dp"/>
+			        
    
-    <EditText android:id="@+id/txt_password"
-                  android:password="true"
-             android:layout_height="wrap_content"
-             android:layout_width="250px"
-             android:layout_centerHorizontal="true"
-             android:layout_below="@+id/password_text"
-             android:singleLine="true" />
-   
-        <Button android:id="@+id/login_button"
-                android:text="Login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/txt_password"
-                />
-                
-        <Button android:id="@+id/cancel_button"
-                android:text="Cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/txt_password"
-                android:layout_toRightOf="@+id/login_button"
-                />
-               
-</RelativeLayout>
+			    <EditText android:id="@+id/txt_password"
+			             android:password="true"
+			             android:layout_height="wrap_content"
+			             android:layout_width="250px"
+			             android:singleLine="true" />
+		</LinearLayout>
+		
+   		<RelativeLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+				
+				<Button android:id="@+id/login_button"
+		                android:text="Login"
+		                android:textStyle="bold"
+		                android:layout_alignParentLeft="true"
+		                android:layout_width="100dp"
+		                android:layout_height="wrap_content"/>
+						                
+		        <Button android:id="@+id/cancel_button"
+		                android:text="Cancel"
+		                android:layout_alignParentRight="true"
+		                android:layout_width="100dp"
+		                android:layout_height="wrap_content"/>
+		</RelativeLayout>              
+	</LinearLayout>             
+</LinearLayout>
