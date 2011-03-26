@@ -2,10 +2,13 @@ package com.net.finditnow;
 
 import android.os.Bundle;
 import android.provider.Settings.Secure;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class FINLogin extends FINActivity {
@@ -18,6 +21,11 @@ public class FINLogin extends FINActivity {
 
 		// load up the layout
 		setContentView(R.layout.login);
+		
+		// Add link to help info:
+		TextView link = (TextView) findViewById(R.id.superuser_link);
+		link.setText(Html.fromHtml("<a href=\"http://yinnopiano.com/fin/superuser.php\">FIN SuperUser Application</a>"));
+		link.setMovementMethod(LinkMovementMethod.getInstance()); 
 
 		// get the button resource in the xml file and assign it to a local variable of type Button
 		Button launch = (Button)findViewById(R.id.login_button);
