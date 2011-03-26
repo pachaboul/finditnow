@@ -24,7 +24,7 @@ public class FINLogin extends FINActivity {
 		
 		// Add link to help info:
 		TextView link = (TextView) findViewById(R.id.superuser_link);
-		link.setText(Html.fromHtml("<a href=\"http:www.fincdn.org/superuser.php\">FIN SuperUser Application</a>"));
+		link.setText(Html.fromHtml("<a href=\"http://www.fincdn.org/superuser.php\">FIN SuperUser Application</a>"));
 		link.setMovementMethod(LinkMovementMethod.getInstance()); 
 
 		// get the button resource in the xml file and assign it to a local variable of type Button
