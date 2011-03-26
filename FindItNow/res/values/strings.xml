@@ -26,5 +26,6 @@
 	<string name="logged_out">Logged out.</string>
 	<string name="not_logged_in">Not logged in.</string>
 	<string name="must_login">"You must login to access this function"</string>
+	<string name="superuser_info">Super users are FindItNow power users who contribute by adding new items to the map, and deleting ones that are not found.  If you would like to apply to become a super user, please click the following link:</string>
 
 </resources>
