@@ -37,7 +37,7 @@ public class BuildingList extends FINListActivity {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
     			String selectedBuilding = ((TextView) v).getText().toString();
     			
-				myDialog = ProgressDialog.show(BuildingList.this, "Building Loading" , "Loading " + selectedBuilding + "...", true);
+				myDialog = ProgressDialog.show(BuildingList.this, "" , "Loading " + selectedBuilding + "...", true);
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			
     			myIntent.putExtra("building", selectedBuilding);
