@@ -136,7 +136,7 @@ public class FINMenu extends FINActivity {
 				ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
 						if (!FINHome.hasItems(category)) {
-							myDialog = ProgressDialog.show(FINMenu.this, "Category Loading" , "Loading " + category + "...", true);
+							myDialog = ProgressDialog.show(FINMenu.this, "" , "Loading " + category + "...", true);
 						}
 
 						Class<? extends Activity> nextClass = (FINHome.hasItems(category)? CategoryList.class : FINMap.class);

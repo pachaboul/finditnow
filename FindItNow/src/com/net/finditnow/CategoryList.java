@@ -38,7 +38,7 @@ public class CategoryList extends FINListActivity {
     	// Every item will launch the map
     	lv.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				myDialog = ProgressDialog.show(CategoryList.this, "Items Loading" , "Loading " + ((TextView) v).getText().toString() + "...", true);
+				myDialog = ProgressDialog.show(CategoryList.this, "" , "Loading " + ((TextView) v).getText().toString() + "...", true);
     			Intent myIntent = new Intent(v.getContext(), FINMap.class);
     			myIntent.putExtra("category", category);
                 myIntent.putExtra("building", "");
