@@ -167,8 +167,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			for (int i = 0; i < icons.length; i++){
 				ImageView imageView = new ImageView(context);
 				imageView.setLayoutParams(new LinearLayout.LayoutParams(40, 40));
-		        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-		        imageView.setPadding(5,12,5,5);
+		        imageView.setPadding(0,12,0,0);
 		        
 		        String cat = FINHome.isItem(icons[i])? FINHome.getCategoryFromItem(icons[i]) : icons[i];
 		        imageView.setImageResource(FINHome.getIcon(cat));
