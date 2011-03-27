@@ -107,13 +107,11 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		
 		String[] parentText = { building.getFloorNames()[groupPosition]};
 		String category = categoryOf(parentText[0])[childPosition];
-		String dbCategory = category;
+		String dbCategory = FINUtil.getCategoryFromItem(category);
 		String item = "";
 		if (FINUtil.hasItems(dbCategory)) {
 			item = dbCategory;
-			dbCategory = FINUtil.getCategoryFromItem(item);
 		}
-
 		String parentMode = "categoryView";
 		relative.getLayoutParams().height= HEIGHT;
 		

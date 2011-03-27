@@ -151,8 +151,14 @@ public class PopUpDialog extends Dialog{
 	    			{
 	    				toggle.setText("Hide Floors");
 	    				lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-	    				if (building.getFloorNames().length > 3)
-	    					lv.getLayoutParams().height = 150;
+	    				
+	    				String[] floorsWithCategories = new String[0];
+	    				if (dataMap.get(dbCategory) != null) {
+	    					floorsWithCategories = (String[]) dataMap.get(dbCategory).getFloor_names().toArray (new String[0]);
+	    				}
+	    				
+	    				if (floorsWithCategories.length > 3)
+	    					lv.getLayoutParams().height = 250;
 
 	    				if (category.equals("")){
 	    					/*Building bui = new Building(1,"Test",new int[]{2,3,4,56}, new String[]{"Flr 1","Flr 2","Flr 3","Flr 4"});
@@ -194,12 +200,12 @@ public class PopUpDialog extends Dialog{
 								}
 							});
 		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),dataMap.get(dbCategory),
-			    					category, dbCategory, item, building.getFloorNames(),"flrName"));
+			    					category, dbCategory, item, floorsWithCategories,"flrName"));
 		    				
 		    				//scrolls the view to the lowest floor which contains the category
 		    				int pos = 0;
 		    				if (!category.equals("")) {
-		    					String target = dataMap.get(dbCategory).getFloor_names().get(dataMap.get(dbCategory).getFloor_names().size()-1);
+		    					String target = floorsWithCategories[floorsWithCategories.length-1];
 			    				for (int i = building.getFloorNames().length -1 ; i >= 0;i--)
 			    					if ( target.equals(building.getFloorNames()[i]))
 			    						pos = i;
