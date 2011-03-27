@@ -27,13 +27,7 @@
 	      android:layout_toRightOf="@id/flrName"
 	      android:padding="3dp">
 	      <LinearLayout
-			  android:id="@+id/iconView1"
-		      android:orientation="horizontal"
-		      android:layout_width="fill_parent"
-		      android:layout_height="wrap_content"
-	      />
-	      <LinearLayout
-			  android:id="@+id/iconView2"
+			  android:id="@+id/iconView"
 		      android:orientation="horizontal"
 		      android:layout_width="fill_parent"
 		      android:layout_height="wrap_content"
