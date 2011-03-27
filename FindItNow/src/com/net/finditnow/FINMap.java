@@ -48,10 +48,8 @@ public class FINMap extends FINMapActivity {
 	private String itemName;
 
 	// Location and GeoPoint Variables
-	// DESIGN PATTERN: Encapsulation.  Location is sensitive information, and thus private
-	// 				   But can be accessed via getLocation()
 	private static GeoPoint location;    
-	private HashMap<GeoPoint,HashMap<String,CategoryItem>> geoPointItem;
+	private static HashMap<GeoPoint,HashMap<String,CategoryItem>> geoPointItem;
 
 	// A constant representing the default location of the user
 	// Change this the coordinates of another campus if desired (defaults to UW Seattle)
@@ -64,7 +62,6 @@ public class FINMap extends FINMapActivity {
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		// Restore the saved instance and generate the primary (main) layout
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
@@ -180,6 +177,23 @@ public class FINMap extends FINMapActivity {
 	 */
 	public static GeoPoint getLocation() {
 		return location;
+	}
+	
+	@Override
+	public boolean onSearchRequested() {
+	    Bundle appData = new Bundle();
+	    
+	    appData.putString("category", category);
+	    appData.putString("itemName", itemName);
+	    appData.putString("lat", DEFAULT_LOCATION.getLatitudeE6()+"");
+	    appData.putString("lon", DEFAULT_LOCATION.getLongitudeE6()+"");
+	    
+	    startSearch(null, false, appData, false);
+	    return true;
+	}
+	
+	public static CategoryItem getCategoryItem(GeoPoint point, String category) {
+		return geoPointItem.get(point).get(category);
 	}
 	
 	/**

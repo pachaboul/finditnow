@@ -17,6 +17,8 @@
         <activity android:name=".FINMenu"></activity>
         <activity android:name=".FINMap"
         		  android:configChanges="orientation|keyboardHidden">
+        	<meta-data android:name="android.app.default_searchable"
+            		   android:value=".FINSearch" />
         </activity>
         <activity android:name=".BuildingList"></activity>
         <activity android:name=".CategoryList"></activity>
@@ -28,6 +30,13 @@
         <activity android:name=".FINAddIndoor"></activity>
         <activity android:name=".FINAddOutdoor"></activity>
         <activity android:name=".FINLogin"></activity>
+        <activity android:name=".FINSearch">
+        	<intent-filter>
+       			 <action android:name="android.intent.action.SEARCH" />
+   			</intent-filter>
+        	<meta-data android:name="android.app.searchable"
+                   	   android:resource="@xml/searchable"/>
+        </activity>
 		<uses-library android:name="com.google.android.maps" />
     </application>
 

@@ -126,6 +126,18 @@ public class DBCommunicator {
 		return Post("logout.php", nameValuePairs, context);
 	}
 	
+	public static String searchLocations(String category, String lat, String lon, String sString, Context context) {
+		// Initialize the array of name value pairs
+		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+		
+		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(category)));
+		nameValuePairs.add(new BasicNameValuePair("lat", lat));
+		nameValuePairs.add(new BasicNameValuePair("long", lon));
+		nameValuePairs.add(new BasicNameValuePair("sString", sString));
+		
+		return Post("searchLocations.php", nameValuePairs, context);
+	}
+	
 	public static String update(String phone_id, String category, String id, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();

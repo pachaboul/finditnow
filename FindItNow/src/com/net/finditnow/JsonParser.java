@@ -103,6 +103,17 @@ public class JsonParser {
 		return result;
 	}
 	
+	public static HashMap<Integer, GeoPoint> parseSearchJson(String json) {
+		String[] arr = json.split(",");
+		HashMap<Integer, GeoPoint> result = new HashMap<Integer, GeoPoint>();
+		if (arr.length >= 3) {
+			for (int i = 0; i < arr.length; i=i+3) {
+				result.put(i / 3, new GeoPoint(Integer.parseInt(arr[i+1]), Integer.parseInt(arr[i+2])));
+			}
+		} 
+		return result;
+	}
+	
 	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json,String category){
 		if (category.equals(""))
 			return parseAllCategoryJson(json);
