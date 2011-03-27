@@ -4,6 +4,7 @@
               android:orientation="vertical"
               android:layout_width="275dp"
               android:layout_height="wrap_content"
+              android:background="#FFFFFF"
               android:paddingLeft="15dp"
               android:paddingRight="15dp"
               android:paddingTop="10dp"
@@ -19,24 +20,24 @@
 	<TextView android:id="@+id/categoryName"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:textColor="#FFF"
+              android:textColor="#000"
               />
 	<TextView android:id="@+id/outDoorText"
 			android:layout_below="@id/categoryName"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textColor="#FFF"
+			android:textColor="#000"
    		/>
     <TextView android:id="@+id/distanceText"
     		  android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:textColor="#FFF"
+              android:textColor="#000"
 			  android:layout_marginTop="15dp"
               />
 	<TextView android:id="@+id/timeReachText"
     		  android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:textColor="#FFF"
+              android:textColor="#000"
               />
 	<RelativeLayout
 			android:layout_width="fill_parent"
@@ -59,6 +60,7 @@
    	<ExpandableListView android:id="@+id/flrList"
    			android:layout_height="wrap_content"
     		android:layout_width="fill_parent"
-    		android:background="#409EFC23"
-	    	/>
+    		android:fadingEdge="none"
+    		android:background="#9BF04E"/>
+    		<!-- #409EFC23 -->
 </LinearLayout>
