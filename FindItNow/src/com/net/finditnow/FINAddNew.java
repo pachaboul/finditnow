@@ -91,7 +91,7 @@ public class FINAddNew extends FINActivity {
 			selectedCategory = parent.getItemAtPosition(pos).toString();
 
 			//Handle special case of categories with items
-			if(FINHome.getItems(selectedCategory) != null) {
+			if(FINHome.getItemsFromCategory(selectedCategory) != null) {
 				showItemsPopup(selectedCategory);
 			}
 		}
@@ -141,7 +141,7 @@ public class FINAddNew extends FINActivity {
 	private void showItemsPopup(String catWithItems) {
 		builder = new AlertDialog.Builder(this);
 		builder.setTitle("What " + catWithItems.toLowerCase() + " are offered?");
-		builder.setMultiChoiceItems(FINHome.getItems(catWithItems), supplyTypes, supply_listener);		
+		builder.setMultiChoiceItems(FINHome.getItemsFromCategory(catWithItems), supplyTypes, supply_listener);		
 		builder.setCancelable(false);		
 		builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {

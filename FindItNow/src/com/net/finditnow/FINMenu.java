@@ -135,11 +135,11 @@ public class FINMenu extends FINActivity {
 				// Otherwise, jump to map
 				ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
-						if (!FINUtil.hasItems(category)) {
+						if (!FINHome.hasItems(category)) {
 							myDialog = ProgressDialog.show(FINMenu.this, "Category Loading" , "Loading " + category + "...", true);
 						}
 
-						Class<? extends Activity> nextClass = (FINUtil.hasItems(category)? CategoryList.class : FINMap.class);
+						Class<? extends Activity> nextClass = (FINHome.hasItems(category)? CategoryList.class : FINMap.class);
 						Intent myIntent = new Intent(v.getContext(), nextClass);
 						myIntent.putExtra("category", category);
 						myIntent.putExtra("building", "");

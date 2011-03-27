@@ -30,7 +30,7 @@ public class CategoryList extends FINListActivity {
     	final String category = extras.getString("category");
     	setTitle(getString(R.string.app_name) + " > " + category);
     	
-    	setListAdapter(new ArrayAdapter<String>(this, R.layout.category_list, FINHome.getItems(category)));
+    	setListAdapter(new ArrayAdapter<String>(this, R.layout.category_list, FINHome.getItemsFromCategory(category)));
     	
     	ListView lv = getListView();
     	lv.setTextFilterEnabled(true);
