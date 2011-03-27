@@ -60,7 +60,6 @@
    	<ExpandableListView android:id="@+id/flrList"
    			android:layout_height="wrap_content"
     		android:layout_width="fill_parent"
-    		android:fadingEdge="none"
-    		android:background="#9BF04E"/>
+    		android:fadingEdge="none"/>
     		<!-- #409EFC23 -->
 </LinearLayout>
