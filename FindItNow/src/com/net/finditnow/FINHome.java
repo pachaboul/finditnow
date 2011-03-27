@@ -24,8 +24,9 @@ import com.google.android.maps.GeoPoint;
 public class FINHome extends TabActivity {
 
 	private static HashMap<GeoPoint, Building> buildingsMap;
+	private static HashMap<String, String[]> categoriesMap;
 	private static HashMap<String, Integer> iconsMap;
-	private static HashMap<String, String[]> itemsMap;
+	private static HashMap<String, String> itemsMap;
 	private static ArrayList<String> buildings;
 	private static ArrayList<String> categories;
 	
@@ -48,6 +49,7 @@ public class FINHome extends TabActivity {
 				
 				// Grab the list of items and put it in the map
 				// TODO: Extend this so that we make no references in the frontend to school_supplies
+				categoriesMap = createCategoriesMap(categories);
 				itemsMap = createItemsMap(categories);
 
 				// Store a map from categories to icons so that other modules can use it
@@ -117,12 +119,23 @@ public class FINHome extends TabActivity {
 		return iconsMap;
 	}
 	
-	private HashMap<String, String[]> createItemsMap(ArrayList<String> categories) {
-		HashMap<String, String[]> itemsMap = new HashMap<String, String[]>();
+	private HashMap<String, String[]> createCategoriesMap(ArrayList<String> categories) {
+		HashMap<String, String[]> categoriesMap = new HashMap<String, String[]>();
 		String[] items = getResources().getStringArray(R.array.school_supplies_items);
 		
-		for (String cat : categories) {
-			itemsMap.put(cat, cat.equals("School Supplies")? items : null);
+		for (String category : categories) {
+			categoriesMap.put(category, category.equals("School Supplies")? items : null);
+		}
+		
+		return categoriesMap;
+	}
+	
+	private HashMap<String, String> createItemsMap(ArrayList<String> categories) {
+		HashMap<String, String> itemsMap = new HashMap<String, String>();
+		String[] items = getResources().getStringArray(R.array.school_supplies_items);
+		
+		for (String item : items) {
+			itemsMap.put(item, "School Supplies");
 		}
 		
 		return itemsMap;
@@ -215,10 +228,28 @@ public class FINHome extends TabActivity {
 	}
 	
 	/**
-	 * Returns the items associated with the category
+	 * Returns the category associated with an item
 	 */
-	public static String[] getItems(String category) {
-		return itemsMap.get(category);
+	public static String getCategoryFromItem(String item) {
+		return itemsMap.get(item);
+	}
+	
+	/**
+	 * Returns the item associated with a category
+	 */
+	public static String[] getItemsFromCategory(String category) {
+		return categoriesMap.get(category);
+	}
+	
+	/**
+	 * returns true if the given category name has sub-categories (items)
+	 */
+	public static boolean hasItems(String category) {
+		return categoriesMap.get(category) != null;
+	}
+	
+	public static boolean isItem(String item) {
+		return itemsMap.keySet().contains(item);
 	}
 
 	public static void setLoggedIn(boolean loggedin) {

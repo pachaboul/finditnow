@@ -77,7 +77,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 
 		// Retrieve the floors, special info, and category of the location
 		String displayCat = category;
-		if (FINUtil.hasItems(category)) {
+		if (FINHome.hasItems(category)) {
 			displayCat = itemName;
 		}
 		HashMap<String,CategoryItem> data = items.get(itemLocation);
