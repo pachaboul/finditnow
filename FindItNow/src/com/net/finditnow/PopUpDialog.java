@@ -48,7 +48,6 @@ import android.graphics.Region;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.text.Html;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -221,7 +220,7 @@ public class PopUpDialog extends Dialog{
     	} else {
     		title.setText("Outdoor Location");
 
-    		String spInfo = dataMap.get(dbCategory).getInfo().get(0).replace("\n", "<br />");
+    		String spInfo = dataMap.get(dbCategory).getInfo().get(0);
     		
     		// If there's no special info, hide the outdoor info section
     		// (it would have added unnecessary padding)

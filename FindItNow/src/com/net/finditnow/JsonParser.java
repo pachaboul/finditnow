@@ -19,8 +19,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonStreamParser;
-
-import android.util.Log;
 public class JsonParser {
 	 /*
 	 * Design Principle: Information Hiding
@@ -106,7 +104,6 @@ public class JsonParser {
 	}
 	
 	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json,String category){
-		Log.i("Parser",json);
 		if (category.equals(""))
 			return parseAllCategoryJson(json);
 		else{
@@ -173,7 +170,7 @@ public class JsonParser {
 					}
 					if (ob.has(LOCATION_NAMES[3]))
 					{
-						String s = ob.get(LOCATION_NAMES[3]).getAsString();
+						String s = ob.get(LOCATION_NAMES[3]).getAsString().replace("\n", "<br />");
 						//the floor info associated with this point
 						item.addInfo(s);
 					}
@@ -262,7 +259,7 @@ public class JsonParser {
 						}
 						if (ob.has("info"))
 						{
-							String s = ob.get(LOCATION_NAMES[3]).getAsString();
+							String s = ob.get(LOCATION_NAMES[3]).getAsString().replace("\\n", "<br />");
 							//the floor info associated with this point
 							item.addInfo(s);
 						}

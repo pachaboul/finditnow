@@ -13,7 +13,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.Settings.Secure;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,10 +111,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 			//This is the text for any additional information associated with this
 			// particular object
 			TextView text = (TextView) relative.findViewById(R.id.floorDetailText);
-			String specialInfo = "";
-			if (catItem.getInfo().get(pos) != null)
-				specialInfo = catItem.getInfo().get(pos).replace("\n", "<br />");
-
+			String specialInfo = (catItem.getInfo().get(pos) != null? catItem.getInfo().get(pos) : "");
+				
 			//sets it to the text field
 			text.setText(Html.fromHtml(specialInfo));
 
