@@ -7,8 +7,6 @@ package com.net.finditnow;
 
 import java.util.ArrayList;
 
-import com.google.android.maps.GeoPoint;
-
 public class FINUtil {
 	
 	/**

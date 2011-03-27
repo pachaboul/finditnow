@@ -1,7 +1,6 @@
 package com.net.finditnow;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -10,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -218,7 +216,6 @@ public class FINHome extends TabActivity {
 	 */
 	public static Integer getIcon(String category) {
 		if (!category.equals("")) {
-			Log.v("Test", category);
 			int icon = iconsMap.get(category);
 			if (icon != 0) {
 				return icon;
