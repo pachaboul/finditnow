@@ -27,16 +27,16 @@
 		android:textSize="20dp"
 		android:layout_alignParentLeft="true"
 		/>
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/flrName"
+		android:padding="3dp">
 		<LinearLayout
-		  android:orientation="vertical"
-		  android:layout_width="wrap_content"
-		  android:layout_height="wrap_content"
-	      android:layout_toLeftOf="@id/flrName"
-	      android:padding="3dp">
-	      <LinearLayout
-			  android:id="@+id/iconView"
-		      android:orientation="horizontal"
-		      android:layout_width="fill_parent"
-		      android:layout_height="wrap_content"/>
-		</LinearLayout>
+			android:id="@+id/iconView"
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"/>
+	</LinearLayout>
 </RelativeLayout>
