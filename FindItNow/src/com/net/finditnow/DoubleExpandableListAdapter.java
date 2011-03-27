@@ -162,20 +162,18 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			text.setText(building.getFloorNames()[groupPosition]);
 
 			//the icon comes later :)
-			ArrayList<LinearLayout> iconView = new ArrayList<LinearLayout>();
-			iconView.add((LinearLayout) relative.findViewById(R.id.iconView1));
-			iconView.add((LinearLayout) relative.findViewById(R.id.iconView2));
+			LinearLayout layout = ((LinearLayout) relative.findViewById(R.id.iconView));
 			String[] icons = categoryOf(building.getFloorNames()[groupPosition]);
 			for (int i = 0; i < icons.length; i++){
 				ImageView imageView = new ImageView(context);
-				imageView.setLayoutParams(new LinearLayout.LayoutParams(15, 15));
+				imageView.setLayoutParams(new LinearLayout.LayoutParams(40, 40));
 		        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-		        imageView.setPadding(1,1, 1, 1);
+		        imageView.setPadding(5,12,5,5);
 		        
 		        String cat = FINHome.isItem(icons[i])? FINHome.getCategoryFromItem(icons[i]) : icons[i];
 		        imageView.setImageResource(FINHome.getIcon(cat));
 		        
-		        iconView.get(i%2).addView(imageView);
+		        layout.addView(imageView);
 			}
 
 		return relative;
