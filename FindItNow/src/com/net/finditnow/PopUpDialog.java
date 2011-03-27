@@ -201,16 +201,6 @@ public class PopUpDialog extends Dialog{
 							});
 		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),dataMap.get(dbCategory),
 			    					category, dbCategory, item, floorsWithCategories,"flrName"));
-		    				
-		    				//scrolls the view to the lowest floor which contains the category
-		    				int pos = 0;
-		    				if (!category.equals("")) {
-		    					String target = floorsWithCategories[floorsWithCategories.length-1];
-			    				for (int i = building.getFloorNames().length -1 ; i >= 0;i--)
-			    					if ( target.equals(building.getFloorNames()[i]))
-			    						pos = i;
-			    				lv.setSelectedGroup(pos);
-		    				}
 	    				}
 	    			}
 	    			// Hide all the floor info.
