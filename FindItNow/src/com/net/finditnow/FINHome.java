@@ -69,12 +69,12 @@ public class FINHome extends TabActivity {
 
 			addTab(new TextView(this),
 					"Categories",
-					res.getIdentifier("@drawable/categories_tab_selector", null, getPackageName()),
+					res.getIdentifier("@drawable/categories_tab_icon", null, getPackageName()),
 					tabHost,
 					new Intent().setClass(this, FINMenu.class));
 			addTab(new TextView(this),
 					"Buildings",
-					res.getIdentifier("@drawable/buildings_tab_selector", null, getPackageName()),
+					res.getIdentifier("@drawable/buildings_tab_icon", null, getPackageName()),
 					tabHost,
 					new Intent().setClass(this, BuildingList.class));
 		}
