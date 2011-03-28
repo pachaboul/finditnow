@@ -159,12 +159,13 @@ public class FINHome extends TabActivity {
 	 * Otherwise, return the appropriate category icon.
 	 */
 	public static Integer getBigIcon(String category) {
-		int bigIcon = iconsMap.get(category + "-big");
-		if (bigIcon == 0) {
-			return R.drawable.android;
-		} else {
-			return bigIcon;
+		if (!category.equals("")) {
+			int bigIcon = iconsMap.get(category + "-big");
+			if (bigIcon != 0) {
+				return bigIcon;
+			}
 		}
+		return R.drawable.android;
 	}
 
 	/**
