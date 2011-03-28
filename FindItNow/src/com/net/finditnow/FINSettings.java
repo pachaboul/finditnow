@@ -1,12 +1,14 @@
 package com.net.finditnow;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.provider.SearchRecentSuggestions;
 import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,24 +16,41 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class FINSettings extends PreferenceActivity {
+	
+	public static final String PREFS_NAME = "MyPrefsFile";
+	private Context context;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.settings);
 		setTitle(getString(R.string.app_name) + " > Settings");
 		
+		context = this;
+		
 		// Get the custom preference
-		Preference customPref = (Preference) findPreference("customPref");
-		customPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+		Preference searchHistory = (Preference) findPreference("clearHistory");
+		searchHistory.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
 			public boolean onPreferenceClick(Preference preference) {
-				Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
 				
-				SharedPreferences customSharedPreference = getSharedPreferences("myCustomSharedPrefs", Activity.MODE_PRIVATE);
-				SharedPreferences.Editor editor = customSharedPreference.edit();
-			
-				editor.putString("myCustomPref", "The preference has been clicked");
-				editor.commit();
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    			builder.setMessage("Are you sure you want to clear your search history?");
+    			builder.setCancelable(false);
+    			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    		           public void onClick(DialogInterface dialog, int id) {
+    						Toast.makeText(context, "Your search history has been cleared", Toast.LENGTH_LONG).show();
+    						SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getBaseContext(), SearchSuggestions.AUTHORITY, SearchSuggestions.MODE);
+    						suggestions.clearHistory();
+    		           }
+    		       });
+    			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+    		           public void onClick(DialogInterface dialog, int id) {
+    		                dialog.cancel();
+    		           }
+    		       });
+    			AlertDialog dialog = builder.create();
+    			dialog.show();
 				
 				return true;
 			}
