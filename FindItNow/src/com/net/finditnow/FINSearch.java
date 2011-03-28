@@ -46,7 +46,8 @@ public class FINSearch extends FINListActivity {
 
 			ArrayList<String> foundLocations = new ArrayList<String>();
 			for (Integer id : searchMap.keySet()) {
-				foundLocations.add(FINMap.getCategoryItem(searchMap.get(id), appData.getString("category")).getInfo().get(0).replace("<br />", "\n"));
+				Building build = FINHome.getBuilding(searchMap.get(id));
+				foundLocations.add(build == null? "Outdoor Location: " : build.getName() + ": " + FINMap.getCategoryItem(searchMap.get(id), category).getInfo().get(0).replace("<br />", "\n"));
 			}
 
 			if (!searchMap.keySet().isEmpty()) {
