@@ -241,7 +241,7 @@ public class FINMap extends FINMapActivity {
 
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
-		drawable = getResources().getDrawable(FINHome.getIcon(category));
+		drawable = getResources().getDrawable(building.equals("")? FINHome.getIcon(category) : R.drawable.buildings);
 		itemizedOverlay = new UWOverlay(drawable, this, category, itemName, geoPointItem);
 		
 		// Setup the ImageButtons
