@@ -12,10 +12,14 @@ import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -308,5 +312,58 @@ public class FINMap extends FINMapActivity {
 		if (itemizedOverlay.size() > 0) {
 			mapOverlays.add(itemizedOverlay);
 		}
+	}
+	
+	/**
+	 * Expand and define the Android options menu
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle the item selected
+		switch (item.getItemId()) {
+
+		// Return to the categories screen
+		case R.id.home_button:
+			startActivity(new Intent(this, FINHome.class));
+			return true;
+		case R.id.search_button:
+			onSearchRequested();
+			return true;
+		case R.id.login_button:
+			startActivity(new Intent(this, FINLogin.class));
+			return true;
+		case R.id.logout_button:
+			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+    		
+    		String result = DBCommunicator.logout(phone_id, getBaseContext());
+    		if (result.equals(getString(R.string.logged_out))) {
+    			FINHome.setLoggedIn(false);
+    		}
+    		
+    		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+    		
+    		return true;
+		case R.id.add_new_button:
+			startActivity(new Intent(this, FINAddNew.class));
+			return true;
+		case R.id.settings_button:
+			startActivity(new Intent(this, FINSettings.class));
+			return true;
+		case R.id.help_button:
+			startActivity(new Intent(this, FINHelp.class));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		if (building.equals("")) {
+			menu.findItem(R.id.search_button).setVisible(true);
+		}
+
+		return true;
 	}
 }

@@ -78,6 +78,9 @@ public class FINMapActivity extends MapActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		
+		menu.findItem(R.id.search_button).setVisible(false);
+		
 		if (FINHome.isLoggedIn()) {
 			menu.findItem(R.id.login_button).setVisible(false);
 			menu.findItem(R.id.logout_button).setVisible(true);

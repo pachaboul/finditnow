@@ -62,7 +62,7 @@ public final class R {
         public static final int GridItem=0x7f080019;
         public static final int ImageButtonLayout=0x7f08002b;
         public static final int MainLayout=0x7f08002a;
-        public static final int add_new_button=0x7f08003d;
+        public static final int add_new_button=0x7f08003e;
         public static final int addmap_confirm=0x7f080007;
         public static final int addnew_additem=0x7f080005;
         public static final int addnew_bspinner=0x7f080002;
@@ -96,7 +96,7 @@ public final class R {
         public static final int grid_item_button=0x7f08001b;
         public static final int grid_item_text=0x7f08001a;
         public static final int gridview=0x7f08002e;
-        public static final int help_button=0x7f08003e;
+        public static final int help_button=0x7f08003f;
         public static final int help_contents=0x7f08001c;
         public static final int help_link=0x7f08001d;
         public static final int help_section_body=0x7f08001f;
@@ -105,14 +105,15 @@ public final class R {
         public static final int iconView=0x7f080018;
         public static final int layout_rootflr=0x7f080013;
         public static final int login_button=0x7f080027;
-        public static final int logout_button=0x7f08003b;
+        public static final int logout_button=0x7f08003c;
         public static final int mainlayout=0x7f080006;
         public static final int mapview=0x7f080008;
         public static final int my_location_button=0x7f08002d;
         public static final int outDoorText=0x7f080033;
         public static final int password_text=0x7f080025;
         public static final int popupLayout=0x7f080030;
-        public static final int settings_button=0x7f08003c;
+        public static final int search_button=0x7f08003b;
+        public static final int settings_button=0x7f08003d;
         public static final int showFlrButt=0x7f080036;
         public static final int superuser_link=0x7f080029;
         public static final int tabIcon=0x7f080038;
@@ -165,7 +166,8 @@ public final class R {
         public static final int must_login=0x7f050014;
         public static final int my_location=0x7f050001;
         public static final int not_logged_in=0x7f050013;
-        public static final int search_hint=0x7f050016;
+        public static final int search=0x7f050016;
+        public static final int search_hint=0x7f050017;
         public static final int settings=0x7f05000c;
         public static final int spinner_building=0x7f050009;
         public static final int spinner_category=0x7f050008;
