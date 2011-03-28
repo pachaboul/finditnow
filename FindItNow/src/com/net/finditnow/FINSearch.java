@@ -23,18 +23,21 @@ public class FINSearch extends FINListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
-
+		
 		// Get the intent, verify the action and get the query
 		Intent intent = getIntent();
 		Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
+
+		final String category = appData.getString("category");
+		final String itemName = appData.getString("itemName");
+		
+		setTitle(getString(R.string.app_name) + " > " + category + " > " + "Search");
+
 		if (Intent.ACTION_SEARCH.equals(intent.getAction()) && appData != null) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 
 			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchSuggestions.AUTHORITY, SearchSuggestions.MODE);
 			suggestions.saveRecentQuery(query, null);
-
-			final String category = appData.getString("category");
-			final String itemName = appData.getString("itemName");
 
 			String result = DBCommunicator.searchLocations(category, appData.getString("lat"), 
 					appData.getString("lon"), query, getBaseContext());
