@@ -185,14 +185,16 @@ public class FINMap extends FINMapActivity {
 	
 	@Override
 	public boolean onSearchRequested() {
-	    Bundle appData = new Bundle();
-	    
-	    appData.putString("category", category);
-	    appData.putString("itemName", itemName);
-	    appData.putString("lat", DEFAULT_LOCATION.getLatitudeE6()+"");
-	    appData.putString("lon", DEFAULT_LOCATION.getLongitudeE6()+"");
-	    
-	    startSearch(null, false, appData, false);
+		if (building.equals("")) {
+		    Bundle appData = new Bundle();
+		    
+		    appData.putString("category", category);
+		    appData.putString("itemName", itemName);
+		    appData.putString("lat", DEFAULT_LOCATION.getLatitudeE6()+"");
+		    appData.putString("lon", DEFAULT_LOCATION.getLongitudeE6()+"");
+		    
+		    startSearch(null, false, appData, false);
+		}
 	    return true;
 	}
 	
