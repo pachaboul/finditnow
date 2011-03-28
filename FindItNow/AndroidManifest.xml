@@ -30,7 +30,8 @@
         <activity android:name=".FINAddIndoor"></activity>
         <activity android:name=".FINAddOutdoor"></activity>
         <activity android:name=".FINLogin"></activity>
-        <activity android:name=".FINSearch">
+        <activity android:name=".FINSearch"
+        	 	  android:launchMode="singleTop">
         	<intent-filter>
        			 <action android:name="android.intent.action.SEARCH" />
    			</intent-filter>
@@ -38,6 +39,8 @@
                    	   android:resource="@xml/searchable"/>
         </activity>
 		<uses-library android:name="com.google.android.maps" />
+		<provider android:name=".SearchSuggestions"
+              android:authorities="com.net.finditnow.SearchSuggestions" />
     </application>
 
 	<uses-permission android:name="android.permission.INTERNET" />
