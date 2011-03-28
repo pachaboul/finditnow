@@ -94,6 +94,7 @@ public class FINSettings extends PreferenceActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		
 		menu.findItem(R.id.settings_button).setVisible(false);
+		menu.findItem(R.id.search_button).setVisible(false);
 		
 		if (FINHome.isLoggedIn()) {
 			menu.findItem(R.id.login_button).setVisible(false);
