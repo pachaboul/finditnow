@@ -21,6 +21,8 @@
 		android:layout_height="wrap_content"
 		android:text="Title"
 		android:textStyle="bold"
-		android:textColor="@drawable/tab_text_selector"/>
+		android:shadowColor="#000000"  
+	    android:shadowRadius="1.5" 
+		android:textColor="#FFFFFF"/>
 		
 </LinearLayout>
