@@ -181,7 +181,7 @@ public class JsonParser {
 					}
 					if (ob.has(LOCATION_NAMES[3]))
 					{
-						String s = ob.get(LOCATION_NAMES[3]).getAsString().replace("\n", "<br />");
+						String s = ob.get(LOCATION_NAMES[3]).getAsString().replace("\\n", "<br />").replace("\n", "<br />");
 						//the floor info associated with this point
 						item.addInfo(s);
 					}
@@ -270,7 +270,7 @@ public class JsonParser {
 						}
 						if (ob.has("info"))
 						{
-							String s = ob.get(LOCATION_NAMES[3]).getAsString().replace("\\n", "<br />");
+							String s = ob.get(LOCATION_NAMES[3]).getAsString().replace("\\n", "<br />").replace("\n", "<br />");
 							//the floor info associated with this point
 							item.addInfo(s);
 						}
