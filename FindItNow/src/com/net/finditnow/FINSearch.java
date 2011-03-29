@@ -1,11 +1,11 @@
 package com.net.finditnow;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import com.google.android.maps.GeoPoint;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -47,8 +46,11 @@ public class FINSearch extends FINListActivity {
 			ArrayList<String> foundLocations = new ArrayList<String>();
 			for (Integer id : searchMap.keySet()) {
 				Building build = FINHome.getBuilding(searchMap.get(id));
-				foundLocations.add(build == null? "Outdoor Location: " : build.getName() + ": " + FINMap.getCategoryItem(searchMap.get(id), category).getInfo().get(0).replace("<br />", "\n"));
+				String str = build == null? "Outdoor Location: " : build.getName() + ": " + FINMap.getCategoryItem(searchMap.get(id), category).getInfo().get(0).replace("<br />", "\n");
+				foundLocations.add(str);
 			}
+			
+			Collections.sort(foundLocations);
 
 			if (!searchMap.keySet().isEmpty()) {
 
