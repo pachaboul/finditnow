@@ -1,5 +1,6 @@
 package com.net.finditnow;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,18 +43,28 @@ public class FINSearch extends FINListActivity {
 			String result = DBCommunicator.searchLocations(category, appData.getString("lat"), 
 					appData.getString("lon"), query, getBaseContext());
 
-			final HashMap<Integer, GeoPoint> searchMap = JsonParser.parseSearchJson(result);
-
-			ArrayList<String> foundLocations = new ArrayList<String>();
-			for (Integer id : searchMap.keySet()) {
-				Building build = FINHome.getBuilding(searchMap.get(id));
-				String str = build == null? "Outdoor Location: " : build.getName() + ": " + FINMap.getCategoryItem(searchMap.get(id), category).getInfo().get(0).replace("<br />", "\n");
-				foundLocations.add(str);
+			HashMap<Integer, GeoPoint> unsortedSearchMap = JsonParser.parseSearchJson(result);
+			ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
+			for (Integer id : unsortedSearchMap.keySet()) {
+				points.add(unsortedSearchMap.get(id));
+			}
+			Collections.sort(points, new ComparableGeoPoint());
+			final HashMap<Integer, GeoPoint> searchMap = new HashMap<Integer, GeoPoint>();
+			for (Integer id : unsortedSearchMap.keySet()) {
+				searchMap.put(id, points.get(id));
 			}
 			
-			Collections.sort(foundLocations);
+			ArrayList<String> foundLocations = new ArrayList<String>();
+			for (GeoPoint point : points) {
+				Building build = FINHome.getBuilding(point);
+				BigDecimal dist = FINMap.distanceBetween(FINMap.getLocation(), point);
+				String distance = dist.equals(new BigDecimal(-1))? "Cannot calculate" : dist + " mi.";
+				String str = (build == null? "Outdoor Location \n" : build.getName() + " \n")  + "Distance to here: " + distance + "\n" + 
+						FINMap.getCategoryItem(point, category).getInfo().get(0).replace("<br />", "\n");
+				foundLocations.add(str);
+			}
 
-			if (!searchMap.keySet().isEmpty()) {
+			if (!points.isEmpty()) {
 
 				setListAdapter(new ArrayAdapter<String>(this, R.layout.building_list, foundLocations));
 
