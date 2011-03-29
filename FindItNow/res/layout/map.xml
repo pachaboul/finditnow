@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/MainLayout" 
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent">
+				
+	<LinearLayout 
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/mainlayout"
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+	
+	    <com.google.android.maps.MapView
+	        android:id="@+id/mapview"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:clickable="true"
+	        android:apiKey="0cZLD3B1RyEy9zxs71-DP_5dLllpbARieRTOg1g"
+	    />
+	
+	</LinearLayout>
+	
+	<LinearLayout 
+		android:id="@+id/ImageButtonLayout"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_marginBottom="10px"
+		android:layout_marginRight="10px">
+
+		<ImageButton android:layout_width="50px"
+				android:layout_height="50px" 
+				android:layout_marginRight="4px"
+				android:id="@+id/default_location_button"
+				android:src="@drawable/default_location"></ImageButton>
+				
+		<ImageButton android:layout_width="50px"
+				android:layout_marginLeft="4px"
+				android:layout_height="50px" 
+				android:id="@+id/my_location_button"
+				android:src="@drawable/my_location"></ImageButton>
+
+	</LinearLayout>
+</RelativeLayout>
