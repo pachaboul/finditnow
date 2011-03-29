@@ -3,8 +3,9 @@
 	android:orientation="vertical" 
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent"
-		android:background="#ffffff">
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="#ffffff">
+	
+	<LinearLayout
 			android:orientation="vertical"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
@@ -49,7 +50,7 @@
 	       
 				    <EditText android:id="@+id/txt_username"
 				             android:layout_height="wrap_content"
-				             android:layout_width="250px"
+				             android:layout_width="250dp"
 				             android:singleLine="true" />
 	             
 	             	<TextView
@@ -66,7 +67,7 @@
 				    <EditText android:id="@+id/txt_password"
 				             android:password="true"
 				             android:layout_height="wrap_content"
-				             android:layout_width="250px"
+				             android:layout_width="250dp"
 				             android:singleLine="true" />
 			</LinearLayout>
 	
