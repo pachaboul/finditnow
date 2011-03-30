@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <PreferenceCategory
+                android:title="General Settings">
+        <ListPreference
+                android:title="Change Campus/Region"
+                android:summary="Change the campus or region with which you've associated FindItNow"
+                android:key="changeCampus"
+                android:entries="@array/campuses"
+          		android:entryValues="@array/campuses" /> 
+        <Preference
+                android:title="Clear Search History"
+                android:summary="Delete your search history from FindItNow"
+                android:key="clearHistory" />
+        </PreferenceCategory>
+</PreferenceScreen>
