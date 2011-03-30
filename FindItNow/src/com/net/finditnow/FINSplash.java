@@ -100,6 +100,12 @@ public class FINSplash extends Activity {
 
 		public void onClick(DialogInterface dialog, int which) {
 			setContentView(R.layout.fin_splash);
+			
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("changeCampus", getBaseContext().getResources().getStringArray(R.array.campuses)[which]);
+			editor.commit();
+			
 			splashThread.start();
 		}
 	};

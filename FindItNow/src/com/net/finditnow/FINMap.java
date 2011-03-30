@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -115,8 +116,9 @@ public class FINMap extends FINMapActivity {
 		
 		// We need an Editor object to make preference changes.
 	    // All objects are from android.context.Context
-	    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-	    SharedPreferences.Editor editor = settings.edit();
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	    SharedPreferences.Editor editor = prefs.edit();
+	    
 	    editor.putInt("centerLat", mapView.getMapCenter().getLatitudeE6());
 	    editor.putInt("centerLon", mapView.getMapCenter().getLongitudeE6());
 	    editor.putInt("zoomLevel", mapView.getZoomLevel());
@@ -221,10 +223,10 @@ public class FINMap extends FINMapActivity {
 	private void createMap() {
 		
 		// Restore preferences
-	    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-	    int latitude = settings.getInt("centerLat", DEFAULT_LOCATION.getLatitudeE6());
-	    int longitude = settings.getInt("centerLon", DEFAULT_LOCATION.getLongitudeE6());
-	    int zoomLevel = settings.getInt("zoomLevel", 18);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	    int latitude = prefs.getInt("centerLat", DEFAULT_LOCATION.getLatitudeE6());
+	    int longitude = prefs.getInt("centerLon", DEFAULT_LOCATION.getLongitudeE6());
+	    int zoomLevel = prefs.getInt("zoomLevel", 18);
 
 		// Initialize our MapView and MapController
 		mapView = (MapView) findViewById(R.id.mapview);
