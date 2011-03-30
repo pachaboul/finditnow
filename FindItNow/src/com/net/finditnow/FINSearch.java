@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -25,6 +26,16 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class FINSearch extends FINListActivity {
+	
+	ArrayList<String> distances;
+	ArrayList<String> walking_times;
+	ArrayList<String> building_names;
+	ArrayList<String> special_info;
+	HashMap<Integer, GeoPoint> searchMap;
+	
+	private String category;
+	private String itemName;
+	
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,9 +44,14 @@ public class FINSearch extends FINListActivity {
 		// Get the intent, verify the action and get the query
 		Intent intent = getIntent();
 		Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
+		
+		distances = new ArrayList<String>();
+		walking_times = new ArrayList<String>();
+		building_names = new ArrayList<String>();
+		special_info = new ArrayList<String>();
 
-		final String category = appData.getString("category");
-		final String itemName = appData.getString("itemName");
+		category = appData.getString("category");
+		itemName = appData.getString("itemName");
 		
 		setTitle(getString(R.string.app_name) + " > " + category + " > " + "Search");
 
@@ -54,47 +70,27 @@ public class FINSearch extends FINListActivity {
 				points.add(unsortedSearchMap.get(id));
 			}
 			Collections.sort(points, new ComparableGeoPoint());
-			final HashMap<Integer, GeoPoint> searchMap = new HashMap<Integer, GeoPoint>();
+			searchMap = new HashMap<Integer, GeoPoint>();
 			for (Integer id : unsortedSearchMap.keySet()) {
 				searchMap.put(id, points.get(id));
 			}
 			
-			ArrayList<String> foundLocations = new ArrayList<String>();
 			for (GeoPoint point : points) {
 				Building build = FINHome.getBuilding(point);
 				BigDecimal dist = FINMap.distanceBetween(FINMap.getLocation(), point);
-				String distance = dist.equals(new BigDecimal(-1))? "Cannot calculate" : dist + " mi.";
-				String str = (build == null? "Outdoor Location \n" : build.getName() + " \n")  + "Distance to here: " + distance + "\n" + 
-						FINMap.getCategoryItem(point, category).getInfo().get(0).replace("<br />", "\n");
-				foundLocations.add(str);
+				distances.add(dist.equals(new BigDecimal(-1))? "N/A" : dist + " mi.");
+				walking_times.add(dist.equals(new BigDecimal(-1))? "N/A" : FINMap.walkingTime(dist, 35) + " " + FINUtil.pluralize("minute", FINMap.walkingTime(dist, 35)));
+				building_names.add(build == null? "Outdoor Location" : build.getName());
+				special_info.add(FINMap.getCategoryItem(point, category).getInfo().get(0).replace("<br />", "\n"));
 			}
 
 			if (!points.isEmpty()) {
-
-				//setListAdapter(new ArrayAdapter<String>(this, R.layout.building_list, foundLocations));
 				
 				ListView lv = getListView();
 				lv.setTextFilterEnabled(true);
 				
 				lv.setAdapter(new SearchAdapter(this));
-
-				// Every item will launch the map
-				lv.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-						GeoPoint selectedLoc = searchMap.get(position);
-
-						Intent myIntent = new Intent(v.getContext(), FINMap.class);
-
-						myIntent.putExtra("building", "");
-						myIntent.putExtra("category", category);
-						myIntent.putExtra("itemName", itemName);
-						myIntent.putExtra("centerLat", selectedLoc.getLatitudeE6());
-						myIntent.putExtra("centerLon", selectedLoc.getLongitudeE6());
-
-						startActivity(myIntent);
-					}
-				});
-
+				
 			} else {
 				Toast.makeText(getBaseContext(), "No results found", Toast.LENGTH_SHORT).show();
 				finish();
@@ -109,7 +105,7 @@ public class FINSearch extends FINListActivity {
 			mContext = context;
 		}
 		
-		public View getView(int position, View convertView, ViewGroup parent) {   
+		public View getView(final int position, View convertView, ViewGroup parent) {   
 			View myView;
 			
 			if (convertView == null){
@@ -123,29 +119,45 @@ public class FINSearch extends FINListActivity {
 			replace strings
 			*/
 			TextView dist = (TextView) myView.findViewById(R.id.walking_distance);
-			dist.setText("1.4 mi");
+			dist.setText(distances.get(position));
 			
 			TextView time = (TextView) myView.findViewById(R.id.walking_time);
-			time.setText("20 minutes");
+			time.setText(walking_times.get(position));
 			
 			TextView bldg = (TextView) myView.findViewById(R.id.building_name);
-			bldg.setText("Suzzallo Building");
+			bldg.setText(building_names.get(position));
 			
 			TextView info = (TextView) myView.findViewById(R.id.special_info);
-			info.setText("The coffee is really delicious.  It's hand-grounded by Oompa Loompas.  It is not fair trade BTW.");
+			info.setText(special_info.get(position));
 			
 			/*
 			put your onclick listener here
 			*/
+			// Every item will launch the map
+			myView.setOnClickListener(new OnClickListener() {
+
+				public void onClick(View v) {
+					GeoPoint selectedLoc = searchMap.get(position);
+
+					Intent myIntent = new Intent(v.getContext(), FINMap.class);
+
+					myIntent.putExtra("building", "");
+					myIntent.putExtra("category", category);
+					myIntent.putExtra("itemName", itemName);
+					myIntent.putExtra("centerLat", selectedLoc.getLatitudeE6());
+					myIntent.putExtra("centerLon", selectedLoc.getLongitudeE6());
+
+					startActivity(myIntent);
+					
+				}
+			});
+
 	    	
             return myView;
 		}
 
 		public int getCount() {
-			/*
-			change this
-			*/
-			return 8;
+			return building_names.size();
 		}
 
 		public Object getItem(int position) {
