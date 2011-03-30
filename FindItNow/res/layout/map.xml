@@ -28,18 +28,18 @@
 		android:layout_alignParentRight="true"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
-		android:layout_marginBottom="10dp"
-		android:layout_marginRight="10dp">
+		android:layout_marginBottom="6dp"
+		android:layout_marginRight="3dp">
 
-		<ImageButton android:layout_width="50dp"
-				android:layout_height="50dp" 
-				android:layout_marginRight="4dp"
+		<ImageButton android:layout_width="37dp"
+				android:layout_height="37dp" 
+				android:layout_marginRight="1dp"
 				android:id="@+id/default_location_button"
 				android:src="@drawable/default_location"></ImageButton>
 				
-		<ImageButton android:layout_width="50dp"
-				android:layout_marginLeft="4dp"
-				android:layout_height="50dp" 
+		<ImageButton android:layout_width="37dp"
+				android:layout_marginLeft="1dp"
+				android:layout_height="37dp" 
 				android:id="@+id/my_location_button"
 				android:src="@drawable/my_location"></ImageButton>
 

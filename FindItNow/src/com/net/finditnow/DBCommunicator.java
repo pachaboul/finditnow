@@ -82,6 +82,7 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("item", FINUtil.sendItemName(item)));
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("long", lon));
+		nameValuePairs.add(new BasicNameValuePair("rad", 6050+""));
 		
 		return Post("getLocations.php", nameValuePairs, context);
 	}
@@ -94,7 +95,7 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("long", lon));
 		
-		return Post("getAllLocations.php", nameValuePairs, context);
+		return Post("getLocations.php", nameValuePairs, context);
 	}
 	
 	public static String login(String phone_id, String username, String userpass, Context context) {
