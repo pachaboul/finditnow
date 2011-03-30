@@ -1,23 +1,30 @@
 package com.net.finditnow;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class FINSplash extends Activity {
 
 	protected boolean active = true;
 	protected int splashTime = 1500; // time to display the splash screen in ms
+	protected Thread splashThread;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fin_splash);
-
+		
 		// thread for displaying the SplashScreen
-		Thread splashThread = new Thread() {
+		splashThread = new Thread() {
 
 			@Override
 			public void run() {
@@ -62,7 +69,22 @@ public class FINSplash extends Activity {
 				}
 			}
 		};
-		splashThread.start();
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);  
+		String listpref = prefs.getString("changeCampus", "");
+
+		if (listpref.equals("")) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle("Select your campus or region");
+			builder.setItems(getResources().getStringArray(R.array.campuses), campus_listener);		
+			builder.setCancelable(false);		
+	
+			AlertDialog alert = builder.create();
+			alert.show();
+		} else {
+			setContentView(R.layout.fin_splash);
+			splashThread.start();
+		}
 	}
 
 	@Override
@@ -72,4 +94,13 @@ public class FINSplash extends Activity {
 		}
 		return true;
 	}
+	
+	// Listener for campus popup
+	private OnClickListener campus_listener = new OnClickListener() {
+
+		public void onClick(DialogInterface dialog, int which) {
+			setContentView(R.layout.fin_splash);
+			splashThread.start();
+		}
+	};
 }
