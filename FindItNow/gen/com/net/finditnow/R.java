@@ -145,10 +145,9 @@ public final class R {
         public static final int menu=0x7f03000e;
         public static final int multi_category_list=0x7f03000f;
         public static final int popupdialog=0x7f030010;
-        public static final int search=0x7f030011;
-        public static final int search_item=0x7f030012;
-        public static final int settings=0x7f030013;
-        public static final int tab_background=0x7f030014;
+        public static final int search_item=0x7f030011;
+        public static final int settings=0x7f030012;
+        public static final int tab_background=0x7f030013;
     }
     public static final class menu {
         public static final int options_menu=0x7f080000;
