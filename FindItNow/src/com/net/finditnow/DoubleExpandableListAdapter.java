@@ -23,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import android.util.Log;
+
 public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 
 	//data for populating the list
@@ -31,7 +33,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	private String[] categories;
 	private HashMap<String,CategoryItem> dataMap;
 
-	public static final int HEIGHT = 45;
+	public static int HEIGHT = 45;
 	/**
 	 * Creates a new FloorExpandableListAdapter with each variable initialized
 	 * 
@@ -112,7 +114,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		String parentMode = "categoryView";
 		relative.getLayoutParams().height= HEIGHT;
 		
-		lv.setOnGroupExpandListener(new DoubleOnExpandListener(relative));
+		lv.setOnGroupExpandListener(new DoubleOnExpandListener(relative,parent));
 		lv.setOnGroupCollapseListener(new DoubleOnCollapseListener(relative));
 		lv.setAdapter(new FloorExpandableListAdapter( context, dataMap.get(category),
 				  category,  dbCategory, item,  parentText,  parentMode) );
@@ -187,14 +189,34 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	
 	private class DoubleOnExpandListener implements ExpandableListView.OnGroupExpandListener{
 		private View currentView ;
-		public DoubleOnExpandListener(View view){
+		private ViewGroup parent;
+		public DoubleOnExpandListener(View view,ViewGroup parent){
 			currentView = view;
+			this.parent = parent;
 		}
 		public void onGroupExpand(int groupPosition) {
+			
 			ExpandableListView lv = (ExpandableListView) currentView.findViewById(R.id.cateList);
 
-			int textHeight = ((String)lv.getExpandableListAdapter().getChild(groupPosition, 0)).length() / 35;
-			currentView.getLayoutParams().height = HEIGHT+(HEIGHT+15+(textHeight*18));
+			
+			View  relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
+			
+			TextView detial = (TextView) relative.findViewById(R.id.floorDetailText);
+			int detialHeight = ((int)detial.getTextSize()+4) * ( 1+
+					(((String)lv.getExpandableListAdapter().getChild(groupPosition, 0)).length() / 35));
+			
+			int paddings = relative.findViewById(R.id.layout_rootflr).getPaddingTop()+relative.findViewById(R.id.layout_rootflr).getPaddingTop();
+			
+			TextView butt = (TextView) relative.findViewById(R.id.flrChildLayout).findViewById(R.id.flrDetailButton);
+			int buttHeight = butt.getPaddingBottom()+butt.getPaddingTop()+ (int)butt.getTextSize()+4;
+			
+			//buttHeight += relative.getResources().getDrawable(R.drawable.fin_rounded_button_normal).getBounds().height();
+			
+			Log.i("d", detialHeight+"");
+			Log.i("d", paddings+"");
+			Log.i("d", buttHeight+"");
+			
+			currentView.getLayoutParams().height = HEIGHT+(paddings+buttHeight+detialHeight);
 			
 			lv.setSelectedGroup(groupPosition);		
 		}
