@@ -17,6 +17,7 @@ public class FINListActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+    	setContentView(R.layout.list_bg);
 		setTitle(getString(R.string.app_name));
 		
 	    if (getIntent().hasExtra("result")) {
