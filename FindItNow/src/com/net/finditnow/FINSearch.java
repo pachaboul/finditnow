@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import com.google.android.maps.GeoPoint;
-
 import android.app.ProgressDialog;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +20,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.maps.GeoPoint;
 
 public class FINSearch extends FINListActivity {
 
@@ -114,7 +113,7 @@ public class FINSearch extends FINListActivity {
 			ListView lv = FINSearch.this.getListView();
 			lv.setTextFilterEnabled(true);
 
-			lv.setAdapter(new SearchAdapter(getBaseContext()));
+			lv.setAdapter(new SearchAdapter());
 		}
 	};
 	
@@ -126,10 +125,8 @@ public class FINSearch extends FINListActivity {
 	};
 
 	private class SearchAdapter extends BaseAdapter {
-		Context mContext;
 
-		public SearchAdapter(Context context) {               
-			mContext = context;
+		public SearchAdapter() {               
 		}
 
 		public View getView(final int position, View convertView, ViewGroup parent) {   
