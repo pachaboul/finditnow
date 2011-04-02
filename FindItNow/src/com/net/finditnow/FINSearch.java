@@ -47,9 +47,7 @@ public class FINSearch extends FINListActivity {
 		walking_times = new ArrayList<String>();
 		building_names = new ArrayList<String>();
 		special_info = new ArrayList<String>();
-
-		setTitle(getString(R.string.app_name) + " > " + category + " > " + "Search");
-
+		
 		// Get the intent, verify the action and get the query
 		Intent intent = getIntent();
 		appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
@@ -57,6 +55,8 @@ public class FINSearch extends FINListActivity {
 		category = appData.getString("category");
 		itemName = appData.getString("itemName");
 
+		setTitle(getString(R.string.app_name) + " > " + category + " > " + "Search");
+		
 		if (Intent.ACTION_SEARCH.equals(intent.getAction()) && appData != null) {
 			query = intent.getStringExtra(SearchManager.QUERY);
 
