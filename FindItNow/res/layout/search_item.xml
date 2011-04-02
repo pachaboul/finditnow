@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:paddingTop="5dp"
+	android:paddingLeft="10dp"
+	android:paddingBottom="5dp"
+	android:background="#FFFFFF">
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+	
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="100dp"
+			android:layout_height="wrap_content">
+			
+			<TextView
+				android:id="@+id/walking_distance"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:textStyle="bold"
+				android:textColor="@color/bright_green"
+				android:textSize="28dp"/>
+
+			<TextView
+				android:id="@+id/walking_time"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:textStyle="bold"
+				android:textColor="#444444"
+				android:textSize="16dp"/>	
+				
+		</LinearLayout>
+		
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+			
+			<TextView
+				android:id="@+id/building_name"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:textStyle="bold"
+				android:textColor="#000000"
+				android:textSize="20dp"/>
+			<TextView
+				android:id="@+id/special_info"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:textColor="#333333"
+				android:textSize="14dp"/>	
+				
+		</LinearLayout>
+	</LinearLayout>
+</LinearLayout>
