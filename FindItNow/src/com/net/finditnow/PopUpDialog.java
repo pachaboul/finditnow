@@ -165,9 +165,11 @@ public class PopUpDialog extends Dialog{
 	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),building,categories,dataMap));
 	    					lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
 								public void onGroupExpand(int groupPosition) {
-									ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
-									DoubleExpandableListAdapter.HEIGHT=lv.getChildAt(0).getHeight()- lv.getDividerHeight();
-									DoubleExpandableListAdapter.set = true;
+									if (!DoubleExpandableListAdapter.set){
+										ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
+										DoubleExpandableListAdapter.HEIGHT=lv.getChildAt(0).getHeight()- lv.getDividerHeight();
+										DoubleExpandableListAdapter.set = true;
+									}
 								}
 							});
 	    				}
