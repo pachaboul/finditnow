@@ -160,35 +160,15 @@ public class PopUpDialog extends Dialog{
 	    					lv.getLayoutParams().height = 250;
 
 	    				if (category.equals("")){
-	    					/*Building bui = new Building(1,"Test",new int[]{2,3,4,56}, new String[]{"Flr 1","Flr 2","Flr 3","Flr 4"});
-	    					String[] cateogries = new String[]{"Coffee1", "Restroom2", "Vending3"};
-	    					HashMap<String,CategoryItem> data = new HashMap<String,CategoryItem>();
-	    					
-	    					CategoryItem catItem = new CategoryItem();
-	    					catItem.addFloor_names("Flr 1");
-	    					catItem.addId(2);
-	    					catItem.addInfo("No Coffee!");
-	    					data.put("Coffee1", catItem);
-	    					
-	    					catItem = new CategoryItem();
-	    					catItem.addFloor_names("Flr 2");
-	    					catItem.addId(3);
-	    					catItem.addInfo("Male");
-	    					catItem.addFloor_names("Flr 3");
-	    					catItem.addId(4);
-	    					catItem.addInfo("Female");
-	    					data.put("Restroom2", catItem);	
-	    					
-	    					catItem = new CategoryItem();
-	    					catItem.addFloor_names("Flr 3");
-	    					catItem.addId(56);
-	    					catItem.addInfo("Milk!");
-	    					data.put("Vending3", catItem);*/
-	    					
 	    					String[] categories =dataMap.keySet().toArray(new String[0]);
 	    					
-;	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),building,categories,dataMap));
-	    					
+	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),building,categories,dataMap));
+	    					lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
+								public void onGroupExpand(int groupPosition) {
+									ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
+									DoubleExpandableListAdapter.HEIGHT=lv.getChildAt(0).getHeight()- lv.getDividerHeight();
+								}
+							});
 	    				}
 	    				else{
 		    				//auto scrolls to the item in view into the screen zone
