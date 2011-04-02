@@ -167,6 +167,7 @@ public class PopUpDialog extends Dialog{
 								public void onGroupExpand(int groupPosition) {
 									ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
 									DoubleExpandableListAdapter.HEIGHT=lv.getChildAt(0).getHeight()- lv.getDividerHeight();
+									DoubleExpandableListAdapter.set = true;
 								}
 							});
 	    				}

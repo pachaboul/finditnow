@@ -23,8 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import android.util.Log;
-
 public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 
 	//data for populating the list
@@ -34,6 +32,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	private HashMap<String,CategoryItem> dataMap;
 
 	public static int HEIGHT = 45;
+	public static boolean set = false;
 	/**
 	 * Creates a new FloorExpandableListAdapter with each variable initialized
 	 * 
@@ -207,7 +206,6 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			String[] lines = detialText.split("<br />");
 			int detialHeight = 0;
 			for (String line: lines){
-				Log.i("t",line.length() / 35 + "");
 				detialHeight += (Math.round(15* density + 0.5f)) * (1+ (line.length() / 35));
 			}
 			
