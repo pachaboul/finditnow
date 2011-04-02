@@ -26,7 +26,7 @@ public class BuildingList extends FINListActivity {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-    			
+    	
     	setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, FINHome.getBuildingsList()));
     	
     	ListView lv = getListView();
