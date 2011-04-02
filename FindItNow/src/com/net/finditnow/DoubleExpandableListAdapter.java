@@ -198,23 +198,19 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			
 			ExpandableListView lv = (ExpandableListView) currentView.findViewById(R.id.cateList);
 
-			
+		
 			View  relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
-			
-			TextView detial = (TextView) relative.findViewById(R.id.floorDetailText);
-			int detialHeight = ((int)detial.getTextSize()) * ( 3+
+		
+			float density = relative.getResources().getDisplayMetrics().density;
+
+			int detialHeight = (Math.round(14* density + 0.5f)) * (1+
 					(((String)lv.getExpandableListAdapter().getChild(groupPosition, 0)).length() / 35));
 			
-			int paddings = relative.findViewById(R.id.layout_rootflr).getPaddingTop()+relative.findViewById(R.id.layout_rootflr).getPaddingTop();
+			int paddings = relative.findViewById(R.id.layout_rootflr).getPaddingBottom()+relative.findViewById(R.id.layout_rootflr).getPaddingTop();
 			
 			TextView butt = (TextView) relative.findViewById(R.id.flrChildLayout).findViewById(R.id.flrDetailButton);
-			int buttHeight = butt.getPaddingBottom()+butt.getPaddingTop()+ (int)butt.getTextSize();
-			
-			//buttHeight += relative.getResources().getDrawable(R.drawable.fin_rounded_button_normal).getBounds().height();
-			
-			Log.i("d", detialHeight+"");
-			Log.i("d", paddings+"");
-			Log.i("d", buttHeight+"");
+			int buttHeight = butt.getPaddingBottom()+butt.getPaddingTop();
+			buttHeight += Math.round((20+3+3) * density + 0.5f);
 			
 			currentView.getLayoutParams().height = HEIGHT+(paddings+buttHeight+detialHeight);
 			
