@@ -202,13 +202,13 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			View  relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
 			
 			TextView detial = (TextView) relative.findViewById(R.id.floorDetailText);
-			int detialHeight = ((int)detial.getTextSize()+4) * ( 1+
+			int detialHeight = ((int)detial.getTextSize()) * ( 3+
 					(((String)lv.getExpandableListAdapter().getChild(groupPosition, 0)).length() / 35));
 			
 			int paddings = relative.findViewById(R.id.layout_rootflr).getPaddingTop()+relative.findViewById(R.id.layout_rootflr).getPaddingTop();
 			
 			TextView butt = (TextView) relative.findViewById(R.id.flrChildLayout).findViewById(R.id.flrDetailButton);
-			int buttHeight = butt.getPaddingBottom()+butt.getPaddingTop()+ (int)butt.getTextSize()+4;
+			int buttHeight = butt.getPaddingBottom()+butt.getPaddingTop()+ (int)butt.getTextSize();
 			
 			//buttHeight += relative.getResources().getDrawable(R.drawable.fin_rounded_button_normal).getBounds().height();
 			
