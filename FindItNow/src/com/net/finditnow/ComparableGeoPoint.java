@@ -5,7 +5,6 @@ import java.math.MathContext;
 import java.util.Comparator;
 
 import android.location.Location;
-import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 
