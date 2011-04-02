@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#444444">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent">
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+	        <TabWidget
+	            android:id="@android:id/tabs"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"/>
+			 <FrameLayout
+	            android:id="@android:id/tabcontent"
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:background="#FFFFFF"/>
+		</LinearLayout>
+		
+		<!-- Yup ... it's a fake-ified strip. -->
+		<LinearLayout
+        	android:id="@+id/fronttab_strip"
+            android:layout_width="fill_parent"
+            android:layout_height="9dp"
+			android:layout_marginTop="63dp"
+			android:layout_marginBottom="40dp"
+			android:background="@color/bright_green"
+			android:layout_above="@android:id/tabs"/>
+			
+    </RelativeLayout>
+</TabHost>
