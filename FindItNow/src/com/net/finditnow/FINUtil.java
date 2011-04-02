@@ -116,8 +116,4 @@ public class FINUtil {
 
 		return cats.substring(0, cats.length() - 1);
 	}
-	
-	public static int spLineBreaks(String sp) {
-		return sp.split("\n").length;
-	}
 }

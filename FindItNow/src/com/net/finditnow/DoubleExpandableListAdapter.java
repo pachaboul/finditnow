@@ -202,9 +202,14 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			View  relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
 		
 			float density = relative.getResources().getDisplayMetrics().density;
-
-			int detialHeight = (Math.round(14* density + 0.5f)) * (1+
-					(((String)lv.getExpandableListAdapter().getChild(groupPosition, 0)).length() / 35));
+			String detialText = (String)lv.getExpandableListAdapter().getChild(groupPosition, 0);
+			
+			String[] lines = detialText.split("<br />");
+			int detialHeight = 0;
+			for (String line: lines){
+				Log.i("t",line.length() / 35 + "");
+				detialHeight += (Math.round(15* density + 0.5f)) * (1+ (line.length() / 35));
+			}
 			
 			int paddings = relative.findViewById(R.id.layout_rootflr).getPaddingBottom()+relative.findViewById(R.id.layout_rootflr).getPaddingTop();
 			
