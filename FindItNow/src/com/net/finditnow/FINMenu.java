@@ -27,7 +27,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class FINMenu extends FINActivity {
-
+	
 	private ProgressDialog myDialog;
 
 	/**
@@ -42,14 +42,6 @@ public class FINMenu extends FINActivity {
 		// Populate the grid with category buttons.
 		GridView buttonGrid = (GridView) findViewById(R.id.gridview);
 		buttonGrid.setAdapter(new ButtonAdapter(this));
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (myDialog != null) {
-			myDialog.dismiss();
-		}
 	}
 
 	/**
@@ -138,13 +130,23 @@ public class FINMenu extends FINActivity {
 						if (!FINHome.hasItems(category)) {
 							myDialog = ProgressDialog.show(FINMenu.this, "" , "Loading " + category + "...", true);
 						}
-
-						Class<? extends Activity> nextClass = (FINHome.hasItems(category)? CategoryList.class : FINMap.class);
-						Intent myIntent = new Intent(v.getContext(), nextClass);
-						myIntent.putExtra("category", category);
-						myIntent.putExtra("building", "");
-						myIntent.putExtra("itemName", "");
-						startActivity(myIntent);
+						Thread menuThread = new Thread() {
+							
+							@Override
+							public void run() {
+								Class<? extends Activity> nextClass = (FINHome.hasItems(category)? CategoryList.class : FINMap.class);
+								Intent myIntent = new Intent(getBaseContext(), nextClass);
+								
+								myIntent.putExtra("category", category);
+								myIntent.putExtra("building", "");
+								myIntent.putExtra("itemName", "");
+								
+								startActivity(myIntent);
+								myDialog.dismiss();
+							}
+							
+						};
+						menuThread.start();
 					}
 				});
 
