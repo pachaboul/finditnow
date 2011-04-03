@@ -35,27 +35,26 @@ public class BuildingList extends FINListActivity {
     	// Every item will launch the map
     	lv.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-    			String selectedBuilding = ((TextView) v).getText().toString();
+    			final String selectedBuilding = ((TextView) v).getText().toString();
     			
 				myDialog = ProgressDialog.show(BuildingList.this, "" , "Loading " + selectedBuilding + "...", true);
-    			Intent myIntent = new Intent(v.getContext(), FINMap.class);
-    			
-    			myIntent.putExtra("building", selectedBuilding);
-    			myIntent.putExtra("category", "");
-    			myIntent.putExtra("itemName", "");
-    			
-    			startActivity(myIntent);
+				Thread buildingThread = new Thread() {
+					@Override
+					public void run() {
+						Intent myIntent = new Intent(getBaseContext(), FINMap.class);
+		    			
+		    			myIntent.putExtra("building", selectedBuilding);
+		    			myIntent.putExtra("category", "");
+		    			myIntent.putExtra("itemName", "");
+		    			
+		    			startActivity(myIntent);
+		    			myDialog.dismiss();
+					}
+				};
+				buildingThread.start();
     		}
     	});
     }
-    
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (myDialog != null) {
-			myDialog.dismiss();
-		}
-	}
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {

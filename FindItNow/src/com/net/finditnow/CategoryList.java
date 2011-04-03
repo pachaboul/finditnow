@@ -39,21 +39,23 @@ public class CategoryList extends FINListActivity {
     	// Every item will launch the map
     	lv.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				myDialog = ProgressDialog.show(CategoryList.this, "" , "Loading " + ((TextView) v).getText().toString() + "...", true);
-    			Intent myIntent = new Intent(v.getContext(), FINMap.class);
-    			myIntent.putExtra("category", category);
-                myIntent.putExtra("building", "");
-    			myIntent.putExtra("itemName", ((TextView) v).getText().toString());
-    			startActivity(myIntent);
+    			final String itemName = ((TextView) v).getText().toString();
+    			
+				myDialog = ProgressDialog.show(CategoryList.this, "" , "Loading " + itemName + "...", true);
+    			Thread itemThread = new Thread() {
+    				public void run() {
+		    			Intent myIntent = new Intent(getBaseContext(), FINMap.class);
+		    			
+		    			myIntent.putExtra("category", category);
+		                myIntent.putExtra("building", "");
+		    			myIntent.putExtra("itemName", itemName);
+		    			
+		    			startActivity(myIntent);
+		    			myDialog.dismiss();
+    				}
+    			};
+    			itemThread.start();
     		}
     	});
     }
-    
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (myDialog != null) {
-			myDialog.dismiss();
-		}
-	}
 }
