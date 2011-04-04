@@ -45,6 +45,17 @@
 			android:layout_marginTop="15dp"
 			android:layout_marginBottom="5dp">
 			
+		<TextView android:id="@+id/add_item_button"
+				android:layout_alignParentLeft="true"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+	    		android:background="@drawable/fin_clickable_button"
+	    		android:text="Add Item"
+	    		android:textColor="#5EC22D"
+	    		android:textStyle="bold"
+	    		android:textSize="18dp"
+	    		android:visibility="invisible"/>
+	    			
 		<TextView android:id="@+id/showFlrButt"
 				android:layout_alignParentRight="true"
 	    		android:layout_width="wrap_content"

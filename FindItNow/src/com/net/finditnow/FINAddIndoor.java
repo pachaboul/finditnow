@@ -21,6 +21,7 @@ public class FINAddIndoor extends FINActivity {
 	String selectedCategory;
 	boolean[] supplyTypes;
 	String special_info;
+	String defaultBuilding;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,21 +34,29 @@ public class FINAddIndoor extends FINActivity {
 		// Set up spinner for building selection
 		Spinner bSpinner = (Spinner) findViewById(R.id.addnew_bspinner);
 		ArrayAdapter<String> bAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, FINHome
-						.getBuildingsList());
-		bAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				android.R.layout.simple_spinner_item, FINHome.getBuildingsList());
+		bAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		bSpinner.setAdapter(bAdapter);
 		bSpinner.setOnItemSelectedListener(bspinner_listener);
-		selectedBuilding = FINHome.getBuilding(FINHome
-				.getGeoPointFromBuilding(FINHome.getBuildingsList().get(0)));
 
 		//Get category and types of items from previous activity
 		Bundle extras = getIntent().getExtras();
 		selectedCategory = extras.getString("selectedCategory");
 		supplyTypes = extras.getBooleanArray("supplyTypes");
 		special_info = extras.getString("special_info");
-
+		defaultBuilding = extras.getString("building");
+		
+		// Special case where we set the default building.
+		if (defaultBuilding != null) {
+			int index = FINHome.getBuildingsList().indexOf(defaultBuilding);
+			bSpinner.setSelection(index);
+			selectedBuilding = FINHome.getBuilding(
+					FINHome.getGeoPointFromBuilding(FINHome.getBuildingsList().get(index)));
+		} else {
+			selectedBuilding = FINHome.getBuilding(
+					FINHome.getGeoPointFromBuilding(FINHome.getBuildingsList().get(0)));
+		}
+		
 		//Set up "add item" button
 		Button addItem = (Button) findViewById(R.id.addnew_additem);
 		addItem.setOnClickListener(additem_listener);

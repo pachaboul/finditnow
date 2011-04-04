@@ -127,6 +127,20 @@ public class PopUpDialog extends Dialog{
 		//the button that 1) displays the list of floor
 		//            or  2) unconfirms an outdoor location
 		TextView butt = (TextView) findViewById(R.id.showFlrButt);
+		
+		// Only make "add item" button visible just for buildings
+		// and if the user is logged in.
+		if (category.equals("") && FINHome.isLoggedIn()) {
+			TextView addItem = (TextView) findViewById(R.id.add_item_button);
+			addItem.setVisibility(View.VISIBLE);
+			addItem.setOnClickListener(new View.OnClickListener() {
+	    		public void onClick(View v) {
+	    			Intent myIntent = new Intent(getContext(), FINAddNew.class);
+					myIntent.putExtra("building", building.getName());
+					getContext().startActivity(myIntent);
+	    		}
+			});
+		}
     	
     	//the text for displaying information for outdoor
     	// has no info is it is indoor
@@ -161,7 +175,7 @@ public class PopUpDialog extends Dialog{
 
 	    				if (category.equals("")){
 	    					String[] categories =dataMap.keySet().toArray(new String[0]);
-	    					
+
 	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),building,categories,dataMap));
 	    					lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
 								public void onGroupExpand(int groupPosition) {
