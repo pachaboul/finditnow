@@ -17,7 +17,7 @@ import android.graphics.drawable.Drawable;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
-public class UWOverlay extends ItemizedOverlay<OverlayItem> {
+public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 
 	// Define a list of overlay items and the context for the overlay
 	private ArrayList<OverlayItem> mapOverlays;
@@ -32,7 +32,7 @@ public class UWOverlay extends ItemizedOverlay<OverlayItem> {
 	 * @param defaultMarker The default icon to use on the overlay
 	 * @param context The context in which the overlay is created
 	 */
-	public UWOverlay(Drawable defaultMarker, Context context, String category, String itemName, HashMap<GeoPoint,HashMap<String,CategoryItem>> items) {
+	public IconOverlay(Drawable defaultMarker, Context context, String category, String itemName, HashMap<GeoPoint,HashMap<String,CategoryItem>> items) {
 		super(boundCenterBottom(defaultMarker));
 		mapOverlays = new ArrayList<OverlayItem>();
 		this.context = context;

@@ -45,7 +45,7 @@ public class FINMap extends FINMapActivity {
 	// Overlay Variables
 	private List<Overlay> mapOverlays;
 	private Drawable drawable;
-	private UWOverlay itemizedOverlay;
+	private IconOverlay itemizedOverlay;
 
 	// Shared static variables that the other modules can access
 	private String category;    
@@ -244,7 +244,7 @@ public class FINMap extends FINMapActivity {
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
 		drawable = getResources().getDrawable(building.equals("")? FINHome.getIcon(category) : R.drawable.buildings);
-		itemizedOverlay = new UWOverlay(drawable, this, category, itemName, geoPointItem);
+		itemizedOverlay = new IconOverlay(drawable, this, category, itemName, geoPointItem);
 		
 		// Setup the ImageButtons
 		ImageButton myLocation = (ImageButton) findViewById(R.id.my_location_button);
