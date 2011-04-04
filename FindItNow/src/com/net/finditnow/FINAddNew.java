@@ -26,6 +26,7 @@ public class FINAddNew extends FINActivity {
 	String selectedCategory;
 	String special_info;
 	boolean[] supplyTypes = {false, false, false};
+	String buildingName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,13 @@ public class FINAddNew extends FINActivity {
 			//Set up "next" button for indoor/outdoor and category selection screen
 			final Button next = (Button) findViewById(R.id.addnew_next);
 			next.setOnClickListener(next_listener);
+			
+			// Special case: if we were sent here via PopUpDialog.java,
+			// there may be a building name we'll need to set as a default option.
+			Bundle extras = getIntent().getExtras(); 
+			if (extras != null) {
+				buildingName = extras.getString("building");
+			}
 		}
 	}
 	
@@ -117,6 +125,10 @@ public class FINAddNew extends FINActivity {
 			Intent myIntent = new Intent(v.getContext(), nextClass);
 			myIntent.putExtra("selectedCategory", selectedCategory);
 			myIntent.putExtra("supplyTypes", supplyTypes);
+			
+			if (buildingName != null) {
+				myIntent.putExtra("building", buildingName);
+			}
 			
 			//Grab special info
 			EditText info = (EditText) findViewById(R.id.addnew_specialinfo);
