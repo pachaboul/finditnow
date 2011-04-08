@@ -23,7 +23,7 @@
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
 				android:textStyle="bold"
-				android:textColor="@color/bright_green"
+				android:textColor="@color/FIN_bright"
 				android:textSize="28dp"/>
 
 			<TextView

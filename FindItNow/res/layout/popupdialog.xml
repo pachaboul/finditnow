@@ -13,7 +13,7 @@
     <TextView android:id="@+id/dialogTitle"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:textColor="#5EC22D"
+              android:textColor="@color/FIN_dark"
               android:textSize="18dp"
               android:textStyle="bold"
               />
@@ -51,7 +51,7 @@
 	    		android:layout_height="wrap_content"
 	    		android:background="@drawable/fin_clickable_button"
 	    		android:text="Add Item"
-	    		android:textColor="#5EC22D"
+	    		android:textColor="@color/FIN_bright"
 	    		android:textStyle="bold"
 	    		android:textSize="18dp"
 	    		android:visibility="invisible"/>
@@ -62,7 +62,7 @@
 	    		android:layout_height="wrap_content"
 	    		android:background="@drawable/fin_clickable_button"
 	    		android:text="Show Floors"
-	    		android:textColor="#5EC22D"
+	    		android:textColor="@color/FIN_dark"
 	    		android:textStyle="bold"
 	    		android:textSize="18dp"/>
 	    		

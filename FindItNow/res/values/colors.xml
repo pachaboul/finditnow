@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+	<!-- 
 	<color name="bright_green">#59E01B</color>
 	<color name="transparent_green">#809EFC23</color>
+	<color name="text_green">#5EC22D</color>
+	-->
+	
+	<!-- purple -->
+	<color name="FIN_dark">#59196E</color>
+	<color name="FIN_bright">#A018CC</color>
+	<color name="FIN_light">#DEBEFF</color>
 </resources>
