@@ -5,7 +5,7 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
 	android:gravity="center_horizontal"
-	android:background="#809EFC23">
+	android:background="@color/FIN_light">
 
 	<TextView 
 		android:id="@+id/grid_item_text"

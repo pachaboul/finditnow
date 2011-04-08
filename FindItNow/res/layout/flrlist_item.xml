@@ -3,7 +3,7 @@
               android:orientation="horizontal"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:background="#59E01B"
+              android:background="@color/FIN_bright"
               >
 	<ImageView android:id="@+id/flrIcon"
 			   android:layout_width="wrap_content"
