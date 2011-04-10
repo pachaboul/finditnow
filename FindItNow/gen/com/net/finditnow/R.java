@@ -15,8 +15,17 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int bright_green=0x7f050000;
-        public static final int transparent_green=0x7f050001;
+        public static final int FIN_bright=0x7f050001;
+        /**  
+	<color name="bright_green">#59E01B</color>
+	<color name="transparent_green">#809EFC23</color>
+	<color name="text_green">#5EC22D</color>
+	
+ purple 
+         */
+        public static final int FIN_dark=0x7f050000;
+        public static final int FIN_light=0x7f050002;
+        public static final int FIN_secondary=0x7f050003;
     }
     public static final class drawable {
         public static final int android=0x7f020000;
