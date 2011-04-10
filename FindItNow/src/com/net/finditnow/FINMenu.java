@@ -154,8 +154,8 @@ public class FINMenu extends FINActivity {
 
 				final String category = FINHome.getCategoriesList().get(position);
 				ib.setImageResource(FINHome.getBigIcon(category));
-				ib.getLayoutParams().height = (int) (cellSize * .73);
-				ib.getLayoutParams().width = (int) (cellSize * .73);
+				ib.getLayoutParams().height = (int) (cellSize * .74);
+				ib.getLayoutParams().width = (int) (cellSize * .74);
 				
 				// Otherwise, jump to map
 				ib.setOnClickListener(new OnClickListener() {
@@ -175,7 +175,9 @@ public class FINMenu extends FINActivity {
 								myIntent.putExtra("itemName", "");
 								
 								startActivity(myIntent);
-								myDialog.dismiss();
+								if (!FINHome.hasItems(category)) {
+									myDialog.dismiss();
+								}
 							}
 							
 						};
