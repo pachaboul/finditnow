@@ -28,7 +28,6 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class FINMenu extends FINActivity {
@@ -56,6 +55,9 @@ public class FINMenu extends FINActivity {
 		// Populate the grid with category buttons.
 		final GridView buttonGrid = (GridView) findViewById(R.id.gridview);
 		
+		// Add a listener catch the first instance where the 
+		// area alloted to the grid is nonzero.  Once we know,
+		// we roughly calculate the imagebutton size.
 		ViewTreeObserver observer = buttonGrid.getViewTreeObserver();
 		observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 		    public void onGlobalLayout() {
@@ -65,7 +67,6 @@ public class FINMenu extends FINActivity {
 		    		int numRows = (FINHome.getCategoriesList().size() + 1) / 2;
 		    		int innerPadding = (numRows - 1) * 8;
 		    		cellSize = (contentSize - innerPadding) / numRows;
-		    		Log.v("cellSize", cellSize + "");
 		    		buttonGrid.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 		    		buttonGrid.setAdapter(new ButtonAdapter(mContext));
 		    	}
