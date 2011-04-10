@@ -25,11 +25,11 @@
 	    		android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_marginBottom="5dp"
-	            android:textColor="#E07E1B"
+	            android:textColor="@color/FIN_dark"
 	            android:textStyle="bold"
 	            android:text="Nothing Here?"
 	            android:layout_alignParentRight="true"
                 android:textSize="14dp"	            
-	            android:background="@drawable/fin_clickable_button2"/> 
+	            android:background="@drawable/fin_clickable_button"/> 
 	</RelativeLayout> 
 </LinearLayout>
