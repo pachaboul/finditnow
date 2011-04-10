@@ -214,6 +214,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		
 		
 		if (parentMode.equals("categoryView")){
+			relative.setBackgroundColor(R.color.FIN_secondary);
 			text.setText(category);
 			text.getLayoutParams().height = DoubleExpandableListAdapter.HEIGHT;
 			img.setImageResource(FINHome.getIcon(dbCategory));
