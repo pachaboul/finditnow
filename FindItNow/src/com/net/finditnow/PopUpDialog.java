@@ -128,18 +128,29 @@ public class PopUpDialog extends Dialog{
 		//            or  2) unconfirms an outdoor location
 		TextView butt = (TextView) findViewById(R.id.showFlrButt);
 		
-		// Only make "add item" button visible just for buildings
-		// and if the user is logged in.
-		if (category.equals("") && FINHome.isLoggedIn()) {
-			TextView addItem = (TextView) findViewById(R.id.add_item_button);
-			addItem.setVisibility(View.VISIBLE);
-			addItem.setOnClickListener(new View.OnClickListener() {
-	    		public void onClick(View v) {
-	    			Intent myIntent = new Intent(getContext(), FINAddNew.class);
-					myIntent.putExtra("building", building.getName());
-					getContext().startActivity(myIntent);
-	    		}
-			});
+		// If we're in building mode, hide the unnecessary
+		// special info and category fields.
+		if (category.equals("")) {
+			// Hide outdoor/special info area.
+			TextView outDoor = (TextView) findViewById(R.id.outDoorText);
+			TextView category = (TextView) findViewById(R.id.categoryName);
+			outDoor.setVisibility(View.INVISIBLE);
+	    	outDoor.getLayoutParams().height = 0;
+	    	category.setVisibility(View.INVISIBLE);
+	    	category.getLayoutParams().height = 0;
+
+	    	// If we're logged in, show the extra "Add Item" button.
+			if (FINHome.isLoggedIn()) {
+				TextView addItem = (TextView) findViewById(R.id.add_item_button);
+				addItem.setVisibility(View.VISIBLE);
+				addItem.setOnClickListener(new View.OnClickListener() {
+		    		public void onClick(View v) {
+		    			Intent myIntent = new Intent(getContext(), FINAddNew.class);
+						myIntent.putExtra("building", building.getName());
+						getContext().startActivity(myIntent);
+		    		}
+				});
+			}
 		}
     	
     	//the text for displaying information for outdoor
@@ -173,7 +184,9 @@ public class PopUpDialog extends Dialog{
 	    				if (floorsWithCategories.length > 3)
 	    					lv.getLayoutParams().height = 250;
 
-	    				if (category.equals("")){
+	    				// If we're displaying information by building, and not category
+	    				if (category.equals("")) {
+	    	    	    	
 	    					String[] categories =dataMap.keySet().toArray(new String[0]);
 
 	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),building,categories,dataMap));
