@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import android.app.ProgressDialog;
 import android.app.SearchManager;
@@ -77,6 +79,11 @@ public class FINSearch extends FINListActivity {
 				for (Integer id : unsortedSearchMap.keySet()) {
 					searchMap.put(id, points.get(id));
 				}
+				
+				HashSet<GeoPoint> hs = new LinkedHashSet<GeoPoint>();
+				hs.addAll(points);
+				points.clear();
+				points.addAll(hs);
 
 				for (GeoPoint point : points) {
 					Building build = FINHome.getBuilding(point);
@@ -87,9 +94,7 @@ public class FINSearch extends FINListActivity {
 					building_names.add(build == null? "Outdoor Location" : build.getName());
 					
 					CategoryItem item = FINMap.getCategoryItem(point, category);
-					special_info.add(item == null? "" : item.getInfo().get(0));
-
-
+					special_info.add(item == null? "" : item.getInfo().get(0).replace("<br />", "\n"));
 				}
 				
 				if (!query.equals("")) {
