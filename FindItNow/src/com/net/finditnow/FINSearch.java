@@ -72,18 +72,15 @@ public class FINSearch extends FINListActivity {
 				HashMap<Integer, GeoPoint> unsortedSearchMap = JsonParser.parseSearchJson(result);
 				ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
 				for (Integer id : unsortedSearchMap.keySet()) {
-					points.add(unsortedSearchMap.get(id));
+					if (!points.contains(unsortedSearchMap.get(id))) {
+						points.add(unsortedSearchMap.get(id));
+					}
 				}
 				Collections.sort(points, new ComparableGeoPoint());
 				searchMap = new HashMap<Integer, GeoPoint>();
-				for (Integer id : unsortedSearchMap.keySet()) {
-					searchMap.put(id, points.get(id));
+				for (int i = 0; i < points.size(); i++) {
+					searchMap.put(i, points.get(i));
 				}
-				
-				HashSet<GeoPoint> hs = new LinkedHashSet<GeoPoint>();
-				hs.addAll(points);
-				points.clear();
-				points.addAll(hs);
 
 				for (GeoPoint point : points) {
 					Building build = FINHome.getBuilding(point);
