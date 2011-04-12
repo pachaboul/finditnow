@@ -29,6 +29,10 @@ public class FINHome extends TabActivity {
 	private static ArrayList<String> categories;
 	
 	private static boolean loggedin;
+	
+	// A constant representing the default location of the user
+	// Change this the coordinates of another campus if desired (defaults to UW Seattle)
+	public static final GeoPoint DEFAULT_LOCATION = new GeoPoint(47654799,-122307776);
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

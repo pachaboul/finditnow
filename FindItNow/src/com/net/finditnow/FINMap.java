@@ -56,9 +56,6 @@ public class FINMap extends FINMapActivity {
 	private static GeoPoint location;    
 	private static HashMap<GeoPoint,HashMap<String,CategoryItem>> geoPointItem;
 
-	// A constant representing the default location of the user
-	// Change this the coordinates of another campus if desired (defaults to UW Seattle)
-	public static final GeoPoint DEFAULT_LOCATION = new GeoPoint(47654799,-122307776);
 	public static final String PREFS_NAME = "MyPrefsFile";
 
 	/** 
@@ -76,6 +73,8 @@ public class FINMap extends FINMapActivity {
 		category = extras.getString("category");
 		building = extras.getString("building");
 		itemName = extras.getString("itemName");
+		
+		String listOfLocations = extras.getString("locations");	
 
 		// Set the Breadcrumb in the titlebar
 		String title = (!building.equals("")? building : category + (!itemName.equals("")? " > " + itemName : ""));
@@ -84,15 +83,7 @@ public class FINMap extends FINMapActivity {
 		// Check connection of Android
 		ConnectionChecker conCheck = new ConnectionChecker(this, FINMap.this);
 
-		// Retrieve locations from the database and parse them
-		String listOfLocations;
-		if (building.equals("")) {
-			listOfLocations = DBCommunicator.getLocations(category, itemName, DEFAULT_LOCATION.getLatitudeE6()+"", DEFAULT_LOCATION.getLongitudeE6()+"", this);
-		} else {
-			GeoPoint loc = FINHome.getGeoPointFromBuilding(building);
-			listOfLocations = DBCommunicator.getAllLocations(FINUtil.allCategories(FINHome.getCategoriesList()), loc.getLatitudeE6()+"", loc.getLongitudeE6()+"", this);
-		}
-
+		// Parse retrieved locations from the database
 		if (listOfLocations.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
 		} else {
@@ -192,8 +183,8 @@ public class FINMap extends FINMapActivity {
 		    
 		    appData.putString("category", category);
 		    appData.putString("itemName", itemName);
-		    appData.putString("lat", DEFAULT_LOCATION.getLatitudeE6()+"");
-		    appData.putString("lon", DEFAULT_LOCATION.getLongitudeE6()+"");
+		    appData.putString("lat", FINHome.DEFAULT_LOCATION.getLatitudeE6()+"");
+		    appData.putString("lon", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"");
 		    
 		    startSearch(null, false, appData, false);
 		}
@@ -224,8 +215,8 @@ public class FINMap extends FINMapActivity {
 		
 		// Restore preferences
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-	    int latitude = prefs.getInt("centerLat", DEFAULT_LOCATION.getLatitudeE6());
-	    int longitude = prefs.getInt("centerLon", DEFAULT_LOCATION.getLongitudeE6());
+	    int latitude = prefs.getInt("centerLat", FINHome.DEFAULT_LOCATION.getLatitudeE6());
+	    int longitude = prefs.getInt("centerLon", FINHome.DEFAULT_LOCATION.getLongitudeE6());
 	    int zoomLevel = prefs.getInt("zoomLevel", 18);
 
 		// Initialize our MapView and MapController
@@ -262,7 +253,7 @@ public class FINMap extends FINMapActivity {
 		
 		defaultLocation.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				mapController.animateTo(DEFAULT_LOCATION);
+				mapController.animateTo(FINHome.DEFAULT_LOCATION);
 				Toast.makeText(getBaseContext(), "Centering on the default location...", Toast.LENGTH_SHORT).show();
 			}
 		});
