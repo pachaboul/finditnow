@@ -51,6 +51,7 @@ public class FINMap extends FINMapActivity {
 	private String category;    
 	private String building;
 	private String itemName;
+	private String listOfLocations;
 
 	// Location and GeoPoint Variables
 	private static GeoPoint location;    
@@ -74,7 +75,7 @@ public class FINMap extends FINMapActivity {
 		building = extras.getString("building");
 		itemName = extras.getString("itemName");
 		
-		String listOfLocations = extras.getString("locations");	
+		listOfLocations = extras.getString("locations");	
 
 		// Set the Breadcrumb in the titlebar
 		String title = (!building.equals("")? building : category + (!itemName.equals("")? " > " + itemName : ""));
@@ -185,6 +186,7 @@ public class FINMap extends FINMapActivity {
 		    appData.putString("itemName", itemName);
 		    appData.putString("lat", FINHome.DEFAULT_LOCATION.getLatitudeE6()+"");
 		    appData.putString("lon", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"");
+		    appData.putString("locations", listOfLocations);
 		    
 		    startSearch(null, false, appData, false);
 		}
@@ -238,8 +240,28 @@ public class FINMap extends FINMapActivity {
 		itemizedOverlay = new IconOverlay(drawable, this, category, itemName, geoPointItem);
 		
 		// Setup the ImageButtons
+		ImageButton list = (ImageButton) findViewById(R.id.list_button);
 		ImageButton myLocation = (ImageButton) findViewById(R.id.my_location_button);
 		ImageButton defaultLocation = (ImageButton) findViewById(R.id.default_location_button);
+		if (building.equals("")) {
+			list.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					Intent myIntent = new Intent(getBaseContext(), FINSearch.class);
+				    
+					Bundle appData = new Bundle();
+				    
+				    appData.putString("category", category);
+				    appData.putString("itemName", itemName);
+				    appData.putString("lat", FINHome.DEFAULT_LOCATION.getLatitudeE6()+"");
+				    appData.putString("lon", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"");
+				    appData.putString("locations", listOfLocations);
+				    
+				    myIntent.putExtra("appData", appData);
+				    
+				    startActivity(myIntent);
+				}
+			});
+		}
 		myLocation.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (location != null) {

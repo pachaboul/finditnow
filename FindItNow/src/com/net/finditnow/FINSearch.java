@@ -50,12 +50,57 @@ public class FINSearch extends FINListActivity {
 		
 		// Get the intent, verify the action and get the query
 		Intent intent = getIntent();
-		appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
-
+		appData = intent.getBundleExtra(SearchManager.APP_DATA);
+        if (appData == null) {
+        	appData = getIntent().getBundleExtra("appData");
+        }
 		category = appData.getString("category");
 		itemName = appData.getString("itemName");
 
 		setTitle(getString(R.string.app_name) + " > " + category + " > " + "Search");
+		
+		searchThread = new Thread() {
+
+			@Override
+			public void run() {
+
+				String result = DBCommunicator.searchLocations(category, appData.getString("lat"), 
+						appData.getString("lon"), query, getBaseContext());
+
+				HashMap<Integer, GeoPoint> unsortedSearchMap = JsonParser.parseSearchJson(result);
+				ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
+				for (Integer id : unsortedSearchMap.keySet()) {
+					points.add(unsortedSearchMap.get(id));
+				}
+				Collections.sort(points, new ComparableGeoPoint());
+				searchMap = new HashMap<Integer, GeoPoint>();
+				for (Integer id : unsortedSearchMap.keySet()) {
+					searchMap.put(id, points.get(id));
+				}
+
+				for (GeoPoint point : points) {
+					Building build = FINHome.getBuilding(point);
+					BigDecimal dist = FINMap.distanceBetween(FINMap.getLocation(), point);
+					distances.add((dist.equals(new BigDecimal(-1))? "N/A" : dist) + " mi");
+					int walking_time = dist != null? FINMap.walkingTime(dist, 35) : -1;
+					walking_times.add((dist.equals(new BigDecimal(-1))? "N/A" : walking_time) + " minute" + (walking_time != 1? "s" : ""));
+					building_names.add(build == null? "Outdoor Location" : build.getName());
+					special_info.add(FINMap.getCategoryItem(point, category).getInfo().get(0).replace("<br />", "\n"));
+
+
+				}
+				
+				if (!query.equals("")) {
+					myDialog.dismiss();
+				}
+				
+				if (!points.isEmpty()) {
+					handler1.sendEmptyMessage(0);
+				} else {
+					handler2.sendEmptyMessage(0);
+				}
+			}
+		};
 		
 		if (Intent.ACTION_SEARCH.equals(intent.getAction()) && appData != null) {
 			query = intent.getStringExtra(SearchManager.QUERY);
@@ -63,45 +108,10 @@ public class FINSearch extends FINListActivity {
 			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getBaseContext(), SearchSuggestions.AUTHORITY, SearchSuggestions.MODE);
 			suggestions.saveRecentQuery(query, null);
 			myDialog = ProgressDialog.show(FINSearch.this, "" , "Searching for " + query + "...", true);
-
-			searchThread = new Thread() {
-
-				@Override
-				public void run() {
-
-					String result = DBCommunicator.searchLocations(category, appData.getString("lat"), 
-							appData.getString("lon"), query, getBaseContext());
-
-					HashMap<Integer, GeoPoint> unsortedSearchMap = JsonParser.parseSearchJson(result);
-					ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
-					for (Integer id : unsortedSearchMap.keySet()) {
-						points.add(unsortedSearchMap.get(id));
-					}
-					Collections.sort(points, new ComparableGeoPoint());
-					searchMap = new HashMap<Integer, GeoPoint>();
-					for (Integer id : unsortedSearchMap.keySet()) {
-						searchMap.put(id, points.get(id));
-					}
-
-					for (GeoPoint point : points) {
-						Building build = FINHome.getBuilding(point);
-						BigDecimal dist = FINMap.distanceBetween(FINMap.getLocation(), point);
-						distances.add((dist.equals(new BigDecimal(-1))? "N/A" : dist) + " mi");
-						int walking_time = dist != null? FINMap.walkingTime(dist, 35) : -1;
-						walking_times.add((dist.equals(new BigDecimal(-1))? "N/A" : walking_time) + " minute" + (walking_time != 1? "s" : ""));
-						building_names.add(build == null? "Outdoor Location" : build.getName());
-						special_info.add(FINMap.getCategoryItem(point, category).getInfo().get(0).replace("<br />", "\n"));
-
-
-					}
-					myDialog.dismiss();
-					if (!points.isEmpty()) {
-						handler1.sendEmptyMessage(0);
-					} else {
-						handler2.sendEmptyMessage(0);
-					}
-				}
-			};
+			
+			searchThread.start();
+		} else {
+			query = "";
 			
 			searchThread.start();
 		}
@@ -170,6 +180,7 @@ public class FINSearch extends FINListActivity {
 					myIntent.putExtra("itemName", itemName);
 					myIntent.putExtra("centerLat", selectedLoc.getLatitudeE6());
 					myIntent.putExtra("centerLon", selectedLoc.getLongitudeE6());
+					myIntent.putExtra("locations", appData.getString("locations"));
 
 					startActivity(myIntent);
 
