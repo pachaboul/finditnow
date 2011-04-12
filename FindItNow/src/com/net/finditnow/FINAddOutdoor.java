@@ -3,6 +3,7 @@ package com.net.finditnow;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,6 +29,7 @@ public class FINAddOutdoor extends FINMapActivity {
 	private static List<Overlay> mapOverlays;
 	String selectedCategory;
 	String special_info;
+	ProgressDialog myDialog;
 	
 	boolean[] supplyTypes;
 	
@@ -92,28 +94,39 @@ public class FINAddOutdoor extends FINMapActivity {
 				.setCancelable(false)
 			    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int id) {
-			        	//Point is confirmed
-			        	
-			        	String bb = supplyTypes[0]? "bb" : "";
-						String sc = supplyTypes[1]? "sc" : "";
-						String pr = supplyTypes[2]? "print" : "";
-						String item = bb.length() > 0? "Blue Books" : sc.length() > 0? "Scantrons" : pr.length() > 0? "Printing" : "";
-						
-						//Send new item to database
-						final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-			        	
-						String result = DBCommunicator.create(phone_id, selectedCategory, 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"",  bb,  sc,  pr, getBaseContext());
-			        	
-			        	// Load the map with the new item
-				    	Intent myIntent = new Intent(getBaseContext(), FINMap.class);
-				    	myIntent.putExtra("result", result);
-				    	myIntent.putExtra("category", selectedCategory);
-						myIntent.putExtra("building", "");
-						myIntent.putExtra("itemName", item);
-						myIntent.putExtra("centerLat", tappedPoint.getLatitudeE6());
-						myIntent.putExtra("centerLon", tappedPoint.getLongitudeE6());
-				    	
-			            startActivity(myIntent);
+			        	myDialog = ProgressDialog.show(FINAddOutdoor.this, "" , "Adding " + selectedCategory + "...", true);
+			        	Thread thread = new Thread() {
+							public void run() {
+					        	//Point is confirmed
+					        	
+					        	String bb = supplyTypes[0]? "bb" : "";
+								String sc = supplyTypes[1]? "sc" : "";
+								String pr = supplyTypes[2]? "print" : "";
+								String item = bb.length() > 0? "Blue Books" : sc.length() > 0? "Scantrons" : pr.length() > 0? "Printing" : "";
+								
+								//Send new item to database
+								final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+					        	
+								String result = DBCommunicator.create(phone_id, selectedCategory, 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"",  bb,  sc,  pr, getBaseContext());
+					        	
+					        	// Load the map with the new item
+						    	Intent myIntent = new Intent(getBaseContext(), FINMap.class);
+						    	myIntent.putExtra("result", result);
+						    	myIntent.putExtra("category", selectedCategory);
+								myIntent.putExtra("building", "");
+								myIntent.putExtra("itemName", item);
+								myIntent.putExtra("centerLat", tappedPoint.getLatitudeE6());
+								myIntent.putExtra("centerLon", tappedPoint.getLongitudeE6());
+								
+								String locations = DBCommunicator.getLocations(selectedCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
+								myIntent.putExtra("locations", locations);
+						    	
+					            startActivity(myIntent);
+					            
+					            myDialog.dismiss();
+							}
+			        	};
+			        	thread.start();
 			        }
 			    })
 			    .setNegativeButton("No", new DialogInterface.OnClickListener() {

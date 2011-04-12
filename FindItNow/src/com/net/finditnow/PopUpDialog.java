@@ -41,6 +41,7 @@ import java.util.HashMap;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -67,6 +68,7 @@ public class PopUpDialog extends Dialog{
 	private Building building;
 	private BigDecimal distance;
 	private int walkTime;
+	private ProgressDialog myDialog;
 	private String category;
 	private String dbCategory;
 	private String item;
@@ -269,16 +271,27 @@ public class PopUpDialog extends Dialog{
 	    			if (FINHome.isLoggedIn()) {
 		    			builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
 		    				 public void onClick(DialogInterface dialog, int id) {
-		    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-		    				       String result = DBCommunicator.delete(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());
-
-		    				       Intent myIntent = new Intent(getContext(), FINMap.class);
-		    				       myIntent.putExtra("result", result);
-			   					   myIntent.putExtra("category", dbCategory);
-			   					   myIntent.putExtra("building", "");
-			   					   myIntent.putExtra("itemName", item);
-			   					   
-			   					   getContext().startActivity(myIntent);
+		    					 myDialog = ProgressDialog.show(getContext(), "" , "Deleting " + dbCategory + "...", true);
+		    						Thread thread = new Thread() {
+		    							public void run() {
+				    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
+				    				       String result = DBCommunicator.delete(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());
+		
+				    				       Intent myIntent = new Intent(getContext(), FINMap.class);
+				    				       myIntent.putExtra("result", result);
+					   					   myIntent.putExtra("category", dbCategory);
+					   					   myIntent.putExtra("building", "");
+					   					   myIntent.putExtra("itemName", item);
+					   					   
+					   					   String locations = DBCommunicator.getLocations(dbCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getContext());
+										   myIntent.putExtra("locations", locations);
+					   					   
+					   					   getContext().startActivity(myIntent);
+					   					   
+					   					   myDialog.dismiss();
+		    							}
+		    						};
+		    						thread.start();
 		    				   }
 		    			});
 	    			}

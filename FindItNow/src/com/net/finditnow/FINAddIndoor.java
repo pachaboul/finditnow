@@ -2,6 +2,7 @@ package com.net.finditnow;
 
 import java.util.HashMap;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
@@ -22,6 +23,7 @@ public class FINAddIndoor extends FINActivity {
 	boolean[] supplyTypes;
 	String special_info;
 	String defaultBuilding;
+	ProgressDialog myDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,28 +83,40 @@ public class FINAddIndoor extends FINActivity {
 	//Listener for "add item" button
 	private OnClickListener additem_listener = new OnClickListener() {
 		public void onClick(View v) {
-			HashMap<String, Integer> map = selectedBuilding.floorMap();
 			
-			String bb = supplyTypes[0]? "bb" : "";
-			String sc = supplyTypes[1]? "sc" : "";
-			String pr = supplyTypes[2]? "print" : "";
-			String item = bb.length() > 0? "Blue Books" : sc.length() > 0? "Scantrons" : pr.length() > 0? "Printing" : "";
-			
-			//Send new item to database
-			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-			String result = DBCommunicator.create(phone_id, selectedCategory, map
-					.get(selectedFloor)+"", special_info, "", "", bb, sc, pr, getBaseContext());
-       	
-        	// Load the map with the new item
-	    	Intent myIntent = new Intent(getBaseContext(), FINMap.class);
-	    	myIntent.putExtra("result", result);
-	    	myIntent.putExtra("category", selectedCategory);
-			myIntent.putExtra("building", "");
-			myIntent.putExtra("itemName", item);
-			myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLatitudeE6());
-			myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLongitudeE6());
-	    	
-            startActivity(myIntent);
+			myDialog = ProgressDialog.show(FINAddIndoor.this, "" , "Adding " + selectedCategory + "...", true);
+			Thread thread = new Thread() {
+				public void run() {
+					HashMap<String, Integer> map = selectedBuilding.floorMap();
+					
+					String bb = supplyTypes[0]? "bb" : "";
+					String sc = supplyTypes[1]? "sc" : "";
+					String pr = supplyTypes[2]? "print" : "";
+					String item = bb.length() > 0? "Blue Books" : sc.length() > 0? "Scantrons" : pr.length() > 0? "Printing" : "";
+					
+					//Send new item to database
+					final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+					String result = DBCommunicator.create(phone_id, selectedCategory, map
+							.get(selectedFloor)+"", special_info, "", "", bb, sc, pr, getBaseContext());
+		       	
+		        	// Load the map with the new item
+			    	Intent myIntent = new Intent(getBaseContext(), FINMap.class);
+			    	myIntent.putExtra("result", result);
+			    	myIntent.putExtra("category", selectedCategory);
+					myIntent.putExtra("building", "");
+					myIntent.putExtra("itemName", item);
+					myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLatitudeE6());
+					myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLongitudeE6());
+					
+					String locations = DBCommunicator.getLocations(selectedCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
+					myIntent.putExtra("locations", locations);
+			    	
+		            startActivity(myIntent);
+		            
+		            myDialog.dismiss();
+				}
+			};
+			thread.start();
 		}
 	};
 
