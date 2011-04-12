@@ -174,6 +174,9 @@ public class FINMenu extends FINActivity {
 								myIntent.putExtra("building", "");
 								myIntent.putExtra("itemName", "");
 								
+								String locations = DBCommunicator.getLocations(category, "", FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
+								myIntent.putExtra("locations", locations);
+								
 								startActivity(myIntent);
 								if (!FINHome.hasItems(category)) {
 									myDialog.dismiss();

@@ -60,7 +60,7 @@ public class FINAddOutdoor extends FINMapActivity {
 		special_info = extras.getString("special_info");
         
         // Zoom out enough
-        mapController.animateTo(FINMap.DEFAULT_LOCATION);
+        mapController.animateTo(FINHome.DEFAULT_LOCATION);
         mapController.setZoom(18);
         Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
 	}

@@ -50,6 +50,9 @@ public class CategoryList extends FINListActivity {
 		                myIntent.putExtra("building", "");
 		    			myIntent.putExtra("itemName", itemName);
 		    			
+		    			String locations = DBCommunicator.getLocations(category, itemName, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
+						myIntent.putExtra("locations", locations);
+		    			
 		    			startActivity(myIntent);
 		    			myDialog.dismiss();
     				}

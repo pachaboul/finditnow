@@ -8,6 +8,8 @@
 
 package com.net.finditnow;
 
+import com.google.android.maps.GeoPoint;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,6 +48,10 @@ public class BuildingList extends FINListActivity {
 		    			myIntent.putExtra("building", selectedBuilding);
 		    			myIntent.putExtra("category", "");
 		    			myIntent.putExtra("itemName", "");
+		    			
+		    			GeoPoint loc = FINHome.getGeoPointFromBuilding(selectedBuilding);
+		    			String locations = DBCommunicator.getAllLocations(FINUtil.allCategories(FINHome.getCategoriesList()), loc.getLatitudeE6()+"", loc.getLongitudeE6()+"", getBaseContext());
+		    			myIntent.putExtra("locations", locations);
 		    			
 		    			startActivity(myIntent);
 		    			myDialog.dismiss();
