@@ -85,7 +85,9 @@ public class FINSearch extends FINListActivity {
 					int walking_time = dist != null? FINMap.walkingTime(dist, 35) : -1;
 					walking_times.add((dist.equals(new BigDecimal(-1))? "N/A" : walking_time) + " minute" + (walking_time != 1? "s" : ""));
 					building_names.add(build == null? "Outdoor Location" : build.getName());
-					special_info.add(FINMap.getCategoryItem(point, category).getInfo().get(0).replace("<br />", "\n"));
+					
+					CategoryItem item = FINMap.getCategoryItem(point, category);
+					special_info.add(item == null? "" : item.getInfo().get(0));
 
 
 				}

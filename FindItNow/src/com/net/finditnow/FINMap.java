@@ -194,7 +194,11 @@ public class FINMap extends FINMapActivity {
 	}
 	
 	public static CategoryItem getCategoryItem(GeoPoint point, String category) {
-		return geoPointItem.get(point).get(category);
+		if (geoPointItem != null && geoPointItem.get(point) != null) {
+			return geoPointItem.get(point).get(category);
+		} else {
+			return null;
+		}
 	}
 	
 	/**
