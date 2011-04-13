@@ -2,32 +2,32 @@ package com.net.finditnow;
 
 import java.util.HashMap;
 
-import com.google.android.maps.GeoPoint;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.view.MotionEvent;
+
+import com.google.android.maps.GeoPoint;
 
 public class FINSplash extends Activity {
 
 	protected boolean active = true;
 	protected int splashTime = 1500; // time to display the splash screen in ms
 	protected Thread splashThread;
-	
+
 	private HashMap<String, GeoPoint> campuses;
 	public static GeoPoint DEFAULT_LOCATION;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// thread for displaying the SplashScreen
 		splashThread = new Thread() {
 
@@ -35,12 +35,12 @@ public class FINSplash extends Activity {
 			public void run() {
 
 				Intent myIntent = null;
-				
+
 				//TODO: Clean up post 1.1 release.  Sync with backend
 				campuses = new HashMap<String, GeoPoint>();
 				campuses.put("University of Washington", new GeoPoint(47654799,-122307776));
 				campuses.put("Western Washington University", new GeoPoint(48733550, -122486830));
-				
+
 				// Set default location
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
 				String campus = prefs.getString("changeCampus", "");
@@ -55,7 +55,7 @@ public class FINSplash extends Activity {
 
 				boolean loggedin = loggedinstr.contains(getString(R.string.login_already));
 				boolean readytostart = !(loggedinstr.equals(getString(R.string.timeout)) || categories.equals(getString(R.string.timeout)) 
-									   || buildings.equals(getString(R.string.timeout)));
+						|| buildings.equals(getString(R.string.timeout)));
 
 				myIntent = new Intent(getBaseContext(), FINHome.class);
 				myIntent.addCategory("App Startup");
@@ -84,7 +84,7 @@ public class FINSplash extends Activity {
 				}
 			}
 		};
-		
+
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);  
 		String campus = prefs.getString("changeCampus", "");
 
@@ -93,7 +93,7 @@ public class FINSplash extends Activity {
 			builder.setTitle("Select your campus or region");
 			builder.setItems(getResources().getStringArray(R.array.campuses), campus_listener);		
 			builder.setCancelable(false);		
-	
+
 			AlertDialog alert = builder.create();
 			alert.show();
 		} else {
@@ -109,18 +109,18 @@ public class FINSplash extends Activity {
 		}
 		return true;
 	}
-	
+
 	// Listener for campus popup
 	private OnClickListener campus_listener = new OnClickListener() {
 
 		public void onClick(DialogInterface dialog, int which) {
 			setContentView(R.layout.fin_splash);
-			
+
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putString("changeCampus", getBaseContext().getResources().getStringArray(R.array.campuses)[which]);
 			editor.commit();
-			
+
 			splashThread.start();
 		}
 	};

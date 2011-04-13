@@ -21,8 +21,8 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.BaseAdapter;
@@ -31,7 +31,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class FINMenu extends FINActivity {
-	
+
 	private int cellSize = -1;
 	private Context mContext;
 	private ProgressDialog myDialog;
@@ -45,32 +45,32 @@ public class FINMenu extends FINActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
 		mContext = this;
-		
+
 		Display display = getWindowManager().getDefaultDisplay(); 
 		int width = display.getWidth();
 		int height = display.getHeight();
 		Log.v("screen width", width + "px");
 		Log.v("screen height", height + "px");
-		
+
 		// Populate the grid with category buttons.
 		final GridView buttonGrid = (GridView) findViewById(R.id.gridview);
-		
+
 		// Add a listener catch the first instance where the 
 		// area alloted to the grid is nonzero.  Once we know,
 		// we roughly calculate the imagebutton size.
 		ViewTreeObserver observer = buttonGrid.getViewTreeObserver();
 		observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-		    public void onGlobalLayout() {
-		    	int height = buttonGrid.getHeight();
-		    	if (height != 0) {
-		    		int contentSize = height - buttonGrid.getPaddingTop() - buttonGrid.getPaddingBottom();
-		    		int numRows = (FINHome.getCategoriesList().size() + 1) / 2;
-		    		int innerPadding = (numRows - 1) * 8;
-		    		cellSize = (contentSize - innerPadding) / numRows;
-		    		buttonGrid.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-		    		buttonGrid.setAdapter(new ButtonAdapter(mContext));
-		    	}
-		    }
+			public void onGlobalLayout() {
+				int height = buttonGrid.getHeight();
+				if (height != 0) {
+					int contentSize = height - buttonGrid.getPaddingTop() - buttonGrid.getPaddingBottom();
+					int numRows = (FINHome.getCategoriesList().size() + 1) / 2;
+					int innerPadding = (numRows - 1) * 8;
+					cellSize = (contentSize - innerPadding) / numRows;
+					buttonGrid.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+					buttonGrid.setAdapter(new ButtonAdapter(mContext));
+				}
+			}
 		});
 	}
 
@@ -156,7 +156,7 @@ public class FINMenu extends FINActivity {
 				ib.setImageResource(FINHome.getBigIcon(category));
 				ib.getLayoutParams().height = (int) (cellSize * .74);
 				ib.getLayoutParams().width = (int) (cellSize * .74);
-				
+
 				// Otherwise, jump to map
 				ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
@@ -164,25 +164,25 @@ public class FINMenu extends FINActivity {
 							myDialog = ProgressDialog.show(FINMenu.this, "" , "Loading " + category + "...", true);
 						}
 						Thread menuThread = new Thread() {
-							
+
 							@Override
 							public void run() {
 								Class<? extends Activity> nextClass = (FINHome.hasItems(category)? CategoryList.class : FINMap.class);
 								Intent myIntent = new Intent(getBaseContext(), nextClass);
-								
+
 								myIntent.putExtra("category", category);
 								myIntent.putExtra("building", "");
 								myIntent.putExtra("itemName", "");
-								
+
 								String locations = DBCommunicator.getLocations(category, "", FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
 								myIntent.putExtra("locations", locations);
-								
+
 								startActivity(myIntent);
 								if (!FINHome.hasItems(category)) {
 									myDialog.dismiss();
 								}
 							}
-							
+
 						};
 						menuThread.start();
 					}
@@ -196,7 +196,7 @@ public class FINMenu extends FINActivity {
 				ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
 				ib.setVisibility(View.INVISIBLE);
 			}
-			
+
 			return myView;
 		}
 

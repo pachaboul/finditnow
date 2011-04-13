@@ -74,7 +74,7 @@ public class FINMap extends FINMapActivity {
 		category = extras.getString("category");
 		building = extras.getString("building");
 		itemName = extras.getString("itemName");
-		
+
 		listOfLocations = extras.getString("locations");	
 
 		// Set the Breadcrumb in the titlebar
@@ -105,18 +105,18 @@ public class FINMap extends FINMapActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		
-		// We need an Editor object to make preference changes.
-	    // All objects are from android.context.Context
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-	    SharedPreferences.Editor editor = prefs.edit();
-	    
-	    editor.putInt("centerLat", mapView.getMapCenter().getLatitudeE6());
-	    editor.putInt("centerLon", mapView.getMapCenter().getLongitudeE6());
-	    editor.putInt("zoomLevel", mapView.getZoomLevel());
 
-	    // Commit the edits!
-	    editor.commit();
+		// We need an Editor object to make preference changes.
+		// All objects are from android.context.Context
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = prefs.edit();
+
+		editor.putInt("centerLat", mapView.getMapCenter().getLatitudeE6());
+		editor.putInt("centerLon", mapView.getMapCenter().getLongitudeE6());
+		editor.putInt("zoomLevel", mapView.getZoomLevel());
+
+		// Commit the edits!
+		editor.commit();
 
 		locOverlay.disableMyLocation();
 
@@ -168,7 +168,7 @@ public class FINMap extends FINMapActivity {
 			return new BigDecimal(-1);
 		}
 	}
-	
+
 	/**
 	 * This method returns the user's current location
 	 * @return GeoPoint representing the user's location
@@ -176,23 +176,23 @@ public class FINMap extends FINMapActivity {
 	public static GeoPoint getLocation() {
 		return location;
 	}
-	
+
 	@Override
 	public boolean onSearchRequested() {
 		if (building.equals("")) {
-		    Bundle appData = new Bundle();
-		    
-		    appData.putString("category", category);
-		    appData.putString("itemName", itemName);
-		    appData.putString("lat", FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"");
-		    appData.putString("lon", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"");
-		    appData.putString("locations", listOfLocations);
-		    
-		    startSearch(null, false, appData, false);
+			Bundle appData = new Bundle();
+
+			appData.putString("category", category);
+			appData.putString("itemName", itemName);
+			appData.putString("lat", FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"");
+			appData.putString("lon", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"");
+			appData.putString("locations", listOfLocations);
+
+			startSearch(null, false, appData, false);
 		}
-	    return true;
+		return true;
 	}
-	
+
 	public static CategoryItem getCategoryItem(GeoPoint point, String category) {
 		if (geoPointItem != null && geoPointItem.get(point) != null) {
 			return geoPointItem.get(point).get(category);
@@ -200,7 +200,7 @@ public class FINMap extends FINMapActivity {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * This method computes the walking time for a given distance based on the mile time
 	 * 
@@ -218,21 +218,21 @@ public class FINMap extends FINMapActivity {
 	 * This method creates the map and displays the overlays on top of it 
 	 */
 	private void createMap() {
-		
+
 		// Restore preferences
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-	    int latitude = prefs.getInt("centerLat", FINSplash.DEFAULT_LOCATION.getLatitudeE6());
-	    int longitude = prefs.getInt("centerLon", FINSplash.DEFAULT_LOCATION.getLongitudeE6());
-	    int zoomLevel = prefs.getInt("zoomLevel", 18);
+		int latitude = prefs.getInt("centerLat", FINSplash.DEFAULT_LOCATION.getLatitudeE6());
+		int longitude = prefs.getInt("centerLon", FINSplash.DEFAULT_LOCATION.getLongitudeE6());
+		int zoomLevel = prefs.getInt("zoomLevel", 18);
 
 		// Initialize our MapView and MapController
 		mapView = (MapView) findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
-		
+
 		mapController = mapView.getController();
 		mapController.setZoom(zoomLevel);
 		mapController.setCenter(new GeoPoint(latitude, longitude));
-		
+
 		Bundle extras = getIntent().getExtras();
 		if (getIntent().hasExtra("centerLat") && getIntent().hasExtra("centerLon")) {
 			mapController.animateTo(new GeoPoint(extras.getInt("centerLat"), extras.getInt("centerLon")));
@@ -242,7 +242,7 @@ public class FINMap extends FINMapActivity {
 		mapOverlays = mapView.getOverlays();
 		drawable = getResources().getDrawable(building.equals("")? FINHome.getIcon(category) : R.drawable.buildings);
 		itemizedOverlay = new IconOverlay(drawable, this, category, itemName, geoPointItem);
-		
+
 		// Setup the ImageButtons
 		ImageButton list = (ImageButton) findViewById(R.id.list_button);
 		ImageButton myLocation = (ImageButton) findViewById(R.id.my_location_button);
@@ -251,18 +251,18 @@ public class FINMap extends FINMapActivity {
 			list.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					Intent myIntent = new Intent(getBaseContext(), FINSearch.class);
-				    
+
 					Bundle appData = new Bundle();
-				    
-				    appData.putString("category", category);
-				    appData.putString("itemName", itemName);
-				    appData.putString("lat", FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"");
-				    appData.putString("lon", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"");
-				    appData.putString("locations", listOfLocations);
-				    
-				    myIntent.putExtra("appData", appData);
-				    
-				    startActivity(myIntent);
+
+					appData.putString("category", category);
+					appData.putString("itemName", itemName);
+					appData.putString("lat", FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"");
+					appData.putString("lon", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"");
+					appData.putString("locations", listOfLocations);
+
+					myIntent.putExtra("appData", appData);
+
+					startActivity(myIntent);
 				}
 			});
 		}
@@ -276,7 +276,7 @@ public class FINMap extends FINMapActivity {
 				}
 			}
 		});
-		
+
 		defaultLocation.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				mapController.animateTo(FINSplash.DEFAULT_LOCATION);
@@ -320,8 +320,8 @@ public class FINMap extends FINMapActivity {
 			GeoPoint point = FINHome.getGeoPointFromBuilding(building);
 			mapController.animateTo(point);
 			itemizedOverlay.addOverlay(new OverlayItem(point, "", ""));
-		
-		// Otherwise, we must loop over all the overlays
+
+			// Otherwise, we must loop over all the overlays
 		} else {
 			for (GeoPoint point : geoPointItem.keySet()) {
 				OverlayItem overlayItem = new OverlayItem(point, "", "");
@@ -334,7 +334,7 @@ public class FINMap extends FINMapActivity {
 			mapOverlays.add(itemizedOverlay);
 		}
 	}
-	
+
 	/**
 	 * Expand and define the Android options menu
 	 */
@@ -355,15 +355,15 @@ public class FINMap extends FINMapActivity {
 			return true;
 		case R.id.logout_button:
 			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-    		
-    		String result = DBCommunicator.logout(phone_id, getBaseContext());
-    		if (result.equals(getString(R.string.logged_out))) {
-    			FINHome.setLoggedIn(false);
-    		}
-    		
-    		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-    		
-    		return true;
+
+			String result = DBCommunicator.logout(phone_id, getBaseContext());
+			if (result.equals(getString(R.string.logged_out))) {
+				FINHome.setLoggedIn(false);
+			}
+
+			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+
+			return true;
 		case R.id.add_new_button:
 			startActivity(new Intent(this, FINAddNew.class));
 			return true;
@@ -377,7 +377,7 @@ public class FINMap extends FINMapActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);

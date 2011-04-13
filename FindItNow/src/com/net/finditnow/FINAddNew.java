@@ -3,19 +3,19 @@ package com.net.finditnow;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 public class FINAddNew extends FINActivity {
 
@@ -32,29 +32,29 @@ public class FINAddNew extends FINActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		// Restore the saved instance and generate the primary (main) layout
 		super.onCreate(savedInstanceState);
-		
+
 		if (!FINHome.isLoggedIn()) {
 			Intent myIntent = new Intent(this, FINLogin.class);
 			myIntent.putExtra("result", getString(R.string.must_login));
-			
+
 			startActivityForResult(myIntent, 0);
 		} else {
-		
+
 			setContentView(R.layout.addnew_popup);
-	
+
 			// Set the text in the titlebar
 			setTitle(getString(R.string.app_name) + " > Add New Item");
-	
+
 			//Set up interface for indoor/outdoor and category selection screen
 			geopointConfirm = findViewById(R.id.addmap_confirm);
-	
+
 			//Set up radio buttons for indoor/outdoor
 			radioSelection = (RadioButton) findViewById(R.id.addnew_in);
 			final RadioButton radio_in = (RadioButton) findViewById(R.id.addnew_in);
 			final RadioButton radio_out = (RadioButton) findViewById(R.id.addnew_out);
 			radio_in.setOnClickListener(radio_listener);
 			radio_out.setOnClickListener(radio_listener);
-	
+
 			//Set up the category spinner
 			Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
 			ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINHome.getCategoriesList());
@@ -62,11 +62,11 @@ public class FINAddNew extends FINActivity {
 			cSpinner.setAdapter(cAdapter);
 			cSpinner.setOnItemSelectedListener(cspinner_listener);
 			selectedCategory = FINHome.getCategoriesList().get(0);
-	
+
 			//Set up "next" button for indoor/outdoor and category selection screen
 			final Button next = (Button) findViewById(R.id.addnew_next);
 			next.setOnClickListener(next_listener);
-			
+
 			// Special case: if we were sent here via PopUpDialog.java,
 			// there may be a building name we'll need to set as a default option.
 			Bundle extras = getIntent().getExtras(); 
@@ -75,7 +75,7 @@ public class FINAddNew extends FINActivity {
 			}
 		}
 	}
-	
+
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {		
 		if (requestCode == 0) {		
 			if (resultCode == RESULT_OK) {		
@@ -83,7 +83,7 @@ public class FINAddNew extends FINActivity {
 				overridePendingTransition(0, 0);		
 				intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);		
 				finish();		
-		
+
 				overridePendingTransition(0, 0);		
 				startActivity(intent);		
 			} else {		
@@ -121,20 +121,20 @@ public class FINAddNew extends FINActivity {
 		public void onClick(View v) {    	
 			//Adding indoor location, start associated activity
 			Class<? extends Activity> nextClass = (radioSelection.getId() == R.id.addnew_in? FINAddIndoor.class : FINAddOutdoor.class);
-			
+
 			Intent myIntent = new Intent(v.getContext(), nextClass);
 			myIntent.putExtra("selectedCategory", selectedCategory);
 			myIntent.putExtra("supplyTypes", supplyTypes);
-			
+
 			if (buildingName != null) {
 				myIntent.putExtra("building", buildingName);
 			}
-			
+
 			//Grab special info
 			EditText info = (EditText) findViewById(R.id.addnew_specialinfo);
 			special_info = info.getText().toString();			
 			myIntent.putExtra("special_info", special_info);
-			
+
 			startActivity(myIntent);
 		}
 	};
@@ -163,7 +163,7 @@ public class FINAddNew extends FINActivity {
 		AlertDialog alert = builder.create();
 		alert.show();	
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);		

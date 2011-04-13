@@ -54,7 +54,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @param category - the category currently displaying
 	 */
 	public FloorExpandableListAdapter(Context context,CategoryItem catItem,
-		 String category, String dbCategory, String item, String[] parentText, String parentMode) {
+			String category, String dbCategory, String item, String[] parentText, String parentMode) {
 		super();
 		this.context = context;
 		this.catItem = catItem;
@@ -114,7 +114,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 			// particular object
 			TextView text = (TextView) relative.findViewById(R.id.floorDetailText);
 			String specialInfo = (catItem.getInfo().get(pos) != null? catItem.getInfo().get(pos) : "");
-				
+
 			//sets it to the text field
 			text.setText(Html.fromHtml(specialInfo));
 
@@ -131,11 +131,18 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 					builder.setCancelable(false);
 					//confirms the action and perform the update accordingly 
 					builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-							String response = DBCommunicator.update(phone_id, dbCategory, catItem.getId().get(pos)+"", context);							
-							dialog.dismiss();
-							Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+						public void onClick(final DialogInterface dialog, int id) {
+							myDialog = ProgressDialog.show(context, "" , "Reporting as not found...", true);
+							Thread thread = new Thread() {
+								public void run() {
+									final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+									String response = DBCommunicator.update(phone_id, dbCategory, catItem.getId().get(pos)+"", context);							
+									dialog.dismiss();
+									Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+									myDialog.dismiss();
+								}
+							};
+							thread.start();
 						}
 					});
 					//cancels the action if the user didn't mean to do it
@@ -146,33 +153,33 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 					});
 
 					if (FINHome.isLoggedIn()) {
-		    			builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
-		    				 public void onClick(DialogInterface dialog, int id) {
-		    					 myDialog = ProgressDialog.show(context, "" , "Deleting " + dbCategory + "...", true);
-		    						Thread thread = new Thread() {
-		    							public void run() {
-				    				       final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-				    				       String result = DBCommunicator.delete(phone_id, dbCategory, catItem.getId().get(0)+"", context);
-		
-				    				       Intent myIntent = new Intent(context, FINMap.class);
-				    				       myIntent.putExtra("result", result);
-					   					   myIntent.putExtra("category", dbCategory);
-					   					   myIntent.putExtra("building", "");
-					   					   myIntent.putExtra("itemName", item);
-					   					   
-					   					   String locations = DBCommunicator.getLocations(dbCategory, item, FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"", context);
-										   myIntent.putExtra("locations", locations);
-					   					   
-					   					   context.startActivity(myIntent);
-					   					   
-					   					   myDialog.dismiss();
-		    							}
-		    						};
-		    						thread.start();
-		    				   }
-		    			});
-	    			}
-					
+						builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
+							public void onClick(DialogInterface dialog, int id) {
+								myDialog = ProgressDialog.show(context, "" , "Deleting " + dbCategory + "...", true);
+								Thread thread = new Thread() {
+									public void run() {
+										final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+										String result = DBCommunicator.delete(phone_id, dbCategory, catItem.getId().get(0)+"", context);
+
+										Intent myIntent = new Intent(context, FINMap.class);
+										myIntent.putExtra("result", result);
+										myIntent.putExtra("category", dbCategory);
+										myIntent.putExtra("building", "");
+										myIntent.putExtra("itemName", item);
+
+										String locations = DBCommunicator.getLocations(dbCategory, item, FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"", context);
+										myIntent.putExtra("locations", locations);
+
+										context.startActivity(myIntent);
+
+										myDialog.dismiss();
+									}
+								};
+								thread.start();
+							}
+						});
+					}
+
 					AlertDialog dailog = builder.create();
 					dailog.show();
 				}
@@ -221,11 +228,11 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 		View relative= LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);;
 
 		ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
-		
+
 		//Text for displaying the floor name
 		TextView text = (TextView) relative.findViewById(R.id.flrName);
-		
-		
+
+
 		if (parentMode.equals("categoryView")){
 			relative.setBackgroundResource(R.color.FIN_secondary);
 			text.setText(category);

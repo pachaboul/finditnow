@@ -25,7 +25,7 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 	private String category;
 	private String itemName;
 	private HashMap<GeoPoint,HashMap<String,CategoryItem>> items;
-	
+
 	/**
 	 * A custom constructor of the UWOverlay class which accepts lots of information
 	 *
@@ -48,7 +48,7 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 		mapOverlays.add(overlay);
 		populate();
 	}
-	
+
 	public void removeOverlay(int index) {
 		mapOverlays.remove(index);
 	}
@@ -88,10 +88,10 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 		if (FINHome.getBuilding(itemLocation) != null) {
 			isOutdoor = false;
 		}
-		
+
 		// Building the pop-up dialog with this information and then show it
 		Dialog popUp = new PopUpDialog(context, building, displayCat, category, itemName, data, distance, walkingTime, isOutdoor);
-		
+
 		popUp.show();
 
 		return true;

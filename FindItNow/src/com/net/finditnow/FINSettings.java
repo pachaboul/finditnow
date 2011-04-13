@@ -1,13 +1,16 @@
 package com.net.finditnow;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceActivity;
 import android.provider.SearchRecentSuggestions;
 import android.provider.Settings.Secure;
 import android.view.Menu;
@@ -16,47 +19,49 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class FINSettings extends PreferenceActivity {
-	
+
 	private Context context;
-	
+	private ProgressDialog myDialog;
+	private String result;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.settings);
 		setTitle(getString(R.string.app_name) + " > Settings");
-		
+
 		context = this;
-		
+
 		// Get the custom preference
 		Preference searchHistory = (Preference) findPreference("clearHistory");
 		searchHistory.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
 			public boolean onPreferenceClick(Preference preference) {
-				
+
 				AlertDialog.Builder builder = new AlertDialog.Builder(context);
-    			builder.setMessage("Are you sure you want to clear your search history?");
-    			builder.setCancelable(false);
-    			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-    		           public void onClick(DialogInterface dialog, int id) {
-    						Toast.makeText(context, "Your search history has been cleared", Toast.LENGTH_LONG).show();
-    						SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getBaseContext(), SearchSuggestions.AUTHORITY, SearchSuggestions.MODE);
-    						suggestions.clearHistory();
-    		           }
-    		       });
-    			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-    		           public void onClick(DialogInterface dialog, int id) {
-    		                dialog.cancel();
-    		           }
-    		       });
-    			AlertDialog dialog = builder.create();
-    			dialog.show();
-				
+				builder.setMessage("Are you sure you want to clear your search history?");
+				builder.setCancelable(false);
+				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						Toast.makeText(context, "Your search history has been cleared", Toast.LENGTH_LONG).show();
+						SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getBaseContext(), SearchSuggestions.AUTHORITY, SearchSuggestions.MODE);
+						suggestions.clearHistory();
+					}
+				});
+				builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				AlertDialog dialog = builder.create();
+				dialog.show();
+
 				return true;
 			}
 
 		});
 	}
-	
+
 	/**
 	 * Create the Android options menu
 	 */
@@ -84,16 +89,24 @@ public class FINSettings extends PreferenceActivity {
 			startActivity(new Intent(this, FINLogin.class));
 			return true;
 		case R.id.logout_button:
-			final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-    		
-    		String result = DBCommunicator.logout(phone_id, getBaseContext());
-    		if (result.equals(getString(R.string.logged_out))) {
-    			FINHome.setLoggedIn(false);
-    		}
-    		
-    		Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-    		
-    		return true;
+			myDialog = ProgressDialog.show(FINSettings.this, "" , "Logging out...", true);
+			Thread thread = new Thread() {
+				public void run() {
+					final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+
+					result = DBCommunicator.logout(phone_id, getBaseContext());
+					if (result.equals(getString(R.string.logged_out))) {
+						FINHome.setLoggedIn(false);
+					}
+
+					myDialog.dismiss();      	
+
+					handler.sendEmptyMessage(0);
+				}
+			};
+			thread.start();
+
+			return true;
 		case R.id.add_new_button:
 			startActivity(new Intent(this, FINAddNew.class));
 			return true;
@@ -110,10 +123,10 @@ public class FINSettings extends PreferenceActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		
+
 		menu.findItem(R.id.settings_button).setVisible(false);
 		menu.findItem(R.id.search_button).setVisible(false);
-		
+
 		if (FINHome.isLoggedIn()) {
 			menu.findItem(R.id.login_button).setVisible(false);
 			menu.findItem(R.id.logout_button).setVisible(true);
@@ -124,4 +137,10 @@ public class FINSettings extends PreferenceActivity {
 
 		return true;
 	}
+
+	private Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+		}
+	};
 }

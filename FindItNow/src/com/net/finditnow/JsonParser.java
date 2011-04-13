@@ -20,7 +20,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonStreamParser;
 public class JsonParser {
-	 /*
+	/*
 	 * Design Principle: Information Hiding
 	 * These two arrays are only visible to this class.  Other module do not
 	 * ever need to know the exact names of each data coming from the
@@ -34,14 +34,14 @@ public class JsonParser {
 		"info",
 		"id",
 		"cat",
-		"item"};
+	"item"};
 	private static final String[] BUILDING_NAMES = { "bid",
 		"lat",
 		"long",
 		"name",
 		"fid",
 	"floor_names"};
-	
+
 	/**
 	 * parse a json string into a map of GeoPoint to Building
 	 *  
@@ -64,19 +64,19 @@ public class JsonParser {
 			{
 				//Since the JsonArray contains whole bunch json array, we can get each one out
 				JsonObject ob = arr.get(i).getAsJsonObject();
-	
+
 				//place the information in the map with BuildingID as key
 				GeoPoint point = new GeoPoint( ob.get(BUILDING_NAMES[1]).getAsInt(),ob.get(BUILDING_NAMES[2]).getAsInt());
-	
+
 				//remove lat, long so it can be used for the Gson.fromJson
 				ob.remove(BUILDING_NAMES[1]);
 				ob.remove(BUILDING_NAMES[2]);
-	
+
 				//Log.i("log_tag", ob.toString());
-	
+
 				//converts a Json string directly to a building object
 				Building build = gson.fromJson(ob,Building.class);
-				
+
 				//puts it in the map
 				map.put(point, build);
 			}
@@ -92,17 +92,17 @@ public class JsonParser {
 	 * @return an ArrayList of category names
 	 */
 	public static ArrayList<String> getCategoriesList(String json){
-		
+
 		String[] arr = json.split(",");
 		ArrayList<String> result = new ArrayList<String>();
 
 		for(int i = 0; i < arr.length; i++)
 		{
-				result.add(FINUtil.displayCategory(arr[i]));
+			result.add(FINUtil.displayCategory(arr[i]));
 		}
 		return result;
 	}
-	
+
 	public static HashMap<Integer, GeoPoint> parseSearchJson(String json) {
 		String[] arr = json.split(",");
 		HashMap<Integer, GeoPoint> result = new HashMap<Integer, GeoPoint>();
@@ -113,18 +113,18 @@ public class JsonParser {
 		} 
 		return result;
 	}
-	
+
 	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json,String category){
 		if (category.equals(""))
 			return parseAllCategoryJson(json);
 		else{
 			HashMap<GeoPoint,HashMap<String,CategoryItem>> result = new HashMap<GeoPoint,HashMap<String,CategoryItem>>();
-			
+
 			HashMap<GeoPoint, CategoryItem> map = parseCategoryJson(json);
-			
+
 			for (GeoPoint key:map.keySet()){
 				HashMap<String,CategoryItem> oneMap = new HashMap<String,CategoryItem>();
-				
+
 				oneMap.put(FINUtil.displayCategory(category), map.get(key));
 				result.put(key,oneMap);
 			}
@@ -141,7 +141,7 @@ public class JsonParser {
 	{
 		//creates the map for information to be stored in
 		HashMap<GeoPoint,CategoryItem> map = new HashMap<GeoPoint,CategoryItem>();
-		
+
 		if (json != null && !json.equals("")) {
 
 			//String json = jsonArray.toString();
@@ -149,15 +149,15 @@ public class JsonParser {
 			Gson gson = new Gson();
 			JsonStreamParser parser = new JsonStreamParser(json);
 			JsonArray arr = parser.next().getAsJsonArray();
-			
-			
+
+
 			for (int i = 0; i < arr.size(); i++)
 			{
 				if (arr.get(i).isJsonObject())
 				{
 					//Since the JsonArray contains whole bunch json array, we can get each one out
 					JsonObject ob = arr.get(i).getAsJsonObject();
-	
+
 					//place the information in the map with GeoPoint as key
 					GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
 					CategoryItem item = new CategoryItem();
@@ -167,8 +167,8 @@ public class JsonParser {
 					{
 						item = map.get(point);
 					}
-					
-					
+
+
 					if (ob.has(LOCATION_NAMES[2]))
 					{
 						JsonArray s = ob.get(LOCATION_NAMES[2]).getAsJsonArray();
@@ -198,7 +198,7 @@ public class JsonParser {
 		} 
 		return map;
 	}
-	
+
 	/**
 	 * parses a Json Array into a map of locations and its corresponding CategoryItem for all category
 	 * 
@@ -209,7 +209,7 @@ public class JsonParser {
 	{
 		//creates the map for information to be stored in
 		HashMap<GeoPoint,HashMap<String,CategoryItem>> map = new HashMap<GeoPoint,HashMap<String,CategoryItem>>();
-		
+
 		if (json != null && !json.equals("")) {
 
 			//used for parsing the JSON object
@@ -217,19 +217,19 @@ public class JsonParser {
 			JsonStreamParser parser = new JsonStreamParser(json);
 			while (parser.hasNext()){
 				JsonArray arr = parser.next().getAsJsonArray();
-	
+
 				for (int i = 0; i < arr.size(); i++)
 				{
 					if (arr.get(i).isJsonObject())
 					{
 						//Since the JsonArray contains whole bunch json array, we can get each one out
 						JsonObject ob = arr.get(i).getAsJsonObject();					
-						
+
 						//place the information in the map with GeoPoint as key
 						GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
 						HashMap<String,CategoryItem> oneMap;
-	
-						
+
+
 						//Grab the Map of Location if it is in it or make a new one
 						if (map.get(point) != null)
 						{
@@ -239,7 +239,7 @@ public class JsonParser {
 							oneMap = new HashMap<String,CategoryItem>();
 							map.put(point, oneMap);
 						}
-						
+
 						//grab the category and its corresponding CategoryItem if it is in the map
 						//else make a new one
 						String cat = FINUtil.displayCategory(ob.get(LOCATION_NAMES[5]).getAsString());
@@ -256,8 +256,8 @@ public class JsonParser {
 							item = new CategoryItem();
 							oneMap.put(cat, item);
 						}
-	
-						
+
+
 						if (ob.has(LOCATION_NAMES[2]))
 						{
 							JsonArray s = ob.get(LOCATION_NAMES[2]).getAsJsonArray();
