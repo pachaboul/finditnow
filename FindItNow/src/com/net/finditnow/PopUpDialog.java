@@ -47,6 +47,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Region;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings.Secure;
 import android.text.Html;
 import android.view.MotionEvent;
@@ -73,6 +75,8 @@ public class PopUpDialog extends Dialog{
 	private String dbCategory;
 	private String item;
 	private boolean isOutdoor;
+	
+	private String result;
 
 	//version 3.5 added stuff.
 	private HashMap<String,CategoryItem> dataMap;
@@ -261,13 +265,13 @@ public class PopUpDialog extends Dialog{
 								@Override
 								public void run() {
 									final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-									String result = DBCommunicator.update(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());	    		        	   
-									dialog.dismiss();
-									Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+									result = DBCommunicator.update(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());	    		        	   
 									myDialog.dismiss();
+									handler.sendEmptyMessage(0);
 								}
 							};
 							thread.start();
+							dialog.dismiss();
 						}
 					});
 					//cancels the action if the user didn't mean to do it
@@ -358,4 +362,11 @@ public class PopUpDialog extends Dialog{
 			dismiss();
 		return true;
 	}
+	
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+		}
+	};
 }  
