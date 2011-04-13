@@ -12,6 +12,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings.Secure;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -43,6 +45,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	private String parentMode;
 
 	private int pos;
+	
+	private String result;
 
 	/**
 	 * Creates a new FloorExpandableListAdapter with each variable initialized
@@ -137,13 +141,13 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 								@Override
 								public void run() {
 									final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-									String response = DBCommunicator.update(phone_id, dbCategory, catItem.getId().get(pos)+"", context);							
-									dialog.dismiss();
-									Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+									result = DBCommunicator.update(phone_id, dbCategory, catItem.getId().get(pos)+"", context);							
 									myDialog.dismiss();
+									handler.sendEmptyMessage(0);
 								}
 							};
 							thread.start();
+							dialog.dismiss();
 						}
 					});
 					//cancels the action if the user didn't mean to do it
@@ -259,4 +263,11 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return false;
 	}
+	
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+		}
+	};
 }
