@@ -49,12 +49,12 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("latitude", latitude));
 		nameValuePairs.add(new BasicNameValuePair("longitude", longitude));
 		nameValuePairs.add(new BasicNameValuePair("bb", bb));
-        nameValuePairs.add(new BasicNameValuePair("sc", sc));
-        nameValuePairs.add(new BasicNameValuePair("print", print));
-		
+		nameValuePairs.add(new BasicNameValuePair("sc", sc));
+		nameValuePairs.add(new BasicNameValuePair("print", print));
+
 		return Post("FINsert/create.php", nameValuePairs, context);
 	}
-	
+
 	public static String delete(String phone_id, String category, String id, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
@@ -62,23 +62,23 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 		nameValuePairs.add(new BasicNameValuePair("category", FINUtil.sendCategory(category)));
 		nameValuePairs.add(new BasicNameValuePair("id", id));
-		
+
 		return Post("delete.php", nameValuePairs, context);
 	}
-	
+
 	public static String getCategories(Context context) {
 		return Get("getCategories.php", context);
 	}
-	
+
 	public static String getBuildings(String lat, String lon, Context context) {
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("lon", lon));
-		
+
 		return Post("getBuildings.php", nameValuePairs, context);
 	}
-	
+
 	public static String getLocations(String cat, String item, String lat, String lon, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
@@ -87,62 +87,62 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("item", FINUtil.sendItemName(item)));
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("long", lon));
-		
+
 		return Post("getLocations.php", nameValuePairs, context);
 	}
-	
+
 	public static String getAllLocations(String cat, String lat, String lon, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-		
+
 		nameValuePairs.add(new BasicNameValuePair("cat", cat));
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("long", lon));
-		
+
 		return Post("getAllLocations.php", nameValuePairs, context);
 	}
-	
+
 	public static String login(String phone_id, String username, String userpass, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-		
-        nameValuePairs.add(new BasicNameValuePair("username", username));
-        nameValuePairs.add(new BasicNameValuePair("userpass", userpass));
-        nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
-        
-        return Post("login.php", nameValuePairs, context);
+
+		nameValuePairs.add(new BasicNameValuePair("username", username));
+		nameValuePairs.add(new BasicNameValuePair("userpass", userpass));
+		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
+
+		return Post("login.php", nameValuePairs, context);
 	}
-	
+
 	public static String loggedIn(String phone_id, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-		
+
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
-		
+
 		return Post("loggedIn.php", nameValuePairs, context);
 	}
-	
+
 	public static String logout(String phone_id, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-		
+
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
-		
+
 		return Post("logout.php", nameValuePairs, context);
 	}
-	
+
 	public static String searchLocations(String category, String lat, String lon, String sString, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-		
+
 		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(category)));
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("long", lon));
 		nameValuePairs.add(new BasicNameValuePair("sString", sString));
-		
+
 		return Post("searchLocations.php", nameValuePairs, context);
 	}
-	
+
 	public static String update(String phone_id, String category, String id, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
@@ -150,39 +150,39 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 		nameValuePairs.add(new BasicNameValuePair("category", FINUtil.sendCategory(category)));
 		nameValuePairs.add(new BasicNameValuePair("id", id));
-		
+
 		return Post("update.php", nameValuePairs, context);
 	}
-	
+
 	private static String Get(String suffix, Context context) {
-		
+
 		String data = "";
-		
-        HttpGet httpGet = new HttpGet(FIN_ROOT + suffix);
-     
-        // Process the response from the server
-        HttpClient httpClient = createHttpClient();		
+
+		HttpGet httpGet = new HttpGet(FIN_ROOT + suffix);
+
+		// Process the response from the server
+		HttpClient httpClient = createHttpClient();		
 		HttpResponse httpResponse = null;
 
-        try {
-            httpResponse = httpClient.execute(httpGet);  
-    		data = EntityUtils.toString(httpResponse.getEntity());
-        } catch (Exception e) {
-        	if (e != null) {
-        		Log.e("log_tag", e.getMessage());
-        	}
-            return context.getString(R.string.timeout);
-        }
+		try {
+			httpResponse = httpClient.execute(httpGet);  
+			data = EntityUtils.toString(httpResponse.getEntity());
+		} catch (Exception e) {
+			if (e != null) {
+				Log.e("log_tag", e.getMessage());
+			}
+			return context.getString(R.string.timeout);
+		}
 
-        return data.trim();
-    }
+		return data.trim();
+	}
 
 	private static String Post(String suffix, List<BasicNameValuePair> nameValuePairs, Context context) {
 
 		// Initialize input stream and response variables
 		InputStream iStream = null;
 		String data = "";
-		
+
 		try {
 			HttpPost httppost = new HttpPost(FIN_ROOT + suffix);
 
@@ -216,29 +216,29 @@ public class DBCommunicator {
 			}
 			return context.getString(R.string.timeout);
 		}
-		
+
 		if (data.trim().equals(context.getString(R.string.not_logged_in))) {
 			FINHome.setLoggedIn(false);
 		}
 
 		return data.trim();
 	}
-	
+
 	private static HttpClient createHttpClient() {
-	    HttpParams params = new BasicHttpParams();
-	    
-	    HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-	    HttpProtocolParams.setContentCharset(params, HTTP.DEFAULT_CONTENT_CHARSET);
-	    HttpProtocolParams.setUseExpectContinue(params, true);
-	    
+		HttpParams params = new BasicHttpParams();
+
+		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+		HttpProtocolParams.setContentCharset(params, HTTP.DEFAULT_CONTENT_CHARSET);
+		HttpProtocolParams.setUseExpectContinue(params, true);
+
 		HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
 		HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
 
-	    SchemeRegistry schReg = new SchemeRegistry();
-	    schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-	    schReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
-	    ClientConnectionManager conMgr = new ThreadSafeClientConnManager(params, schReg);
+		SchemeRegistry schReg = new SchemeRegistry();
+		schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+		schReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
+		ClientConnectionManager conMgr = new ThreadSafeClientConnManager(params, schReg);
 
-	    return new DefaultHttpClient(conMgr, params);
+		return new DefaultHttpClient(conMgr, params);
 	}
 }

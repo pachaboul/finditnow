@@ -50,9 +50,9 @@ public class ConnectionChecker {
 				URL url = new URL("http://www.google.com");
 				HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
 				urlc.setConnectTimeout(4000); // mTimeout is in seconds
-	
+
 				urlc.connect();
-	
+
 				if (urlc.getResponseCode() == 200) {
 					return true;
 				} else {

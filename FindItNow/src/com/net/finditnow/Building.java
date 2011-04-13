@@ -9,7 +9,7 @@ package com.net.finditnow;
 import java.util.HashMap;
 
 public class Building {
-	
+
 	private String name; // Store the name of the building
 	private int bid; // Store the building ID
 	private int[] fid; // Store the floor IDs
@@ -21,7 +21,7 @@ public class Building {
 	public Building() {
 
 	}
-	
+
 	/**
 	 * Defines a Building object
 	 * 
@@ -67,7 +67,7 @@ public class Building {
 	public int[] getFloorIDs(){
 		return fid;
 	}
-	
+
 	/**
 	 * Method to return the floor names of the building object
 	 * 
@@ -94,8 +94,8 @@ public class Building {
 	@Override
 	public String toString(){
 		String result = "Name: " + name + ", Building ID: " + getBuildingID() + 
-						", Floor IDs: " + getFloorIDs()+ 
-						", Floor Names: " + getFloorNames().toString();
+		", Floor IDs: " + getFloorIDs()+ 
+		", Floor Names: " + getFloorNames().toString();
 		return result;
 	}
 }

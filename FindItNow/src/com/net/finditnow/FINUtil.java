@@ -8,7 +8,7 @@ package com.net.finditnow;
 import java.util.ArrayList;
 
 public class FINUtil {
-	
+
 	/**
 	 * Capitalizes the first character of the given string.
 	 * @param str String to capitalize
@@ -22,15 +22,15 @@ public class FINUtil {
 			return "ATMs";
 		} else {
 			StringBuffer buffer = new StringBuffer();
-	    	buffer.append(str);    	
-	    	buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
-	    	if (buffer.indexOf("_") != -1) {
-		    	buffer.setCharAt(buffer.indexOf("_") + 1, Character.toUpperCase(buffer.charAt(buffer.indexOf("_") + 1)));
-	    	}
-	    	return buffer.toString().replace('_', ' ');
+			buffer.append(str);    	
+			buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
+			if (buffer.indexOf("_") != -1) {
+				buffer.setCharAt(buffer.indexOf("_") + 1, Character.toUpperCase(buffer.charAt(buffer.indexOf("_") + 1)));
+			}
+			return buffer.toString().replace('_', ' ');
 		}
 	}
-	
+
 	/**
 	 * Capitalizes the first character of all strings in an ArrayList
 	 * @param strs ArrayList of strings
@@ -44,7 +44,7 @@ public class FINUtil {
 		}
 		return al;
 	}
-	
+
 	public static String displayItemName(String str) {
 		if (str.equals("")) {
 			return str;
@@ -54,7 +54,7 @@ public class FINUtil {
 			return displayCategory(str);
 		}
 	}
-	
+
 	public static String pluralize(String str, int num) {
 		if (num == 1) {
 			return str;
@@ -62,7 +62,7 @@ public class FINUtil {
 			return str + "s";
 		}
 	}
-	
+
 	/**
 	 * Undoes the above operation
 	 * @param str The string to decap
@@ -75,7 +75,7 @@ public class FINUtil {
 			return str;
 		}
 	}
-	
+
 	/**
 	 * Capitalizes the first character of all strings in an ArrayList
 	 * @param strs ArrayList of strings
@@ -89,7 +89,7 @@ public class FINUtil {
 		}
 		return al;
 	}
-	
+
 	/**
 	 * Undoes the above operation
 	 * @param str The string to decap
@@ -102,7 +102,7 @@ public class FINUtil {
 			return str.toLowerCase();
 		}
 	}
-	
+
 	/**
 	 * Returns a String of the categories separated by "|"
 	 * @param categories An ArrayList of Strings containing the categories

@@ -51,8 +51,8 @@ import android.provider.Settings.Secure;
 import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,7 +73,7 @@ public class PopUpDialog extends Dialog{
 	private String dbCategory;
 	private String item;
 	private boolean isOutdoor;
-	
+
 	//version 3.5 added stuff.
 	private HashMap<String,CategoryItem> dataMap;
 
@@ -94,8 +94,8 @@ public class PopUpDialog extends Dialog{
 	 * 
 	 */
 	public PopUpDialog(Context context,
-				Building building, String category, String dbCategory, String item, HashMap<String,CategoryItem> dataMap, BigDecimal distance, int walkingTime,
-				 boolean isOutdoor)
+			Building building, String category, String dbCategory, String item, HashMap<String,CategoryItem> dataMap, BigDecimal distance, int walkingTime,
+			boolean isOutdoor)
 	{
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -109,7 +109,7 @@ public class PopUpDialog extends Dialog{
 		this.isOutdoor = isOutdoor;
 	}
 
-	
+
 	/**
 	 * called when PopUpDialog is first created
 	 * It places all the information on the dialog, 
@@ -120,16 +120,16 @@ public class PopUpDialog extends Dialog{
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		
+
 		setContentView(R.layout.popupdialog);
 
 		//sets the title of this dialog
-    	TextView title = (TextView) findViewById(R.id.dialogTitle);
+		TextView title = (TextView) findViewById(R.id.dialogTitle);
 
 		//the button that 1) displays the list of floor
 		//            or  2) unconfirms an outdoor location
 		TextView butt = (TextView) findViewById(R.id.showFlrButt);
-		
+
 		// If we're in building mode, hide the unnecessary
 		// special info and category fields.
 		if (category.equals("")) {
@@ -137,62 +137,62 @@ public class PopUpDialog extends Dialog{
 			TextView outDoor = (TextView) findViewById(R.id.outDoorText);
 			TextView category = (TextView) findViewById(R.id.categoryName);
 			outDoor.setVisibility(View.INVISIBLE);
-	    	outDoor.getLayoutParams().height = 0;
-	    	category.setVisibility(View.INVISIBLE);
-	    	category.getLayoutParams().height = 0;
+			outDoor.getLayoutParams().height = 0;
+			category.setVisibility(View.INVISIBLE);
+			category.getLayoutParams().height = 0;
 
-	    	// If we're logged in, show the extra "Add Item" button.
+			// If we're logged in, show the extra "Add Item" button.
 			if (FINHome.isLoggedIn()) {
 				TextView addItem = (TextView) findViewById(R.id.add_item_button);
 				addItem.setVisibility(View.VISIBLE);
 				addItem.setOnClickListener(new View.OnClickListener() {
-		    		public void onClick(View v) {
-		    			Intent myIntent = new Intent(getContext(), FINAddNew.class);
+					public void onClick(View v) {
+						Intent myIntent = new Intent(getContext(), FINAddNew.class);
 						myIntent.putExtra("building", building.getName());
 						getContext().startActivity(myIntent);
-		    		}
+					}
 				});
 			}
 		}
-    	
-    	//the text for displaying information for outdoor
-    	// has no info is it is indoor
-    	TextView outDoor = (TextView) findViewById(R.id.outDoorText);
-    	
-    	if ( !isOutdoor) {
-    		title.setText(building.getName());
 
-    		//This location is indoor
-    		//the button will show/hide the floor list when clicked on
-	    	butt.setOnClickListener( new View.OnClickListener()
-	    	{
-	    		public void onClick(View v)
-	    		{
-	    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
-	    			//Button toggle = (Button) findViewById(R.id.showFlrButt);
-	    			TextView toggle = (TextView) findViewById(R.id.showFlrButt);
-	    			
-	    			// Show all the floor info.
-	    			if (lv.getCount() == 0)
-	    			{
-	    				toggle.setText("Hide Floors");
-	    				lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-	    				
-	    				String[] floorsWithCategories = new String[0];
-	    				if (dataMap.get(dbCategory) != null) {
-	    					floorsWithCategories = (String[]) dataMap.get(dbCategory).getFloor_names().toArray (new String[0]);
-	    				}
-	    				
-	    				if (floorsWithCategories.length > 3)
-	    					lv.getLayoutParams().height = 250;
+		//the text for displaying information for outdoor
+		// has no info is it is indoor
+		TextView outDoor = (TextView) findViewById(R.id.outDoorText);
 
-	    				// If we're displaying information by building, and not category
-	    				if (category.equals("")) {
-	    	    	    	
-	    					String[] categories =dataMap.keySet().toArray(new String[0]);
+		if ( !isOutdoor) {
+			title.setText(building.getName());
 
-	    					lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),building,categories,dataMap));
-	    					lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
+			//This location is indoor
+			//the button will show/hide the floor list when clicked on
+			butt.setOnClickListener( new View.OnClickListener()
+			{
+				public void onClick(View v)
+				{
+					ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
+					//Button toggle = (Button) findViewById(R.id.showFlrButt);
+					TextView toggle = (TextView) findViewById(R.id.showFlrButt);
+
+					// Show all the floor info.
+					if (lv.getCount() == 0)
+					{
+						toggle.setText("Hide Floors");
+						lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
+
+						String[] floorsWithCategories = new String[0];
+						if (dataMap.get(dbCategory) != null) {
+							floorsWithCategories = (String[]) dataMap.get(dbCategory).getFloor_names().toArray (new String[0]);
+						}
+
+						if (floorsWithCategories.length > 3)
+							lv.getLayoutParams().height = 250;
+
+						// If we're displaying information by building, and not category
+						if (category.equals("")) {
+
+							String[] categories =dataMap.keySet().toArray(new String[0]);
+
+							lv.setAdapter(new DoubleExpandableListAdapter(lv.getContext(),building,categories,dataMap));
+							lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
 								public void onGroupExpand(int groupPosition) {
 									if (!DoubleExpandableListAdapter.set){
 										ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
@@ -201,130 +201,137 @@ public class PopUpDialog extends Dialog{
 									}
 								}
 							});
-	    				}
-	    				else{
-		    				//auto scrolls to the item in view into the screen zone
-		    				lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+						}
+						else{
+							//auto scrolls to the item in view into the screen zone
+							lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 								public void onGroupExpand(int groupPosition) {
-					    			ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
-					    			lv.setSelectedGroup(groupPosition);		
+									ExpandableListView lv = (ExpandableListView) findViewById(R.id.flrList);
+									lv.setSelectedGroup(groupPosition);		
 								}
 							});
-		    				lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),dataMap.get(dbCategory),
-			    					category, dbCategory, item, floorsWithCategories,"flrName"));
-	    				}
-	    			}
-	    			// Hide all the floor info.
-	    			else {
-	    				toggle.setText("Show Floors");
-	    				lv.getLayoutParams().height = 0;
-    				    lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),new CategoryItem(),
-    				    		 category, dbCategory, item, new String[0],"flrName"));
+							lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),dataMap.get(dbCategory),
+									category, dbCategory, item, floorsWithCategories,"flrName"));
+						}
+					}
+					// Hide all the floor info.
+					else {
+						toggle.setText("Show Floors");
+						lv.getLayoutParams().height = 0;
+						lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),new CategoryItem(),
+								category, dbCategory, item, new String[0],"flrName"));
 
-	    			}
-	    			
-	    		}
-	    	});
-	    	//outdoor information is not needed in this case, make
-	    	// it disappear
-	    	outDoor.setVisibility(View.INVISIBLE);
-	    	outDoor.getLayoutParams().height = 0;
-    	} else {
-    		title.setText("Outdoor Location");
+					}
 
-    		String spInfo = dataMap.get(dbCategory).getInfo().get(0);
-    		
-    		// If there's no special info, hide the outdoor info section
-    		// (it would have added unnecessary padding)
-    		if (spInfo == null || spInfo.equals("")) {
-    			outDoor.setVisibility(View.INVISIBLE);
-    	    	outDoor.getLayoutParams().height = 0;
-    		} else {
-    			outDoor.setText(Html.fromHtml(spInfo));
-    		}
+				}
+			});
+			//outdoor information is not needed in this case, make
+			// it disappear
+			outDoor.setVisibility(View.INVISIBLE);
+			outDoor.getLayoutParams().height = 0;
+		} else {
+			title.setText("Outdoor Location");
+
+			String spInfo = dataMap.get(dbCategory).getInfo().get(0);
+
+			// If there's no special info, hide the outdoor info section
+			// (it would have added unnecessary padding)
+			if (spInfo == null || spInfo.equals("")) {
+				outDoor.setVisibility(View.INVISIBLE);
+				outDoor.getLayoutParams().height = 0;
+			} else {
+				outDoor.setText(Html.fromHtml(spInfo));
+			}
 
 			butt.setText("Nothing Here?");
-			
-			butt.setOnClickListener( new View.OnClickListener()
-	    	{
-	    		public void onClick(View v)
-	    		{
-	    			//pops a Dialog to confirm the user's intent
-	    			AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-	    			builder.setMessage("Are you sure that this " + category.replace("_", " ").toLowerCase() + " location is not here?");
-	    			builder.setCancelable(false);
-	    			//confirms the action and perform the update accordingly 
-	    			builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
-	    		           public void onClick(DialogInterface dialog, int id) {
-	    		        	   final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-	    		        	   String result = DBCommunicator.update(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());	    		        	   
-	    		        	   dialog.dismiss();
-	    		               Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
-	    		           }
-	    		       });
-	    			//cancels the action if the user didn't mean to do it
-	    			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-	    		           public void onClick(DialogInterface dialog, int id) {
-	    		                dialog.cancel();
-	    		           }
-	    		       });
-	    			if (FINHome.isLoggedIn()) {
-		    			builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
-		    				 public void onClick(DialogInterface dialog, int id) {
-		    					 myDialog = ProgressDialog.show(getContext(), "" , "Deleting " + dbCategory + "...", true);
-		    						Thread thread = new Thread() {
-		    							public void run() {
-				    				       final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-				    				       String result = DBCommunicator.delete(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());
-		
-				    				       Intent myIntent = new Intent(getContext(), FINMap.class);
-				    				       myIntent.putExtra("result", result);
-					   					   myIntent.putExtra("category", dbCategory);
-					   					   myIntent.putExtra("building", "");
-					   					   myIntent.putExtra("itemName", item);
-					   					   
-					   					   String locations = DBCommunicator.getLocations(dbCategory, item, FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"", getContext());
-										   myIntent.putExtra("locations", locations);
-					   					   
-					   					   getContext().startActivity(myIntent);
-					   					   
-					   					   myDialog.dismiss();
-		    							}
-		    						};
-		    						thread.start();
-		    				   }
-		    			});
-	    			}
-	    			AlertDialog dailog = builder.create();
-	    			dailog.show();
-	    		}
-	    	});
-    	}
-    	
-    	TextView cate = (TextView) findViewById(R.id.categoryName);
- 
-    	//Converts the first letter of category to upper case and
-    	//adds the name of the service provided if it exist
-    	String specialInfo = "<b>" + category + "</b>";
 
-    	//sets the text into the textView for category name
-    	cate.setText(Html.fromHtml(specialInfo));
-    	
-    	//sets the text for displaying the distance and walkingTime
-    	TextView distText = (TextView) findViewById(R.id.distanceText);
-    	TextView timeToText = (TextView) findViewById(R.id.timeReachText);
-      	if (distance.equals(new BigDecimal(-1)))
-    	{
-    		//if location of the user is not known, indicated by -1
-      		//then show that it cannot be calculated.
-      		distText.setText(Html.fromHtml("<b>Distance to here:</b> Cannot calculate"));
-    		timeToText.setText(Html.fromHtml("<b>Walking time:</b> Cannot calculate"));
-    	}
-    	else
-    	{
-    		distText.setText(Html.fromHtml("<b>Distance to here:</b> " + distance + " mi."));
-    		timeToText.setText(Html.fromHtml("<b>Walking Time:</b> " + walkTime + " " + FINUtil.pluralize("minute", walkTime)));
-    	}
+			butt.setOnClickListener( new View.OnClickListener()
+			{
+				public void onClick(View v)
+				{
+					//pops a Dialog to confirm the user's intent
+					AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+					builder.setMessage("Are you sure that this " + category.replace("_", " ").toLowerCase() + " location is not here?");
+					builder.setCancelable(false);
+					//confirms the action and perform the update accordingly 
+					builder.setPositiveButton("Yes! I am sure.", new DialogInterface.OnClickListener() {
+						public void onClick(final DialogInterface dialog, int id) {
+							myDialog = ProgressDialog.show(getContext(), "" , "Reporting as not found...", true);
+							Thread thread = new Thread() {
+								public void run() {
+									final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
+									String result = DBCommunicator.update(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());	    		        	   
+									dialog.dismiss();
+									Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+									myDialog.dismiss();
+								}
+							};
+							thread.start();
+						}
+					});
+					//cancels the action if the user didn't mean to do it
+					builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+					if (FINHome.isLoggedIn()) {
+						builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
+							public void onClick(DialogInterface dialog, int id) {
+								myDialog = ProgressDialog.show(getContext(), "" , "Deleting " + dbCategory + "...", true);
+								Thread thread = new Thread() {
+									public void run() {
+										final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
+										String result = DBCommunicator.delete(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());
+
+										Intent myIntent = new Intent(getContext(), FINMap.class);
+										myIntent.putExtra("result", result);
+										myIntent.putExtra("category", dbCategory);
+										myIntent.putExtra("building", "");
+										myIntent.putExtra("itemName", item);
+
+										String locations = DBCommunicator.getLocations(dbCategory, item, FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"", getContext());
+										myIntent.putExtra("locations", locations);
+
+										getContext().startActivity(myIntent);
+
+										myDialog.dismiss();
+									}
+								};
+								thread.start();
+							}
+						});
+					}
+					AlertDialog dailog = builder.create();
+					dailog.show();
+				}
+			});
+		}
+
+		TextView cate = (TextView) findViewById(R.id.categoryName);
+
+		//Converts the first letter of category to upper case and
+		//adds the name of the service provided if it exist
+		String specialInfo = "<b>" + category + "</b>";
+
+		//sets the text into the textView for category name
+		cate.setText(Html.fromHtml(specialInfo));
+
+		//sets the text for displaying the distance and walkingTime
+		TextView distText = (TextView) findViewById(R.id.distanceText);
+		TextView timeToText = (TextView) findViewById(R.id.timeReachText);
+		if (distance.equals(new BigDecimal(-1)))
+		{
+			//if location of the user is not known, indicated by -1
+			//then show that it cannot be calculated.
+			distText.setText(Html.fromHtml("<b>Distance to here:</b> Cannot calculate"));
+			timeToText.setText(Html.fromHtml("<b>Walking time:</b> Cannot calculate"));
+		}
+		else
+		{
+			distText.setText(Html.fromHtml("<b>Distance to here:</b> " + distance + " mi."));
+			timeToText.setText(Html.fromHtml("<b>Walking Time:</b> " + walkTime + " " + FINUtil.pluralize("minute", walkTime)));
+		}
 	}
 	/**
 	 * call when user touches on the screen
@@ -339,12 +346,12 @@ public class PopUpDialog extends Dialog{
 		int top = this.findViewById(R.id.popupLayout).getTop();
 		int left =this.findViewById(R.id.popupLayout).getLeft();
 		int right =this.findViewById(R.id.popupLayout).getRight();
-		
+
 		Region dialogRegion = new Region (left,top,right,bottom );
-		
+
 		float x = e.getX();
 		float y = e.getY();
-		
+
 		if (!dialogRegion.contains(Math.round(x),Math.round(y)))
 			dismiss();
 		return true;

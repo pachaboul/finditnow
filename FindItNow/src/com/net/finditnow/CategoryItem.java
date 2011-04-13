@@ -14,7 +14,7 @@ public class CategoryItem {
 	private ArrayList<String> floor_names;
 	private ArrayList<String> info;
 	private ArrayList<Integer> id;
-	
+
 	public CategoryItem(){
 		floor_names = new ArrayList<String>();
 		info = new ArrayList<String>();
@@ -48,7 +48,7 @@ public class CategoryItem {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		
+
 		CategoryItem other = (CategoryItem) obj;
 		if (this.floor_names.size() != other.floor_names.size())
 			return false;
@@ -74,7 +74,7 @@ public class CategoryItem {
 		return true;
 	}
 
-	
+
 	public ArrayList<String> getFloor_names() {
 		return floor_names;
 	}
@@ -91,9 +91,9 @@ public class CategoryItem {
 	@Override
 	public String toString() {
 		return "CategoryItem [floor_names=" + floor_names + ", id=" + id
-				+ ", info=" + info + "]";
+		+ ", info=" + info + "]";
 	}
-	
-	
-	
+
+
+
 }

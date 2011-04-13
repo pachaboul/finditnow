@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 
 import android.app.ProgressDialog;
 import android.app.SearchManager;
@@ -16,8 +14,8 @@ import android.os.Message;
 import android.provider.SearchRecentSuggestions;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,18 +47,18 @@ public class FINSearch extends FINListActivity {
 		walking_times = new ArrayList<String>();
 		building_names = new ArrayList<String>();
 		special_info = new ArrayList<String>();
-		
+
 		// Get the intent, verify the action and get the query
 		Intent intent = getIntent();
 		appData = intent.getBundleExtra(SearchManager.APP_DATA);
-        if (appData == null) {
-        	appData = getIntent().getBundleExtra("appData");
-        }
+		if (appData == null) {
+			appData = getIntent().getBundleExtra("appData");
+		}
 		category = appData.getString("category");
 		itemName = appData.getString("itemName");
 
 		setTitle(getString(R.string.app_name) + " > " + category + " > " + "Search");
-		
+
 		searchThread = new Thread() {
 
 			@Override
@@ -89,13 +87,13 @@ public class FINSearch extends FINListActivity {
 					int walking_time = dist != null? FINMap.walkingTime(dist, 35) : -1;
 					walking_times.add((dist.equals(new BigDecimal(-1))? "N/A" : walking_time) + " minute" + (walking_time != 1? "s" : ""));
 					building_names.add(build == null? "Outdoor Location" : build.getName());
-					
+
 					CategoryItem item = FINMap.getCategoryItem(point, category);
 					special_info.add(item == null? "" : item.getInfo().get(0).replace("<br />", "\n"));
 				}
-				
+
 				myDialog.dismiss();
-				
+
 				if (!points.isEmpty()) {
 					handler1.sendEmptyMessage(0);
 				} else {
@@ -103,20 +101,20 @@ public class FINSearch extends FINListActivity {
 				}
 			}
 		};
-		
+
 		if (Intent.ACTION_SEARCH.equals(intent.getAction()) && appData != null) {
 			query = intent.getStringExtra(SearchManager.QUERY);
 
 			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getBaseContext(), SearchSuggestions.AUTHORITY, SearchSuggestions.MODE);
 			suggestions.saveRecentQuery(query, null);
 			myDialog = ProgressDialog.show(FINSearch.this, "" , "Searching for " + query + "...", true);
-			
+
 			searchThread.start();
 		} else {
 			query = "";
-			
+
 			myDialog = ProgressDialog.show(FINSearch.this, "" , "Loading " + category + "...", true);
-			
+
 			searchThread.start();
 		}
 	}
@@ -130,7 +128,7 @@ public class FINSearch extends FINListActivity {
 			lv.setAdapter(new SearchAdapter());
 		}
 	};
-	
+
 	private Handler handler2 = new Handler() {
 		public void  handleMessage(Message msg) {
 			Toast.makeText(getBaseContext(), "No results found", Toast.LENGTH_SHORT).show();

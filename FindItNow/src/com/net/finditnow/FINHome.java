@@ -7,17 +7,15 @@ import java.util.HashMap;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.TabHost.TabSpec;
 
 import com.google.android.maps.GeoPoint;
 
@@ -29,9 +27,9 @@ public class FINHome extends TabActivity {
 	private static HashMap<String, String> itemsMap;
 	private static ArrayList<String> buildings;
 	private static ArrayList<String> categories;
-	
+
 	private static boolean loggedin;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
@@ -44,10 +42,10 @@ public class FINHome extends TabActivity {
 		} else {
 			// Generate our list of categories from the database
 			if (getIntent().hasCategory("App Startup")) {
-				
+
 				categories = JsonParser.getCategoriesList(extras.getString("categories"));
 				Collections.sort(categories);
-				
+
 				// Grab the list of items and put it in the map
 				// TODO: Extend this so that we make no references in the frontend to school_supplies
 				categoriesMap = createCategoriesMap(categories);
@@ -116,29 +114,29 @@ public class FINHome extends TabActivity {
 			iconsMap.put(str, getResources().getIdentifier("drawable/"+FINUtil.sendCategory(str), null, getPackageName()));
 			iconsMap.put(str + "-big", getResources().getIdentifier("drawable/"+FINUtil.sendCategory(str)+"_big", null, getPackageName()));
 		}
-		
+
 		return iconsMap;
 	}
-	
+
 	private HashMap<String, String[]> createCategoriesMap(ArrayList<String> categories) {
 		HashMap<String, String[]> categoriesMap = new HashMap<String, String[]>();
 		String[] items = getResources().getStringArray(R.array.school_supplies_items);
-		
+
 		for (String category : categories) {
 			categoriesMap.put(category, category.equals("School Supplies")? items : null);
 		}
-		
+
 		return categoriesMap;
 	}
-	
+
 	private HashMap<String, String> createItemsMap(ArrayList<String> categories) {
 		HashMap<String, String> itemsMap = new HashMap<String, String>();
 		String[] items = getResources().getStringArray(R.array.school_supplies_items);
-		
+
 		for (String item : items) {
 			itemsMap.put(item, "School Supplies");
 		}
-		
+
 		return itemsMap;
 	}
 
@@ -227,28 +225,28 @@ public class FINHome extends TabActivity {
 		}
 		return R.drawable.android;
 	}
-	
+
 	/**
 	 * Returns the category associated with an item
 	 */
 	public static String getCategoryFromItem(String item) {
 		return itemsMap.get(item);
 	}
-	
+
 	/**
 	 * Returns the item associated with a category
 	 */
 	public static String[] getItemsFromCategory(String category) {
 		return categoriesMap.get(category);
 	}
-	
+
 	/**
 	 * returns true if the given category name has sub-categories (items)
 	 */
 	public static boolean hasItems(String category) {
 		return categoriesMap.get(category) != null;
 	}
-	
+
 	public static boolean isItem(String item) {
 		return itemsMap.keySet().contains(item);
 	}

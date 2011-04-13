@@ -9,7 +9,7 @@ import android.location.Location;
 import com.google.android.maps.GeoPoint;
 
 public class ComparableGeoPoint implements Comparator<GeoPoint> {
-	
+
 	public BigDecimal distanceTo(GeoPoint one, GeoPoint another) {
 		// Define a math context and two location variables to process
 		MathContext mc = new MathContext(2);

@@ -104,7 +104,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		//This is the text for any additional information associated with this
 		// particular object
 		ExpandableListView lv = (ExpandableListView) relative.findViewById(R.id.cateList);
-		
+
 		String[] parentText = { building.getFloorNames()[groupPosition]};
 		String category = categoryOf(parentText[0])[childPosition];
 		String dbCategory = FINHome.isItem(category) ? FINHome.getCategoryFromItem(category) : category;
@@ -112,11 +112,11 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 
 		String parentMode = "categoryView";
 		relative.getLayoutParams().height= HEIGHT;
-		
+
 		lv.setOnGroupExpandListener(new DoubleOnExpandListener(relative,parent));
 		lv.setOnGroupCollapseListener(new DoubleOnCollapseListener(relative));
 		lv.setAdapter(new FloorExpandableListAdapter( context, dataMap.get(category),
-				  category,  dbCategory, item,  parentText,  parentMode) );
+				category,  dbCategory, item,  parentText,  parentMode) );
 
 		return relative;
 	}
@@ -157,23 +157,23 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			View convertView, ViewGroup parent) {
 		View  relative = LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);
 
-			//Text for displaying the floor name
-			TextView text = (TextView) relative.findViewById(R.id.flrName);
-			text.setText(building.getFloorNames()[groupPosition]);
+		//Text for displaying the floor name
+		TextView text = (TextView) relative.findViewById(R.id.flrName);
+		text.setText(building.getFloorNames()[groupPosition]);
 
-			//the icon comes later :)
-			LinearLayout layout = ((LinearLayout) relative.findViewById(R.id.iconView));
-			String[] icons = categoryOf(building.getFloorNames()[groupPosition]);
-			for (int i = 0; i < icons.length; i++){
-				ImageView imageView = new ImageView(context);
-				imageView.setLayoutParams(new LinearLayout.LayoutParams(40, 40));
-		        imageView.setPadding(0,12,0,0);
-		        
-		        String cat = FINHome.isItem(icons[i])? FINHome.getCategoryFromItem(icons[i]) : icons[i];
-		        imageView.setImageResource(FINHome.getIcon(cat));
-		        
-		        layout.addView(imageView);
-			}
+		//the icon comes later :)
+		LinearLayout layout = ((LinearLayout) relative.findViewById(R.id.iconView));
+		String[] icons = categoryOf(building.getFloorNames()[groupPosition]);
+		for (int i = 0; i < icons.length; i++){
+			ImageView imageView = new ImageView(context);
+			imageView.setLayoutParams(new LinearLayout.LayoutParams(40, 40));
+			imageView.setPadding(0,12,0,0);
+
+			String cat = FINHome.isItem(icons[i])? FINHome.getCategoryFromItem(icons[i]) : icons[i];
+			imageView.setImageResource(FINHome.getIcon(cat));
+
+			layout.addView(imageView);
+		}
 
 		return relative;
 	}
@@ -185,7 +185,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return false;
 	}
-	
+
 	private class DoubleOnExpandListener implements ExpandableListView.OnGroupExpandListener{
 		private View currentView ;
 		private ViewGroup parent;
@@ -194,32 +194,32 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			this.parent = parent;
 		}
 		public void onGroupExpand(int groupPosition) {
-			
+
 			ExpandableListView lv = (ExpandableListView) currentView.findViewById(R.id.cateList);
 
-		
+
 			View  relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
-		
+
 			float density = relative.getResources().getDisplayMetrics().density;
 			String detialText = (String)lv.getExpandableListAdapter().getChild(groupPosition, 0);
-			
+
 			String[] lines = detialText.split("<br />");
 			int detialHeight = 0;
 			for (String line: lines){
 				detialHeight += (Math.round(15* density + 0.5f)) * (1+ (line.length() / 35));
 			}
-			
+
 			int paddings = relative.findViewById(R.id.layout_rootflr).getPaddingBottom()+relative.findViewById(R.id.layout_rootflr).getPaddingTop();
-			
+
 			TextView butt = (TextView) relative.findViewById(R.id.flrChildLayout).findViewById(R.id.flrDetailButton);
 			int buttHeight = butt.getPaddingBottom()+butt.getPaddingTop();
 			buttHeight += Math.round((20+3+3) * density + 0.5f);
-			
+
 			currentView.getLayoutParams().height = HEIGHT+(paddings+buttHeight+detialHeight);
-			
+
 			lv.setSelectedGroup(groupPosition);		
 		}
-		
+
 	}
 	private class DoubleOnCollapseListener implements ExpandableListView.OnGroupCollapseListener{
 		private View currentView ;
@@ -229,6 +229,6 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		public void onGroupCollapse(int groupPosition) {
 			currentView.getLayoutParams().height = HEIGHT;
 		}
-		
+
 	}
 }
