@@ -19,7 +19,7 @@ public class FINMapView extends MapView {
 			long thisTime = System.currentTimeMillis();
 			if (thisTime - lastTouchTime < 250) {
 				// Double tap
-				this.getController().zoomIn();
+				this.getController().zoomInFixing((int) ev.getX(), (int) ev.getY());
 				lastTouchTime = -1;
 			} else {
 				// Too slow :)
