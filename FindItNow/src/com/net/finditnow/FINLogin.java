@@ -43,6 +43,7 @@ public class FINLogin extends FINActivity {
 			public void onClick(View viewParam) {
 				myDialog = ProgressDialog.show(FINLogin.this, "" , "Logging in...", true);
 				Thread thread = new Thread() {
+					@Override
 					public void run() {
 						// this gets the resources in the xml file and assigns it to a local variable of type EditText
 						EditText usernameEditText = (EditText) findViewById(R.id.txt_username);
@@ -84,6 +85,7 @@ public class FINLogin extends FINActivity {
 	}
 
 	private Handler handler = new Handler() {
+		@Override
 		public void  handleMessage(Message msg) {
 			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
 

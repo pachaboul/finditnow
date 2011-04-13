@@ -86,6 +86,7 @@ public class FINAddIndoor extends FINActivity {
 
 			myDialog = ProgressDialog.show(FINAddIndoor.this, "" , "Adding " + selectedCategory + "...", true);
 			Thread thread = new Thread() {
+				@Override
 				public void run() {
 					HashMap<String, Integer> map = selectedBuilding.floorMap();
 
