@@ -38,7 +38,7 @@ import com.google.android.maps.OverlayItem;
 public class FINMap extends FINMapActivity {
 
 	// Map and Location Variables
-	private MapView mapView;
+	private FINMapView mapView;
 	private MapController mapController;
 	private MyLocationOverlay locOverlay;
 
@@ -226,7 +226,7 @@ public class FINMap extends FINMapActivity {
 		int zoomLevel = prefs.getInt("zoomLevel", 18);
 
 		// Initialize our MapView and MapController
-		mapView = (MapView) findViewById(R.id.mapview);
+		mapView = (FINMapView) findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
 
 		mapController = mapView.getController();
