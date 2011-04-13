@@ -33,7 +33,7 @@ public class FINSettings extends PreferenceActivity {
 		context = this;
 
 		// Get the custom preference
-		Preference searchHistory = (Preference) findPreference("clearHistory");
+		Preference searchHistory = findPreference("clearHistory");
 		searchHistory.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
 			public boolean onPreferenceClick(Preference preference) {
@@ -91,6 +91,7 @@ public class FINSettings extends PreferenceActivity {
 		case R.id.logout_button:
 			myDialog = ProgressDialog.show(FINSettings.this, "" , "Logging out...", true);
 			Thread thread = new Thread() {
+				@Override
 				public void run() {
 					final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 
@@ -139,6 +140,7 @@ public class FINSettings extends PreferenceActivity {
 	}
 
 	private Handler handler = new Handler() {
+		@Override
 		public void handleMessage(Message msg) {
 			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
 		}

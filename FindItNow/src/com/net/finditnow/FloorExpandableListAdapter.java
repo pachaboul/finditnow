@@ -134,6 +134,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 						public void onClick(final DialogInterface dialog, int id) {
 							myDialog = ProgressDialog.show(context, "" , "Reporting as not found...", true);
 							Thread thread = new Thread() {
+								@Override
 								public void run() {
 									final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
 									String response = DBCommunicator.update(phone_id, dbCategory, catItem.getId().get(pos)+"", context);							
@@ -157,6 +158,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 							public void onClick(DialogInterface dialog, int id) {
 								myDialog = ProgressDialog.show(context, "" , "Deleting " + dbCategory + "...", true);
 								Thread thread = new Thread() {
+									@Override
 									public void run() {
 										final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
 										String result = DBCommunicator.delete(phone_id, dbCategory, catItem.getId().get(0)+"", context);

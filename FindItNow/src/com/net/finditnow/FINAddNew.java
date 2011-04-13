@@ -76,6 +76,7 @@ public class FINAddNew extends FINActivity {
 		}
 	}
 
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {		
 		if (requestCode == 0) {		
 			if (resultCode == RESULT_OK) {		

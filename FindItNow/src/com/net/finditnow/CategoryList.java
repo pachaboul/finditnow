@@ -43,6 +43,7 @@ public class CategoryList extends FINListActivity {
 
 				myDialog = ProgressDialog.show(CategoryList.this, "" , "Loading " + itemName + "...", true);
 				Thread itemThread = new Thread() {
+					@Override
 					public void run() {
 						Intent myIntent = new Intent(getBaseContext(), FINMap.class);
 

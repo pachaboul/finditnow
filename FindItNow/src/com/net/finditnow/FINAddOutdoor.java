@@ -96,6 +96,7 @@ public class FINAddOutdoor extends FINMapActivity {
 				public void onClick(DialogInterface dialog, int id) {
 					myDialog = ProgressDialog.show(FINAddOutdoor.this, "" , "Adding " + selectedCategory + "...", true);
 					Thread thread = new Thread() {
+						@Override
 						public void run() {
 							//Point is confirmed
 

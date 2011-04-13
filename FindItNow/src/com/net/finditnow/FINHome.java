@@ -30,6 +30,7 @@ public class FINHome extends TabActivity {
 
 	private static boolean loggedin;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);

@@ -180,7 +180,7 @@ public class PopUpDialog extends Dialog{
 
 						String[] floorsWithCategories = new String[0];
 						if (dataMap.get(dbCategory) != null) {
-							floorsWithCategories = (String[]) dataMap.get(dbCategory).getFloor_names().toArray (new String[0]);
+							floorsWithCategories = dataMap.get(dbCategory).getFloor_names().toArray (new String[0]);
 						}
 
 						if (floorsWithCategories.length > 3)
@@ -258,6 +258,7 @@ public class PopUpDialog extends Dialog{
 						public void onClick(final DialogInterface dialog, int id) {
 							myDialog = ProgressDialog.show(getContext(), "" , "Reporting as not found...", true);
 							Thread thread = new Thread() {
+								@Override
 								public void run() {
 									final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
 									String result = DBCommunicator.update(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());	    		        	   
@@ -280,6 +281,7 @@ public class PopUpDialog extends Dialog{
 							public void onClick(DialogInterface dialog, int id) {
 								myDialog = ProgressDialog.show(getContext(), "" , "Deleting " + dbCategory + "...", true);
 								Thread thread = new Thread() {
+									@Override
 									public void run() {
 										final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
 										String result = DBCommunicator.delete(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());

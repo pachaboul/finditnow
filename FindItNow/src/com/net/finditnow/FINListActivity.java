@@ -60,6 +60,7 @@ public class FINListActivity extends ListActivity {
 		case R.id.logout_button:
 			myDialog = ProgressDialog.show(FINListActivity.this, "" , "Logging out...", true);
 			Thread thread = new Thread() {
+				@Override
 				public void run() {
 					final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 
@@ -107,6 +108,7 @@ public class FINListActivity extends ListActivity {
 	}
 
 	private Handler handler = new Handler() {
+		@Override
 		public void handleMessage(Message msg) {
 			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
 		}

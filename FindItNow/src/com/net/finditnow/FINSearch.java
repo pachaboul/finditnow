@@ -40,6 +40,7 @@ public class FINSearch extends FINListActivity {
 	protected ProgressDialog myDialog;
 
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -121,6 +122,7 @@ public class FINSearch extends FINListActivity {
 
 
 	private Handler handler1 = new Handler() {
+		@Override
 		public void  handleMessage(Message msg) {
 			ListView lv = FINSearch.this.getListView();
 			lv.setTextFilterEnabled(true);
@@ -130,6 +132,7 @@ public class FINSearch extends FINListActivity {
 	};
 
 	private Handler handler2 = new Handler() {
+		@Override
 		public void  handleMessage(Message msg) {
 			Toast.makeText(getBaseContext(), "No results found", Toast.LENGTH_SHORT).show();
 			finish();
