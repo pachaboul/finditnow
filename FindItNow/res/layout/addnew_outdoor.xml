@@ -14,7 +14,7 @@
         android:visibility="invisible"
         android:text="Click here to confirm" />
 
-    <com.google.android.maps.MapView
+    <com.net.finditnow.FINMapView
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

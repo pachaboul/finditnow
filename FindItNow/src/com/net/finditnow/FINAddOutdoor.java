@@ -23,7 +23,7 @@ import com.google.android.maps.Overlay;
 public class FINAddOutdoor extends FINMapActivity {
 
 	// Map and Location Variables
-	private static MapView mapView;
+	private static FINMapView mapView;
 	private MapController mapController;
 	private static FINAddOverlay mapOverlay;
 	private static List<Overlay> mapOverlays;
@@ -47,7 +47,7 @@ public class FINAddOutdoor extends FINMapActivity {
 		tappedPoint = new GeoPoint(0, 0);
 
 		// Initialize our MapView and MapController
-		mapView = (MapView)findViewById(R.id.mapview);
+		mapView = (FINMapView)findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
 		mapController = mapView.getController();
 
