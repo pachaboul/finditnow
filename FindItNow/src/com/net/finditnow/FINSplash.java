@@ -1,5 +1,9 @@
 package com.net.finditnow;
 
+import java.util.HashMap;
+
+import com.google.android.maps.GeoPoint;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,6 +20,9 @@ public class FINSplash extends Activity {
 	protected boolean active = true;
 	protected int splashTime = 1500; // time to display the splash screen in ms
 	protected Thread splashThread;
+	
+	private HashMap<String, GeoPoint> campuses;
+	public static GeoPoint DEFAULT_LOCATION;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -28,13 +35,23 @@ public class FINSplash extends Activity {
 			public void run() {
 
 				Intent myIntent = null;
+				
+				//TODO: Clean up post 1.1 release.  Sync with backend
+				campuses = new HashMap<String, GeoPoint>();
+				campuses.put("University of Washington", new GeoPoint(47654799,-122307776));
+				campuses.put("Western Washington University", new GeoPoint(48733550, -122486830));
+				
+				// Set default location
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
+				String campus = prefs.getString("changeCampus", "");
+				DEFAULT_LOCATION = campuses.get(campus);
 
 				// Check logged in status
 				final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 
 				String loggedinstr = DBCommunicator.loggedIn(phone_id, getBaseContext());
 				String categories = DBCommunicator.getCategories(getBaseContext());
-				String buildings = DBCommunicator.getBuildings(getBaseContext());
+				String buildings = DBCommunicator.getBuildings(DEFAULT_LOCATION.getLatitudeE6()+"", DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
 
 				boolean loggedin = loggedinstr.contains(getString(R.string.login_already));
 				boolean readytostart = !(loggedinstr.equals(getString(R.string.timeout)) || categories.equals(getString(R.string.timeout)) 
@@ -69,9 +86,9 @@ public class FINSplash extends Activity {
 		};
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);  
-		String listpref = prefs.getString("changeCampus", "");
+		String campus = prefs.getString("changeCampus", "");
 
-		if (listpref.equals("")) {
+		if (campus.equals("")) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("Select your campus or region");
 			builder.setItems(getResources().getStringArray(R.array.campuses), campus_listener);		

@@ -7,8 +7,10 @@ import java.util.HashMap;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,10 +32,6 @@ public class FINHome extends TabActivity {
 	
 	private static boolean loggedin;
 	
-	// A constant representing the default location of the user
-	// Change this the coordinates of another campus if desired (defaults to UW Seattle)
-	public static final GeoPoint DEFAULT_LOCATION = new GeoPoint(47654799,-122307776);
-
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
@@ -46,6 +44,7 @@ public class FINHome extends TabActivity {
 		} else {
 			// Generate our list of categories from the database
 			if (getIntent().hasCategory("App Startup")) {
+				
 				categories = JsonParser.getCategoriesList(extras.getString("categories"));
 				Collections.sort(categories);
 				
