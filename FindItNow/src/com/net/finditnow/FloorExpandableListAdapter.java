@@ -160,7 +160,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 					   					   myIntent.putExtra("building", "");
 					   					   myIntent.putExtra("itemName", item);
 					   					   
-					   					   String locations = DBCommunicator.getLocations(dbCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", context);
+					   					   String locations = DBCommunicator.getLocations(dbCategory, item, FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"", context);
 										   myIntent.putExtra("locations", locations);
 					   					   
 					   					   context.startActivity(myIntent);

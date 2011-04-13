@@ -70,8 +70,13 @@ public class DBCommunicator {
 		return Get("getCategories.php", context);
 	}
 	
-	public static String getBuildings(Context context) {
-		return Get("getBuildings.php", context);
+	public static String getBuildings(String lat, String lon, Context context) {
+		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+
+		nameValuePairs.add(new BasicNameValuePair("lat", lat));
+		nameValuePairs.add(new BasicNameValuePair("lon", lon));
+		
+		return Post("getBuildings.php", nameValuePairs, context);
 	}
 	
 	public static String getLocations(String cat, String item, String lat, String lon, Context context) {

@@ -108,7 +108,7 @@ public class FINAddIndoor extends FINActivity {
 					myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLatitudeE6());
 					myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLongitudeE6());
 					
-					String locations = DBCommunicator.getLocations(selectedCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
+					String locations = DBCommunicator.getLocations(selectedCategory, item, FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
 					myIntent.putExtra("locations", locations);
 			    	
 		            startActivity(myIntent);

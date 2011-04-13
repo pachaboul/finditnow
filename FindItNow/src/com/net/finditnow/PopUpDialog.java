@@ -283,7 +283,7 @@ public class PopUpDialog extends Dialog{
 					   					   myIntent.putExtra("building", "");
 					   					   myIntent.putExtra("itemName", item);
 					   					   
-					   					   String locations = DBCommunicator.getLocations(dbCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getContext());
+					   					   String locations = DBCommunicator.getLocations(dbCategory, item, FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"", getContext());
 										   myIntent.putExtra("locations", locations);
 					   					   
 					   					   getContext().startActivity(myIntent);

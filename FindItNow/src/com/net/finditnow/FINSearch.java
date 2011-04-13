@@ -94,9 +94,7 @@ public class FINSearch extends FINListActivity {
 					special_info.add(item == null? "" : item.getInfo().get(0).replace("<br />", "\n"));
 				}
 				
-				if (!query.equals("")) {
-					myDialog.dismiss();
-				}
+				myDialog.dismiss();
 				
 				if (!points.isEmpty()) {
 					handler1.sendEmptyMessage(0);
@@ -116,6 +114,8 @@ public class FINSearch extends FINListActivity {
 			searchThread.start();
 		} else {
 			query = "";
+			
+			myDialog = ProgressDialog.show(FINSearch.this, "" , "Loading " + category + "...", true);
 			
 			searchThread.start();
 		}

@@ -62,7 +62,7 @@ public class FINAddOutdoor extends FINMapActivity {
 		special_info = extras.getString("special_info");
         
         // Zoom out enough
-        mapController.animateTo(FINHome.DEFAULT_LOCATION);
+        mapController.animateTo(FINSplash.DEFAULT_LOCATION);
         mapController.setZoom(18);
         Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
 	}
@@ -118,7 +118,7 @@ public class FINAddOutdoor extends FINMapActivity {
 								myIntent.putExtra("centerLat", tappedPoint.getLatitudeE6());
 								myIntent.putExtra("centerLon", tappedPoint.getLongitudeE6());
 								
-								String locations = DBCommunicator.getLocations(selectedCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
+								String locations = DBCommunicator.getLocations(selectedCategory, item, FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
 								myIntent.putExtra("locations", locations);
 						    	
 					            startActivity(myIntent);
