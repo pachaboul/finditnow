@@ -21,6 +21,22 @@
 	    />
 	
 	</LinearLayout>
+				
+	<LinearLayout 
+		android:id="@+id/ImageButtonLayoutLeft"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_marginBottom="6dp"
+		android:layout_marginLeft="3dp">
+		
+		<ImageButton android:layout_width="37dp"
+				android:layout_marginRight="178dp"
+				android:layout_height="37dp" 
+				android:id="@+id/list_button"
+				android:src="@drawable/menu"></ImageButton>
+	</LinearLayout>
 	
 	<LinearLayout 
 		android:id="@+id/ImageButtonLayout"
@@ -30,12 +46,6 @@
 		android:layout_height="wrap_content" 
 		android:layout_marginBottom="6dp"
 		android:layout_marginRight="3dp">
-		
-		<ImageButton android:layout_width="37dp"
-				android:layout_marginRight="178dp"
-				android:layout_height="37dp" 
-				android:id="@+id/list_button"
-				android:src="@drawable/menu"></ImageButton>
 
 		<ImageButton android:layout_width="37dp"
 				android:layout_height="37dp" 

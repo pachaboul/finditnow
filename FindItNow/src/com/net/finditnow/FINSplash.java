@@ -9,9 +9,12 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.view.MotionEvent;
+import android.widget.ImageView;
 
 import com.google.android.maps.GeoPoint;
 
@@ -22,6 +25,9 @@ public class FINSplash extends Activity {
 	protected Thread splashThread;
 
 	private HashMap<String, GeoPoint> campuses;
+	private HashMap<String, Integer> splashes;
+
+	public static String campus;
 	public static GeoPoint DEFAULT_LOCATION;
 
 	@Override
@@ -41,10 +47,16 @@ public class FINSplash extends Activity {
 				campuses.put("University of Washington", new GeoPoint(47654799,-122307776));
 				campuses.put("Western Washington University", new GeoPoint(48733550, -122486830));
 
+				splashes = new HashMap<String, Integer>();
+				splashes.put("University of Washington", R.drawable.uw_splash);
+				splashes.put("Western Washington University", R.drawable.wwu_splash);
+
 				// Set default location
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
-				String campus = prefs.getString("changeCampus", "");
+				campus = prefs.getString("changeCampus", "");
 				DEFAULT_LOCATION = campuses.get(campus);
+
+				handler.sendEmptyMessage(0);
 
 				// Check logged in status
 				final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
@@ -86,7 +98,7 @@ public class FINSplash extends Activity {
 		};
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);  
-		String campus = prefs.getString("changeCampus", "");
+		campus = prefs.getString("changeCampus", "");
 
 		if (campus.equals("")) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -122,6 +134,14 @@ public class FINSplash extends Activity {
 			editor.commit();
 
 			splashThread.start();
+		}
+	};
+
+	private Handler handler = new Handler() {
+		@Override
+		public void  handleMessage(Message msg) {
+			ImageView image = (ImageView) findViewById(R.id.splash);
+			image.setImageResource(splashes.get(campus));
 		}
 	};
 }
