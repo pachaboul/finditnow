@@ -8,7 +8,7 @@
 	
 	<!-- purple -->
 	<color name="FIN_dark">#59196E</color>
-	<color name="FIN_bright">#A018CC</color>
+	<color name="FIN_bright">#8737A1</color>
 	<color name="FIN_light">#DEBEFF</color>
 	<color name="FIN_secondary">#666666</color>
 </resources>
