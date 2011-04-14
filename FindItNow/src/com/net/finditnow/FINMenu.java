@@ -154,8 +154,10 @@ public class FINMenu extends FINActivity {
 
 				final String category = FINHome.getCategoriesList().get(position);
 				ib.setImageResource(FINHome.getBigIcon(category));
-				ib.getLayoutParams().height = (int) (cellSize * .74);
-				ib.getLayoutParams().width = (int) (cellSize * .74);
+				// Math.max() effectively sets a minimum cell size; 
+				// TODO: put minimum cell size into a variable
+				ib.getLayoutParams().height = Math.max((int) (cellSize * .74), 55);
+				ib.getLayoutParams().width = Math.max((int) (cellSize * .74), 55);
 
 				// Otherwise, jump to map
 				ib.setOnClickListener(new OnClickListener() {
