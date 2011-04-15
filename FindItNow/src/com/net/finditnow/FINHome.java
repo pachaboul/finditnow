@@ -35,7 +35,6 @@ public class FINHome extends TabActivity {
 	
 	public static GeoPoint DEFAULT_LOCATION;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
