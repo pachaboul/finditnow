@@ -16,6 +16,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -154,10 +155,26 @@ public class FINMenu extends FINActivity {
 
 				final String category = FINHome.getCategoriesList().get(position);
 				ib.setImageResource(FINHome.getBigIcon(category));
-				// Math.max() effectively sets a minimum cell size; 
-				// TODO: put minimum cell size into a variable
-				ib.getLayoutParams().height = Math.max((int) (cellSize * .74), 55);
-				ib.getLayoutParams().width = Math.max((int) (cellSize * .74), 55);
+				
+				// Get the DPI of the screen and generate the minimum cell size based on that
+				int minCellSize = 55;	
+				DisplayMetrics metrics = new DisplayMetrics();
+				getWindowManager().getDefaultDisplay().getMetrics(metrics);
+				switch(metrics.densityDpi){
+				     case DisplayMetrics.DENSITY_LOW:
+				    	 		minCellSize *= 1; // no need to have this, just a formality
+				                break;
+				     case DisplayMetrics.DENSITY_MEDIUM:
+				    	 		 minCellSize *= 1.5;
+				                 break;
+				     case DisplayMetrics.DENSITY_HIGH:
+				    	 		 minCellSize *= 2;
+				                 break;
+				}
+				
+				// Math.max() effectively sets a minimum cell size so that the buttons don't become too small
+				ib.getLayoutParams().height = Math.max((int) (cellSize * .74), minCellSize);
+				ib.getLayoutParams().width = Math.max((int) (cellSize * .74), minCellSize);
 
 				// Otherwise, jump to map
 				ib.setOnClickListener(new OnClickListener() {
