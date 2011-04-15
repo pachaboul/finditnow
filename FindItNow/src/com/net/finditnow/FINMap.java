@@ -183,8 +183,8 @@ public class FINMap extends FINMapActivity {
 
 			appData.putString("category", category);
 			appData.putString("itemName", itemName);
-			appData.putString("lat", FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"");
-			appData.putString("lon", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"");
+			appData.putString("lat", FINHome.DEFAULT_LOCATION.getLatitudeE6()+"");
+			appData.putString("lon", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"");
 			appData.putString("locations", listOfLocations);
 
 			startSearch(null, false, appData, false);
@@ -220,8 +220,8 @@ public class FINMap extends FINMapActivity {
 
 		// Restore preferences
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		int latitude = prefs.getInt("centerLat", FINSplash.DEFAULT_LOCATION.getLatitudeE6());
-		int longitude = prefs.getInt("centerLon", FINSplash.DEFAULT_LOCATION.getLongitudeE6());
+		int latitude = prefs.getInt("centerLat", FINHome.DEFAULT_LOCATION.getLatitudeE6());
+		int longitude = prefs.getInt("centerLon", FINHome.DEFAULT_LOCATION.getLongitudeE6());
 		int zoomLevel = prefs.getInt("zoomLevel", 18);
 
 		// Initialize our MapView and MapController
@@ -255,8 +255,8 @@ public class FINMap extends FINMapActivity {
 
 					appData.putString("category", category);
 					appData.putString("itemName", itemName);
-					appData.putString("lat", FINSplash.DEFAULT_LOCATION.getLatitudeE6()+"");
-					appData.putString("lon", FINSplash.DEFAULT_LOCATION.getLongitudeE6()+"");
+					appData.putString("lat", FINHome.DEFAULT_LOCATION.getLatitudeE6()+"");
+					appData.putString("lon", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"");
 					appData.putString("locations", listOfLocations);
 
 					myIntent.putExtra("appData", appData);
@@ -278,7 +278,7 @@ public class FINMap extends FINMapActivity {
 
 		defaultLocation.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				mapController.animateTo(FINSplash.DEFAULT_LOCATION);
+				mapController.animateTo(FINHome.DEFAULT_LOCATION);
 				Toast.makeText(getBaseContext(), "Centering on the default location...", Toast.LENGTH_SHORT).show();
 			}
 		});

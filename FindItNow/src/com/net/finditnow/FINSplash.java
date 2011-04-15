@@ -24,11 +24,9 @@ public class FINSplash extends Activity {
 	protected int splashTime = 1500; // time to display the splash screen in ms
 	protected Thread splashThread;
 
-	private HashMap<String, GeoPoint> campuses;
 	private HashMap<String, Integer> splashes;
 
-	public static String campus;
-	public static GeoPoint DEFAULT_LOCATION;
+	private String campus;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,19 +40,18 @@ public class FINSplash extends Activity {
 
 				Intent myIntent = null;
 
-				//TODO: Clean up post 1.1 release.  Sync with backend
-				campuses = new HashMap<String, GeoPoint>();
-				campuses.put("University of Washington", new GeoPoint(47654799,-122307776));
-				campuses.put("Western Washington University", new GeoPoint(48733550, -122486830));
-
 				splashes = new HashMap<String, Integer>();
 				splashes.put("University of Washington", R.drawable.uw_splash);
 				splashes.put("Western Washington University", R.drawable.wwu_splash);
+				
+				HashMap<String, GeoPoint> campuses = new HashMap<String, GeoPoint>();
+				campuses.put("University of Washington", new GeoPoint(47654799,-122307776));
+				campuses.put("Western Washington University", new GeoPoint(48733550, -122486830));
 
 				// Set default location
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
 				campus = prefs.getString("changeCampus", "");
-				DEFAULT_LOCATION = campuses.get(campus);
+				GeoPoint loc = campuses.get(campus);
 
 				handler.sendEmptyMessage(0);
 
@@ -63,7 +60,7 @@ public class FINSplash extends Activity {
 
 				String loggedinstr = DBCommunicator.loggedIn(phone_id, getBaseContext());
 				String categories = DBCommunicator.getCategories(getBaseContext());
-				String buildings = DBCommunicator.getBuildings(DEFAULT_LOCATION.getLatitudeE6()+"", DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
+				String buildings = DBCommunicator.getBuildings(loc.getLatitudeE6()+"", loc.getLongitudeE6()+"", getBaseContext());
 
 				boolean loggedin = loggedinstr.contains(getString(R.string.login_already));
 				boolean readytostart = !(loggedinstr.equals(getString(R.string.timeout)) || categories.equals(getString(R.string.timeout)) 
