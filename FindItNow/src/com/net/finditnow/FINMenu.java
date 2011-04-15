@@ -17,8 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -46,12 +44,6 @@ public class FINMenu extends FINActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
 		mContext = this;
-
-		Display display = getWindowManager().getDefaultDisplay(); 
-		int width = display.getWidth();
-		int height = display.getHeight();
-		Log.v("screen width", width + "px");
-		Log.v("screen height", height + "px");
 
 		// Populate the grid with category buttons.
 		final GridView buttonGrid = (GridView) findViewById(R.id.gridview);
@@ -140,7 +132,7 @@ public class FINMenu extends FINActivity {
 		 */
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View myView;
-			Log.v("getView() call", position + "");
+
 			// If not created yet, initialize it.
 			if (convertView == null) {	
 				LayoutInflater li = getLayoutInflater();
@@ -173,8 +165,9 @@ public class FINMenu extends FINActivity {
 				}
 				
 				// Math.max() effectively sets a minimum cell size so that the buttons don't become too small
-				ib.getLayoutParams().height = Math.max((int) (cellSize * .74), minCellSize);
-				ib.getLayoutParams().width = Math.max((int) (cellSize * .74), minCellSize);
+				// TODO: Make not terrible
+				ib.getLayoutParams().height = Math.max((int) (cellSize * .74), (int) (minCellSize * .95));
+				ib.getLayoutParams().width = Math.max((int) (cellSize * .74), (int) (minCellSize * .95));
 
 				// Otherwise, jump to map
 				ib.setOnClickListener(new OnClickListener() {
