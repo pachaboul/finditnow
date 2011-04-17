@@ -264,6 +264,8 @@ public class FINMap extends FINMapActivity {
 					startActivity(myIntent);
 				}
 			});
+		} else {
+			list.setVisibility(View.GONE);
 		}
 		myLocation.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
