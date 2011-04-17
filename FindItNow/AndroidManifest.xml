@@ -12,7 +12,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FINHome"></activity>
+        <activity android:name=".FINHome"
+       			  android:configChanges="orientation|keyboardHidden">
+       	</activity>
         <activity android:name=".FINMenu"></activity>
         <activity android:name=".FINMap"
         		  android:configChanges="orientation|keyboardHidden">
@@ -20,18 +22,26 @@
             		   android:value=".FINSearch" />
         </activity>
         <activity android:name=".BuildingList"></activity>
-        <activity android:name=".CategoryList"></activity>
+        <activity android:name=".CategoryList"
+       			  android:configChanges="orientation|keyboardHidden">
+       	</activity>
         <activity android:name=".FINSettings"></activity>
         <activity android:name=".FINHelp"></activity>
         <activity android:name=".FINAddNew"
         		  android:windowSoftInputMode="stateHidden">
         </activity>
-        <activity android:name=".FINAddIndoor"></activity>
-        <activity android:name=".FINAddOutdoor"></activity>
-        <activity android:name=".FINLogin"></activity>
+        <activity android:name=".FINAddIndoor"
+       			  android:configChanges="orientation|keyboardHidden">
+       	</activity>
+        <activity android:name=".FINAddOutdoor"
+       			  android:configChanges="orientation|keyboardHidden">
+       	</activity>
+        <activity android:name=".FINLogin"
+       			  android:configChanges="orientation|keyboardHidden">
+       	</activity>
         <activity android:name=".FINSearch"
         	 	  android:launchMode="singleTop"
-	        		android:configChanges="orientation|keyboardHidden">
+	        	  android:configChanges="orientation|keyboardHidden">
         	<intent-filter>
        			 <action android:name="android.intent.action.SEARCH" />
    			</intent-filter>
