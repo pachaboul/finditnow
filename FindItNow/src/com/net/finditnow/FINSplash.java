@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -47,8 +48,9 @@ public class FINSplash extends Activity {
 		int campusLon = prefs.getInt("campusLon", 0);
 
 		if (campus.equals("") || campusLat == 0 || campusLon == 0) {
-			myDialog = ProgressDialog.show(FINSplash.this, "" , "Waiting for location...", true);
-
+			myDialog = ProgressDialog.show(FINSplash.this, "Welcome to FIN" , "Please wait while we detect the regions nearest you...", true);
+			myDialog.setIcon(R.drawable.icon);
+		    			
 			// Acquire a reference to the system Location Manager
 			LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 			
@@ -165,7 +167,7 @@ public class FINSplash extends Activity {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
 			SharedPreferences.Editor editor = prefs.edit();
 			
-			String campus = ((String[])campuses.keySet().toArray(new String[campuses.size()]))[which];
+			campus = ((String[])campuses.keySet().toArray(new String[campuses.size()]))[which];
 			
 			editor.putString("changeCampus", campus);
 			editor.putInt("campusLat", campuses.get(campus).getLatitudeE6());
