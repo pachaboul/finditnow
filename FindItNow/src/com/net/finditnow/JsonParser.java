@@ -13,12 +13,14 @@ package com.net.finditnow;
 //packages for handling JSON
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.google.android.maps.GeoPoint;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonStreamParser;
+
 public class JsonParser {
 	/*
 	 * Design Principle: Information Hiding
@@ -114,14 +116,14 @@ public class JsonParser {
 		return result;
 	}
 	
-	public static HashMap<String, GeoPoint> parseUniversityJson(String json) {
+	public static LinkedHashMap<String, Region> parseUniversityJson(String json) {
 		//used for parsing the JSON object
 		Gson gson = new Gson();
 		JsonStreamParser parser = new JsonStreamParser(json);
 		JsonArray arr = parser.next().getAsJsonArray();
 
 		//creates the map for information to be stored in
-		HashMap<String, GeoPoint> map = new HashMap<String, GeoPoint>();
+		LinkedHashMap<String, Region> map = new LinkedHashMap<String, Region>();
 
 		for (int i = 0; i < arr.size(); i++)
 		{
@@ -132,10 +134,13 @@ public class JsonParser {
 
 				// Grab the stuff
 				String uni = ob.get("name").getAsString();
+				int uni_id = ob.get("uni_id").getAsInt();
 				GeoPoint point = new GeoPoint(ob.get("lat").getAsInt(), ob.get("lon").getAsInt());
+				
+				Region reg = new Region(uni, uni_id, point, i);
 
 				//puts it in the map
-				map.put(uni, point);
+				map.put(uni, reg);
 			}
 		}
 
