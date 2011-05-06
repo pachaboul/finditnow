@@ -1,5 +1,9 @@
 package com.net.finditnow;
 
+import java.util.HashMap;
+
+import com.google.android.maps.GeoPoint;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +13,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
@@ -63,7 +68,26 @@ public class FINSettings extends PreferenceActivity {
 
 		});
 		
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);  
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		final ListPreference lp = (ListPreference) findPreference("changeCampus");
+		myDialog = ProgressDialog.show(context, "" , "Retrieving list of regions...", true);
+
+		Thread myThread = new Thread() {
+			public void run() {
+				String campusJson = DBCommunicator.getUniversities(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
+				HashMap<String, Region> campuses = JsonParser.parseUniversityJson(campusJson);
+				
+				String[] entries = (String[])campuses.keySet().toArray(new String[campuses.size()]);
+				String[] entryValues = (String[])campuses.keySet().toArray(new String[campuses.size()]);
+				lp.setEntries(entries);
+				lp.setEntryValues(entryValues);
+				
+				myDialog.dismiss();
+			}
+		};
+		
+		myThread.run();
 		
 		SharedPreferences.OnSharedPreferenceChangeListener spChanged = new SharedPreferences.OnSharedPreferenceChangeListener() {
 

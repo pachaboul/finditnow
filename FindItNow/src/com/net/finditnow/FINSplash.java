@@ -30,7 +30,7 @@ public class FINSplash extends Activity {
 	protected Thread splashThread;
 
 	private HashMap<String, Integer> splashes;
-	private HashMap<String, GeoPoint> campuses;
+	private HashMap<String, Region> campuses;
 
 	private String campus;
 	private String campusJson;
@@ -51,7 +51,7 @@ public class FINSplash extends Activity {
 			myDialog.setIcon(R.drawable.icon);
 		    			
 			// Acquire a reference to the system Location Manager
-			LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+			final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 			
 			// Define a listener that responds to location updates
 			LocationListener locationListener = new LocationListener() {
@@ -63,6 +63,8 @@ public class FINSplash extends Activity {
 					editor.commit();
 					
 					campusThread.start();
+					
+					locationManager.removeUpdates(this);
 			    }
 	
 			    public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -167,8 +169,8 @@ public class FINSplash extends Activity {
 			campus = ((String[])campuses.keySet().toArray(new String[campuses.size()]))[which];
 			
 			editor.putString("changeCampus", campus);
-			editor.putInt("campusLat", campuses.get(campus).getLatitudeE6());
-			editor.putInt("campusLon", campuses.get(campus).getLongitudeE6());
+			editor.putInt("campusLat", campuses.get(campus).getLocation().getLatitudeE6());
+			editor.putInt("campusLon", campuses.get(campus).getLocation().getLongitudeE6());
 
 			editor.commit();
 
@@ -201,8 +203,8 @@ public class FINSplash extends Activity {
 					SharedPreferences.Editor editor = prefs.edit();
 					
 					editor.putString("changeCampus", campus);
-					editor.putInt("campusLat", campuses.get(campus).getLatitudeE6());
-					editor.putInt("campusLon", campuses.get(campus).getLongitudeE6());
+					editor.putInt("campusLat", campuses.get(campus).getLocation().getLatitudeE6());
+					editor.putInt("campusLon", campuses.get(campus).getLocation().getLongitudeE6());
 					editor.commit();
 					
 					splashThread.start();
