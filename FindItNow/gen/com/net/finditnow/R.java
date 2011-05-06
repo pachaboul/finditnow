@@ -9,7 +9,6 @@ package com.net.finditnow;
 
 public final class R {
     public static final class array {
-        public static final int campuses=0x7f070001;
         public static final int school_supplies_items=0x7f070000;
     }
     public static final class attr {

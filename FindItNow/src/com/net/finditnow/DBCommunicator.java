@@ -65,6 +65,15 @@ public class DBCommunicator {
 
 		return Post("delete.php", nameValuePairs, context);
 	}
+	
+	public static String getUniversities(String lat, String lon, Context context) {
+		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+
+		nameValuePairs.add(new BasicNameValuePair("lat", lat));
+		nameValuePairs.add(new BasicNameValuePair("lon", lon));
+
+		return Post("getUniversities.php", nameValuePairs, context);
+	}
 
 	public static String getCategories(Context context) {
 		return Get("getCategories.php", context);

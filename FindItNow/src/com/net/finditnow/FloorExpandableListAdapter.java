@@ -12,8 +12,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -172,8 +174,10 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 										myIntent.putExtra("category", dbCategory);
 										myIntent.putExtra("building", "");
 										myIntent.putExtra("itemName", item);
+										
+										SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-										String locations = DBCommunicator.getLocations(dbCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", context);
+										String locations = DBCommunicator.getLocations(dbCategory, item, prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", context);
 										myIntent.putExtra("locations", locations);
 
 										context.startActivity(myIntent);

@@ -113,6 +113,34 @@ public class JsonParser {
 		} 
 		return result;
 	}
+	
+	public static HashMap<String, GeoPoint> parseUniversityJson(String json) {
+		//used for parsing the JSON object
+		Gson gson = new Gson();
+		JsonStreamParser parser = new JsonStreamParser(json);
+		JsonArray arr = parser.next().getAsJsonArray();
+
+		//creates the map for information to be stored in
+		HashMap<String, GeoPoint> map = new HashMap<String, GeoPoint>();
+
+		for (int i = 0; i < arr.size(); i++)
+		{
+			if (arr.get(i).isJsonObject())
+			{
+				//Since the JsonArray contains whole bunch json array, we can get each one out
+				JsonObject ob = arr.get(i).getAsJsonObject();
+
+				// Grab the stuff
+				String uni = ob.get("name").getAsString();
+				GeoPoint point = new GeoPoint(ob.get("lat").getAsInt(), ob.get("lon").getAsInt());
+
+				//puts it in the map
+				map.put(uni, point);
+			}
+		}
+
+		return map;
+	}
 
 	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json,String category){
 		if (category.equals(""))

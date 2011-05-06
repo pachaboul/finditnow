@@ -4,7 +4,9 @@ import java.util.HashMap;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.View;
@@ -108,8 +110,10 @@ public class FINAddIndoor extends FINActivity {
 					myIntent.putExtra("itemName", item);
 					myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLatitudeE6());
 					myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLongitudeE6());
+					
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-					String locations = DBCommunicator.getLocations(selectedCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
+					String locations = DBCommunicator.getLocations(selectedCategory, item, prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", getBaseContext());
 					myIntent.putExtra("locations", locations);
 
 					startActivity(myIntent);

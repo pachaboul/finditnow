@@ -10,7 +10,9 @@ package com.net.finditnow;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -50,8 +52,10 @@ public class CategoryList extends FINListActivity {
 						myIntent.putExtra("category", category);
 						myIntent.putExtra("building", "");
 						myIntent.putExtra("itemName", itemName);
+						
+						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-						String locations = DBCommunicator.getLocations(category, itemName, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
+						String locations = DBCommunicator.getLocations(category, itemName, prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", getBaseContext());
 						myIntent.putExtra("locations", locations);
 
 						startActivity(myIntent);

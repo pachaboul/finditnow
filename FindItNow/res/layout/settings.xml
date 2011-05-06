@@ -5,9 +5,7 @@
         <ListPreference
                 android:title="Change Campus/Region"
                 android:summary="Change the campus or region with which you've associated FindItNow"
-                android:key="changeCampus"
-                android:entries="@array/campuses"
-          		android:entryValues="@array/campuses" /> 
+                android:key="changeCampus" />
         <Preference
                 android:title="Clear Search History"
                 android:summary="Delete your search history from FindItNow"
