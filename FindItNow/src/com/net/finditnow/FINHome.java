@@ -7,10 +7,8 @@ import java.util.HashMap;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,13 +25,10 @@ public class FINHome extends TabActivity {
 	private static HashMap<String, String[]> categoriesMap;
 	private static HashMap<String, Integer> iconsMap;
 	private static HashMap<String, String> itemsMap;
-	private static HashMap<String, GeoPoint> campuses;
 	private static ArrayList<String> buildings;
 	private static ArrayList<String> categories;
 
 	private static boolean loggedin;
-	
-	public static GeoPoint DEFAULT_LOCATION;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,17 +42,7 @@ public class FINHome extends TabActivity {
 			conCheck.connectionError();
 		} else {
 			// Generate our list of categories from the database
-			if (getIntent().hasCategory("App Startup")) {
-				
-				//TODO: Clean up post 1.1 release.  Sync with backend
-				campuses = new HashMap<String, GeoPoint>();
-				campuses.put("University of Washington", new GeoPoint(47654799,-122307776));
-				campuses.put("Western Washington University", new GeoPoint(48733550, -122486830));
-				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
-				
-				String campus = prefs.getString("changeCampus", "");
-				DEFAULT_LOCATION = campuses.get(campus);
-
+			if (getIntent().hasCategory("App Startup")) {				
 				categories = JsonParser.getCategoriesList(extras.getString("categories"));
 				Collections.sort(categories);
 

@@ -16,10 +16,6 @@
         <item>Scantrons</item>
         <item>Printing</item>
     </string-array>
-    <string-array name="campuses">
-        <item>University of Washington</item>
-        <item>Western Washington University</item>
-	</string-array>
 	<string name="timeout">Error: Could not detect an internet connection.  Please ensure Wifi or 3G is enabled and working</string>
 	<string name="settings">Settings</string>
 	<string name="home">Home</string>

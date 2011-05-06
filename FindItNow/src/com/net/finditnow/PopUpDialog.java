@@ -45,10 +45,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Region;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.text.Html;
 import android.view.MotionEvent;
@@ -295,8 +297,10 @@ public class PopUpDialog extends Dialog{
 										myIntent.putExtra("category", dbCategory);
 										myIntent.putExtra("building", "");
 										myIntent.putExtra("itemName", item);
+										
+										SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());  				
 
-										String locations = DBCommunicator.getLocations(dbCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getContext());
+										String locations = DBCommunicator.getLocations(dbCategory, item, prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", getContext());
 										myIntent.putExtra("locations", locations);
 
 										getContext().startActivity(myIntent);

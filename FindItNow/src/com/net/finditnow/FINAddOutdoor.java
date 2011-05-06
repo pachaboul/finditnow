@@ -6,11 +6,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.widget.Toast;
@@ -62,7 +64,9 @@ public class FINAddOutdoor extends FINMapActivity {
 		special_info = extras.getString("special_info");
 
 		// Zoom out enough
-		mapController.animateTo(FINHome.DEFAULT_LOCATION);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		
+		mapController.animateTo(new GeoPoint(prefs.getInt("campusLat", 0), prefs.getInt("campusLon", 0)));
 		mapController.setZoom(18);
 		Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
 	}
@@ -118,8 +122,10 @@ public class FINAddOutdoor extends FINMapActivity {
 							myIntent.putExtra("itemName", item);
 							myIntent.putExtra("centerLat", tappedPoint.getLatitudeE6());
 							myIntent.putExtra("centerLon", tappedPoint.getLongitudeE6());
+							
+							SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-							String locations = DBCommunicator.getLocations(selectedCategory, item, FINHome.DEFAULT_LOCATION.getLatitudeE6()+"", FINHome.DEFAULT_LOCATION.getLongitudeE6()+"", getBaseContext());
+							String locations = DBCommunicator.getLocations(selectedCategory, item, prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", getBaseContext());
 							myIntent.putExtra("locations", locations);
 
 							startActivity(myIntent);
