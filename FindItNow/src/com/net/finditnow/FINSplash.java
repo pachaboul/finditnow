@@ -18,7 +18,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -33,7 +32,6 @@ public class FINSplash extends Activity {
 
 	private String campus;
 	private String campusJson;
-	private Thread campusThread;
 	private ProgressDialog myDialog;
 	private ProgressDialog regionDialog;
 
@@ -111,10 +109,6 @@ public class FINSplash extends Activity {
 
 				// Check logged in status
 				final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-
-				Log.v("Campus is", campus);
-				Log.v("Lat is", prefs.getInt("campusLat", 0)+"");
-				Log.v("Prefs campus is", prefs.getString("changeCampus", ""));
 				
 				String loggedinstr = DBCommunicator.loggedIn(phone_id, getBaseContext());
 				String categories = DBCommunicator.getCategories(getBaseContext());
@@ -198,6 +192,7 @@ public class FINSplash extends Activity {
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(FINSplash.this);
 			builder.setTitle("Region Selection");
+			builder.setIcon(R.drawable.icon);
 			builder.setMessage("We have detected your nearest campus/region as:\n\n" + campus +"\n\nIs this correct?");
 			builder.setCancelable(false);
 			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {

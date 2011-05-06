@@ -118,7 +118,6 @@ public class JsonParser {
 	
 	public static LinkedHashMap<String, Region> parseUniversityJson(String json) {
 		//used for parsing the JSON object
-		Gson gson = new Gson();
 		JsonStreamParser parser = new JsonStreamParser(json);
 		JsonArray arr = parser.next().getAsJsonArray();
 
