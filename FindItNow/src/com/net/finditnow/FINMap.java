@@ -314,6 +314,16 @@ public class FINMap extends FINMapActivity {
 				location = new GeoPoint((int)(loc.getLatitude()*1E6), (int)(loc.getLongitude()*1E6));
 			}
 		};
+		
+		Runnable runnable = new Runnable() {
+			public void run() {
+				mapController.animateTo(location);
+			}
+		};
+		
+		if (!getIntent().hasExtra("centerLat") && !getIntent().hasExtra("centerLon") && building.equals("")) {
+			locOverlay.runOnFirstFix(runnable);
+		}
 	}
 
 	/**
