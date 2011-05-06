@@ -135,7 +135,7 @@ public final class R {
         public static final int settings_button=0x7f090046;
         public static final int showFlrButt=0x7f09003b;
         public static final int special_info=0x7f090040;
-        public static final int splash=0x7f090013;
+        public static final int splash_img=0x7f090013;
         public static final int superuser_link=0x7f09002b;
         public static final int tabIcon=0x7f090041;
         public static final int tabLabel=0x7f090042;

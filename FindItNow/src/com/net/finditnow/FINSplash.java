@@ -18,7 +18,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -162,8 +161,6 @@ public class FINSplash extends Activity {
 	private OnClickListener campus_listener = new OnClickListener() {
 
 		public void onClick(DialogInterface dialog, int which) {
-			setContentView(R.layout.fin_splash);
-
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
 			SharedPreferences.Editor editor = prefs.edit();
 			
@@ -182,7 +179,9 @@ public class FINSplash extends Activity {
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			ImageView image = (ImageView) findViewById(R.id.splash);
+			setContentView(R.layout.fin_splash);
+
+			ImageView image = (ImageView) findViewById(R.id.splash_img);
 			image.setImageResource(splashes.get(campus));
 		}
 	};
@@ -190,15 +189,44 @@ public class FINSplash extends Activity {
 	private Handler handler2 = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
+			campus = ((String[])campuses.keySet().toArray(new String[campuses.size()]))[0];
+			
 			AlertDialog.Builder builder = new AlertDialog.Builder(FINSplash.this);
-			builder.setTitle("Select your campus or region");
-			builder.setItems((String[])campuses.keySet().toArray(new String[campuses.size()]), campus_listener);
-			builder.setCancelable(false);		
-
-			AlertDialog alert = builder.create();
-			alert.show();
+			builder.setTitle("Region Selection");
+			builder.setMessage("We have detected your nearest campus/region as:\n\n" + campus +"\n\nIs this correct?");
+			builder.setCancelable(false);
+			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
+					SharedPreferences.Editor editor = prefs.edit();
+					
+					editor.putString("changeCampus", campus);
+					editor.putInt("campusLat", campuses.get(campus).getLatitudeE6());
+					editor.putInt("campusLon", campuses.get(campus).getLongitudeE6());
+					editor.commit();
+					
+					splashThread.start();
+				}
+			});
+			builder.setNegativeButton("No, Let me choose", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					selectCampus();
+				}
+			});
+			AlertDialog dialog = builder.create();
+			dialog.show();
 		}
 	};
+	
+	private void selectCampus() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(FINSplash.this);
+		builder.setTitle("Select your campus or region");
+		builder.setItems((String[])campuses.keySet().toArray(new String[campuses.size()]), campus_listener);
+		builder.setCancelable(false);		
+
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
 	
 	private Handler handler3 = new Handler() {
 		@Override
