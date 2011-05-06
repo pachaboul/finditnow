@@ -2,14 +2,13 @@ package com.net.finditnow;
 
 import java.util.HashMap;
 
-import com.google.android.maps.GeoPoint;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,6 +29,7 @@ public class FINSettings extends PreferenceActivity {
 	private Context context;
 	private ProgressDialog myDialog;
 	private String result;
+	private HashMap<String, Region> campuses;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class FINSettings extends PreferenceActivity {
 		Thread myThread = new Thread() {
 			public void run() {
 				String campusJson = DBCommunicator.getUniversities(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
-				HashMap<String, Region> campuses = JsonParser.parseUniversityJson(campusJson);
+				campuses = JsonParser.parseUniversityJson(campusJson);
 				
 				String[] entries = (String[])campuses.keySet().toArray(new String[campuses.size()]);
 				String[] entryValues = (String[])campuses.keySet().toArray(new String[campuses.size()]);
@@ -87,12 +87,18 @@ public class FINSettings extends PreferenceActivity {
 			}
 		};
 		
-		myThread.run();
+		myThread.start();
 		
-		SharedPreferences.OnSharedPreferenceChangeListener spChanged = new SharedPreferences.OnSharedPreferenceChangeListener() {
-
-			public void onSharedPreferenceChanged(SharedPreferences prefs, String pref) {
+		OnSharedPreferenceChangeListener spChanged = new OnSharedPreferenceChangeListener() {
+			
+			public void onSharedPreferenceChanged(SharedPreferences preferences, String pref) {
 				if (pref.equals("changeCampus")) {
+					SharedPreferences.Editor editor = preferences.edit();
+					
+					editor.putInt("campusLat", campuses.get(prefs.getString("changeCampus", "")).getLocation().getLatitudeE6());
+					editor.putInt("campusLon", campuses.get(prefs.getString("changeCampus", "")).getLocation().getLongitudeE6());
+					editor.commit();
+					
 					restartFirstActivity();
 				}
 			}
@@ -187,10 +193,8 @@ public class FINSettings extends PreferenceActivity {
 	};
 
 	private void restartFirstActivity() {
-		Intent i = getBaseContext().getPackageManager()
-		.getLaunchIntentForPackage(getBaseContext().getPackageName() );
-
-		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
-		startActivity(i);
+		Intent i = new Intent(getBaseContext(), FINSplash.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
 	}
 }

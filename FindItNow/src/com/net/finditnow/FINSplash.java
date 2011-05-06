@@ -18,10 +18,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
-
-import com.google.android.maps.GeoPoint;
 
 public class FINSplash extends Activity {
 
@@ -36,10 +35,13 @@ public class FINSplash extends Activity {
 	private String campusJson;
 	private Thread campusThread;
 	private ProgressDialog myDialog;
+	private ProgressDialog regionDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.fin_splash);
+
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		campus = prefs.getString("changeCampus", "");
@@ -47,14 +49,11 @@ public class FINSplash extends Activity {
 		int campusLon = prefs.getInt("campusLon", 0);
 
 		if (campus.equals("") || campusLat == 0 || campusLon == 0) {
-			myDialog = ProgressDialog.show(FINSplash.this, "Welcome to FIN" , "Please wait while we detect the regions nearest you...", true);
-			myDialog.setIcon(R.drawable.icon);
-		    			
 			// Acquire a reference to the system Location Manager
 			final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 			
 			// Define a listener that responds to location updates
-			LocationListener locationListener = new LocationListener() {
+			final LocationListener locationListener = new LocationListener() {
 			    public void onLocationChanged(Location location) {
 					SharedPreferences.Editor editor = prefs.edit();
 					
@@ -62,8 +61,8 @@ public class FINSplash extends Activity {
 					editor.putInt("locationLon", (int)(location.getLatitude()*1E6));				
 					editor.commit();
 					
-					campusThread.start();
-					
+	        		handler4.sendEmptyMessage(0);
+
 					locationManager.removeUpdates(this);
 			    }
 	
@@ -77,21 +76,23 @@ public class FINSplash extends Activity {
 			// Register the listener with the Location Manager to receive location updates
 			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+			
+			myDialog = new ProgressDialog(this);
+			myDialog.setTitle("Welcome to FIN");
+			myDialog.setMessage("Please wait while we detect the regions nearest you...");
+			myDialog.setIcon(R.drawable.icon);
+	        myDialog.setCancelable(true);
+			myDialog.setButton("Manually Choose", new DialogInterface.OnClickListener() {
+
+	            public void onClick(DialogInterface dialog, int which) {
+					locationManager.removeUpdates(locationListener);
+	        		handler4.sendEmptyMessage(0);
+	            }
+	         });
+			myDialog.show();
 		} else {
 			handler3.sendEmptyMessage(0);
 		}
-								
-		campusThread = new Thread() {
-			
-			public void run() { 
-				campusJson = DBCommunicator.getUniversities(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
-				campuses = JsonParser.parseUniversityJson(campusJson);
-				
-				myDialog.dismiss();
-				
-				handler2.sendEmptyMessage(0);
-			}
-		};
 
 		// thread for displaying the SplashScreen
 		splashThread = new Thread() {
@@ -106,13 +107,15 @@ public class FINSplash extends Activity {
 				splashes.put("Western Washington University", R.drawable.wwu_splash);
 
 				// Set default location
-				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-
 				handler.sendEmptyMessage(0);
 
 				// Check logged in status
 				final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 
+				Log.v("Campus is", campus);
+				Log.v("Lat is", prefs.getInt("campusLat", 0)+"");
+				Log.v("Prefs campus is", prefs.getString("changeCampus", ""));
+				
 				String loggedinstr = DBCommunicator.loggedIn(phone_id, getBaseContext());
 				String categories = DBCommunicator.getCategories(getBaseContext());
 				String buildings = DBCommunicator.getBuildings(prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", getBaseContext());
@@ -181,8 +184,6 @@ public class FINSplash extends Activity {
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			setContentView(R.layout.fin_splash);
-
 			ImageView image = (ImageView) findViewById(R.id.splash_img);
 			image.setImageResource(splashes.get(campus));
 		}
@@ -191,6 +192,8 @@ public class FINSplash extends Activity {
 	private Handler handler2 = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
+			regionDialog.dismiss();
+			
 			campus = ((String[])campuses.keySet().toArray(new String[campuses.size()]))[0];
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(FINSplash.this);
@@ -206,12 +209,12 @@ public class FINSplash extends Activity {
 					editor.putInt("campusLat", campuses.get(campus).getLocation().getLatitudeE6());
 					editor.putInt("campusLon", campuses.get(campus).getLocation().getLongitudeE6());
 					editor.commit();
-					
+									
 					splashThread.start();
 				}
 			});
 			builder.setNegativeButton("No, Let me choose", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
+				public void onClick(DialogInterface dialog, int id) {					
 					selectCampus();
 				}
 			});
@@ -221,6 +224,9 @@ public class FINSplash extends Activity {
 	};
 	
 	private void selectCampus() {
+		if (myDialog.isShowing()) {
+			myDialog.dismiss();
+		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(FINSplash.this);
 		builder.setTitle("Select your campus or region");
 		builder.setItems((String[])campuses.keySet().toArray(new String[campuses.size()]), campus_listener);
@@ -235,6 +241,39 @@ public class FINSplash extends Activity {
 		public void handleMessage(Message msg) {
 			setContentView(R.layout.fin_splash);
 			splashThread.start();
+		}
+	};
+	
+	private Handler handler4 = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			myDialog.dismiss();
+			regionDialog = ProgressDialog.show(FINSplash.this, "" , "Loading list of regions...", true);
+
+			connectionThread.start();
+		}
+	};
+	
+	Thread connectionThread = new Thread() {
+		public void run() {
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+			campusJson = DBCommunicator.getUniversities(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
+			
+    		if (campusJson.equals(getString(R.string.timeout))) {
+    			failureHandler.sendEmptyMessage(0);
+    		} else {
+				campuses = JsonParser.parseUniversityJson(campusJson);
+			
+				handler2.sendEmptyMessage(0);
+    		}
+		}
+	};
+	
+	private Handler failureHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+    		ConnectionChecker conCheck = new ConnectionChecker(getBaseContext(), FINSplash.this);
+    		conCheck.connectionError();
 		}
 	};
 }
