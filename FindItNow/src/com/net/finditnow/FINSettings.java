@@ -29,6 +29,7 @@ public class FINSettings extends PreferenceActivity {
 	private Context context;
 	private ProgressDialog myDialog;
 	private String result;
+	private String campusJson;
 	private HashMap<String, Region> campuses;
 
 	@Override
@@ -38,6 +39,14 @@ public class FINSettings extends PreferenceActivity {
 		setTitle(getString(R.string.app_name) + " > Settings");
 
 		context = this;
+		campusJson = "";
+		
+		final ListPreference lp = (ListPreference) findPreference("changeCampus");
+		
+		String[] entries = {""};
+		String[] entryValues = {""};
+		lp.setEntries(entries);
+		lp.setEntryValues(entryValues);
 
 		// Get the custom preference
 		Preference searchHistory = findPreference("clearHistory");
@@ -70,25 +79,29 @@ public class FINSettings extends PreferenceActivity {
 		
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		final ListPreference lp = (ListPreference) findPreference("changeCampus");
-		myDialog = ProgressDialog.show(context, "" , "Retrieving list of regions...", true);
+		myDialog = ProgressDialog.show(FINSettings.this, "" , "Retrieving list of regions...", true);
 
 		Thread myThread = new Thread() {
 			public void run() {
-				String campusJson = DBCommunicator.getUniversities(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
-				campuses = JsonParser.parseUniversityJson(campusJson);
-				
-				String[] entries = (String[])campuses.keySet().toArray(new String[campuses.size()]);
-				String[] entryValues = (String[])campuses.keySet().toArray(new String[campuses.size()]);
-				lp.setEntries(entries);
-				lp.setEntryValues(entryValues);
-				
-				myDialog.dismiss();
+				campusJson = DBCommunicator.getUniversities(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
+				if (campusJson.equals(getString(R.string.timeout))) {
+					lp.setSelectable(false);
+					handler3.sendEmptyMessage(0);
+				} else {
+					campuses = JsonParser.parseUniversityJson(campusJson);
+					
+					String[] entries = (String[])campuses.keySet().toArray(new String[campuses.size()]);
+					String[] entryValues = (String[])campuses.keySet().toArray(new String[campuses.size()]);
+					lp.setEntries(entries);
+					lp.setEntryValues(entryValues);
+					lp.setSelectable(true);
+				}
+				handler2.sendEmptyMessage(0);
 			}
 		};
 		
 		myThread.start();
-		
+
 		OnSharedPreferenceChangeListener spChanged = new OnSharedPreferenceChangeListener() {
 			
 			public void onSharedPreferenceChanged(SharedPreferences preferences, String pref) {
@@ -105,7 +118,9 @@ public class FINSettings extends PreferenceActivity {
 
 		};
 		
-		prefs.registerOnSharedPreferenceChangeListener(spChanged);
+		if (!campusJson.equals(getString(R.string.timeout))) {
+			prefs.registerOnSharedPreferenceChangeListener(spChanged);
+		}
 	}
 
 	/**
@@ -191,10 +206,24 @@ public class FINSettings extends PreferenceActivity {
 			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
 		}
 	};
+	
+	private Handler handler2 = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			myDialog.dismiss();
+		}
+	};
+	
+	private Handler handler3 = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Toast.makeText(FINSettings.this, "Failed to retrieve list of regions", Toast.LENGTH_SHORT).show();
+		}
+	};
 
 	private void restartFirstActivity() {
 		Intent i = new Intent(getBaseContext(), FINSplash.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
 	}
 }

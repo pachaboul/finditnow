@@ -15,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
@@ -29,6 +30,8 @@ public class FINSplash extends Activity {
 
 	private HashMap<String, Integer> splashes;
 	private HashMap<String, Region> campuses;
+	
+	private boolean manual;
 
 	private String campus;
 	private String campusJson;
@@ -39,6 +42,7 @@ public class FINSplash extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fin_splash);
+		manual = false;
 
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
@@ -79,11 +83,13 @@ public class FINSplash extends Activity {
 			myDialog.setTitle("Welcome to FIN");
 			myDialog.setMessage("Please wait while we detect the regions nearest you...");
 			myDialog.setIcon(R.drawable.icon);
-	        myDialog.setCancelable(true);
+	        myDialog.setCancelable(false);
 			myDialog.setButton("Manually Choose", new DialogInterface.OnClickListener() {
 
 	            public void onClick(DialogInterface dialog, int which) {
 					locationManager.removeUpdates(locationListener);
+					manual=true;
+					myDialog.dismiss();
 	        		handler4.sendEmptyMessage(0);
 	            }
 	         });
@@ -187,41 +193,41 @@ public class FINSplash extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			regionDialog.dismiss();
-			
-			campus = ((String[])campuses.keySet().toArray(new String[campuses.size()]))[0];
-			
-			AlertDialog.Builder builder = new AlertDialog.Builder(FINSplash.this);
-			builder.setTitle("Region Selection");
-			builder.setIcon(R.drawable.icon);
-			builder.setMessage("We have detected your nearest campus/region as:\n\n" + campus +"\n\nIs this correct?");
-			builder.setCancelable(false);
-			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
-					SharedPreferences.Editor editor = prefs.edit();
-					
-					editor.putString("changeCampus", campus);
-					editor.putInt("campusLat", campuses.get(campus).getLocation().getLatitudeE6());
-					editor.putInt("campusLon", campuses.get(campus).getLocation().getLongitudeE6());
-					editor.commit();
-									
-					splashThread.start();
-				}
-			});
-			builder.setNegativeButton("No, Let me choose", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {					
-					selectCampus();
-				}
-			});
-			AlertDialog dialog = builder.create();
-			dialog.show();
+			if (manual) {
+				selectCampus();
+			} else {
+				campus = ((String[])campuses.keySet().toArray(new String[campuses.size()]))[0];
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(FINSplash.this);
+				builder.setTitle("Region Selection");
+				builder.setIcon(R.drawable.icon);
+				builder.setMessage("We have detected your nearest campus/region as:\n\n" + campus +"\n\nIs this correct?");
+				builder.setCancelable(false);
+				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
+						SharedPreferences.Editor editor = prefs.edit();
+						
+						editor.putString("changeCampus", campus);
+						editor.putInt("campusLat", campuses.get(campus).getLocation().getLatitudeE6());
+						editor.putInt("campusLon", campuses.get(campus).getLocation().getLongitudeE6());
+						editor.commit();
+										
+						splashThread.start();
+					}
+				});
+				builder.setNegativeButton("No, Let me choose", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {					
+						selectCampus();
+					}
+				});
+				AlertDialog dialog = builder.create();
+				dialog.show();
+			}
 		}
 	};
 	
 	private void selectCampus() {
-		if (myDialog.isShowing()) {
-			myDialog.dismiss();
-		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(FINSplash.this);
 		builder.setTitle("Select your campus or region");
 		builder.setItems((String[])campuses.keySet().toArray(new String[campuses.size()]), campus_listener);
@@ -242,10 +248,15 @@ public class FINSplash extends Activity {
 	private Handler handler4 = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			myDialog.dismiss();
+			if (myDialog.isShowing()) {
+				myDialog.dismiss();
+			}
+			
 			regionDialog = ProgressDialog.show(FINSplash.this, "" , "Loading list of regions...", true);
 
-			connectionThread.start();
+			if (!connectionThread.isAlive()) {
+				connectionThread.start();
+			}
 		}
 	};
 	
@@ -258,7 +269,6 @@ public class FINSplash extends Activity {
     			failureHandler.sendEmptyMessage(0);
     		} else {
 				campuses = JsonParser.parseUniversityJson(campusJson);
-			
 				handler2.sendEmptyMessage(0);
     		}
 		}
