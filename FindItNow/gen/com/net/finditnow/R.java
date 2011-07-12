@@ -15,16 +15,20 @@ public final class R {
     }
     public static final class color {
         public static final int FIN_bright=0x7f050001;
-        /**  
-	<color name="bright_green">#59E01B</color>
-	<color name="transparent_green">#809EFC23</color>
-	<color name="text_green">#5EC22D</color>
-	
- purple 
+        /**  purple 
          */
         public static final int FIN_dark=0x7f050000;
         public static final int FIN_light=0x7f050002;
-        public static final int FIN_secondary=0x7f050003;
+        public static final int FIN_secondary=0x7f05000c;
+        public static final int bright_blue=0x7f05000a;
+        public static final int bright_green=0x7f050004;
+        public static final int bright_purple=0x7f050007;
+        public static final int light_blue=0x7f05000b;
+        public static final int light_green=0x7f050005;
+        public static final int light_purple=0x7f050008;
+        public static final int main_blue=0x7f050009;
+        public static final int main_green=0x7f050003;
+        public static final int main_purple=0x7f050006;
     }
     public static final class drawable {
         public static final int android=0x7f020000;
@@ -60,17 +64,25 @@ public final class R {
         public static final int restrooms_big=0x7f02001e;
         public static final int school_supplies=0x7f02001f;
         public static final int school_supplies_big=0x7f020020;
-        public static final int tab_bg_selected=0x7f020021;
-        public static final int tab_bg_selector=0x7f020022;
-        public static final int tab_bg_unselected=0x7f020023;
-        public static final int tab_bottom_strip=0x7f020024;
-        public static final int tab_divider=0x7f020025;
-        public static final int tab_focused=0x7f020026;
-        public static final int tab_unfocused=0x7f020027;
-        public static final int uw_splash=0x7f020028;
-        public static final int vending=0x7f020029;
-        public static final int vending_big=0x7f02002a;
-        public static final int wwu_splash=0x7f02002b;
+        public static final int tab_bottom_strip=0x7f020021;
+        public static final int tab_divider=0x7f020022;
+        public static final int tab_focused_blue=0x7f020023;
+        public static final int tab_focused_green=0x7f020024;
+        public static final int tab_focused_orange=0x7f020025;
+        public static final int tab_focused_purple=0x7f020026;
+        public static final int tab_focused_red=0x7f020027;
+        public static final int tab_selector_blue=0x7f020028;
+        public static final int tab_selector_green=0x7f020029;
+        public static final int tab_selector_purple=0x7f02002a;
+        public static final int tab_unfocused_blue=0x7f02002b;
+        public static final int tab_unfocused_green=0x7f02002c;
+        public static final int tab_unfocused_orange=0x7f02002d;
+        public static final int tab_unfocused_purple=0x7f02002e;
+        public static final int tab_unfocused_red=0x7f02002f;
+        public static final int uw_splash=0x7f020030;
+        public static final int vending=0x7f020031;
+        public static final int vending_big=0x7f020032;
+        public static final int wwu_splash=0x7f020033;
     }
     public static final class id {
         public static final int GridItem=0x7f09001b;
@@ -78,7 +90,7 @@ public final class R {
         public static final int ImageButtonLayoutLeft=0x7f09002d;
         public static final int MainLayout=0x7f09002c;
         public static final int add_item_button=0x7f09003a;
-        public static final int add_new_button=0x7f090047;
+        public static final int add_new_button=0x7f09004b;
         public static final int addmap_confirm=0x7f090007;
         public static final int addnew_additem=0x7f090005;
         public static final int addnew_bspinner=0x7f090002;
@@ -113,17 +125,17 @@ public final class R {
         public static final int grid_item_button=0x7f09001d;
         public static final int grid_item_text=0x7f09001c;
         public static final int gridview=0x7f090032;
-        public static final int help_button=0x7f090048;
+        public static final int help_button=0x7f09004c;
         public static final int help_contents=0x7f09001e;
         public static final int help_link=0x7f09001f;
         public static final int help_section_body=0x7f090021;
         public static final int help_section_header=0x7f090020;
-        public static final int home_button=0x7f090043;
+        public static final int home_button=0x7f090047;
         public static final int iconView=0x7f09001a;
         public static final int layout_rootflr=0x7f090014;
         public static final int list_button=0x7f09002e;
         public static final int login_button=0x7f090029;
-        public static final int logout_button=0x7f090045;
+        public static final int logout_button=0x7f090049;
         public static final int mainlayout=0x7f090006;
         public static final int mapview=0x7f090008;
         public static final int my_location_button=0x7f090031;
@@ -131,14 +143,18 @@ public final class R {
         public static final int password_text=0x7f090027;
         public static final int popupLayout=0x7f090034;
         public static final int search_box=0x7f090023;
-        public static final int search_button=0x7f090044;
-        public static final int settings_button=0x7f090046;
+        public static final int search_button=0x7f090048;
+        public static final int settings_button=0x7f09004a;
         public static final int showFlrButt=0x7f09003b;
         public static final int special_info=0x7f090040;
         public static final int splash_img=0x7f090013;
         public static final int superuser_link=0x7f09002b;
         public static final int tabIcon=0x7f090041;
         public static final int tabLabel=0x7f090042;
+        public static final int tab_active=0x7f090043;
+        public static final int tab_inactive=0x7f090044;
+        public static final int tab_pressed=0x7f090045;
+        public static final int tab_selected=0x7f090046;
         public static final int timeReachText=0x7f090039;
         public static final int txt_password=0x7f090028;
         public static final int txt_username=0x7f090026;

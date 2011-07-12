@@ -139,6 +139,7 @@ public class FINMenu extends FINActivity {
 			if (convertView == null) {	
 				LayoutInflater li = getLayoutInflater();
 				myView = li.inflate(R.layout.grid_item, null);
+				myView.setBackgroundResource(FINTheme.getLightColor());
 			} else {
 				myView = convertView;
 			}

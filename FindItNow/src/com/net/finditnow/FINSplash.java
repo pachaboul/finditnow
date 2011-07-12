@@ -15,7 +15,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
@@ -110,6 +109,9 @@ public class FINSplash extends Activity {
 				splashes.put("University of Washington", R.drawable.uw_splash);
 				splashes.put("Western Washington University", R.drawable.wwu_splash);
 
+				// Set color theme (hardcoded for now).
+				FINTheme.setTheme(FINTheme.GREEN, getBaseContext());
+				
 				// Set default location
 				handler.sendEmptyMessage(0);
 
