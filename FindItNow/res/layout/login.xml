@@ -31,6 +31,7 @@
 				android:padding="15dp">
 				
 			<LinearLayout
+					android:id="@+id/login_fields_container"
 					android:orientation="vertical"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"

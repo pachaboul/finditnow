@@ -30,6 +30,7 @@
 			android:padding="15dp">
 			
 		<LinearLayout
+				android:id="@+id/addnew_building_container"
 				android:orientation="vertical"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
@@ -58,7 +59,8 @@
 			        
 			</LinearLayout>
 			
-			<LinearLayout
+		<LinearLayout
+				android:id="@+id/addnew_floor_container"
 				android:orientation="vertical"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"

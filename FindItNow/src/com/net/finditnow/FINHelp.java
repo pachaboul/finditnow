@@ -22,6 +22,9 @@ public class FINHelp extends FINActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.help);
 		setTitle(getString(R.string.app_name) + " > Help Guide");
+		
+		View v = (View) findViewById(R.id.help_title_bar);
+		v.setBackgroundResource(FINTheme.getMainColor());
 
 		LinearLayout helpBody = (LinearLayout) findViewById(R.id.help_contents);
 
@@ -57,6 +60,7 @@ public class FINHelp extends FINActivity {
 
 		TextView banner = (TextView) section.findViewById(R.id.help_section_header);
 		banner.setText(title);
+		banner.setBackgroundResource(FINTheme.getLightColor());
 
 		TextView body = (TextView) section.findViewById(R.id.help_section_body);
 		body.setText(Html.fromHtml(info));

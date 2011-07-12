@@ -11,6 +11,7 @@
 	    android:background="#FFFFFF">
 		
 		<TextView
+			android:id="@+id/help_title_bar"
 			android:text="FIN Help Guide"
 			android:textColor="#FFFFFF"
 			android:textSize="25dp"
