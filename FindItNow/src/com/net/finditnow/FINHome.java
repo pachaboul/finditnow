@@ -78,6 +78,10 @@ public class FINHome extends TabActivity {
 					res.getIdentifier("@drawable/buildings_tab_icon", null, getPackageName()),
 					tabHost,
 					new Intent().setClass(this, BuildingList.class));
+			
+			// And recolor the strip.
+			View tabStrip = (View) findViewById(R.id.fronttab_strip);
+			tabStrip.setBackgroundResource(FINTheme.getBrightColor());
 		}
 	}
 
@@ -87,8 +91,9 @@ public class FINHome extends TabActivity {
 		host.addTab(setContent);
 	}
 
-	private static View createTabView(final Context context, final String text, Integer imageID) {
+	private View createTabView(final Context context, final String text, Integer imageID) {
 		View view = LayoutInflater.from(context).inflate(R.layout.tab_background, null);
+		view.setBackgroundDrawable(getResources().getDrawable(FINTheme.getTabSelector()));        
 
 		// Set up icon 
 		ImageView iv = (ImageView) view.findViewById(R.id.tabIcon);

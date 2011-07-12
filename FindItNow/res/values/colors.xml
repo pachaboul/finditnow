@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-	<!-- 
-	<color name="bright_green">#59E01B</color>
-	<color name="transparent_green">#809EFC23</color>
-	<color name="text_green">#5EC22D</color>
-	-->
-	
 	<!-- purple -->
 	<color name="FIN_dark">#59196E</color>
 	<color name="FIN_bright">#8737A1</color>
 	<color name="FIN_light">#DEBEFF</color>
+	
+	<color name="main_green">#5EC22D</color>
+	<color name="bright_green">#59E01B</color>
+	<color name="light_green">#809EFC23</color>
+	
+	<color name="main_purple">#59196E</color>
+	<color name="bright_purple">#8737A1</color>
+	<color name="light_purple">#DEBEFF</color>
+	
+	<color name="main_blue">#09005F</color>
+	<color name="bright_blue">#008CE1</color>
+	<color name="light_blue">#BACFE0</color>
+	
 	<color name="FIN_secondary">#666666</color>
 </resources>
