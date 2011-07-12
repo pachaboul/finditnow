@@ -25,8 +25,12 @@ public class FINLogin extends FINActivity {
 		super.onCreate(savedInstanceState);
 		setTitle(getString(R.string.app_name) + " > SuperUser Login");
 
-		// load up the layout
+		// load up the layout, theme colors.
 		setContentView(R.layout.login);
+		View header = (View) findViewById(R.id.welcome_text);
+		header.setBackgroundResource(FINTheme.getMainColor());
+		View container = (View) findViewById(R.id.login_fields_container);
+		container.setBackgroundResource(FINTheme.getLightColor());
 
 		// Add link to help info:
 		TextView link = (TextView) findViewById(R.id.superuser_link);

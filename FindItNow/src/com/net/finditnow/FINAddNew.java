@@ -41,7 +41,8 @@ public class FINAddNew extends FINActivity {
 		} else {
 
 			setContentView(R.layout.addnew_popup);
-
+			themePage();
+			
 			// Set the text in the titlebar
 			setTitle(getString(R.string.app_name) + " > Add New Item");
 
@@ -171,5 +172,22 @@ public class FINAddNew extends FINActivity {
 		menu.findItem(R.id.add_new_button).setVisible(false);
 
 		return true;
+	}
+	
+	/**
+	 * Does all the coloring.
+	 */
+	private void themePage() {
+		View header = (View) findViewById(R.id.addnew_header);
+		header.setBackgroundResource(FINTheme.getMainColor());
+		
+		View container = (View) findViewById(R.id.addnew_location_container);
+		container.setBackgroundResource(FINTheme.getLightColor());
+		
+		container = (View) findViewById(R.id.addnew_category_container);
+		container.setBackgroundResource(FINTheme.getLightColor());
+		
+		container = (View) findViewById(R.id.addnew_special_container);
+		container.setBackgroundResource(FINTheme.getLightColor());
 	}
 }
