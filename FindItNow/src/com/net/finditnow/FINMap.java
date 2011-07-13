@@ -118,6 +118,7 @@ public class FINMap extends FINMapActivity {
 		editor.commit();
 
 		locOverlay.disableMyLocation();
+		locOverlay.disableCompass();
 
 		mapOverlays.remove(locOverlay);
 	}
@@ -130,6 +131,7 @@ public class FINMap extends FINMapActivity {
 		super.onResume();
 
 		locOverlay.enableMyLocation();
+		locOverlay.enableCompass();
 
 		mapOverlays.add(locOverlay);
 	}
