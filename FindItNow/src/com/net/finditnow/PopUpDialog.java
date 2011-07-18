@@ -128,7 +128,8 @@ public class PopUpDialog extends Dialog{
 	{
 
 		setContentView(R.layout.popupdialog);
-
+		setThemeColors();
+		
 		//sets the title of this dialog
 		TextView title = (TextView) findViewById(R.id.dialogTitle);
 
@@ -373,4 +374,17 @@ public class PopUpDialog extends Dialog{
 			Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
 		}
 	};
+	
+	private void setThemeColors() {
+		TextView title = (TextView) findViewById(R.id.dialogTitle);
+		title.setTextColor(FINTheme.getFontColor());
+		
+		TextView button = (TextView) findViewById(R.id.showFlrButt);
+		button.setTextColor(FINTheme.getFontColor());
+		button.setBackgroundDrawable(getContext().getResources().getDrawable(FINTheme.getButtonSelector()));
+		
+		button = (TextView) findViewById(R.id.add_item_button);
+		button.setTextColor(FINTheme.getFontColor());
+		button.setBackgroundDrawable(getContext().getResources().getDrawable(FINTheme.getButtonSelector()));
+	}
 }  

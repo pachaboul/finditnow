@@ -100,7 +100,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 
 		//the layout/view which is defined by a layout XML
 		View relative = LayoutInflater.from(context).inflate(R.layout.multi_category_list, parent,false);
-
+		
 		//This is the text for any additional information associated with this
 		// particular object
 		ExpandableListView lv = (ExpandableListView) relative.findViewById(R.id.cateList);
@@ -153,10 +153,10 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	 * 
 	 * @return the View corresponding to the group at the specified position 
 	 */
-	public View getGroupView(int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
-		View  relative = LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);
-
+	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+		View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);
+		setItemThemeColors(relative);
+		
 		//Text for displaying the floor name
 		TextView text = (TextView) relative.findViewById(R.id.flrName);
 		text.setText(building.getFloorNames()[groupPosition]);
@@ -197,9 +197,9 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 
 			ExpandableListView lv = (ExpandableListView) currentView.findViewById(R.id.cateList);
 
-
 			View  relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
-
+			setChildThemeColors(relative);
+			
 			float density = relative.getResources().getDisplayMetrics().density;
 			String detialText = (String)lv.getExpandableListAdapter().getChild(groupPosition, 0);
 
@@ -221,6 +221,18 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		}
 
 	}
+	
+	private void setItemThemeColors(View parent) {
+		parent.setBackgroundResource(FINTheme.getBrightColor());
+	}
+	
+	private void setChildThemeColors(View parent) {
+		parent.setBackgroundResource(FINTheme.getLightColor());
+		
+		TextView button = (TextView) parent.findViewById(R.id.flrDetailButton);
+		button.setTextColor(FINTheme.getFontColor());
+	}
+	
 	private class DoubleOnCollapseListener implements ExpandableListView.OnGroupCollapseListener{
 		private View currentView ;
 		public DoubleOnCollapseListener(View view){
@@ -229,6 +241,5 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 		public void onGroupCollapse(int groupPosition) {
 			currentView.getLayoutParams().height = HEIGHT;
 		}
-
 	}
 }

@@ -110,7 +110,7 @@ public class FINSplash extends Activity {
 				splashes.put("Western Washington University", R.drawable.wwu_splash);
 
 				// Set color theme (hardcoded for now).
-				FINTheme.setTheme(FINTheme.GREEN, getBaseContext());
+				FINTheme.setTheme(FINTheme.BLUE, getBaseContext());
 				
 				// Set default location
 				handler.sendEmptyMessage(0);

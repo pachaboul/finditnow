@@ -31,7 +31,7 @@ public class FINAddIndoor extends FINActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addnew_indoor);
-		themeColors();
+		setThemeColors();
 		
 		// Set the text in the titlebar
 		setTitle(getString(R.string.app_name) + " > Add New Item > Indoor Item");
@@ -159,7 +159,7 @@ public class FINAddIndoor extends FINActivity {
 		return true;
 	}
 	
-	private void themeColors() {
+	private void setThemeColors() {
 		View header = (View) findViewById(R.id.addnew_inheader);
 		header.setBackgroundResource(FINTheme.getMainColor());
 		

@@ -5,5 +5,5 @@
 		android:drawable="@drawable/fin_rounded_button_focus" />
 		
 	<!--  normal state -->
-	<item android:drawable="@drawable/fin_rounded_button_normal" />
+	<item android:drawable="@drawable/fin_rounded_button_normal_purple" />
 </selector>
