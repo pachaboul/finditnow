@@ -6,7 +6,7 @@ import com.google.android.maps.GeoPoint;
 public class Region implements Comparable<Region> {
 
 	private String name;
-	private int uni_id;
+	private int rid;
 	private GeoPoint loc;
 	private int order;
 
@@ -17,9 +17,9 @@ public class Region implements Comparable<Region> {
 
 	}
 
-	public Region(String name, int uni_id, GeoPoint loc, int order) {
+	public Region(String name, int rid, GeoPoint loc, int order) {
 		this.name = name;
-		this.uni_id = uni_id;
+		this.rid = rid;
 		this.loc = loc;
 		this.order = order;
 	}
@@ -28,8 +28,8 @@ public class Region implements Comparable<Region> {
 		return name;
 	}
 	
-	public int getUniID() {
-		return uni_id;
+	public int getRID() {
+		return rid;
 	}
 	
 	public GeoPoint getLocation() {

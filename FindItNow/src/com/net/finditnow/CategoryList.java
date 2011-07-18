@@ -54,8 +54,9 @@ public class CategoryList extends FINListActivity {
 						myIntent.putExtra("itemName", itemName);
 						
 						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+						String rid = prefs.getInt("rid", 0)+"";
 
-						String locations = DBCommunicator.getLocations(category, itemName, prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", getBaseContext());
+						String locations = DBCommunicator.getLocations(category, rid, getBaseContext());
 						myIntent.putExtra("locations", locations);
 
 						startActivity(myIntent);

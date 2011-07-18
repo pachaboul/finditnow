@@ -66,47 +66,45 @@ public class DBCommunicator {
 		return Post("delete.php", nameValuePairs, context);
 	}
 	
-	public static String getUniversities(String lat, String lon, Context context) {
+	public static String getRegions(String lat, String lon, Context context) {
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("lon", lon));
 
-		return Post("getUniversities.php", nameValuePairs, context);
+		return Post("getRegions.php", nameValuePairs, context);
 	}
 
 	public static String getCategories(Context context) {
 		return Get("getCategories.php", context);
 	}
 
-	public static String getBuildings(String lat, String lon, Context context) {
+	public static String getBuildings(String rid, Context context) {
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
-		nameValuePairs.add(new BasicNameValuePair("lat", lat));
-		nameValuePairs.add(new BasicNameValuePair("lon", lon));
+		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 
 		return Post("getBuildings.php", nameValuePairs, context);
 	}
 
-	public static String getLocations(String cat, String item, String lat, String lon, Context context) {
+	public static String getLocations(String cat, String rid, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat)));
-		nameValuePairs.add(new BasicNameValuePair("item", FINUtil.sendItemName(item)));
-		nameValuePairs.add(new BasicNameValuePair("lat", lat));
-		nameValuePairs.add(new BasicNameValuePair("long", lon));
+		nameValuePairs.add(new BasicNameValuePair("rid", rid));
+		
+		Log.v("UGH", "cat is " + FINUtil.sendCategory(cat) + "and rid is " + rid);
 
 		return Post("getLocations.php", nameValuePairs, context);
 	}
 
-	public static String getAllLocations(String cat, String lat, String lon, Context context) {
+	public static String getAllLocations(String cat, String rid, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("cat", cat));
-		nameValuePairs.add(new BasicNameValuePair("lat", lat));
-		nameValuePairs.add(new BasicNameValuePair("long", lon));
+		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 
 		return Post("getAllLocations.php", nameValuePairs, context);
 	}

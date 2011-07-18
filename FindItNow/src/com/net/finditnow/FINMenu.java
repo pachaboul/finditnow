@@ -19,6 +19,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -191,8 +192,9 @@ public class FINMenu extends FINActivity {
 								
 								if (!FINHome.hasItems(category)) {
 									SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+									String rid = prefs.getInt("rid", 0)+"";
 									
-									String locations = DBCommunicator.getLocations(category, "", prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", getBaseContext());
+									String locations = DBCommunicator.getLocations(category, rid, getBaseContext());
 									myIntent.putExtra("locations", locations);
 								}
 

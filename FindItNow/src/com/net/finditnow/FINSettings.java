@@ -83,7 +83,7 @@ public class FINSettings extends PreferenceActivity {
 
 		Thread myThread = new Thread() {
 			public void run() {
-				campusJson = DBCommunicator.getUniversities(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
+				campusJson = DBCommunicator.getRegions(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
 				if (campusJson.equals(getString(R.string.timeout))) {
 					lp.setSelectable(false);
 					handler3.sendEmptyMessage(0);
