@@ -115,7 +115,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 
 			//the layout/view which is defined by a layout XML
 			View relative = LayoutInflater.from(context).inflate(R.layout.flrlist_child, parent,false);
-
+			setChildThemeColors(relative);
+			
 			//This is the text for any additional information associated with this
 			// particular object
 			TextView text = (TextView) relative.findViewById(R.id.floorDetailText);
@@ -236,7 +237,8 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 			View convertView, ViewGroup parent) {
 		//the layout/view which is defined by a layout XML
 		View relative= LayoutInflater.from(context).inflate(R.layout.flrlist_item, parent,false);;
-
+		setItemThemeColors(relative);
+		
 		ImageView img = (ImageView) relative.findViewById(R.id.flrIcon);
 
 		//Text for displaying the floor name
@@ -274,4 +276,17 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 			Toast.makeText(context, result, Toast.LENGTH_LONG).show();
 		}
 	};
+	
+	private void setItemThemeColors(View parent) {
+		parent.setBackgroundResource(FINTheme.getBrightColor());
+	}
+	
+	private void setChildThemeColors(View parent) {
+		View bg = (View) parent.findViewById(R.id.layout_rootflr);
+		bg.setBackgroundResource(FINTheme.getLightColor());
+		
+		TextView button = (TextView) parent.findViewById(R.id.flrDetailButton);
+		button.setTextColor(FINTheme.getFontColor());
+		button.setBackgroundDrawable(context.getResources().getDrawable(FINTheme.getButtonSelector()));
+	}
 }
