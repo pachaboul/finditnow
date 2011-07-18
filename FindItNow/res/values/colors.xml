@@ -5,6 +5,7 @@
 	<color name="FIN_bright">#59E01B</color>
 	<color name="FIN_light">#B9F56C</color>
 	<color name="FIN_secondary">#666666</color>
+	<color name="FIN_highlight">#DDDDDD</color>
 	
 	<!-- green -->
 	<color name="main_green">#32A31C</color>
