@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -33,6 +34,7 @@ public class FINSplash extends Activity {
 	private boolean manual;
 
 	private String campus;
+	private String rid;
 	private String campusJson;
 	private ProgressDialog myDialog;
 	private ProgressDialog regionDialog;
@@ -46,10 +48,9 @@ public class FINSplash extends Activity {
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		campus = prefs.getString("changeCampus", "");
-		int campusLat = prefs.getInt("campusLat", 0);
-		int campusLon = prefs.getInt("campusLon", 0);
+		rid = prefs.getInt("rid", 0)+"";
 
-		if (campus.equals("") || campusLat == 0 || campusLon == 0) {
+		if (campus.equals("") || rid.equals("")) {
 			// Acquire a reference to the system Location Manager
 			final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 			
@@ -120,7 +121,7 @@ public class FINSplash extends Activity {
 				
 				String loggedinstr = DBCommunicator.loggedIn(phone_id, getBaseContext());
 				String categories = DBCommunicator.getCategories(getBaseContext());
-				String buildings = DBCommunicator.getBuildings(prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", getBaseContext());
+				String buildings = DBCommunicator.getBuildings(prefs.getInt("rid", 0)+"", getBaseContext());
 
 				boolean loggedin = loggedinstr.contains(getString(R.string.login_already));
 				boolean readytostart = !(loggedinstr.equals(getString(R.string.timeout)) || categories.equals(getString(R.string.timeout)) 
@@ -174,8 +175,7 @@ public class FINSplash extends Activity {
 			campus = ((String[])campuses.keySet().toArray(new String[campuses.size()]))[which];
 			
 			editor.putString("changeCampus", campus);
-			editor.putInt("campusLat", campuses.get(campus).getLocation().getLatitudeE6());
-			editor.putInt("campusLon", campuses.get(campus).getLocation().getLongitudeE6());
+			editor.putInt("rid", campuses.get(campus).getRID());
 
 			editor.commit();
 
@@ -211,8 +211,7 @@ public class FINSplash extends Activity {
 						SharedPreferences.Editor editor = prefs.edit();
 						
 						editor.putString("changeCampus", campus);
-						editor.putInt("campusLat", campuses.get(campus).getLocation().getLatitudeE6());
-						editor.putInt("campusLon", campuses.get(campus).getLocation().getLongitudeE6());
+						editor.putInt("rid", campuses.get(campus).getRID());
 						editor.commit();
 										
 						splashThread.start();
@@ -265,7 +264,7 @@ public class FINSplash extends Activity {
 	Thread connectionThread = new Thread() {
 		public void run() {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-			campusJson = DBCommunicator.getUniversities(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
+			campusJson = DBCommunicator.getRegions(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
 			
     		if (campusJson.equals(getString(R.string.timeout))) {
     			failureHandler.sendEmptyMessage(0);

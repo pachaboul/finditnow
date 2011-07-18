@@ -133,10 +133,10 @@ public class JsonParser {
 
 				// Grab the stuff
 				String uni = ob.get("name").getAsString();
-				int uni_id = ob.get("uni_id").getAsInt();
+				int rid = ob.get("rid").getAsInt();
 				GeoPoint point = new GeoPoint(ob.get("lat").getAsInt(), ob.get("lon").getAsInt());
 				
-				Region reg = new Region(uni, uni_id, point, i);
+				Region reg = new Region(uni, rid, point, i);
 
 				//puts it in the map
 				map.put(uni, reg);

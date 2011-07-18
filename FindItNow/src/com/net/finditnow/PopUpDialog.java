@@ -299,9 +299,10 @@ public class PopUpDialog extends Dialog{
 										myIntent.putExtra("building", "");
 										myIntent.putExtra("itemName", item);
 										
-										SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());  				
+										SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+										String rid = prefs.getInt("rid", 0)+"";
 
-										String locations = DBCommunicator.getLocations(dbCategory, item, prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", getContext());
+										String locations = DBCommunicator.getLocations(dbCategory, rid, getContext());
 										myIntent.putExtra("locations", locations);
 
 										getContext().startActivity(myIntent);

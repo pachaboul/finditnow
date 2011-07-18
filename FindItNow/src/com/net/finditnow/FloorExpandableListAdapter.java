@@ -177,8 +177,9 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 										myIntent.putExtra("itemName", item);
 										
 										SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+										String rid = prefs.getInt("rid", 0)+"";
 
-										String locations = DBCommunicator.getLocations(dbCategory, item, prefs.getInt("campusLat", 0)+"", prefs.getInt("campusLon", 0)+"", context);
+										String locations = DBCommunicator.getLocations(dbCategory, rid, context);
 										myIntent.putExtra("locations", locations);
 
 										context.startActivity(myIntent);
