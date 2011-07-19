@@ -14,6 +14,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -228,11 +229,15 @@ public class FINMap extends FINMapActivity {
 		// Restore preferences
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		String campus = prefs.getString("region_name", "");
+		int region_id = prefs.getInt("region_id", 0);
 		
-		int latitude = prefs.getInt("campusLat", 0);
-		int longitude = prefs.getInt("campusLon", 0);
-		int zoomLevel = prefs.getInt("zoomLevel", 18);
+		FINDatabase db = new FINDatabase(this);
+		Cursor cursor = db.getWritableDatabase().query("regions", null, "regions.region_id = " + region_id, null, null, null, null);
+		cursor.moveToFirst();
+		
+		int latitude = cursor.getInt(2);
+		int longitude = cursor.getInt(3);
+		int zoomLevel = 18;
 
 		// Initialize our MapView and MapController
 		mapView = (FINMapView) findViewById(R.id.mapview);
