@@ -21,21 +21,31 @@ public final class R {
         public static final int FIN_highlight=0x7f050004;
         public static final int FIN_light=0x7f050002;
         public static final int FIN_secondary=0x7f050003;
-        public static final int bright_blue=0x7f050009;
-        public static final int bright_green=0x7f050006;
-        public static final int bright_purple=0x7f05000c;
-        public static final int light_blue=0x7f05000a;
-        public static final int light_green=0x7f050007;
-        public static final int light_purple=0x7f05000d;
+        public static final int bright_blue=0x7f05000f;
+        public static final int bright_green=0x7f05000c;
+        public static final int bright_orange=0x7f050009;
+        public static final int bright_purple=0x7f050012;
+        public static final int bright_red=0x7f050006;
+        public static final int light_blue=0x7f050010;
+        public static final int light_green=0x7f05000d;
+        public static final int light_orange=0x7f05000a;
+        public static final int light_purple=0x7f050013;
+        public static final int light_red=0x7f050007;
         /**  blue 
          */
-        public static final int main_blue=0x7f050008;
+        public static final int main_blue=0x7f05000e;
         /**  green 
          */
-        public static final int main_green=0x7f050005;
+        public static final int main_green=0x7f05000b;
+        /**  orange 
+         */
+        public static final int main_orange=0x7f050008;
         /**  purple 
          */
-        public static final int main_purple=0x7f05000b;
+        public static final int main_purple=0x7f050011;
+        /**  red 
+         */
+        public static final int main_red=0x7f050005;
     }
     public static final class drawable {
         public static final int android=0x7f020000;
@@ -57,41 +67,45 @@ public final class R {
         public static final int expander_ic_minimized=0x7f020010;
         public static final int fin_clickable_button_blue=0x7f020011;
         public static final int fin_clickable_button_green=0x7f020012;
-        public static final int fin_clickable_button_purple=0x7f020013;
-        public static final int fin_rounded_button_focus=0x7f020014;
-        public static final int fin_rounded_button_normal_blue=0x7f020015;
-        public static final int fin_rounded_button_normal_green=0x7f020016;
-        public static final int fin_rounded_button_normal_purple=0x7f020017;
-        public static final int icon=0x7f020018;
-        public static final int indicator_selector=0x7f020019;
-        public static final int list_bg_selector=0x7f02001a;
-        public static final int mailboxes=0x7f02001b;
-        public static final int mailboxes_big=0x7f02001c;
-        public static final int menu=0x7f02001d;
-        public static final int my_location=0x7f02001e;
-        public static final int restrooms=0x7f02001f;
-        public static final int restrooms_big=0x7f020020;
-        public static final int school_supplies=0x7f020021;
-        public static final int school_supplies_big=0x7f020022;
-        public static final int tab_bottom_strip=0x7f020023;
-        public static final int tab_divider=0x7f020024;
-        public static final int tab_focused_blue=0x7f020025;
-        public static final int tab_focused_green=0x7f020026;
-        public static final int tab_focused_orange=0x7f020027;
-        public static final int tab_focused_purple=0x7f020028;
-        public static final int tab_focused_red=0x7f020029;
-        public static final int tab_selector_blue=0x7f02002a;
-        public static final int tab_selector_green=0x7f02002b;
-        public static final int tab_selector_purple=0x7f02002c;
-        public static final int tab_unfocused_blue=0x7f02002d;
-        public static final int tab_unfocused_green=0x7f02002e;
-        public static final int tab_unfocused_orange=0x7f02002f;
-        public static final int tab_unfocused_purple=0x7f020030;
-        public static final int tab_unfocused_red=0x7f020031;
-        public static final int uw_splash=0x7f020032;
-        public static final int vending=0x7f020033;
-        public static final int vending_big=0x7f020034;
-        public static final int wwu_splash=0x7f020035;
+        public static final int fin_clickable_button_orange=0x7f020013;
+        public static final int fin_clickable_button_purple=0x7f020014;
+        public static final int fin_clickable_button_red=0x7f020015;
+        public static final int fin_rounded_button_focus=0x7f020016;
+        public static final int fin_rounded_button_normal_blue=0x7f020017;
+        public static final int fin_rounded_button_normal_green=0x7f020018;
+        public static final int fin_rounded_button_normal_orange=0x7f020019;
+        public static final int fin_rounded_button_normal_purple=0x7f02001a;
+        public static final int fin_rounded_button_normal_red=0x7f02001b;
+        public static final int icon=0x7f02001c;
+        public static final int indicator_selector=0x7f02001d;
+        public static final int list_bg_selector=0x7f02001e;
+        public static final int mailboxes=0x7f02001f;
+        public static final int mailboxes_big=0x7f020020;
+        public static final int menu=0x7f020021;
+        public static final int my_location=0x7f020022;
+        public static final int restrooms=0x7f020023;
+        public static final int restrooms_big=0x7f020024;
+        public static final int school_supplies=0x7f020025;
+        public static final int school_supplies_big=0x7f020026;
+        public static final int tab_bottom_strip=0x7f020027;
+        public static final int tab_divider=0x7f020028;
+        public static final int tab_focused_blue=0x7f020029;
+        public static final int tab_focused_green=0x7f02002a;
+        public static final int tab_focused_orange=0x7f02002b;
+        public static final int tab_focused_purple=0x7f02002c;
+        public static final int tab_focused_red=0x7f02002d;
+        public static final int tab_selector_blue=0x7f02002e;
+        public static final int tab_selector_green=0x7f02002f;
+        public static final int tab_selector_purple=0x7f020030;
+        public static final int tab_unfocused_blue=0x7f020031;
+        public static final int tab_unfocused_green=0x7f020032;
+        public static final int tab_unfocused_orange=0x7f020033;
+        public static final int tab_unfocused_purple=0x7f020034;
+        public static final int tab_unfocused_red=0x7f020035;
+        public static final int uw_splash=0x7f020036;
+        public static final int vending=0x7f020037;
+        public static final int vending_big=0x7f020038;
+        public static final int wwu_splash=0x7f020039;
     }
     public static final class id {
         public static final int GridItem=0x7f090020;
