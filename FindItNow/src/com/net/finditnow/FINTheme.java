@@ -11,8 +11,8 @@ public class FINTheme {
 
 	public static String theme; // color
 	public static Context context;
-	public static final String RED = "red"; //unimplemented
-	public static final String ORANGE = "orange"; // unimplemented
+	public static final String RED = "red";
+	public static final String ORANGE = "orange";
 	public static final String GREEN = "green";
 	public static final String BLUE = "blue";
 	public static final String PURPLE = "purple";
@@ -71,11 +71,15 @@ public class FINTheme {
 	public static int getFontColor() {
 		if (theme == BLUE) {
 			return context.getResources().getColor(R.color.main_blue);
-		} else if (theme == GREEN) {
-			return context.getResources().getColor(R.color.main_green);
-		} else {
+		} else if (theme == PURPLE) {
 			return context.getResources().getColor(R.color.main_purple);
-		}
+		} else if (theme == RED) {
+			return context.getResources().getColor(R.color.main_red);
+		} else if (theme == ORANGE) {
+			return context.getResources().getColor(R.color.main_orange);
+		} else {
+			return context.getResources().getColor(R.color.main_green);
+		} 
 	}
 
 }

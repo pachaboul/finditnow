@@ -7,6 +7,16 @@
 	<color name="FIN_secondary">#666666</color>
 	<color name="FIN_highlight">#DDDDDD</color>
 	
+	<!-- red -->
+	<color name="main_red">#911100</color>
+	<color name="bright_red">#AD4F45</color>
+	<color name="light_red">#F28779</color>
+	
+	<!-- orange -->
+	<color name="main_orange">#BF3D00</color>
+	<color name="bright_orange">#FF5200</color>
+	<color name="light_orange">#F2AF83</color>
+	
 	<!-- green -->
 	<color name="main_green">#32A31C</color>
 	<color name="bright_green">#59E01B</color>
