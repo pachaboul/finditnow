@@ -19,6 +19,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -226,6 +227,8 @@ public class FINMap extends FINMapActivity {
 
 		// Restore preferences
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		String campus = prefs.getString("region_name", "");
 		
 		int latitude = prefs.getInt("campusLat", 0);
 		int longitude = prefs.getInt("campusLon", 0);

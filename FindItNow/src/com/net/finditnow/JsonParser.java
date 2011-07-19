@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.google.android.maps.GeoPoint;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -22,6 +25,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonStreamParser;
 
 public class JsonParser {
+
+	private static FINDatabase db;
+	
 	/*
 	 * Design Principle: Information Hiding
 	 * These two arrays are only visible to this class.  Other module do not
@@ -116,13 +122,11 @@ public class JsonParser {
 		return result;
 	}
 	
-	public static LinkedHashMap<String, Region> parseUniversityJson(String json) {
+	public static void parseUniversityJson(String json, Context context) {
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
 		JsonArray arr = parser.next().getAsJsonArray();
-
-		//creates the map for information to be stored in
-		LinkedHashMap<String, Region> map = new LinkedHashMap<String, Region>();
+		db = new FINDatabase(context);
 
 		for (int i = 0; i < arr.size(); i++)
 		{
@@ -132,18 +136,15 @@ public class JsonParser {
 				JsonObject ob = arr.get(i).getAsJsonObject();
 
 				// Grab the stuff
-				String uni = ob.get("name").getAsString();
+				String name = ob.get("name").getAsString();
 				int rid = ob.get("rid").getAsInt();
-				GeoPoint point = new GeoPoint(ob.get("lat").getAsInt(), ob.get("lon").getAsInt());
+				int lat = ob.get("lat").getAsInt();
+				int lon = ob.get("lon").getAsInt();
 				
-				Region reg = new Region(uni, rid, point, i);
-
-				//puts it in the map
-				map.put(uni, reg);
+				db.getWritableDatabase().execSQL("INSERT INTO regions (region_id, region_name, region_lat, region_lon) VALUES (" + 
+												  rid + ", '" + name + "', " + lat + ", " + lon + ")");
 			}
 		}
-
-		return map;
 	}
 
 	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json,String category){
@@ -173,6 +174,7 @@ public class JsonParser {
 	{
 		//creates the map for information to be stored in
 		HashMap<GeoPoint,CategoryItem> map = new HashMap<GeoPoint,CategoryItem>();
+		Log.v("Json Str", json);
 
 		if (json != null && !json.equals("")) {
 
@@ -223,7 +225,7 @@ public class JsonParser {
 						//the floor id associated with this point
 						item.addId(id);
 					}
-
+					Log.v("Item is", item.toString());
 					map.put(point, item);
 				}
 			}

@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -32,6 +33,8 @@ public class FINSplash extends Activity {
 	private HashMap<String, Region> campuses;
 	
 	private boolean manual;
+	
+	private FINDatabase db;
 
 	private String campus;
 	private String rid;
@@ -44,11 +47,13 @@ public class FINSplash extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fin_splash);
 		manual = false;
+		
+		db = new FINDatabase(this);
 
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		campus = prefs.getString("changeCampus", "");
-		rid = prefs.getInt("rid", 0)+"";
+		campus = prefs.getString("region_name", "");
+		rid = prefs.getInt("region_id", 0)+"";
 
 		if (campus.equals("") || rid.equals("")) {
 			// Acquire a reference to the system Location Manager
@@ -59,8 +64,8 @@ public class FINSplash extends Activity {
 			    public void onLocationChanged(Location location) {
 					SharedPreferences.Editor editor = prefs.edit();
 					
-					editor.putInt("locationLat", (int)(location.getLatitude()*1E6));
-					editor.putInt("locationLon", (int)(location.getLatitude()*1E6));				
+					editor.putInt("location_lat", (int)(location.getLatitude()*1E6));
+					editor.putInt("location_lon", (int)(location.getLatitude()*1E6));				
 					editor.commit();
 					
 	        		handler4.sendEmptyMessage(0);
@@ -175,7 +180,7 @@ public class FINSplash extends Activity {
 			campus = ((String[])campuses.keySet().toArray(new String[campuses.size()]))[which];
 			
 			editor.putString("changeCampus", campus);
-			editor.putInt("rid", campuses.get(campus).getRID());
+			editor.putInt("region_id", campuses.get(campus).getRID());
 
 			editor.commit();
 
@@ -208,10 +213,9 @@ public class FINSplash extends Activity {
 				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
-						SharedPreferences.Editor editor = prefs.edit();
-						
-						editor.putString("changeCampus", campus);
-						editor.putInt("rid", campuses.get(campus).getRID());
+						SharedPreferences.Editor editor = prefs.edit();						
+						editor.putString("region_name", campus);
+						editor.putInt("region_id", campuses.get(campus).getRID());
 						editor.commit();
 										
 						splashThread.start();
@@ -264,12 +268,14 @@ public class FINSplash extends Activity {
 	Thread connectionThread = new Thread() {
 		public void run() {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-			campusJson = DBCommunicator.getRegions(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
+			campusJson = DBCommunicator.getRegions(prefs.getInt("location_lat", 0)+"", prefs.getInt("location_lon", 0)+"", getBaseContext());
 			
     		if (campusJson.equals(getString(R.string.timeout))) {
     			failureHandler.sendEmptyMessage(0);
     		} else {
-				campuses = JsonParser.parseUniversityJson(campusJson);
+				JsonParser.parseUniversityJson(campusJson, getBaseContext());
+				Cursor cursor = db.getReadableDatabase().query("regions", null, null, null, null, null, null);
+				Log.v("Test", cursor.getColumnNames()[1]);
 				handler2.sendEmptyMessage(0);
     		}
 		}

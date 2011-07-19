@@ -88,7 +88,7 @@ public class FINSettings extends PreferenceActivity {
 					lp.setSelectable(false);
 					handler3.sendEmptyMessage(0);
 				} else {
-					campuses = JsonParser.parseUniversityJson(campusJson);
+					JsonParser.parseUniversityJson(campusJson, getBaseContext());
 					
 					String[] entries = (String[])campuses.keySet().toArray(new String[campuses.size()]);
 					String[] entryValues = (String[])campuses.keySet().toArray(new String[campuses.size()]);
