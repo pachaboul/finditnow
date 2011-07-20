@@ -290,7 +290,7 @@ public class FINSplash extends Activity {
     		if (campusJson.equals(getString(R.string.timeout))) {
     			failureHandler.sendEmptyMessage(0);
     		} else {
-				JsonParser.parseUniversityJson(campusJson, getBaseContext());
+				JsonParser.parseRegionJson(campusJson, getBaseContext());
 				cursor = db.getReadableDatabase().query("regions", null, null, null, null, null, null);
 				cursor.moveToFirst();
 				
