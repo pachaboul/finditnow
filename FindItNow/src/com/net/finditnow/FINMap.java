@@ -74,7 +74,6 @@ public class FINMap extends FINMapActivity {
 		Bundle extras = getIntent().getExtras(); 
 		category = extras.getString("category");
 		building = extras.getString("building");
-		itemName = extras.getString("itemName");
 
 		listOfLocations = extras.getString("locations");	
 
@@ -106,18 +105,6 @@ public class FINMap extends FINMapActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-
-		// We need an Editor object to make preference changes.
-		// All objects are from android.context.Context
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		SharedPreferences.Editor editor = prefs.edit();
-
-		editor.putInt("centerLat", mapView.getMapCenter().getLatitudeE6());
-		editor.putInt("centerLon", mapView.getMapCenter().getLongitudeE6());
-		editor.putInt("zoomLevel", mapView.getZoomLevel());
-
-		// Commit the edits!
-		editor.commit();
 
 		locOverlay.disableMyLocation();
 		locOverlay.disableCompass();
@@ -185,13 +172,7 @@ public class FINMap extends FINMapActivity {
 		if (building.equals("")) {
 			Bundle appData = new Bundle();
 
-			appData.putString("category", category);
-			
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-			
-			appData.putString("lat", prefs.getInt("campusLat", 0)+"");
-			appData.putString("lon", prefs.getInt("campusLon", 0)+"");
-			
+			appData.putString("category", category);			
 			appData.putString("locations", listOfLocations);
 			
 			startSearch(null, false, appData, false);
@@ -225,26 +206,15 @@ public class FINMap extends FINMapActivity {
 	 */
 	private void createMap() {
 
-		// Restore preferences
-		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		
-		int rid = prefs.getInt("rid", 0);
-		
-		FINDatabase db = new FINDatabase(this);
-		Cursor cursor = db.getWritableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
-		cursor.moveToFirst();
-		
-		int latitude = cursor.getInt(2);
-		int longitude = cursor.getInt(3);
-		int zoomLevel = 18;
+		GeoPoint center = getCenter();
 
 		// Initialize our MapView and MapController
 		mapView = (FINMapView) findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
 
 		mapController = mapView.getController();
-		mapController.setZoom(zoomLevel);
-		mapController.setCenter(new GeoPoint(latitude, longitude));
+		mapController.setZoom(18);
+		mapController.setCenter(center);
 
 		Bundle extras = getIntent().getExtras();
 		if (getIntent().hasExtra("centerLat") && getIntent().hasExtra("centerLon")) {
@@ -268,8 +238,6 @@ public class FINMap extends FINMapActivity {
 					Bundle appData = new Bundle();
 
 					appData.putString("category", category);
-					appData.putString("lat", prefs.getInt("campusLat", 0)+"");
-					appData.putString("lon", prefs.getInt("campusLon", 0)+"");
 					appData.putString("locations", listOfLocations);
 
 					myIntent.putExtra("appData", appData);
@@ -293,7 +261,7 @@ public class FINMap extends FINMapActivity {
 
 		defaultLocation.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				mapController.animateTo(new GeoPoint(prefs.getInt("campusLat", 0), prefs.getInt("campusLon", 0)));
+				mapController.animateTo(getCenter());
 				Toast.makeText(getBaseContext(), "Centering on the default location...", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -410,5 +378,21 @@ public class FINMap extends FINMapActivity {
 		}
 
 		return true;
+	}
+	
+	public GeoPoint getCenter() {
+		// Restore preferences
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		int rid = prefs.getInt("rid", 0);
+		
+		FINDatabase db = new FINDatabase(this);
+		Cursor cursor = db.getWritableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
+		cursor.moveToFirst();
+		
+		int latitude = cursor.getInt(cursor.getColumnIndex("latitude"));
+		int longitude = cursor.getInt(cursor.getColumnIndex("longitude"));
+		
+		return new GeoPoint(latitude, longitude);
 	}
 }
