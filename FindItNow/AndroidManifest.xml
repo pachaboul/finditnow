@@ -22,7 +22,7 @@
             		   android:value=".FINSearch" />
         </activity>
         <activity android:name=".BuildingList"></activity>
-        <activity android:name=".CategoryList"
+        <activity android:name=".SubcategoryList"
        			  android:configChanges="orientation|keyboardHidden">
        	</activity>
         <activity android:name=".FINSettings"></activity>

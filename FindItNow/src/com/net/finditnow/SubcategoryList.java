@@ -20,7 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CategoryList extends FINListActivity {
+public class SubcategoryList extends FINListActivity {
 
 	private ProgressDialog myDialog;
 
@@ -43,7 +43,7 @@ public class CategoryList extends FINListActivity {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				final String itemName = ((TextView) v).getText().toString();
 
-				myDialog = ProgressDialog.show(CategoryList.this, "" , "Loading " + itemName + "...", true);
+				myDialog = ProgressDialog.show(SubcategoryList.this, "" , "Loading " + itemName + "...", true);
 				Thread itemThread = new Thread() {
 					@Override
 					public void run() {

@@ -134,7 +134,10 @@ public class FINSplash extends Activity {
 				final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 				
 				String loggedinstr = DBCommunicator.loggedIn(phone_id, getBaseContext());
+				
 				String categories = DBCommunicator.getCategories(getBaseContext());
+				JsonParser.parseCategoriesList(categories, getBaseContext());
+				
 				String buildings = DBCommunicator.getBuildings(prefs.getInt("rid", 0)+"", getBaseContext());
 
 				boolean loggedin = loggedinstr.contains(getString(R.string.login_already));
@@ -143,8 +146,6 @@ public class FINSplash extends Activity {
 
 				myIntent = new Intent(getBaseContext(), FINHome.class);
 				myIntent.addCategory("App Startup");
-				myIntent.putExtra("campuses", campusJson);
-				myIntent.putExtra("categories", categories);
 				myIntent.putExtra("buildings", buildings);
 				myIntent.putExtra("loggedin", loggedin);
 				myIntent.putExtra("readytostart", readytostart);

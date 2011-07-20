@@ -9,6 +9,7 @@ public class FINDatabase extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String REGION_TABLE_CREATE = "CREATE TABLE regions (rid INTEGER PRIMARY KEY, name TEXT, latitude INTEGER, longitude INTEGER)";
     private static final String COLOR_TABLE_CREATE = "CREATE TABLE colors (rid INTEGER PRIMARY KEY, color1 TEXT, color2 TEXT)";
+    private static final String CATEGORIES_TABLE_CREATE = "CREATE TABLE categories (cat_id INTEGER PRIMARY KEY, name TEXT, full_name TEXT, parent INTEGER)";
 
     public FINDatabase(Context context) {
         super(context, "FIN_LOCAL", null, DATABASE_VERSION);
@@ -18,6 +19,7 @@ public class FINDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(REGION_TABLE_CREATE);
         db.execSQL(COLOR_TABLE_CREATE);
+        db.execSQL(CATEGORIES_TABLE_CREATE);
     }
 
 	@Override

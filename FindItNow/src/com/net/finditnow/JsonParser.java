@@ -99,16 +99,29 @@ public class JsonParser {
 	 * @param json the string representation of an array of categories
 	 * @return an ArrayList of category names
 	 */
-	public static ArrayList<String> getCategoriesList(String json){
+	public static void parseCategoriesList(String json, Context context) {
+		//used for parsing the JSON object
+		JsonStreamParser parser = new JsonStreamParser(json);
+		JsonArray arr = parser.next().getAsJsonArray();
+		db = new FINDatabase(context);
 
-		String[] arr = json.split(",");
-		ArrayList<String> result = new ArrayList<String>();
-
-		for(int i = 0; i < arr.length; i++)
+		for (int i = 0; i < arr.size(); i++)
 		{
-			result.add(FINUtil.displayCategory(arr[i]));
+			if (arr.get(i).isJsonObject())
+			{
+				//Since the JsonArray contains whole bunch json array, we can get each one out
+				JsonObject ob = arr.get(i).getAsJsonObject();
+
+				// Grab the stuff
+				int cat_id = ob.get("cat_id").getAsInt();
+				String name = ob.get("name").getAsString();
+				String full_name = ob.get("full_name").getAsString();
+				int parent = ob.get("parent").getAsInt();
+				
+				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO categories (cat_id, name, full_name, parent) VALUES (" + 
+												  cat_id + ", '" + name + "', '" + full_name + "', " + parent + ")");
+			}
 		}
-		return result;
 	}
 
 	public static HashMap<Integer, GeoPoint> parseSearchJson(String json) {
@@ -143,9 +156,9 @@ public class JsonParser {
 				String color1 = ob.get("color1").getAsString();
 				String color2 = ob.get("color2").getAsString();
 				
-				db.getWritableDatabase().execSQL("INSERT INTO regions (rid, name, latitude, longitude) VALUES (" + 
+				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO regions (rid, name, latitude, longitude) VALUES (" + 
 												  rid + ", '" + name + "', " + lat + ", " + lon + ")");
-				db.getWritableDatabase().execSQL("INSERT INTO colors (rid, color1, color2) VALUES (" + 
+				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO colors (rid, color1, color2) VALUES (" + 
 						  rid + ", '" + color1 + "', '" + color2 + "')");
 			}
 		}

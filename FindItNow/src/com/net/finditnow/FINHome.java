@@ -8,6 +8,7 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +43,17 @@ public class FINHome extends TabActivity {
 			conCheck.connectionError();
 		} else {
 			// Generate our list of categories from the database
-			if (getIntent().hasCategory("App Startup")) {				
-				categories = JsonParser.getCategoriesList(extras.getString("categories"));
+			if (getIntent().hasCategory("App Startup")) {
+				categories = new ArrayList<String>();
+				
+				FINDatabase db = new FINDatabase(getBaseContext());
+				Cursor cursor = db.getReadableDatabase().query("categories", null, "parent = 0", null, null, null, null);
+				cursor.moveToFirst();
+				while (!cursor.isAfterLast()) {
+					categories.add(cursor.getString(cursor.getColumnIndex("full_name")));
+					cursor.moveToNext();
+				}
+
 				Collections.sort(categories);
 
 				// Grab the list of items and put it in the map

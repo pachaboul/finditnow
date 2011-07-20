@@ -16,6 +16,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -183,12 +184,19 @@ public class FINMenu extends FINActivity {
 
 							@Override
 							public void run() {
-								Class<? extends Activity> nextClass = (FINHome.hasItems(category)? CategoryList.class : FINMap.class);
+								
+								FINDatabase db = new FINDatabase(getBaseContext());
+								Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + category+ "'", null, null, null, null);
+								cursor.moveToFirst();
+								int cat_id = cursor.getInt(cursor.getColumnIndex("cat_id"));
+								
+								cursor = db.getReadableDatabase().query("categories", null, "parent = " + cat_id, null, null, null, null);
+								cursor.moveToFirst();
+								Class<? extends Activity> nextClass = (cursor.isNull(0)? FINMap.class : SubcategoryList.class);
 								Intent myIntent = new Intent(getBaseContext(), nextClass);
 
 								myIntent.putExtra("category", category);
 								myIntent.putExtra("building", "");
-								myIntent.putExtra("itemName", "");
 								
 								if (!FINHome.hasItems(category)) {
 									SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -199,7 +207,7 @@ public class FINMenu extends FINActivity {
 								}
 
 								startActivity(myIntent);
-								if (!FINHome.hasItems(category)) {
+								if (nextClass == FINMap.class) {
 									myDialog.dismiss();
 								}
 							}
