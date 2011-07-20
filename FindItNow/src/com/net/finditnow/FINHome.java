@@ -231,7 +231,19 @@ public class FINHome extends TabActivity {
 	 * @return If no icon is found, return the default Android icon.
 	 * otherwise, return the appropriate category icon.
 	 */
-	public static Integer getIcon(String category) {
+	public static Integer getIcon(String category, Context context) {
+		
+		FINDatabase db = new FINDatabase(context);
+		Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + category+ "'", null, null, null, null);
+		cursor.moveToFirst();
+		
+		int parent = cursor.getInt(cursor.getColumnIndex("parent"));
+		if (parent != 0) {
+			cursor = db.getReadableDatabase().query("categories", null, "cat_id = " + parent, null, null, null, null);
+			cursor.moveToFirst();
+			category = cursor.getString(cursor.getColumnIndex("full_name"));
+		}
+		
 		if (!category.equals("")) {
 			int icon = iconsMap.get(category);
 			if (icon != 0) {
