@@ -177,28 +177,28 @@ public class FINMenu extends FINActivity {
 				// Otherwise, jump to map
 				ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
-						if (!FINHome.hasItems(category)) {
+						FINDatabase db = new FINDatabase(getBaseContext());
+						Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + category+ "'", null, null, null, null);
+						cursor.moveToFirst();
+						int cat_id = cursor.getInt(cursor.getColumnIndex("cat_id"));
+						
+						cursor = db.getReadableDatabase().query("categories", null, "parent = " + cat_id, null, null, null, null);
+						final Class<? extends Activity> nextClass = (cursor.moveToFirst()? SubcategoryList.class: FINMap.class);
+						
+						if (nextClass == FINMap.class) {
 							myDialog = ProgressDialog.show(FINMenu.this, "" , "Loading " + category + "...", true);
 						}
+						
 						Thread menuThread = new Thread() {
 
 							@Override
 							public void run() {
-								
-								FINDatabase db = new FINDatabase(getBaseContext());
-								Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + category+ "'", null, null, null, null);
-								cursor.moveToFirst();
-								int cat_id = cursor.getInt(cursor.getColumnIndex("cat_id"));
-								
-								cursor = db.getReadableDatabase().query("categories", null, "parent = " + cat_id, null, null, null, null);
-								cursor.moveToFirst();
-								Class<? extends Activity> nextClass = (cursor.isNull(0)? FINMap.class : SubcategoryList.class);
 								Intent myIntent = new Intent(getBaseContext(), nextClass);
 
 								myIntent.putExtra("category", category);
 								myIntent.putExtra("building", "");
 								
-								if (!FINHome.hasItems(category)) {
+								if (nextClass == FINMap.class) {
 									SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 									String rid = prefs.getInt("rid", 0)+"";
 									

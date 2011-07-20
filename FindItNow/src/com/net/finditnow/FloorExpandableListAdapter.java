@@ -250,14 +250,14 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 			relative.setBackgroundResource(R.color.FIN_secondary);
 			text.setText(category);
 			text.getLayoutParams().height = DoubleExpandableListAdapter.HEIGHT;
-			img.setImageResource(FINHome.getIcon(dbCategory));
+			img.setImageResource(FINHome.getIcon(dbCategory, context));
 		}
 		else{
 			text.setText(parentText[groupPosition]);
 
 			//the icon associated with the category
 			if (catItem.getFloor_names().contains(parentText[groupPosition])){
-				img.setImageResource(FINHome.getIcon(dbCategory));
+				img.setImageResource(FINHome.getIcon(dbCategory, context));
 			}
 		}
 		return relative;

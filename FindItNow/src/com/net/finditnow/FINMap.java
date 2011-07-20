@@ -79,7 +79,7 @@ public class FINMap extends FINMapActivity {
 		listOfLocations = extras.getString("locations");	
 
 		// Set the Breadcrumb in the titlebar
-		String title = (!building.equals("")? building : category + (!itemName.equals("")? " > " + itemName : ""));
+		String title = (!building.equals("")? building : category);
 		setTitle(getString(R.string.app_name) + " > " + title);
 
 		// Check connection of Android
@@ -186,7 +186,6 @@ public class FINMap extends FINMapActivity {
 			Bundle appData = new Bundle();
 
 			appData.putString("category", category);
-			appData.putString("itemName", itemName);
 			
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 			
@@ -254,7 +253,7 @@ public class FINMap extends FINMapActivity {
 
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
-		drawable = getResources().getDrawable(building.equals("")? FINHome.getIcon(category) : R.drawable.buildings);
+		drawable = getResources().getDrawable(building.equals("")? FINHome.getIcon(category, getBaseContext()) : R.drawable.buildings);
 		itemizedOverlay = new IconOverlay(drawable, this, category, itemName, geoPointItem);
 
 		// Setup the ImageButtons
@@ -269,7 +268,6 @@ public class FINMap extends FINMapActivity {
 					Bundle appData = new Bundle();
 
 					appData.putString("category", category);
-					appData.putString("itemName", itemName);
 					appData.putString("lat", prefs.getInt("campusLat", 0)+"");
 					appData.putString("lon", prefs.getInt("campusLon", 0)+"");
 					appData.putString("locations", listOfLocations);

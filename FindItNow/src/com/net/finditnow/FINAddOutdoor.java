@@ -82,7 +82,7 @@ public class FINAddOutdoor extends FINMapActivity {
 			mapView.getProjection().toPixels(tappedPoint, screenPts);
 
 			//---add the marker---
-			Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINHome.getIcon(selectedCategory));            
+			Bitmap bmp = BitmapFactory.decodeResource(getResources(), FINHome.getIcon(selectedCategory, getBaseContext()));            
 			canvas.drawBitmap(bmp, screenPts.x-12, screenPts.y-35, null);         
 			return true;
 		}
