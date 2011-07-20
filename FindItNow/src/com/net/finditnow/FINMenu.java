@@ -192,7 +192,7 @@ public class FINMenu extends FINActivity {
 								
 								if (!FINHome.hasItems(category)) {
 									SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-									String rid = prefs.getInt("region_id", 0)+"";
+									String rid = prefs.getInt("rid", 0)+"";
 									
 									String locations = DBCommunicator.getLocations(category, rid, getBaseContext());
 									myIntent.putExtra("locations", locations);

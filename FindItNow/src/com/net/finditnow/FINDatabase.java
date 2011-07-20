@@ -7,9 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class FINDatabase extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_TABLE_NAME = "regions";
-    private static final String DICTIONARY_TABLE_CREATE = "CREATE TABLE " + DATABASE_TABLE_NAME + " (region_id INTEGER PRIMARY KEY, region_name TEXT, region_lat INTEGER, region_lon INTEGER)";
-
+    private static final String REGION_TABLE_CREATE = "CREATE TABLE regions (rid INTEGER PRIMARY KEY, name TEXT, latitude INTEGER, longitude INTEGER)";
+    private static final String COLOR_TABLE_CREATE = "CREATE TABLE colors (rid INTEGER PRIMARY KEY, color1 TEXT, color2 TEXT)";
 
     public FINDatabase(Context context) {
         super(context, "FIN_LOCAL", null, DATABASE_VERSION);
@@ -17,7 +16,8 @@ public class FINDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DICTIONARY_TABLE_CREATE);
+        db.execSQL(REGION_TABLE_CREATE);
+        db.execSQL(COLOR_TABLE_CREATE);
     }
 
 	@Override
