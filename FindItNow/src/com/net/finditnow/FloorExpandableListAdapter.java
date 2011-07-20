@@ -144,7 +144,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 								@Override
 								public void run() {
 									final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-									result = DBCommunicator.update(phone_id, dbCategory, catItem.getId().get(pos)+"", context);							
+									result = DBCommunicator.update(phone_id, catItem.getId().get(pos)+"", context);							
 									myDialog.dismiss();
 									handler.sendEmptyMessage(0);
 								}
@@ -168,7 +168,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 									@Override
 									public void run() {
 										final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-										String result = DBCommunicator.delete(phone_id, dbCategory, catItem.getId().get(0)+"", context);
+										String result = DBCommunicator.delete(phone_id, catItem.getId().get(0)+"", context);
 
 										Intent myIntent = new Intent(context, FINMap.class);
 										myIntent.putExtra("result", result);

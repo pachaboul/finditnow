@@ -268,7 +268,7 @@ public class PopUpDialog extends Dialog{
 								@Override
 								public void run() {
 									final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-									result = DBCommunicator.update(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());	    		        	   
+									result = DBCommunicator.update(phone_id, dataMap.get(dbCategory).getId().get(0)+"", getContext());	    		        	   
 									myDialog.dismiss();
 									handler.sendEmptyMessage(0);
 								}
@@ -291,7 +291,7 @@ public class PopUpDialog extends Dialog{
 									@Override
 									public void run() {
 										final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-										String result = DBCommunicator.delete(phone_id, dbCategory, dataMap.get(dbCategory).getId().get(0)+"", getContext());
+										String result = DBCommunicator.delete(phone_id, dataMap.get(dbCategory).getId().get(0)+"", getContext());
 
 										Intent myIntent = new Intent(getContext(), FINMap.class);
 										myIntent.putExtra("result", result);

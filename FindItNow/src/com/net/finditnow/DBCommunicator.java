@@ -38,30 +38,26 @@ public class DBCommunicator {
 	private static final int CONNECTION_TIMEOUT = 6000;
 	private static final int SOCKET_TIMEOUT = 6000;
 
-	public static String create(String phone_id, String category, String fid, String special_info, String latitude, String longitude, String bb, String sc, String print, Context context) {
+	public static String create(String phone_id, String cat, String fid, String special_info, String latitude, String longitude, String bb, String sc, String print, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
-		nameValuePairs.add(new BasicNameValuePair("category", FINUtil.sendCategory(category)));
+		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat)));
 		nameValuePairs.add(new BasicNameValuePair("fid", fid));
 		nameValuePairs.add(new BasicNameValuePair("special_info", special_info));
 		nameValuePairs.add(new BasicNameValuePair("latitude", latitude));
 		nameValuePairs.add(new BasicNameValuePair("longitude", longitude));
-		nameValuePairs.add(new BasicNameValuePair("bb", bb));
-		nameValuePairs.add(new BasicNameValuePair("sc", sc));
-		nameValuePairs.add(new BasicNameValuePair("print", print));
 
-		return Post("FINsert/create.php", nameValuePairs, context);
+		return Post("FINsert/createItem.php", nameValuePairs, context);
 	}
 
-	public static String delete(String phone_id, String category, String id, Context context) {
+	public static String delete(String phone_id, String item_id, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
-		nameValuePairs.add(new BasicNameValuePair("category", FINUtil.sendCategory(category)));
-		nameValuePairs.add(new BasicNameValuePair("id", id));
+		nameValuePairs.add(new BasicNameValuePair("item_id", item_id));
 
 		return Post("delete.php", nameValuePairs, context);
 	}
@@ -150,13 +146,12 @@ public class DBCommunicator {
 		return Post("searchLocations.php", nameValuePairs, context);
 	}
 
-	public static String update(String phone_id, String category, String id, Context context) {
+	public static String update(String phone_id, String item_id, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
-		nameValuePairs.add(new BasicNameValuePair("category", FINUtil.sendCategory(category)));
-		nameValuePairs.add(new BasicNameValuePair("id", id));
+		nameValuePairs.add(new BasicNameValuePair("item_id", item_id));
 
 		return Post("update.php", nameValuePairs, context);
 	}
