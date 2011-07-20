@@ -229,10 +229,10 @@ public class FINMap extends FINMapActivity {
 		// Restore preferences
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		int region_id = prefs.getInt("region_id", 0);
+		int rid = prefs.getInt("rid", 0);
 		
 		FINDatabase db = new FINDatabase(this);
-		Cursor cursor = db.getWritableDatabase().query("regions", null, "regions.region_id = " + region_id, null, null, null, null);
+		Cursor cursor = db.getWritableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
 		cursor.moveToFirst();
 		
 		int latitude = cursor.getInt(2);

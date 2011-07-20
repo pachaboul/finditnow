@@ -54,7 +54,7 @@ public class FINSplash extends Activity {
 
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		rid = prefs.getInt("region_id", 0);
+		rid = prefs.getInt("rid", 0);
 
 		if (rid == 0) {
 			// Acquire a reference to the system Location Manager
@@ -101,7 +101,7 @@ public class FINSplash extends Activity {
 	         });
 			myDialog.show();
 		} else {
-			Cursor cursor = db.getReadableDatabase().query("regions", null, "regions.region_id = " + rid, null, null, null, null);
+			Cursor cursor = db.getReadableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
 			cursor.moveToFirst();
 			campus = cursor.getString(1);
 			
@@ -121,7 +121,11 @@ public class FINSplash extends Activity {
 				splashes.put("Western Washington University", R.drawable.wwu_splash);
 
 				// Set color theme (hardcoded for now).
-				FINTheme.setTheme(FINTheme.GREEN, getBaseContext());
+				Cursor cursor = db.getReadableDatabase().query("colors", null, "colors.rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
+				cursor.moveToFirst();
+				String color = cursor.getString(1);
+				
+				FINTheme.setTheme(color, getBaseContext());
 				
 				// Set default location
 				handler.sendEmptyMessage(0);
@@ -131,7 +135,7 @@ public class FINSplash extends Activity {
 				
 				String loggedinstr = DBCommunicator.loggedIn(phone_id, getBaseContext());
 				String categories = DBCommunicator.getCategories(getBaseContext());
-				String buildings = DBCommunicator.getBuildings(prefs.getInt("region_id", 0)+"", getBaseContext());
+				String buildings = DBCommunicator.getBuildings(prefs.getInt("rid", 0)+"", getBaseContext());
 
 				boolean loggedin = loggedinstr.contains(getString(R.string.login_already));
 				boolean readytostart = !(loggedinstr.equals(getString(R.string.timeout)) || categories.equals(getString(R.string.timeout)) 
@@ -186,7 +190,7 @@ public class FINSplash extends Activity {
 			cursor.moveToPosition(which);
 			
 			campus = cursor.getString(1);
-			editor.putInt("region_id", cursor.getInt(0));
+			editor.putInt("rid", cursor.getInt(0));
 			editor.commit();
 
 			splashThread.start();
@@ -220,7 +224,7 @@ public class FINSplash extends Activity {
 					public void onClick(DialogInterface dialog, int id) {
 						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
 						SharedPreferences.Editor editor = prefs.edit();						
-						editor.putInt("region_id", cursor.getInt(0));
+						editor.putInt("rid", cursor.getInt(0));
 						editor.commit();
 										
 						splashThread.start();
@@ -289,7 +293,6 @@ public class FINSplash extends Activity {
 				JsonParser.parseUniversityJson(campusJson, getBaseContext());
 				cursor = db.getReadableDatabase().query("regions", null, null, null, null, null, null);
 				cursor.moveToFirst();
-				Log.v("Test", cursor.getString(1)+"");
 				
 				handler2.sendEmptyMessage(0);
     		}

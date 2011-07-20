@@ -140,9 +140,13 @@ public class JsonParser {
 				int rid = ob.get("rid").getAsInt();
 				int lat = ob.get("lat").getAsInt();
 				int lon = ob.get("lon").getAsInt();
+				String color1 = ob.get("color1").getAsString();
+				String color2 = ob.get("color2").getAsString();
 				
-				db.getWritableDatabase().execSQL("INSERT INTO regions (region_id, region_name, region_lat, region_lon) VALUES (" + 
+				db.getWritableDatabase().execSQL("INSERT INTO regions (rid, name, latitude, longitude) VALUES (" + 
 												  rid + ", '" + name + "', " + lat + ", " + lon + ")");
+				db.getWritableDatabase().execSQL("INSERT INTO colors (rid, color1, color2) VALUES (" + 
+						  rid + ", '" + color1 + "', '" + color2 + "')");
 			}
 		}
 	}
