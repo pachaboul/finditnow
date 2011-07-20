@@ -1,5 +1,6 @@
 package com.net.finditnow;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.AlertDialog;
@@ -8,7 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,7 +33,7 @@ public class FINSettings extends PreferenceActivity {
 	private ProgressDialog myDialog;
 	private String result;
 	private String campusJson;
-	private HashMap<String, Region> campuses;
+	private ArrayList<String> campuses;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +42,11 @@ public class FINSettings extends PreferenceActivity {
 		setTitle(getString(R.string.app_name) + " > Settings");
 
 		context = this;
-		campusJson = "";
-		
-		final ListPreference lp = (ListPreference) findPreference("changeCampus");
-		
-		String[] entries = {""};
-		String[] entryValues = {""};
-		lp.setEntries(entries);
-		lp.setEntryValues(entryValues);
 
 		// Get the custom preference
 		Preference searchHistory = findPreference("clearHistory");
+		Preference changeCampus = findPreference("changeCampus");
+
 		searchHistory.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
 			public boolean onPreferenceClick(Preference preference) {
@@ -77,50 +74,50 @@ public class FINSettings extends PreferenceActivity {
 
 		});
 		
-		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		
-		myDialog = ProgressDialog.show(FINSettings.this, "" , "Retrieving list of regions...", true);
+		changeCampus.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
-		Thread myThread = new Thread() {
-			public void run() {
-				campusJson = DBCommunicator.getRegions(prefs.getInt("locationLat", 0)+"", prefs.getInt("locationLon", 0)+"", getBaseContext());
-				if (campusJson.equals(getString(R.string.timeout))) {
-					lp.setSelectable(false);
-					handler3.sendEmptyMessage(0);
-				} else {
-					JsonParser.parseUniversityJson(campusJson, getBaseContext());
-					
-					String[] entries = (String[])campuses.keySet().toArray(new String[campuses.size()]);
-					String[] entryValues = (String[])campuses.keySet().toArray(new String[campuses.size()]);
-					lp.setEntries(entries);
-					lp.setEntryValues(entryValues);
-					lp.setSelectable(true);
+			public boolean onPreferenceClick(Preference preference) {
+				
+				FINDatabase db = new FINDatabase(getBaseContext());
+				
+				final Cursor cursor = db.getReadableDatabase().query("regions", null, null, null, null, null, null);
+				cursor.moveToFirst();
+				
+				OnClickListener campus_listener = new OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
+						SharedPreferences.Editor editor = prefs.edit();
+						
+						cursor.moveToPosition(which);
+						
+						editor.putInt("rid", cursor.getInt(0));
+						editor.commit();
+
+						restartFirstActivity();
+					}
+				};
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(FINSettings.this);
+				builder.setTitle("Select your campus or region");
+				
+				campuses = new ArrayList<String>();
+				cursor.moveToFirst();
+				while (!cursor.isAfterLast()) {
+					campuses.add(cursor.getString(1));
+					cursor.moveToNext();
 				}
-				handler2.sendEmptyMessage(0);
-			}
-		};
-		
-		myThread.start();
+				
+				
+				builder.setItems((String[])campuses.toArray(new String[campuses.size()]), campus_listener);
+				builder.setCancelable(true);		
 
-		OnSharedPreferenceChangeListener spChanged = new OnSharedPreferenceChangeListener() {
-			
-			public void onSharedPreferenceChanged(SharedPreferences preferences, String pref) {
-				if (pref.equals("changeCampus")) {
-					SharedPreferences.Editor editor = preferences.edit();
-					
-					editor.putInt("campusLat", campuses.get(prefs.getString("changeCampus", "")).getLocation().getLatitudeE6());
-					editor.putInt("campusLon", campuses.get(prefs.getString("changeCampus", "")).getLocation().getLongitudeE6());
-					editor.commit();
-					
-					restartFirstActivity();
-				}
+				AlertDialog alert = builder.create();
+				alert.show();
+				
+				return true;
 			}
-
-		};
-		
-		if (!campusJson.equals(getString(R.string.timeout))) {
-			prefs.registerOnSharedPreferenceChangeListener(spChanged);
-		}
+		});
 	}
 
 	/**
@@ -204,20 +201,6 @@ public class FINSettings extends PreferenceActivity {
 		@Override
 		public void handleMessage(Message msg) {
 			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-		}
-	};
-	
-	private Handler handler2 = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			myDialog.dismiss();
-		}
-	};
-	
-	private Handler handler3 = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			Toast.makeText(FINSettings.this, "Failed to retrieve list of regions", Toast.LENGTH_SHORT).show();
 		}
 	};
 

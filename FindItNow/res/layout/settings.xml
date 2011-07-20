@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
         <PreferenceCategory
                 android:title="General Settings">
-        <ListPreference
+        <Preference
                 android:title="Change Campus/Region"
                 android:summary="Change the campus or region with which you've associated FindItNow"
                 android:key="changeCampus" />

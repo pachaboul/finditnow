@@ -122,7 +122,7 @@ public class JsonParser {
 		return result;
 	}
 	
-	public static void parseUniversityJson(String json, Context context) {
+	public static void parseRegionJson(String json, Context context) {
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
 		JsonArray arr = parser.next().getAsJsonArray();
