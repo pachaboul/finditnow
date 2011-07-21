@@ -11,6 +11,7 @@ package com.net.finditnow;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -63,8 +64,13 @@ public class BuildingList extends FINListActivity {
 						
 						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 						String rid = prefs.getInt("rid", 0)+"";
+						
+						FINDatabase db = new FINDatabase(getBaseContext());
+						Cursor cursor = db.getReadableDatabase().query("buildings", null, "name = '" + selectedBuilding + "'", null, null, null, null);
+						cursor.moveToFirst();
+						String bid = cursor.getInt(cursor.getColumnIndex("bid"))+"";
 
-						String locations = DBCommunicator.getAllLocations(FINUtil.allCategories(FINHome.getCategoriesList()), rid, getBaseContext());
+						String locations = DBCommunicator.getLocations(FINUtil.allCategories(FINHome.getCategoriesList()), rid, bid, getBaseContext());
 						myIntent.putExtra("locations", locations);
 
 						startActivity(myIntent);

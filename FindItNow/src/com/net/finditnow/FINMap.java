@@ -309,7 +309,7 @@ public class FINMap extends FINMapActivity {
 
 		// If the category is buildings, then we only put the single point on the map
 		if (!building.equals("")) {
-			GeoPoint point = FINHome.getGeoPointFromBuilding(building);
+			GeoPoint point = FINHome.getGeoPointFromBuilding(building, getBaseContext());
 			mapController.animateTo(point);
 			itemizedOverlay.addOverlay(new OverlayItem(point, "", ""));
 

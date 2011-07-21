@@ -56,10 +56,10 @@ public class FINAddIndoor extends FINActivity {
 			int index = FINHome.getBuildingsList().indexOf(defaultBuilding);
 			bSpinner.setSelection(index);
 			selectedBuilding = FINHome.getBuilding(
-					FINHome.getGeoPointFromBuilding(FINHome.getBuildingsList().get(index)));
+					FINHome.getGeoPointFromBuilding(FINHome.getBuildingsList().get(index), getBaseContext()), getBaseContext());
 		} else {
 			selectedBuilding = FINHome.getBuilding(
-					FINHome.getGeoPointFromBuilding(FINHome.getBuildingsList().get(0)));
+					FINHome.getGeoPointFromBuilding(FINHome.getBuildingsList().get(0), getBaseContext()), getBaseContext());
 		}
 
 		//Set up "add item" button
@@ -73,7 +73,7 @@ public class FINAddIndoor extends FINActivity {
 				long arg3) {
 			selectedBuilding = FINHome.getBuilding(FINHome
 					.getGeoPointFromBuilding(parent.getItemAtPosition(pos)
-							.toString()));
+							.toString(), getBaseContext()), getBaseContext());
 			//Set floor spinner accordingly
 			setFloorSpinner();
 		}
@@ -109,13 +109,13 @@ public class FINAddIndoor extends FINActivity {
 					myIntent.putExtra("category", selectedCategory);
 					myIntent.putExtra("building", "");
 					myIntent.putExtra("itemName", item);
-					myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLatitudeE6());
-					myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName()).getLongitudeE6());
+					myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName(), getBaseContext()).getLatitudeE6());
+					myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName(), getBaseContext()).getLongitudeE6());
 					
 					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 					String rid = prefs.getInt("rid", 0)+"";
 
-					String locations = DBCommunicator.getLocations(selectedCategory, rid, getBaseContext());
+					String locations = DBCommunicator.getLocations(selectedCategory, rid, 0+"", getBaseContext());
 					myIntent.putExtra("locations", locations);
 
 					startActivity(myIntent);

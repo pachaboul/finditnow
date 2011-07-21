@@ -82,7 +82,7 @@ public class FINSearch extends FINListActivity {
 				}
 
 				for (GeoPoint point : points) {
-					Building build = FINHome.getBuilding(point);
+					Building build = FINHome.getBuilding(point, getBaseContext());
 					BigDecimal dist = FINMap.distanceBetween(FINMap.getLocation(), point);
 					distances.add((dist.equals(new BigDecimal(-1))? "N/A" : dist) + "\nmiles");
 					int walking_time = dist != null? FINMap.walkingTime(dist, 35) : -1;

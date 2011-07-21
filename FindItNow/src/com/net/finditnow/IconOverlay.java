@@ -83,9 +83,9 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 		HashMap<String,CategoryItem> data = items.get(itemLocation);
 
 		// Assume it is an outdoor location, but if it is not, grab the building name
-		Building building = FINHome.getBuilding(itemLocation); 
+		Building building = FINHome.getBuilding(itemLocation, context); 
 		boolean isOutdoor = true;
-		if (FINHome.getBuilding(itemLocation) != null) {
+		if (FINHome.getBuilding(itemLocation, context) != null) {
 			isOutdoor = false;
 		}
 
