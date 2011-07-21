@@ -22,7 +22,6 @@ public class FINAddIndoor extends FINActivity {
 	Building selectedBuilding;
 	String selectedFloor;
 	String selectedCategory;
-	boolean[] supplyTypes;
 	String special_info;
 	String defaultBuilding;
 	ProgressDialog myDialog;
@@ -47,7 +46,6 @@ public class FINAddIndoor extends FINActivity {
 		//Get category and types of items from previous activity
 		Bundle extras = getIntent().getExtras();
 		selectedCategory = extras.getString("selectedCategory");
-		supplyTypes = extras.getBooleanArray("supplyTypes");
 		special_info = extras.getString("special_info");
 		defaultBuilding = extras.getString("building");
 
@@ -93,22 +91,16 @@ public class FINAddIndoor extends FINActivity {
 				public void run() {
 					HashMap<String, Integer> map = selectedBuilding.floorMap();
 
-					String bb = supplyTypes[0]? "bb" : "";
-					String sc = supplyTypes[1]? "sc" : "";
-					String pr = supplyTypes[2]? "print" : "";
-					String item = bb.length() > 0? "Blue Books" : sc.length() > 0? "Scantrons" : pr.length() > 0? "Printing" : "";
-
 					//Send new item to database
 					final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 					String result = DBCommunicator.create(phone_id, selectedCategory, map
-							.get(selectedFloor)+"", special_info, "", "", bb, sc, pr, getBaseContext());
+							.get(selectedFloor)+"", special_info, "", "", getBaseContext());
 
 					// Load the map with the new item
 					Intent myIntent = new Intent(getBaseContext(), FINMap.class);
 					myIntent.putExtra("result", result);
 					myIntent.putExtra("category", selectedCategory);
 					myIntent.putExtra("building", "");
-					myIntent.putExtra("itemName", item);
 					myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName(), getBaseContext()).getLatitudeE6());
 					myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName(), getBaseContext()).getLongitudeE6());
 					

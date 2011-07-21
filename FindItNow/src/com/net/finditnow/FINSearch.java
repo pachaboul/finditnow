@@ -8,9 +8,11 @@ import java.util.HashMap;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.provider.SearchRecentSuggestions;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +36,6 @@ public class FINSearch extends FINListActivity {
 	private Bundle appData;
 	private String query;
 	private String category;
-	private String itemName;
 
 	protected Thread searchThread;
 	protected ProgressDialog myDialog;
@@ -56,7 +57,6 @@ public class FINSearch extends FINListActivity {
 			appData = getIntent().getBundleExtra("appData");
 		}
 		category = appData.getString("category");
-		itemName = appData.getString("itemName");
 
 		setTitle(getString(R.string.app_name) + " > " + category + " > " + "Search");
 
@@ -64,9 +64,11 @@ public class FINSearch extends FINListActivity {
 
 			@Override
 			public void run() {
+				
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+				String rid = prefs.getInt("rid", 0)+"";
 
-				String result = DBCommunicator.searchLocations(category, appData.getString("lat"), 
-						appData.getString("lon"), query, getBaseContext());
+				String result = DBCommunicator.searchLocations(category, rid, query, getBaseContext());
 
 				HashMap<Integer, GeoPoint> unsortedSearchMap = JsonParser.parseSearchJson(result);
 				ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
@@ -182,7 +184,6 @@ public class FINSearch extends FINListActivity {
 
 					myIntent.putExtra("building", "");
 					myIntent.putExtra("category", category);
-					myIntent.putExtra("itemName", itemName);
 					myIntent.putExtra("centerLat", selectedLoc.getLatitudeE6());
 					myIntent.putExtra("centerLon", selectedLoc.getLongitudeE6());
 					myIntent.putExtra("locations", appData.getString("locations"));

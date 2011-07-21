@@ -12,6 +12,7 @@ import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -89,6 +90,8 @@ public class FINMap extends FINMapActivity {
 			conCheck.connectionError();
 		} else {
 			geoPointItem = JsonParser.parseCategoryJson(listOfLocations, category);
+			Log.v("ListofLocations", listOfLocations);
+			Log.v("Test", geoPointItem.entrySet().toString());
 
 			// Create the map and the map view and detect user location
 			createMap();
@@ -206,7 +209,7 @@ public class FINMap extends FINMapActivity {
 	 */
 	private void createMap() {
 
-		GeoPoint center = getCenter();
+		GeoPoint center = getRegionCenter(getBaseContext());
 
 		// Initialize our MapView and MapController
 		mapView = (FINMapView) findViewById(R.id.mapview);
@@ -224,7 +227,7 @@ public class FINMap extends FINMapActivity {
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
 		drawable = getResources().getDrawable(building.equals("")? FINHome.getIcon(category, getBaseContext()) : R.drawable.buildings);
-		itemizedOverlay = new IconOverlay(drawable, this, category, itemName, geoPointItem);
+		itemizedOverlay = new IconOverlay(drawable, this, category, geoPointItem);
 
 		// Setup the ImageButtons
 		ImageButton list = (ImageButton) findViewById(R.id.list_button);
@@ -261,7 +264,7 @@ public class FINMap extends FINMapActivity {
 
 		defaultLocation.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				mapController.animateTo(getCenter());
+				mapController.animateTo(getRegionCenter(getBaseContext()));
 				Toast.makeText(getBaseContext(), "Centering on the default location...", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -380,13 +383,13 @@ public class FINMap extends FINMapActivity {
 		return true;
 	}
 	
-	public GeoPoint getCenter() {
+	public static GeoPoint getRegionCenter(Context context) {
 		// Restore preferences
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		
 		int rid = prefs.getInt("rid", 0);
 		
-		FINDatabase db = new FINDatabase(this);
+		FINDatabase db = new FINDatabase(context);
 		Cursor cursor = db.getWritableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
 		cursor.moveToFirst();
 		

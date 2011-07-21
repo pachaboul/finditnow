@@ -96,16 +96,18 @@ public final class R {
         public static final int tab_focused_red=0x7f02002d;
         public static final int tab_selector_blue=0x7f02002e;
         public static final int tab_selector_green=0x7f02002f;
-        public static final int tab_selector_purple=0x7f020030;
-        public static final int tab_unfocused_blue=0x7f020031;
-        public static final int tab_unfocused_green=0x7f020032;
-        public static final int tab_unfocused_orange=0x7f020033;
-        public static final int tab_unfocused_purple=0x7f020034;
-        public static final int tab_unfocused_red=0x7f020035;
-        public static final int uw_splash=0x7f020036;
-        public static final int vending=0x7f020037;
-        public static final int vending_big=0x7f020038;
-        public static final int wwu_splash=0x7f020039;
+        public static final int tab_selector_orange=0x7f020030;
+        public static final int tab_selector_purple=0x7f020031;
+        public static final int tab_selector_red=0x7f020032;
+        public static final int tab_unfocused_blue=0x7f020033;
+        public static final int tab_unfocused_green=0x7f020034;
+        public static final int tab_unfocused_orange=0x7f020035;
+        public static final int tab_unfocused_purple=0x7f020036;
+        public static final int tab_unfocused_red=0x7f020037;
+        public static final int uw_splash=0x7f020038;
+        public static final int vending=0x7f020039;
+        public static final int vending_big=0x7f02003a;
+        public static final int wwu_splash=0x7f02003b;
     }
     public static final class id {
         public static final int GridItem=0x7f090020;

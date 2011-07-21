@@ -32,9 +32,7 @@ public class FINAddOutdoor extends FINMapActivity {
 	String selectedCategory;
 	String special_info;
 	ProgressDialog myDialog;
-
-	boolean[] supplyTypes;
-
+	
 	// Tapped Point
 	private static GeoPoint tappedPoint;
 
@@ -60,13 +58,12 @@ public class FINAddOutdoor extends FINMapActivity {
 
 		Bundle extras = getIntent().getExtras(); 
 		selectedCategory = extras.getString("selectedCategory");
-		supplyTypes = extras.getBooleanArray("supplyTypes");
 		special_info = extras.getString("special_info");
 
 		// Zoom out enough
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		
-		mapController.animateTo(new GeoPoint(prefs.getInt("campusLat", 0), prefs.getInt("campusLon", 0)));
+		mapController.animateTo(FINMap.getRegionCenter(getBaseContext()));
 		mapController.setZoom(18);
 		Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
 	}
@@ -102,24 +99,16 @@ public class FINAddOutdoor extends FINMapActivity {
 					Thread thread = new Thread() {
 						@Override
 						public void run() {
-							//Point is confirmed
-
-							String bb = supplyTypes[0]? "bb" : "";
-							String sc = supplyTypes[1]? "sc" : "";
-							String pr = supplyTypes[2]? "print" : "";
-							String item = bb.length() > 0? "Blue Books" : sc.length() > 0? "Scantrons" : pr.length() > 0? "Printing" : "";
-
 							//Send new item to database
 							final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
 
-							String result = DBCommunicator.create(phone_id, selectedCategory, 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"",  bb,  sc,  pr, getBaseContext());
+							String result = DBCommunicator.create(phone_id, selectedCategory, 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"", getBaseContext());
 
 							// Load the map with the new item
 							Intent myIntent = new Intent(getBaseContext(), FINMap.class);
 							myIntent.putExtra("result", result);
 							myIntent.putExtra("category", selectedCategory);
 							myIntent.putExtra("building", "");
-							myIntent.putExtra("itemName", item);
 							myIntent.putExtra("centerLat", tappedPoint.getLatitudeE6());
 							myIntent.putExtra("centerLon", tappedPoint.getLongitudeE6());
 							
