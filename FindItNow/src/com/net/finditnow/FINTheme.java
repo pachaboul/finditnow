@@ -69,17 +69,16 @@ public class FINTheme {
 	 * setTextColor doesn't work when passed an identifier (instead of a color).
 	 */
 	public static int getFontColor() {
-		if (theme == BLUE) {
+		if (theme.equals(BLUE)) {
 			return context.getResources().getColor(R.color.main_blue);
-		} else if (theme == PURPLE) {
+		} else if (theme.equals(PURPLE)) {
 			return context.getResources().getColor(R.color.main_purple);
-		} else if (theme == RED) {
+		} else if (theme.equals(RED)) {
 			return context.getResources().getColor(R.color.main_red);
-		} else if (theme == ORANGE) {
+		} else if (theme.equals(ORANGE)) {
 			return context.getResources().getColor(R.color.main_orange);
 		} else {
 			return context.getResources().getColor(R.color.main_green);
 		} 
 	}
-
 }

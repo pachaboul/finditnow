@@ -9,8 +9,8 @@
 	
 	<!-- red -->
 	<color name="main_red">#911100</color>
-	<color name="bright_red">#AD4F45</color>
-	<color name="light_red">#F28779</color>
+	<color name="bright_red">#BA1100</color>
+	<color name="light_red">#FFD1CF</color>
 	
 	<!-- orange -->
 	<color name="main_orange">#BF3D00</color>
