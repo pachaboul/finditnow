@@ -302,7 +302,7 @@ public class PopUpDialog extends Dialog{
 										SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 										String rid = prefs.getInt("rid", 0)+"";
 
-										String locations = DBCommunicator.getLocations(dbCategory, rid, getContext());
+										String locations = DBCommunicator.getLocations(dbCategory, rid, 0+"", getContext());
 										myIntent.putExtra("locations", locations);
 
 										getContext().startActivity(myIntent);

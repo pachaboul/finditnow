@@ -83,26 +83,15 @@ public class DBCommunicator {
 		return Post("getBuildings.php", nameValuePairs, context);
 	}
 
-	public static String getLocations(String cat, String rid, Context context) {
+	public static String getLocations(String cat, String rid, String bid, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat)));
 		nameValuePairs.add(new BasicNameValuePair("rid", rid));
+		nameValuePairs.add(new BasicNameValuePair("bid", bid));
 		
-		Log.v("UGH", "cat is " + FINUtil.sendCategory(cat) + "and rid is " + rid);
-
 		return Post("getLocations.php", nameValuePairs, context);
-	}
-
-	public static String getAllLocations(String cat, String rid, Context context) {
-		// Initialize the array of name value pairs
-		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-
-		nameValuePairs.add(new BasicNameValuePair("cat", cat));
-		nameValuePairs.add(new BasicNameValuePair("rid", rid));
-
-		return Post("getAllLocations.php", nameValuePairs, context);
 	}
 
 	public static String login(String phone_id, String username, String userpass, Context context) {

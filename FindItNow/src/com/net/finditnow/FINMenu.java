@@ -202,7 +202,7 @@ public class FINMenu extends FINActivity {
 									SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 									String rid = prefs.getInt("rid", 0)+"";
 									
-									String locations = DBCommunicator.getLocations(category, rid, getBaseContext());
+									String locations = DBCommunicator.getLocations(category, rid, 0+"", getBaseContext());
 									myIntent.putExtra("locations", locations);
 								}
 

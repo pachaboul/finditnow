@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
@@ -56,15 +58,14 @@ public class JsonParser {
 	 * @param json the json string representation of an array of building objects
 	 * @return a map of location to its corresponding building object
 	 */
-	public static HashMap<GeoPoint, Building> parseBuildingJson(String json)
+	public static void parseBuildingJson(String json, Context context)
 	{
 		//used for parsing the JSON object
 		Gson gson = new Gson();
 		JsonStreamParser parser = new JsonStreamParser(json);
 		JsonArray arr = parser.next().getAsJsonArray();
-
-		//creates the map for information to be stored in
-		HashMap<GeoPoint,Building> map = new HashMap<GeoPoint,Building>();
+		
+		db = new FINDatabase(context);
 
 		for (int i = 0; i < arr.size(); i++)
 		{
@@ -72,25 +73,30 @@ public class JsonParser {
 			{
 				//Since the JsonArray contains whole bunch json array, we can get each one out
 				JsonObject ob = arr.get(i).getAsJsonObject();
-
-				//place the information in the map with BuildingID as key
-				GeoPoint point = new GeoPoint( ob.get(BUILDING_NAMES[1]).getAsInt(),ob.get(BUILDING_NAMES[2]).getAsInt());
+				
+				// Grab the stuff
+				int bid = ob.get("bid").getAsInt();
+				String name = ob.get("name").getAsString();
+				int latitude = ob.get("latitude").getAsInt();
+				int longitude = ob.get("longitude").getAsInt();
+				JsonArray fids = ob.get("fid").getAsJsonArray();
+				JsonArray fnames = ob.get("floor_names").getAsJsonArray();
+				for (int j = 0; j < fids.size(); j++) {
+					db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO floors (fid, bid, fnum, name) VALUES (" + 
+							  fids.get(j) + ", " + bid + ", " + 0 + ", '" + fnames.get(j) + "')");
+				}
+				
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+				String rid = prefs.getInt("rid", 0)+"";
 
 				//remove lat, long so it can be used for the Gson.fromJson
 				ob.remove(BUILDING_NAMES[1]);
 				ob.remove(BUILDING_NAMES[2]);
 
-				//Log.i("log_tag", ob.toString());
-
-				//converts a Json string directly to a building object
-				Building build = gson.fromJson(ob,Building.class);
-
-				//puts it in the map
-				map.put(point, build);
+				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO buildings (bid, rid, name, latitude, longitude) VALUES (" + 
+						  bid + ", " + rid + ", '" + name + "', " + latitude + ", " + longitude + ")");
 			}
 		}
-
-		return map;
 	}
 
 	/**

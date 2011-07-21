@@ -126,7 +126,7 @@ public class FINAddOutdoor extends FINMapActivity {
 							SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 							String rid = prefs.getInt("rid", 0)+"";
 
-							String locations = DBCommunicator.getLocations(selectedCategory, rid, getBaseContext());
+							String locations = DBCommunicator.getLocations(selectedCategory, rid, 0+"", getBaseContext());
 							myIntent.putExtra("locations", locations);
 
 							startActivity(myIntent);

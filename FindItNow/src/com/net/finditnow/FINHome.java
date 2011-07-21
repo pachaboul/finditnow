@@ -7,9 +7,11 @@ import java.util.HashMap;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -64,8 +66,16 @@ public class FINHome extends TabActivity {
 				// Store a map from categories to icons so that other modules can use it
 				iconsMap = createIconsMap(categories);
 
-				buildingsMap = JsonParser.parseBuildingJson(extras.getString("buildings"));
-				buildings = createBuildingList(buildingsMap);
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+				String rid = prefs.getInt("rid", 0)+"";
+				JsonParser.parseBuildingJson(extras.getString("buildings"), getBaseContext());
+				buildings = new ArrayList<String>();
+				cursor = db.getReadableDatabase().query("buildings", null, "rid = " + rid, null, null, null, null);
+				cursor.moveToFirst();
+				while (!cursor.isAfterLast()) {
+					buildings.add(cursor.getString(cursor.getColumnIndex("name")));
+					cursor.moveToNext();
+				}
 				Collections.sort(buildings);
 
 				loggedin = extras.getBoolean("loggedin");
@@ -187,8 +197,18 @@ public class FINHome extends TabActivity {
 	/**
 	 * Returns the building associated with the GeoPoint
 	 */
-	public static Building getBuilding(GeoPoint point) {
-		return buildingsMap.get(point);
+	public static Building getBuilding(GeoPoint point, Context context) {
+		FINDatabase db = new FINDatabase(context);
+		Cursor cursor = db.getReadableDatabase().query("buildings", null, "latitude = '" + point.getLatitudeE6() + "' AND longitude = '" + point.getLongitudeE6() + "'", null, null, null, null);
+		cursor.moveToFirst();
+		
+		int bid = cursor.getInt(cursor.getColumnIndex("bid"));
+		String name = cursor.getString(cursor.getColumnIndex("name"));
+		
+		cursor = db.getReadableDatabase().query("floors", null, "bid = '" + bid + "'", null, null, null, null);
+		cursor.moveToFirst();
+
+		return new Building(bid, name, null, null);
 	}
 
 	/**
@@ -214,13 +234,15 @@ public class FINHome extends TabActivity {
 	 * @param buildingName The full name of the building.
 	 * @return GeoPoint representing the 'center' of the building.
 	 */
-	public static GeoPoint getGeoPointFromBuilding(String buildingName) {
-		for (GeoPoint point : buildingsMap.keySet()) {
-			if (getBuilding(point).getName().equals(buildingName)) {
-				return point;
-			}
-		}
-		return null;
+	public static GeoPoint getGeoPointFromBuilding(String buildingName, Context context) {
+		FINDatabase db = new FINDatabase(context);
+		Cursor cursor = db.getReadableDatabase().query("buildings", null, "name = '" + buildingName + "'", null, null, null, null);
+		cursor.moveToFirst();
+		
+		int latitude = cursor.getInt(cursor.getColumnIndex("latitude"));
+		int longitude = cursor.getInt(cursor.getColumnIndex("longitude"));
+		
+		return new GeoPoint(latitude, longitude);
 	}
 
 	/**
