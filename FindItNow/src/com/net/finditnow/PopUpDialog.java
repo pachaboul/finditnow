@@ -74,7 +74,6 @@ public class PopUpDialog extends Dialog{
 	private int walkTime;
 	private ProgressDialog myDialog;
 	private String category;
-	private String dbCategory;
 	private String item;
 	private boolean isOutdoor;
 	
@@ -100,7 +99,7 @@ public class PopUpDialog extends Dialog{
 	 * 
 	 */
 	public PopUpDialog(Context context,
-			Building building, String category, String dbCategory, String item, HashMap<String,CategoryItem> dataMap, BigDecimal distance, int walkingTime,
+			Building building, String category, String item, HashMap<String,CategoryItem> dataMap, BigDecimal distance, int walkingTime,
 			boolean isOutdoor)
 	{
 		super(context);
@@ -110,7 +109,6 @@ public class PopUpDialog extends Dialog{
 		this.distance = distance;
 		this.walkTime = walkingTime;
 		this.category = category;
-		this.dbCategory = dbCategory;
 		this.item = item;
 		this.isOutdoor = isOutdoor;
 	}
@@ -186,8 +184,8 @@ public class PopUpDialog extends Dialog{
 						lv.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
 
 						String[] floorsWithCategories = new String[0];
-						if (dataMap.get(dbCategory) != null) {
-							floorsWithCategories = dataMap.get(dbCategory).getFloor_names().toArray (new String[0]);
+						if (dataMap.get(category) != null) {
+							floorsWithCategories = dataMap.get(category).getFloor_names().toArray (new String[0]);
 						}
 
 						if (floorsWithCategories.length > 3)
@@ -217,8 +215,8 @@ public class PopUpDialog extends Dialog{
 									lv.setSelectedGroup(groupPosition);		
 								}
 							});
-							lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),dataMap.get(dbCategory),
-									category, dbCategory, item, floorsWithCategories,"flrName"));
+							lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),dataMap.get(category),
+									category, floorsWithCategories,"flrName"));
 						}
 					}
 					// Hide all the floor info.
@@ -226,7 +224,7 @@ public class PopUpDialog extends Dialog{
 						toggle.setText("Show Floors");
 						lv.getLayoutParams().height = 0;
 						lv.setAdapter(new FloorExpandableListAdapter(lv.getContext(),new CategoryItem(),
-								category, dbCategory, item, new String[0],"flrName"));
+								category, new String[0],"flrName"));
 
 					}
 
@@ -239,7 +237,7 @@ public class PopUpDialog extends Dialog{
 		} else {
 			title.setText("Outdoor Location");
 
-			String spInfo = dataMap.get(dbCategory).getInfo().get(0);
+			String spInfo = dataMap.get(category).getInfo().get(0);
 
 			// If there's no special info, hide the outdoor info section
 			// (it would have added unnecessary padding)
@@ -268,7 +266,7 @@ public class PopUpDialog extends Dialog{
 								@Override
 								public void run() {
 									final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-									result = DBCommunicator.update(phone_id, dataMap.get(dbCategory).getId().get(0)+"", getContext());	    		        	   
+									result = DBCommunicator.update(phone_id, dataMap.get(category).getId().get(0)+"", getContext());	    		        	   
 									myDialog.dismiss();
 									handler.sendEmptyMessage(0);
 								}
@@ -286,23 +284,22 @@ public class PopUpDialog extends Dialog{
 					if (FINHome.isLoggedIn()) {
 						builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
 							public void onClick(DialogInterface dialog, int id) {
-								myDialog = ProgressDialog.show(getContext(), "" , "Deleting " + dbCategory + "...", true);
+								myDialog = ProgressDialog.show(getContext(), "" , "Deleting " + category + "...", true);
 								Thread thread = new Thread() {
 									@Override
 									public void run() {
 										final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-										String result = DBCommunicator.delete(phone_id, dataMap.get(dbCategory).getId().get(0)+"", getContext());
+										String result = DBCommunicator.delete(phone_id, dataMap.get(category).getId().get(0)+"", getContext());
 
 										Intent myIntent = new Intent(getContext(), FINMap.class);
 										myIntent.putExtra("result", result);
-										myIntent.putExtra("category", dbCategory);
+										myIntent.putExtra("category", category);
 										myIntent.putExtra("building", "");
-										myIntent.putExtra("itemName", item);
 										
 										SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 										String rid = prefs.getInt("rid", 0)+"";
 
-										String locations = DBCommunicator.getLocations(dbCategory, rid, 0+"", getContext());
+										String locations = DBCommunicator.getLocations(category, rid, 0+"", getContext());
 										myIntent.putExtra("locations", locations);
 
 										getContext().startActivity(myIntent);

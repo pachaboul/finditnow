@@ -25,7 +25,6 @@ public class FINAddNew extends FINActivity {
 	AlertDialog.Builder builder;	
 	String selectedCategory;
 	String special_info;
-	boolean[] supplyTypes = {false, false, false};
 	String buildingName;
 
 	@Override
@@ -99,22 +98,9 @@ public class FINAddNew extends FINActivity {
 		public void onItemSelected(AdapterView<?> parent, View arg1, int pos, long arg3) {
 			//Assign selected category to variable
 			selectedCategory = parent.getItemAtPosition(pos).toString();
-
-			//Handle special case of categories with items
-			if(FINHome.getItemsFromCategory(selectedCategory) != null) {
-				showItemsPopup(selectedCategory);
-			}
 		}
 
 		public void onNothingSelected(AdapterView<?> arg0) {
-		}
-	};
-
-	//Listener for school supply popup
-	private OnMultiChoiceClickListener supply_listener = new OnMultiChoiceClickListener() {
-
-		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-			supplyTypes[which] = isChecked;
 		}
 	};
 
@@ -126,7 +112,6 @@ public class FINAddNew extends FINActivity {
 
 			Intent myIntent = new Intent(v.getContext(), nextClass);
 			myIntent.putExtra("selectedCategory", selectedCategory);
-			myIntent.putExtra("supplyTypes", supplyTypes);
 
 			if (buildingName != null) {
 				myIntent.putExtra("building", buildingName);
@@ -148,23 +133,6 @@ public class FINAddNew extends FINActivity {
 			radioSelection = (RadioButton) v;
 		}
 	};
-
-	/**
-	 * Creates and displays a popup for specifying school supply types
-	 */
-	private void showItemsPopup(String catWithItems) {
-		builder = new AlertDialog.Builder(this);
-		builder.setTitle("What " + catWithItems.toLowerCase() + " are offered?");
-		builder.setMultiChoiceItems(FINHome.getItemsFromCategory(catWithItems), supplyTypes, supply_listener);		
-		builder.setCancelable(false);		
-		builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-			}
-		});
-
-		AlertDialog alert = builder.create();
-		alert.show();	
-	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {

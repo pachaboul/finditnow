@@ -13,6 +13,7 @@ import java.util.HashMap;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
@@ -23,7 +24,6 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 	private ArrayList<OverlayItem> mapOverlays;
 	private Context context;
 	private String category;
-	private String itemName;
 	private HashMap<GeoPoint,HashMap<String,CategoryItem>> items;
 
 	/**
@@ -32,12 +32,11 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 	 * @param defaultMarker The default icon to use on the overlay
 	 * @param context The context in which the overlay is created
 	 */
-	public IconOverlay(Drawable defaultMarker, Context context, String category, String itemName, HashMap<GeoPoint,HashMap<String,CategoryItem>> items) {
+	public IconOverlay(Drawable defaultMarker, Context context, String category, HashMap<GeoPoint,HashMap<String,CategoryItem>> items) {
 		super(boundCenterBottom(defaultMarker));
 		mapOverlays = new ArrayList<OverlayItem>();
 		this.context = context;
 		this.category = category;
-		this.itemName = itemName;
 		this.items = items;
 	}
 	/**
@@ -70,16 +69,14 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 		// Retrieve the item that was tapped
 		OverlayItem overlay = mapOverlays.get(index);
 		GeoPoint itemLocation = overlay.getPoint();
+		
+		Log.v("Burke Museum", FINHome.getBuilding(itemLocation, context).toString());
 
 		// Calculate the distance and the walking time to this location
 		BigDecimal distance = FINMap.distanceBetween(FINMap.getLocation(), itemLocation);
 		int walkingTime = FINMap.walkingTime(distance, 35);
 
 		// Retrieve the floors, special info, and category of the location
-		String displayCat = category;
-		if (FINHome.hasItems(category)) {
-			displayCat = itemName;
-		}
 		HashMap<String,CategoryItem> data = items.get(itemLocation);
 
 		// Assume it is an outdoor location, but if it is not, grab the building name
@@ -90,7 +87,7 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 		}
 
 		// Building the pop-up dialog with this information and then show it
-		Dialog popUp = new PopUpDialog(context, building, displayCat, category, itemName, data, distance, walkingTime, isOutdoor);
+		Dialog popUp = new PopUpDialog(context, building, category, category, data, distance, walkingTime, isOutdoor);
 
 		popUp.show();
 

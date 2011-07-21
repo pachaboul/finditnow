@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -206,9 +207,19 @@ public class FINHome extends TabActivity {
 		String name = cursor.getString(cursor.getColumnIndex("name"));
 		
 		cursor = db.getReadableDatabase().query("floors", null, "bid = '" + bid + "'", null, null, null, null);
+		cursor.moveToLast();
+		int size = cursor.getPosition() + 1;
 		cursor.moveToFirst();
-
-		return new Building(bid, name, null, null);
+		
+		int[] fids = new int[size];
+		String[] names = new String[size];
+		for (int i = 0; i < size; i++) {
+			fids[i] = cursor.getInt(cursor.getColumnIndex("fid"));
+			names[i] = cursor.getString(cursor.getColumnIndex("name"));
+			cursor.moveToNext();
+		}
+		
+		return new Building(bid, name, fids, names);
 	}
 
 	/**

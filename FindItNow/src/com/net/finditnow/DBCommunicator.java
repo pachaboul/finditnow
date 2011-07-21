@@ -38,7 +38,7 @@ public class DBCommunicator {
 	private static final int CONNECTION_TIMEOUT = 6000;
 	private static final int SOCKET_TIMEOUT = 6000;
 
-	public static String create(String phone_id, String cat, String fid, String special_info, String latitude, String longitude, String bb, String sc, String print, Context context) {
+	public static String create(String phone_id, String cat, String fid, String special_info, String latitude, String longitude, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
@@ -87,9 +87,11 @@ public class DBCommunicator {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
-		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat)));
+		nameValuePairs.add(new BasicNameValuePair("cat", cat));
 		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 		nameValuePairs.add(new BasicNameValuePair("bid", bid));
+		
+		Log.v("Sending", cat + " " + rid + " " + bid);
 		
 		return Post("getLocations.php", nameValuePairs, context);
 	}
@@ -123,13 +125,12 @@ public class DBCommunicator {
 		return Post("logout.php", nameValuePairs, context);
 	}
 
-	public static String searchLocations(String category, String lat, String lon, String sString, Context context) {
+	public static String searchLocations(String cat, String rid, String sString, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
-		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(category)));
-		nameValuePairs.add(new BasicNameValuePair("lat", lat));
-		nameValuePairs.add(new BasicNameValuePair("long", lon));
+		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat)));
+		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 		nameValuePairs.add(new BasicNameValuePair("sString", sString));
 
 		return Post("searchLocations.php", nameValuePairs, context);

@@ -115,8 +115,8 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 
 		lv.setOnGroupExpandListener(new DoubleOnExpandListener(relative,parent));
 		lv.setOnGroupCollapseListener(new DoubleOnCollapseListener(relative));
-		lv.setAdapter(new FloorExpandableListAdapter( context, dataMap.get(category),
-				category,  dbCategory, item,  parentText,  parentMode) );
+		lv.setAdapter(new FloorExpandableListAdapter(context, dataMap.get(category),
+				category, parentText, parentMode) );
 
 		return relative;
 	}

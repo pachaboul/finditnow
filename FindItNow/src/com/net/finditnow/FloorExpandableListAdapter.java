@@ -41,8 +41,6 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	private Context context;
 	private ProgressDialog myDialog;
 	private String category;		//category
-	private String dbCategory;
-	private String item;
 	private String[] parentText;
 	private String parentMode;
 
@@ -60,13 +58,11 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @param category - the category currently displaying
 	 */
 	public FloorExpandableListAdapter(Context context,CategoryItem catItem,
-			String category, String dbCategory, String item, String[] parentText, String parentMode) {
+			String category, String[] parentText, String parentMode) {
 		super();
 		this.context = context;
 		this.catItem = catItem;
 		this.category = category;
-		this.dbCategory = dbCategory;
-		this.item = item;
 		this.parentText = parentText;
 		this.parentMode = parentMode;
 	}
@@ -163,7 +159,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 					if (FINHome.isLoggedIn()) {
 						builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
 							public void onClick(DialogInterface dialog, int id) {
-								myDialog = ProgressDialog.show(context, "" , "Deleting " + dbCategory + "...", true);
+								myDialog = ProgressDialog.show(context, "" , "Deleting " + category + "...", true);
 								Thread thread = new Thread() {
 									@Override
 									public void run() {
@@ -172,14 +168,13 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 
 										Intent myIntent = new Intent(context, FINMap.class);
 										myIntent.putExtra("result", result);
-										myIntent.putExtra("category", dbCategory);
+										myIntent.putExtra("category", category);
 										myIntent.putExtra("building", "");
-										myIntent.putExtra("itemName", item);
 										
 										SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 										String rid = prefs.getInt("rid", 0)+"";
 
-										String locations = DBCommunicator.getLocations(dbCategory, rid, 0+"", context);
+										String locations = DBCommunicator.getLocations(category, rid, 0+"", context);
 										myIntent.putExtra("locations", locations);
 
 										context.startActivity(myIntent);
@@ -250,14 +245,14 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 			relative.setBackgroundResource(R.color.FIN_secondary);
 			text.setText(category);
 			text.getLayoutParams().height = DoubleExpandableListAdapter.HEIGHT;
-			img.setImageResource(FINHome.getIcon(dbCategory, context));
+			img.setImageResource(FINHome.getIcon(category, context));
 		}
 		else{
 			text.setText(parentText[groupPosition]);
 
 			//the icon associated with the category
 			if (catItem.getFloor_names().contains(parentText[groupPosition])){
-				img.setImageResource(FINHome.getIcon(dbCategory, context));
+				img.setImageResource(FINHome.getIcon(category, context));
 			}
 		}
 		return relative;

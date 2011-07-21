@@ -80,10 +80,12 @@ public class JsonParser {
 				int latitude = ob.get("latitude").getAsInt();
 				int longitude = ob.get("longitude").getAsInt();
 				JsonArray fids = ob.get("fid").getAsJsonArray();
+				JsonArray fnums = ob.get("fnum").getAsJsonArray();
 				JsonArray fnames = ob.get("floor_names").getAsJsonArray();
+								
 				for (int j = 0; j < fids.size(); j++) {
 					db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO floors (fid, bid, fnum, name) VALUES (" + 
-							  fids.get(j) + ", " + bid + ", " + 0 + ", '" + fnames.get(j) + "')");
+							  fids.get(j).getAsInt() + ", " + bid + ", " + fnums.get(j).getAsInt() + ", '" + fnames.get(j).getAsString() + "')");
 				}
 				
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
