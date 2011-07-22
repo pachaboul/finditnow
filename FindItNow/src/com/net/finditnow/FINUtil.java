@@ -22,14 +22,18 @@ public class FINUtil {
 	{
 		FINDatabase db = new FINDatabase(context);
 		Cursor cursor = db.getReadableDatabase().query("categories", null, "name = '" + cat + "'", null, null, null, null);
-		cursor.moveToFirst();
 		
-		String category = cursor.getString(cursor.getColumnIndex("full_name"));
+		int count = cursor.getCount();
+		if (count == 0) {
+			return cat;
+		} else {
+			cursor.moveToFirst();
 		
-		cursor.close();
-		db.close();
-		
-		return category;
+			String category = cursor.getString(cursor.getColumnIndex("full_name"));
+			db.close();
+			
+			return category;
+		}
 	}
 
 	/**
@@ -62,13 +66,18 @@ public class FINUtil {
 	public static String sendCategory(String cat, Context context) {
 		FINDatabase db = new FINDatabase(context);
 		Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + cat + "'", null, null, null, null);
-		cursor.moveToFirst();
 		
-		String category = cursor.getString(cursor.getColumnIndex("name"));
+		int count = cursor.getCount();
+		if (count == 0) {
+			return cat;
+		} else {
+			cursor.moveToFirst();
 		
-		db.close();
-				
-		return category;
+			String category = cursor.getString(cursor.getColumnIndex("name"));
+			db.close();
+			
+			return category;
+		}
 	}
 
 	/**
