@@ -155,29 +155,34 @@ public class FINHome extends TabActivity {
 	 * Returns the building associated with the GeoPoint
 	 */
 	public static Building getBuilding(GeoPoint point, Context context) {
+		Building build = null;
+		
 		Cursor cursor = db.getReadableDatabase().query("buildings", null, "latitude = '" + point.getLatitudeE6() + "' AND longitude = '" + point.getLongitudeE6() + "'", null, null, null, null);
-		cursor.moveToFirst();
 		
-		int bid = cursor.getInt(cursor.getColumnIndex("bid"));
-		String name = cursor.getString(cursor.getColumnIndex("name"));
-		
-		cursor = db.getReadableDatabase().query("floors", null, "bid = " + bid, null, null, null, null);
-		cursor.moveToLast();
-		int size = cursor.getPosition() + 1;
-		cursor.moveToFirst();
-		
-		int[] fids = new int[size];
-		String[] names = new String[size];
-		for (int i = 0; i < size; i++) {
-			fids[i] = cursor.getInt(cursor.getColumnIndex("fid"));
-			Log.v("Blah", cursor.getString(cursor.getColumnIndex("name")));
-			names[i] = cursor.getString(cursor.getColumnIndex("name"));
-			cursor.moveToNext();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			
+			int bid = cursor.getInt(cursor.getColumnIndex("bid"));
+			String name = cursor.getString(cursor.getColumnIndex("name"));
+			
+			cursor = db.getReadableDatabase().query("floors", null, "bid = " + bid, null, null, null, null);
+			cursor.moveToFirst();
+			
+			int count = cursor.getCount();
+			
+			int[] fids = new int[count];
+			String[] names = new String[count];
+			for (int i = 0; i < count; i++) {
+				fids[i] = cursor.getInt(cursor.getColumnIndex("fid"));
+				names[i] = cursor.getString(cursor.getColumnIndex("name"));
+				
+				cursor.moveToNext();
+			}
+			
+			build = new Building(bid, name, fids, names);
 		}
-
-		Log.v("This building is", new Building(bid, name, fids, names).toString());
 		
-		return new Building(bid, name, fids, names);
+		return build;
 	}
 
 	/**
