@@ -39,7 +39,7 @@ public class BuildingList extends FINListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_bg_with_filter);
 		
-		adapter = new ArrayAdapter<String>(this, R.layout.list_item, FINHome.getBuildingsList());
+		adapter = new ArrayAdapter<String>(this, R.layout.list_item, FINHome.getBuildingsList(getBaseContext()));
 		
 		filterText = (EditText) findViewById(R.id.search_box);
 	    filterText.addTextChangedListener(filterTextWatcher);
@@ -61,7 +61,6 @@ public class BuildingList extends FINListActivity {
 
 						myIntent.putExtra("building", selectedBuilding);
 						myIntent.putExtra("category", "");
-						myIntent.putExtra("itemName", "");
 						
 						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 						String rid = prefs.getInt("rid", 0)+"";
@@ -70,8 +69,9 @@ public class BuildingList extends FINListActivity {
 						Cursor cursor = db.getReadableDatabase().query("buildings", null, "name = '" + selectedBuilding + "'", null, null, null, null);
 						cursor.moveToFirst();
 						String bid = cursor.getInt(cursor.getColumnIndex("bid"))+"";
+						cursor.close();
 
-						String locations = DBCommunicator.getLocations(FINUtil.allCategories(FINHome.getCategoriesList()), rid, bid, getBaseContext());
+						String locations = DBCommunicator.getLocations(FINUtil.allCategories(FINHome.getCategoriesList(true, getBaseContext()), getBaseContext()), rid, bid, getBaseContext());
 						myIntent.putExtra("locations", locations);
 
 						startActivity(myIntent);

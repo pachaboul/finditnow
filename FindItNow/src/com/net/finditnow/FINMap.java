@@ -89,7 +89,7 @@ public class FINMap extends FINMapActivity {
 		if (listOfLocations.equals(getString(R.string.timeout))) {
 			conCheck.connectionError();
 		} else {
-			geoPointItem = JsonParser.parseCategoryJson(listOfLocations, category);
+			geoPointItem = JsonParser.parseCategoryJson(listOfLocations, category, getBaseContext());
 			Log.v("ListofLocations", listOfLocations);
 			Log.v("Test", geoPointItem.entrySet().toString());
 

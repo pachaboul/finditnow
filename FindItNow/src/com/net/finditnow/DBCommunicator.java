@@ -43,7 +43,7 @@ public class DBCommunicator {
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
-		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat)));
+		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat, context)));
 		nameValuePairs.add(new BasicNameValuePair("fid", fid));
 		nameValuePairs.add(new BasicNameValuePair("special_info", special_info));
 		nameValuePairs.add(new BasicNameValuePair("latitude", latitude));
@@ -87,7 +87,7 @@ public class DBCommunicator {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
-		nameValuePairs.add(new BasicNameValuePair("cat", cat));
+		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat, context)));
 		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 		nameValuePairs.add(new BasicNameValuePair("bid", bid));
 		
@@ -129,7 +129,7 @@ public class DBCommunicator {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
-		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat)));
+		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat, context)));
 		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 		nameValuePairs.add(new BasicNameValuePair("sString", sString));
 

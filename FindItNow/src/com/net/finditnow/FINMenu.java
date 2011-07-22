@@ -61,7 +61,7 @@ public class FINMenu extends FINActivity {
 				int height = buttonGrid.getHeight();
 				if (height != 0) {
 					int contentSize = height - buttonGrid.getPaddingTop() - buttonGrid.getPaddingBottom();
-					int numRows = (FINHome.getCategoriesList().size() + 1) / 2;
+					int numRows = (FINHome.getCategoriesList(false, getBaseContext()).size() + 1) / 2;
 					int innerPadding = (numRows - 1) * 8;
 					cellSize = (contentSize - innerPadding) / numRows;
 					buttonGrid.getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -92,7 +92,7 @@ public class FINMenu extends FINActivity {
 		 * the bottom row appears to have two colored cells.
 		 */
 		public int getCount() {
-			int size = FINHome.getCategoriesList().size();
+			int size = FINHome.getCategoriesList(false, getBaseContext()).size();
 			if (size % 2 == 0) {
 				return size;
 			} else {
@@ -146,11 +146,11 @@ public class FINMenu extends FINActivity {
 				myView = convertView;
 			}
 
-			if (position < FINHome.getCategoriesList().size()) {
+			if (position < FINHome.getCategoriesList(false, getBaseContext()).size()) {
 				// Add image button
 				ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
 
-				final String category = FINHome.getCategoriesList().get(position);
+				final String category = FINHome.getCategoriesList(false, getBaseContext()).get(position);
 				ib.setImageResource(FINHome.getBigIcon(category));
 				
 				// Get the DPI of the screen and generate the minimum cell size based on that
