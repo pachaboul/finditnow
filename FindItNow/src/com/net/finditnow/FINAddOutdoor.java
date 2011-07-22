@@ -101,8 +101,11 @@ public class FINAddOutdoor extends FINMapActivity {
 						public void run() {
 							//Send new item to database
 							final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+							
+							SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+							String rid = prefs.getInt("rid", 0)+"";
 
-							String result = DBCommunicator.create(phone_id, selectedCategory, 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"", getBaseContext());
+							String result = DBCommunicator.createItem(phone_id, selectedCategory, rid, 0+"", special_info, tappedPoint.getLatitudeE6()+"", tappedPoint.getLongitudeE6()+"", getBaseContext());
 
 							// Load the map with the new item
 							Intent myIntent = new Intent(getBaseContext(), FINMap.class);
@@ -111,9 +114,6 @@ public class FINAddOutdoor extends FINMapActivity {
 							myIntent.putExtra("building", "");
 							myIntent.putExtra("centerLat", tappedPoint.getLatitudeE6());
 							myIntent.putExtra("centerLon", tappedPoint.getLongitudeE6());
-							
-							SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-							String rid = prefs.getInt("rid", 0)+"";
 
 							String locations = DBCommunicator.getLocations(selectedCategory, rid, 0+"", getBaseContext());
 							myIntent.putExtra("locations", locations);
