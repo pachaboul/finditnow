@@ -101,6 +101,9 @@ public class FINSplash extends Activity {
 	         });
 			myDialog.show();
 		} else {
+			campusJson = DBCommunicator.getRegions(prefs.getInt("location_lat", 0)+"", prefs.getInt("location_lon", 0)+"", getBaseContext());
+			JsonParser.parseRegionJson(campusJson, getBaseContext());	
+			
 			Cursor cursor = db.getReadableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
 			cursor.moveToFirst();
 			campus = cursor.getString(cursor.getColumnIndex("name"));
@@ -119,11 +122,14 @@ public class FINSplash extends Activity {
 				splashes = new HashMap<String, Integer>();
 				splashes.put("University of Washington", R.drawable.uw_splash);
 				splashes.put("Western Washington University", R.drawable.wwu_splash);
-
+				splashes.put("Washington State University", R.drawable.android);
+				
 				// Set color theme (hardcoded for now).
 				Cursor cursor = db.getReadableDatabase().query("colors", null, "colors.rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
 				cursor.moveToFirst();
 				String color = cursor.getString(cursor.getColumnIndex("color1"));
+				
+				Log.v("RID is and color is", prefs.getInt("rid", 0)+ " " + color);
 				
 				FINTheme.setTheme(color, getBaseContext());
 				
