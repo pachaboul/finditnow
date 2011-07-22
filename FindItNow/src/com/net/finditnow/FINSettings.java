@@ -78,7 +78,7 @@ public class FINSettings extends PreferenceActivity {
 
 			public boolean onPreferenceClick(Preference preference) {
 				
-				FINDatabase db = new FINDatabase(getBaseContext());
+				final FINDatabase db = new FINDatabase(getBaseContext());
 				
 				final Cursor cursor = db.getReadableDatabase().query("regions", null, null, null, null, null, null);
 				cursor.moveToFirst();
@@ -93,6 +93,9 @@ public class FINSettings extends PreferenceActivity {
 						
 						editor.putInt("rid", cursor.getInt(0));
 						editor.commit();
+						
+						cursor.close();
+						db.close();
 
 						restartFirstActivity();
 					}

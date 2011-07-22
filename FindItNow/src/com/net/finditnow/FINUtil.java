@@ -24,7 +24,12 @@ public class FINUtil {
 		Cursor cursor = db.getReadableDatabase().query("categories", null, "name = '" + cat + "'", null, null, null, null);
 		cursor.moveToFirst();
 		
-		return cursor.getColumnName(cursor.getColumnIndex("full_name"));
+		String category = cursor.getString(cursor.getColumnIndex("full_name"));
+		
+		cursor.close();
+		db.close();
+		
+		return category;
 	}
 
 	/**
@@ -59,9 +64,11 @@ public class FINUtil {
 		Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + cat + "'", null, null, null, null);
 		cursor.moveToFirst();
 		
-		Log.v("Test", cursor.getColumnName(cursor.getColumnIndex("name")));
+		String category = cursor.getString(cursor.getColumnIndex("name"));
 		
-		return cursor.getString(cursor.getColumnIndex("name"));
+		db.close();
+				
+		return category;
 	}
 
 	/**

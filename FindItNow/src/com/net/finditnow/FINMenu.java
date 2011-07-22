@@ -151,7 +151,7 @@ public class FINMenu extends FINActivity {
 				ImageButton ib = (ImageButton) myView.findViewById(R.id.grid_item_button);
 
 				final String category = FINHome.getCategoriesList(false, getBaseContext()).get(position);
-				ib.setImageResource(FINHome.getBigIcon(category));
+				ib.setImageResource(FINHome.getBigIcon(category, getBaseContext()));
 				
 				// Get the DPI of the screen and generate the minimum cell size based on that
 				int minCellSize = 55;	
@@ -188,6 +188,9 @@ public class FINMenu extends FINActivity {
 						if (nextClass == FINMap.class) {
 							myDialog = ProgressDialog.show(FINMenu.this, "" , "Loading " + category + "...", true);
 						}
+						
+						cursor.close();
+						db.close();
 						
 						Thread menuThread = new Thread() {
 

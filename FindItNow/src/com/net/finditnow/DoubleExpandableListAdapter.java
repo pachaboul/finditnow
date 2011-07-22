@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	 * @param iconId - the resource id of the icon of the category
 	 * @param category - the category currently displaying
 	 */
-	public DoubleExpandableListAdapter(Context context,Building building,  String[] categories,HashMap<String,CategoryItem> dataMap) {
+	public DoubleExpandableListAdapter(Context context, Building building, String[] categories,HashMap<String,CategoryItem> dataMap) {
 		super();
 		this.context = context;
 		this.building = building;
@@ -77,6 +78,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	{
 		ArrayList<String> temp = new ArrayList<String>();
 		for (String cate: dataMap.keySet()){
+			Log.v("Cate is", cate);
 			if (dataMap.get(cate).getFloor_names().contains(floor))
 				temp.add(cate);
 		}
@@ -168,6 +170,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			imageView.setPadding(0,12,0,0);
 
 			String cat = icons[i];
+			Log.v("Cat is", cat);
 			imageView.setImageResource(FINHome.getIcon(cat, context));
 
 			layout.addView(imageView);

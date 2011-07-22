@@ -70,8 +70,6 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 		OverlayItem overlay = mapOverlays.get(index);
 		GeoPoint itemLocation = overlay.getPoint();
 		
-		Log.v("Burke Museum", FINHome.getBuilding(itemLocation, context).toString());
-
 		// Calculate the distance and the walking time to this location
 		BigDecimal distance = FINMap.distanceBetween(FINMap.getLocation(), itemLocation);
 		int walkingTime = FINMap.walkingTime(distance, 35);
