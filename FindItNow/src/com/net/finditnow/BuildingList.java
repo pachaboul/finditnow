@@ -8,6 +8,8 @@
 
 package com.net.finditnow;
 
+import java.util.ArrayList;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,11 +35,14 @@ public class BuildingList extends FINListActivity {
 	private ProgressDialog myDialog;
 	private EditText filterText;
 	private ArrayAdapter<String> adapter;
+	private static FINDatabase db;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_bg_with_filter);
+		
+		db = new FINDatabase(getBaseContext());
 		
 		adapter = new ArrayAdapter<String>(this, R.layout.list_item, FINHome.getBuildingsList(getBaseContext()));
 		
@@ -69,9 +74,13 @@ public class BuildingList extends FINListActivity {
 						Cursor cursor = db.getReadableDatabase().query("buildings", null, "name = '" + selectedBuilding + "'", null, null, null, null);
 						cursor.moveToFirst();
 						String bid = cursor.getInt(cursor.getColumnIndex("bid"))+"";
-						cursor.close();
-
-						String locations = DBCommunicator.getLocations(FINUtil.allCategories(FINHome.getCategoriesList(true, getBaseContext()), getBaseContext()), rid, bid, getBaseContext());
+						
+						ArrayList<String> allCategories = FINHome.getCategoriesList(true, getBaseContext());
+						String separated = FINUtil.allCategories(allCategories, getBaseContext());
+						
+						Log.v("Here we go...", separated);
+						
+						String locations = DBCommunicator.getLocations(separated, rid, bid, getBaseContext());
 						myIntent.putExtra("locations", locations);
 
 						startActivity(myIntent);
@@ -110,6 +119,8 @@ public class BuildingList extends FINListActivity {
 	@Override
 	protected void onDestroy() {
 	    super.onDestroy();
+	    db.close();
+	    
 	    filterText.removeTextChangedListener(filterTextWatcher);
 	}
 }

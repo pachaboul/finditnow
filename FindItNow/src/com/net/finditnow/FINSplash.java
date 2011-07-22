@@ -105,6 +105,9 @@ public class FINSplash extends Activity {
 			cursor.moveToFirst();
 			campus = cursor.getString(1);
 			
+			cursor.close();
+			db.close();
+			
 			handler3.sendEmptyMessage(0);
 		}
 
@@ -166,6 +169,7 @@ public class FINSplash extends Activity {
 					// do nothing
 				} finally {
 					db.close();
+					cursor.close();
 					startActivity(myIntent);
 					finish();
 				}

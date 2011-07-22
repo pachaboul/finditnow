@@ -52,7 +52,6 @@ public class FINMap extends FINMapActivity {
 	// Shared static variables that the other modules can access
 	private String category;    
 	private String building;
-	private String itemName;
 	private String listOfLocations;
 
 	// Location and GeoPoint Variables
@@ -90,8 +89,6 @@ public class FINMap extends FINMapActivity {
 			conCheck.connectionError();
 		} else {
 			geoPointItem = JsonParser.parseCategoryJson(listOfLocations, category, getBaseContext());
-			Log.v("ListofLocations", listOfLocations);
-			Log.v("Test", geoPointItem.entrySet().toString());
 
 			// Create the map and the map view and detect user location
 			createMap();
@@ -395,6 +392,9 @@ public class FINMap extends FINMapActivity {
 		
 		int latitude = cursor.getInt(cursor.getColumnIndex("latitude"));
 		int longitude = cursor.getInt(cursor.getColumnIndex("longitude"));
+		
+		cursor.close();
+		db.close();
 		
 		return new GeoPoint(latitude, longitude);
 	}

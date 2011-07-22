@@ -45,12 +45,6 @@ public class JsonParser {
 		"id",
 		"cat",
 	"item"};
-	private static final String[] BUILDING_NAMES = { "bid",
-		"lat",
-		"long",
-		"name",
-		"fid",
-	"floor_names"};
 
 	/**
 	 * parse a json string into a map of GeoPoint to Building
@@ -61,7 +55,6 @@ public class JsonParser {
 	public static void parseBuildingJson(String json, Context context)
 	{
 		//used for parsing the JSON object
-		Gson gson = new Gson();
 		JsonStreamParser parser = new JsonStreamParser(json);
 		JsonArray arr = parser.next().getAsJsonArray();
 		
@@ -91,14 +84,12 @@ public class JsonParser {
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 				String rid = prefs.getInt("rid", 0)+"";
 
-				//remove lat, long so it can be used for the Gson.fromJson
-				ob.remove(BUILDING_NAMES[1]);
-				ob.remove(BUILDING_NAMES[2]);
-
 				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO buildings (bid, rid, name, latitude, longitude) VALUES (" + 
 						  bid + ", " + rid + ", '" + name + "', " + latitude + ", " + longitude + ")");
 			}
 		}
+		
+		db.close();
 	}
 
 	/**
@@ -199,7 +190,6 @@ public class JsonParser {
 	{
 		//creates the map for information to be stored in
 		HashMap<GeoPoint,CategoryItem> map = new HashMap<GeoPoint,CategoryItem>();
-		Log.v("Json Str", json);
 
 		if (json != null && !json.equals("")) {
 
@@ -250,7 +240,7 @@ public class JsonParser {
 						//the floor id associated with this point
 						item.addId(id);
 					}
-					Log.v("Item is", item.toString());
+
 					map.put(point, item);
 				}
 			}
