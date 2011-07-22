@@ -34,9 +34,9 @@ import android.util.Log;
 public class DBCommunicator {
 
 	// A Constant representing the location of FIN
-	private static final String FIN_ROOT = "http://www.fincdn.org/";
-	private static final int CONNECTION_TIMEOUT = 6000;
-	private static final int SOCKET_TIMEOUT = 6000;
+	private static final String FIN_ROOT = "https://www.project-fin.org/fin/";
+	private static final int CONNECTION_TIMEOUT = 8000;
+	private static final int SOCKET_TIMEOUT = 8000;
 
 	public static String create(String phone_id, String cat, String fid, String special_info, String latitude, String longitude, Context context) {
 		// Initialize the array of name value pairs

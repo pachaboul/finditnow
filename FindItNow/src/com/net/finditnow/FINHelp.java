@@ -47,7 +47,7 @@ public class FINHelp extends FINActivity {
 
 		// Link
 		TextView link = (TextView) findViewById(R.id.help_link);
-		link.setText(Html.fromHtml("<a href=\"http://code.google.com/p/finditnow\">FindItNow on Google Code</a>"));
+		link.setText(Html.fromHtml("<a href=\"https://code.google.com/p/finditnow\">FindItNow on Google Code</a>"));
 		link.setMovementMethod(LinkMovementMethod.getInstance()); 
 	}
 
