@@ -7,6 +7,10 @@ package com.net.finditnow;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
+
 public class FINUtil {
 
 	/**
@@ -14,21 +18,13 @@ public class FINUtil {
 	 * @param str String to capitalize
 	 * @return Copy of the string with the first character capitalized
 	 */
-	public static String displayCategory(String str)
+	public static String displayCategory(String cat, Context context)
 	{
-		if (str.equals("")) {
-			return str;
-		} else if (str.equals("atms")) {
-			return "ATMs";
-		} else {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(str);    	
-			buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
-			if (buffer.indexOf("_") != -1) {
-				buffer.setCharAt(buffer.indexOf("_") + 1, Character.toUpperCase(buffer.charAt(buffer.indexOf("_") + 1)));
-			}
-			return buffer.toString().replace('_', ' ');
-		}
+		FINDatabase db = new FINDatabase(context);
+		Cursor cursor = db.getReadableDatabase().query("categories", null, "name = '" + cat + "'", null, null, null, null);
+		cursor.moveToFirst();
+		
+		return cursor.getColumnName(cursor.getColumnIndex("full_name"));
 	}
 
 	/**
@@ -36,23 +32,13 @@ public class FINUtil {
 	 * @param strs ArrayList of strings
 	 * @return New ArrayList with copy of the strings that are in proper caps.
 	 */
-	public static ArrayList<String> displayAllCategories(ArrayList<String> strs)
+	public static ArrayList<String> displayAllCategories(ArrayList<String> strs, Context context)
 	{
 		ArrayList<String> al = new ArrayList<String>();
 		for (String s : strs) {
-			al.add(displayCategory(s));
+			al.add(displayCategory(s, context));
 		}
 		return al;
-	}
-
-	public static String displayItemName(String str) {
-		if (str.equals("")) {
-			return str;
-		} else if (str.equals("blue_book") || str.equals("scantron")) {
-			return displayCategory(str) + "s";
-		} else {
-			return displayCategory(str);
-		}
 	}
 
 	public static String pluralize(String str, int num) {
@@ -68,12 +54,14 @@ public class FINUtil {
 	 * @param str The string to decap
 	 * @return A new string with the above operations undone
 	 */
-	public static String sendCategory(String str) {
-		if (str != null) {
-			return str.toLowerCase().replace(" ", "_");
-		} else {
-			return str;
-		}
+	public static String sendCategory(String cat, Context context) {
+		FINDatabase db = new FINDatabase(context);
+		Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + cat + "'", null, null, null, null);
+		cursor.moveToFirst();
+		
+		Log.v("Test", cursor.getColumnName(cursor.getColumnIndex("name")));
+		
+		return cursor.getString(cursor.getColumnIndex("name"));
 	}
 
 	/**
@@ -81,26 +69,13 @@ public class FINUtil {
 	 * @param strs ArrayList of strings
 	 * @return New ArrayList with copy of the strings that are in proper caps.
 	 */
-	public static ArrayList<String> sendAllCategories(ArrayList<String> strs)
+	public static ArrayList<String> sendAllCategories(ArrayList<String> strs, Context context)
 	{
 		ArrayList<String> al = new ArrayList<String>();
 		for (String s : strs) {
-			al.add(sendCategory(s));
+			al.add(sendCategory(s, context));
 		}
 		return al;
-	}
-
-	/**
-	 * Undoes the above operation
-	 * @param str The string to decap
-	 * @return A new string with the above operations undone
-	 */
-	public static String sendItemName(String str) {
-		if (str.endsWith("s")) {
-			return str.toLowerCase().replace(" ", "_").substring(0, str.length() - 1);
-		} else {
-			return str.toLowerCase();
-		}
 	}
 
 	/**
@@ -108,10 +83,10 @@ public class FINUtil {
 	 * @param categories An ArrayList of Strings containing the categories
 	 * @return A String of categories each separated by "|"
 	 */
-	public static String allCategories(ArrayList<String> categories) {
+	public static String allCategories(ArrayList<String> categories, Context context) {
 		String cats = "";
 		for (String s : categories) {
-			cats = cats + sendCategory(s) + " ";
+			cats = cats + sendCategory(s, context) + " ";
 		}
 
 		return cats.substring(0, cats.length() - 1);

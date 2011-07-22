@@ -172,9 +172,9 @@ public class JsonParser {
 		}
 	}
 
-	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json,String category){
+	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json, String category, Context context){
 		if (category.equals(""))
-			return parseAllCategoryJson(json);
+			return parseAllCategoryJson(json, context);
 		else{
 			HashMap<GeoPoint,HashMap<String,CategoryItem>> result = new HashMap<GeoPoint,HashMap<String,CategoryItem>>();
 
@@ -183,7 +183,7 @@ public class JsonParser {
 			for (GeoPoint key:map.keySet()){
 				HashMap<String,CategoryItem> oneMap = new HashMap<String,CategoryItem>();
 
-				oneMap.put(FINUtil.displayCategory(category), map.get(key));
+				oneMap.put(FINUtil.displayCategory(category, context), map.get(key));
 				result.put(key,oneMap);
 			}
 			return result;
@@ -264,7 +264,7 @@ public class JsonParser {
 	 * @param jsonArray jsonArray containing information
 	 * @return HashMap<GeoPoint,HashMap<String,CategoryItem>> maps a location with its information
 	 */
-	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseAllCategoryJson(String json)
+	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseAllCategoryJson(String json, Context context)
 	{
 		//creates the map for information to be stored in
 		HashMap<GeoPoint,HashMap<String,CategoryItem>> map = new HashMap<GeoPoint,HashMap<String,CategoryItem>>();
@@ -301,13 +301,7 @@ public class JsonParser {
 
 						//grab the category and its corresponding CategoryItem if it is in the map
 						//else make a new one
-						String cat = FINUtil.displayCategory(ob.get(LOCATION_NAMES[5]).getAsString());
-						if (ob.has(LOCATION_NAMES[6]))
-						{
-							String item = FINUtil.displayItemName(ob.get(LOCATION_NAMES[6]).getAsString());
-							//the floor id associated with this point
-							cat = (item.equals("")? cat:item);
-						}
+						String cat = FINUtil.displayCategory(ob.get(LOCATION_NAMES[5]).getAsString(), context);
 						CategoryItem item;
 						if (oneMap.get(cat) != null){
 							item = oneMap.get(cat);

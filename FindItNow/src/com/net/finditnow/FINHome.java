@@ -25,12 +25,7 @@ import com.google.android.maps.GeoPoint;
 
 public class FINHome extends TabActivity {
 
-	private static HashMap<GeoPoint, Building> buildingsMap;
-	private static HashMap<String, String[]> categoriesMap;
 	private static HashMap<String, Integer> iconsMap;
-	private static HashMap<String, String> itemsMap;
-	private static ArrayList<String> buildings;
-	private static ArrayList<String> categories;
 
 	private static boolean loggedin;
 
@@ -47,37 +42,12 @@ public class FINHome extends TabActivity {
 		} else {
 			// Generate our list of categories from the database
 			if (getIntent().hasCategory("App Startup")) {
-				categories = new ArrayList<String>();
-				
-				FINDatabase db = new FINDatabase(getBaseContext());
-				Cursor cursor = db.getReadableDatabase().query("categories", null, "parent = 0", null, null, null, null);
-				cursor.moveToFirst();
-				while (!cursor.isAfterLast()) {
-					categories.add(cursor.getString(cursor.getColumnIndex("full_name")));
-					cursor.moveToNext();
-				}
-
-				Collections.sort(categories);
-
 				// Grab the list of items and put it in the map
 				// TODO: Extend this so that we make no references in the frontend to school_supplies
-				categoriesMap = createCategoriesMap(categories);
-				itemsMap = createItemsMap(categories);
+				ArrayList<String> categories = getCategoriesList(false, getBaseContext());
 
 				// Store a map from categories to icons so that other modules can use it
 				iconsMap = createIconsMap(categories);
-
-				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-				String rid = prefs.getInt("rid", 0)+"";
-				JsonParser.parseBuildingJson(extras.getString("buildings"), getBaseContext());
-				buildings = new ArrayList<String>();
-				cursor = db.getReadableDatabase().query("buildings", null, "rid = " + rid, null, null, null, null);
-				cursor.moveToFirst();
-				while (!cursor.isAfterLast()) {
-					buildings.add(cursor.getString(cursor.getColumnIndex("name")));
-					cursor.moveToNext();
-				}
-				Collections.sort(buildings);
 
 				loggedin = extras.getBoolean("loggedin");
 				if (isLoggedIn()) {
@@ -137,44 +107,11 @@ public class FINHome extends TabActivity {
 
 		// Loop over each category and map it to the icon file associated with it
 		for (String str : categories) {
-			iconsMap.put(str, getResources().getIdentifier("drawable/"+FINUtil.sendCategory(str), null, getPackageName()));
-			iconsMap.put(str + "-big", getResources().getIdentifier("drawable/"+FINUtil.sendCategory(str)+"_big", null, getPackageName()));
+			iconsMap.put(str, getResources().getIdentifier("drawable/"+FINUtil.sendCategory(str, getBaseContext()), null, getPackageName()));
+			iconsMap.put(str + "-big", getResources().getIdentifier("drawable/"+FINUtil.sendCategory(str, getBaseContext())+"_big", null, getPackageName()));
 		}
 
 		return iconsMap;
-	}
-
-	private HashMap<String, String[]> createCategoriesMap(ArrayList<String> categories) {
-		HashMap<String, String[]> categoriesMap = new HashMap<String, String[]>();
-		String[] items = getResources().getStringArray(R.array.school_supplies_items);
-
-		for (String category : categories) {
-			categoriesMap.put(category, category.equals("School Supplies")? items : null);
-		}
-
-		return categoriesMap;
-	}
-
-	private HashMap<String, String> createItemsMap(ArrayList<String> categories) {
-		HashMap<String, String> itemsMap = new HashMap<String, String>();
-		String[] items = getResources().getStringArray(R.array.school_supplies_items);
-
-		for (String item : items) {
-			itemsMap.put(item, "School Supplies");
-		}
-
-		return itemsMap;
-	}
-
-	/**
-	 * Returns an ArrayList of unique buildings from a HashMap of GeoPoints and buildings.
-	 */
-	public static ArrayList<String> createBuildingList(HashMap<GeoPoint, Building> map) {
-		ArrayList<String> list = new ArrayList<String>();
-		for (GeoPoint point : map.keySet()) {
-			list.add(map.get(point).getName());
-		}
-		return list;
 	}
 
 	/**
@@ -218,6 +155,7 @@ public class FINHome extends TabActivity {
 			names[i] = cursor.getString(cursor.getColumnIndex("name"));
 			cursor.moveToNext();
 		}
+		cursor.close();
 		
 		return new Building(bid, name, fids, names);
 	}
@@ -225,7 +163,22 @@ public class FINHome extends TabActivity {
 	/**
 	 * Returns an ArrayList of buildings
 	 */
-	public static ArrayList<String> getBuildingsList() {
+	public static ArrayList<String> getBuildingsList(Context context) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		int rid = prefs.getInt("rid", 0);
+		
+		ArrayList<String> buildings = new ArrayList<String>();
+		FINDatabase db = new FINDatabase(context);
+		Cursor cursor = db.getReadableDatabase().query("buildings", null, "rid = " + rid, null, null, null, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			buildings.add(cursor.getString(cursor.getColumnIndex("name")));
+			Log.v("BUILDINZ", cursor.getString(cursor.getColumnIndex("name")));
+			cursor.moveToNext();
+		}
+		cursor.close();
+		Collections.sort(buildings);
+		
 		return buildings;
 	}
 
@@ -233,8 +186,37 @@ public class FINHome extends TabActivity {
 	/**
 	 * Returns an ArrayList of top-level categories
 	 */
-	public static ArrayList<String> getCategoriesList() {
+	public static ArrayList<String> getCategoriesList(boolean subcategories, Context context) {
+		ArrayList<String> categories = new ArrayList<String>();
+		
+		FINDatabase db = new FINDatabase(context);
+		Cursor cursor = db.getReadableDatabase().query("categories", null, subcategories? null : "parent = 0", null, null, null, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			categories.add(cursor.getString(cursor.getColumnIndex("full_name")));
+			cursor.moveToNext();
+		}
+
+		Collections.sort(categories);
 		return categories;
+	}
+	
+	public static ArrayList<String> getSubcategories(String cat, Context context) {
+		ArrayList<String> subcategories = new ArrayList<String>();
+		
+		FINDatabase db = new FINDatabase(context);
+		Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + cat + "'", null, null, null, null);
+		cursor.moveToFirst();
+		int cat_id = cursor.getInt(cursor.getColumnIndex("cat_id"));
+		cursor = db.getReadableDatabase().query("categories", null, "parent = " + cat_id, null, null, null, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			subcategories.add(cursor.getString(cursor.getColumnIndex("full_name")));
+			cursor.moveToNext();
+		}
+
+		Collections.sort(subcategories);
+		return subcategories;
 	}
 
 
@@ -284,31 +266,6 @@ public class FINHome extends TabActivity {
 			}
 		}
 		return R.drawable.android;
-	}
-
-	/**
-	 * Returns the category associated with an item
-	 */
-	public static String getCategoryFromItem(String item) {
-		return itemsMap.get(item);
-	}
-
-	/**
-	 * Returns the item associated with a category
-	 */
-	public static String[] getItemsFromCategory(String category) {
-		return categoriesMap.get(category);
-	}
-
-	/**
-	 * returns true if the given category name has sub-categories (items)
-	 */
-	public static boolean hasItems(String category) {
-		return categoriesMap.get(category) != null;
-	}
-
-	public static boolean isItem(String item) {
-		return itemsMap.keySet().contains(item);
 	}
 
 	public static void setLoggedIn(boolean loggedin) {

@@ -107,8 +107,6 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 
 		String[] parentText = { building.getFloorNames()[groupPosition]};
 		String category = categoryOf(parentText[0])[childPosition];
-		String dbCategory = FINHome.isItem(category) ? FINHome.getCategoryFromItem(category) : category;
-		String item = FINHome.isItem(category)? dbCategory : "";
 
 		String parentMode = "categoryView";
 		relative.getLayoutParams().height= HEIGHT;
@@ -169,7 +167,7 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 			imageView.setLayoutParams(new LinearLayout.LayoutParams(40, 40));
 			imageView.setPadding(0,12,0,0);
 
-			String cat = FINHome.isItem(icons[i])? FINHome.getCategoryFromItem(icons[i]) : icons[i];
+			String cat = icons[i];
 			imageView.setImageResource(FINHome.getIcon(cat, context));
 
 			layout.addView(imageView);

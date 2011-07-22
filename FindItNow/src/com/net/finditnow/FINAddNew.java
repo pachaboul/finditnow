@@ -57,11 +57,11 @@ public class FINAddNew extends FINActivity {
 
 			//Set up the category spinner
 			Spinner cSpinner = (Spinner) findViewById(R.id.addnew_cspinner);
-			ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINHome.getCategoriesList());
+			ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FINHome.getCategoriesList(true, getBaseContext()));
 			cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			cSpinner.setAdapter(cAdapter);
 			cSpinner.setOnItemSelectedListener(cspinner_listener);
-			selectedCategory = FINHome.getCategoriesList().get(0);
+			selectedCategory = FINHome.getCategoriesList(true, getBaseContext()).get(0);
 
 			//Set up "next" button for indoor/outdoor and category selection screen
 			final Button next = (Button) findViewById(R.id.addnew_next);

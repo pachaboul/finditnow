@@ -38,7 +38,7 @@ public class FINAddIndoor extends FINActivity {
 		// Set up spinner for building selection
 		Spinner bSpinner = (Spinner) findViewById(R.id.addnew_bspinner);
 		ArrayAdapter<String> bAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, FINHome.getBuildingsList());
+				android.R.layout.simple_spinner_item, FINHome.getBuildingsList(getBaseContext()));
 		bAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		bSpinner.setAdapter(bAdapter);
 		bSpinner.setOnItemSelectedListener(bspinner_listener);
@@ -51,13 +51,13 @@ public class FINAddIndoor extends FINActivity {
 
 		// Special case where we set the default building.
 		if (defaultBuilding != null) {
-			int index = FINHome.getBuildingsList().indexOf(defaultBuilding);
+			int index = FINHome.getBuildingsList(getBaseContext()).indexOf(defaultBuilding);
 			bSpinner.setSelection(index);
 			selectedBuilding = FINHome.getBuilding(
-					FINHome.getGeoPointFromBuilding(FINHome.getBuildingsList().get(index), getBaseContext()), getBaseContext());
+					FINHome.getGeoPointFromBuilding(FINHome.getBuildingsList(getBaseContext()).get(index), getBaseContext()), getBaseContext());
 		} else {
 			selectedBuilding = FINHome.getBuilding(
-					FINHome.getGeoPointFromBuilding(FINHome.getBuildingsList().get(0), getBaseContext()), getBaseContext());
+					FINHome.getGeoPointFromBuilding(FINHome.getBuildingsList(getBaseContext()).get(0), getBaseContext()), getBaseContext());
 		}
 
 		//Set up "add item" button
