@@ -56,36 +56,39 @@ public class JsonParser {
 	{
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
-		JsonArray arr = parser.next().getAsJsonArray();
-		
-		db = new FINDatabase(context);
-
-		for (int i = 0; i < arr.size(); i++)
-		{
-			if (arr.get(i).isJsonObject())
+		if (!json.equals("")) {
+			Log.v("JSON IS", json);
+			JsonArray arr = parser.next().getAsJsonArray();
+			
+			db = new FINDatabase(context);
+	
+			for (int i = 0; i < arr.size(); i++)
 			{
-				//Since the JsonArray contains whole bunch json array, we can get each one out
-				JsonObject ob = arr.get(i).getAsJsonObject();
-				
-				// Grab the stuff
-				int bid = ob.get("bid").getAsInt();
-				String name = ob.get("name").getAsString();
-				int latitude = ob.get("latitude").getAsInt();
-				int longitude = ob.get("longitude").getAsInt();
-				JsonArray fids = ob.get("fid").getAsJsonArray();
-				JsonArray fnums = ob.get("fnum").getAsJsonArray();
-				JsonArray fnames = ob.get("floor_names").getAsJsonArray();
-								
-				for (int j = 0; j < fids.size(); j++) {
-					db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO floors (fid, bid, fnum, name) VALUES (" + 
-							  fids.get(j).getAsInt() + ", " + bid + ", " + fnums.get(j).getAsInt() + ", '" + fnames.get(j).getAsString() + "')");
+				if (arr.get(i).isJsonObject())
+				{
+					//Since the JsonArray contains whole bunch json array, we can get each one out
+					JsonObject ob = arr.get(i).getAsJsonObject();
+					
+					// Grab the stuff
+					int bid = ob.get("bid").getAsInt();
+					String name = ob.get("name").getAsString();
+					int latitude = ob.get("latitude").getAsInt();
+					int longitude = ob.get("longitude").getAsInt();
+					JsonArray fids = ob.get("fid").getAsJsonArray();
+					JsonArray fnums = ob.get("fnum").getAsJsonArray();
+					JsonArray fnames = ob.get("floor_names").getAsJsonArray();
+									
+					for (int j = 0; j < fids.size(); j++) {
+						db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO floors (fid, bid, fnum, name) VALUES (" + 
+								  fids.get(j).getAsInt() + ", " + bid + ", " + fnums.get(j).getAsInt() + ", '" + fnames.get(j).getAsString() + "')");
+					}
+					
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+					String rid = prefs.getInt("rid", 0)+"";
+	
+					db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO buildings (bid, rid, name, latitude, longitude) VALUES (" + 
+							  bid + ", " + rid + ", '" + name + "', " + latitude + ", " + longitude + ")");
 				}
-				
-				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-				String rid = prefs.getInt("rid", 0)+"";
-
-				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO buildings (bid, rid, name, latitude, longitude) VALUES (" + 
-						  bid + ", " + rid + ", '" + name + "', " + latitude + ", " + longitude + ")");
 			}
 		}
 		
