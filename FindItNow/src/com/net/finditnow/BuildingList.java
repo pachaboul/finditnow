@@ -43,7 +43,6 @@ public class BuildingList extends FINListActivity {
 		setContentView(R.layout.list_bg_with_filter);
 		
 		db = new FINDatabase(getBaseContext());
-		
 		adapter = new ArrayAdapter<String>(this, R.layout.list_item, FINHome.getBuildingsList(getBaseContext()));
 		
 		filterText = (EditText) findViewById(R.id.search_box);

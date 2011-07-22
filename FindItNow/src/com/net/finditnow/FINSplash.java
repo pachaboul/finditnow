@@ -103,11 +103,8 @@ public class FINSplash extends Activity {
 		} else {
 			Cursor cursor = db.getReadableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
 			cursor.moveToFirst();
-			campus = cursor.getString(1);
-			
-			cursor.close();
-			db.close();
-			
+			campus = cursor.getString(cursor.getColumnIndex("name"));
+						
 			handler3.sendEmptyMessage(0);
 		}
 
@@ -126,7 +123,7 @@ public class FINSplash extends Activity {
 				// Set color theme (hardcoded for now).
 				Cursor cursor = db.getReadableDatabase().query("colors", null, "colors.rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
 				cursor.moveToFirst();
-				String color = cursor.getString(1);
+				String color = cursor.getString(cursor.getColumnIndex("color1"));
 				
 				FINTheme.setTheme(color, getBaseContext());
 				
@@ -142,6 +139,7 @@ public class FINSplash extends Activity {
 				JsonParser.parseCategoriesList(categories, getBaseContext());
 				
 				String buildings = DBCommunicator.getBuildings(prefs.getInt("rid", 0)+"", getBaseContext());
+				JsonParser.parseBuildingJson(buildings, getBaseContext());
 
 				boolean loggedin = loggedinstr.contains(getString(R.string.login_already));
 				boolean readytostart = !(loggedinstr.equals(getString(R.string.timeout)) || categories.equals(getString(R.string.timeout)) 
@@ -194,8 +192,8 @@ public class FINSplash extends Activity {
 			
 			cursor.moveToPosition(which);
 			
-			campus = cursor.getString(1);
-			editor.putInt("rid", cursor.getInt(0));
+			campus = cursor.getString(cursor.getColumnIndex("name"));
+			editor.putInt("rid", cursor.getInt(cursor.getColumnIndex("rid")));
 			editor.commit();
 
 			splashThread.start();
@@ -214,11 +212,14 @@ public class FINSplash extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			regionDialog.dismiss();
+			
+			cursor = db.getReadableDatabase().query("regions", null, null, null, null, null, null);
+			cursor.moveToFirst();
+			
 			if (manual) {
 				selectCampus();
 			} else {
-				cursor.moveToFirst();
-				campus = cursor.getString(1);
+				campus = cursor.getString(cursor.getColumnIndex("name"));
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(FINSplash.this);
 				builder.setTitle("Region Selection");
@@ -229,7 +230,7 @@ public class FINSplash extends Activity {
 					public void onClick(DialogInterface dialog, int id) {
 						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());  
 						SharedPreferences.Editor editor = prefs.edit();						
-						editor.putInt("rid", cursor.getInt(0));
+						editor.putInt("rid", cursor.getInt(cursor.getColumnIndex("rid")));
 						editor.commit();
 										
 						splashThread.start();
@@ -251,9 +252,8 @@ public class FINSplash extends Activity {
 		builder.setTitle("Select your campus or region");
 		
 		campuses = new ArrayList<String>();
-		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
-			campuses.add(cursor.getString(1));
+			campuses.add(cursor.getString(cursor.getColumnIndex("name")));
 			cursor.moveToNext();
 		}
 		
@@ -295,10 +295,7 @@ public class FINSplash extends Activity {
     		if (campusJson.equals(getString(R.string.timeout))) {
     			failureHandler.sendEmptyMessage(0);
     		} else {
-				JsonParser.parseRegionJson(campusJson, getBaseContext());
-				cursor = db.getReadableDatabase().query("regions", null, null, null, null, null, null);
-				cursor.moveToFirst();
-				
+				JsonParser.parseRegionJson(campusJson, getBaseContext());				
 				handler2.sendEmptyMessage(0);
     		}
 		}
@@ -311,4 +308,11 @@ public class FINSplash extends Activity {
     		conCheck.connectionError();
 		}
 	};
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		db.close();
+	}
 }
