@@ -90,10 +90,13 @@ public class FINAddIndoor extends FINActivity {
 				@Override
 				public void run() {
 					HashMap<String, Integer> map = selectedBuilding.floorMap();
+					
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+					String rid = prefs.getInt("rid", 0)+"";
 
 					//Send new item to database
 					final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-					String result = DBCommunicator.create(phone_id, selectedCategory, map
+					String result = DBCommunicator.createItem(phone_id, selectedCategory, rid,  map
 							.get(selectedFloor)+"", special_info, "", "", getBaseContext());
 
 					// Load the map with the new item
@@ -103,9 +106,6 @@ public class FINAddIndoor extends FINActivity {
 					myIntent.putExtra("building", "");
 					myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName(), getBaseContext()).getLatitudeE6());
 					myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName(), getBaseContext()).getLongitudeE6());
-					
-					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-					String rid = prefs.getInt("rid", 0)+"";
 
 					String locations = DBCommunicator.getLocations(selectedCategory, rid, 0+"", getBaseContext());
 					myIntent.putExtra("locations", locations);

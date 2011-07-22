@@ -38,12 +38,13 @@ public class DBCommunicator {
 	private static final int CONNECTION_TIMEOUT = 8000;
 	private static final int SOCKET_TIMEOUT = 8000;
 
-	public static String create(String phone_id, String cat, String fid, String special_info, String latitude, String longitude, Context context) {
+	public static String createItem(String phone_id, String cat, String rid, String fid, String special_info, String latitude, String longitude, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 		nameValuePairs.add(new BasicNameValuePair("cat", FINUtil.sendCategory(cat, context)));
+		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 		nameValuePairs.add(new BasicNameValuePair("fid", fid));
 		nameValuePairs.add(new BasicNameValuePair("special_info", special_info));
 		nameValuePairs.add(new BasicNameValuePair("latitude", latitude));
