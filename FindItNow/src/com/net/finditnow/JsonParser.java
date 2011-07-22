@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -40,11 +41,10 @@ public class JsonParser {
 	//JSON array.
 	private static final String[] LOCATION_NAMES = { "lat",
 		"long",
-		"floor_names",
+		"fid",
 		"info",
 		"id",
-		"cat",
-	"item"};
+		"cat"};
 
 	/**
 	 * parse a json string into a map of GeoPoint to Building
@@ -220,13 +220,17 @@ public class JsonParser {
 
 					if (ob.has(LOCATION_NAMES[2]))
 					{
-						JsonArray s = ob.get(LOCATION_NAMES[2]).getAsJsonArray();
-						//the floor names associated with this point
-						String[] flrNames = gson.fromJson(s,String[].class);
-						if (flrNames.length == 0)
-							item.addFloor_names("");
-						for (String flr: flrNames)
-							item.addFloor_names(flr);
+						int fid = ob.get(LOCATION_NAMES[2]).getAsInt();
+						
+						Cursor cursor = db.getReadableDatabase().query("floors", null, "fid = " + fid, null, null, null, null);
+						cursor.moveToFirst();
+						
+						String floor_name = "";
+						if (cursor.getCount() > 0) {
+							floor_name = cursor.getString(cursor.getColumnIndex("name"));
+						}
+						
+						item.addFloor_names(floor_name);
 					}
 					if (ob.has(LOCATION_NAMES[3]))
 					{
@@ -303,13 +307,13 @@ public class JsonParser {
 
 						if (ob.has(LOCATION_NAMES[2]))
 						{
-							JsonArray s = ob.get(LOCATION_NAMES[2]).getAsJsonArray();
-							//the floor names associated with this point
-							String[] flrNames = gson.fromJson(s,String[].class);
-							if (flrNames.length == 0)
-								item.addFloor_names("");
-							for (String flr: flrNames)
-								item.addFloor_names(flr);
+							int fid = ob.get(LOCATION_NAMES[2]).getAsInt();
+							
+							Cursor cursor = db.getReadableDatabase().query("floors", null, "fid = " + fid, null, null, null, null);
+							cursor.moveToFirst();
+							
+							String floor_name = cursor.getString(cursor.getColumnIndex("name"));
+							item.addFloor_names(floor_name);
 						}
 						if (ob.has("info"))
 						{
