@@ -191,7 +191,7 @@ public class FINHome extends TabActivity {
 	public static ArrayList<String> getBuildingsList(Context context) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		int rid = prefs.getInt("rid", 0);
-		
+				
 		ArrayList<String> buildings = new ArrayList<String>();
 		Cursor cursor = db.getReadableDatabase().query("buildings", null, "rid = " + rid, null, null, null, null);
 		cursor.moveToFirst();
