@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- Active tab -->
+	<item
+		android:id="@+id/tab_active"
+		android:state_selected="true"
+		android:state_focused="false"
+		android:state_pressed="false"
+		android:drawable="@drawable/tab_focused_blue"/>
+		
+	<!-- Inactive tab -->
+	<item
+		android:id="@+id/tab_inactive"
+		android:state_selected="false"
+		android:state_focused="false"
+		android:state_pressed="false"
+		android:drawable="@drawable/tab_unfocused_blue"/>
+		
+	<!-- Pressed tab -->
+	<item
+		android:id="@+id/tab_pressed"
+		android:state_pressed="true"
+		android:drawable="@drawable/tab_focused_blue"/>
+		
+	<!-- Selected tab (using d-pad) -->
+	<item
+		android:id="@+id/tab_selected"
+		android:state_selected="true"
+		android:state_focused="true"
+		android:state_pressed="false"
+		android:drawable="@drawable/tab_focused_blue"/>	
+</selector>
