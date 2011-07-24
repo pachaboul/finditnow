@@ -71,7 +71,7 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 		GeoPoint itemLocation = overlay.getPoint();
 		
 		// Calculate the distance and the walking time to this location
-		BigDecimal distance = FINMap.distanceBetween(FINMap.getLocation(), itemLocation);
+		double distance = FINMap.distanceBetween(FINMap.getLocation(), itemLocation);
 		int walkingTime = FINMap.walkingTime(distance, 35);
 
 		// Retrieve the floors, special info, and category of the location
