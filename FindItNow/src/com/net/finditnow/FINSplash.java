@@ -112,9 +112,9 @@ public class FINSplash extends Activity {
 				Intent myIntent = null;
 
 				splashes = new HashMap<String, Integer>();
-				splashes.put("University of Washington", R.drawable.uw_splash);
-				splashes.put("Western Washington University", R.drawable.wwu_splash);
-				splashes.put("Washington State University", R.drawable.android);
+				splashes.put("University of Washington", R.drawable.splash_university_of_washington);
+				splashes.put("Western Washington University", R.drawable.splash_western_washington_university);
+				splashes.put("Washington State University", R.drawable.splash_washington_state_university);
 				
 				// Set color theme (hardcoded for now).
 				Cursor cursor = db.getReadableDatabase().query("colors", null, "rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
