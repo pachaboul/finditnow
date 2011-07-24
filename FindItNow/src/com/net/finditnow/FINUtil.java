@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 public class FINUtil {
 

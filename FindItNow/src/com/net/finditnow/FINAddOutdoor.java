@@ -60,9 +60,7 @@ public class FINAddOutdoor extends FINMapActivity {
 		selectedCategory = extras.getString("selectedCategory");
 		special_info = extras.getString("special_info");
 
-		// Zoom out enough
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		
+		// Zoom out enough		
 		mapController.animateTo(FINMap.getRegionCenter(getBaseContext()));
 		mapController.setZoom(18);
 		Toast.makeText(getBaseContext(), "Tap the location of your item", Toast.LENGTH_SHORT).show();
