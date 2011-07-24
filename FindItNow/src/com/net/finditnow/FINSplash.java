@@ -27,7 +27,7 @@ import android.widget.ImageView;
 public class FINSplash extends Activity {
 
 	protected boolean active = true;
-	protected int splashTime = 1500; // time to display the splash screen in ms
+	protected int splashTime = 0; // time to display the splash screen in ms
 	protected Thread splashThread;
 
 	private HashMap<String, Integer> splashes;
@@ -42,7 +42,6 @@ public class FINSplash extends Activity {
 	private int rid;
 	private String campusJson;
 	private ProgressDialog myDialog;
-	private ProgressDialog regionDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,14 +99,7 @@ public class FINSplash extends Activity {
 	            }
 	         });
 			myDialog.show();
-		} else {
-			campusJson = DBCommunicator.getRegions(prefs.getInt("location_lat", 0)+"", prefs.getInt("location_lon", 0)+"", getBaseContext());
-			JsonParser.parseRegionJson(campusJson, getBaseContext());	
-			
-			Cursor cursor = db.getReadableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
-			cursor.moveToFirst();
-			campus = cursor.getString(cursor.getColumnIndex("name"));
-						
+		} else {		
 			handler3.sendEmptyMessage(0);
 		}
 
@@ -125,40 +117,47 @@ public class FINSplash extends Activity {
 				splashes.put("Washington State University", R.drawable.android);
 				
 				// Set color theme (hardcoded for now).
-				Cursor cursor = db.getReadableDatabase().query("colors", null, "colors.rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
+				Cursor cursor = db.getReadableDatabase().query("colors", null, "rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
 				cursor.moveToFirst();
 				String color = cursor.getString(cursor.getColumnIndex("color1"));
-				
-				Log.v("RID is and color is", prefs.getInt("rid", 0)+ " " + color);
-				
+								
 				FINTheme.setTheme(color, getBaseContext());
+				
+				cursor = db.getReadableDatabase().query("regions", null, "rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
+				cursor.moveToFirst();
+				campus = cursor.getString(cursor.getColumnIndex("name"));
 				
 				// Set default location
 				handler.sendEmptyMessage(0);
+				
+				myIntent = new Intent(getBaseContext(), FINHome.class);
+				myIntent.addCategory("App Startup");
 
 				// Check logged in status
 				final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
+				boolean connected = true;
 				
 				String loggedinstr = DBCommunicator.loggedIn(phone_id, getBaseContext());
-				
-				String categories = DBCommunicator.getCategories(getBaseContext());
-				JsonParser.parseCategoriesList(categories, getBaseContext());
-				
-				String buildings = DBCommunicator.getBuildings(prefs.getInt("rid", 0)+"", getBaseContext());
-				JsonParser.parseBuildingJson(buildings, getBaseContext());
-
+				if (loggedinstr.equals(getString(R.string.timeout))) {
+					connected = false;
+				}
 				boolean loggedin = loggedinstr.contains(getString(R.string.login_already));
-				boolean readytostart = !(loggedinstr.equals(getString(R.string.timeout)) || categories.equals(getString(R.string.timeout)) 
-						|| buildings.equals(getString(R.string.timeout)));
-
-				myIntent = new Intent(getBaseContext(), FINHome.class);
-				myIntent.addCategory("App Startup");
-				myIntent.putExtra("buildings", buildings);
 				myIntent.putExtra("loggedin", loggedin);
-				myIntent.putExtra("readytostart", readytostart);
-
-				if (loggedin) {
-					myIntent.putExtra("username", loggedinstr.substring(21, loggedinstr.length()));
+				if (connected) {
+					campusJson = DBCommunicator.getRegions(prefs.getInt("location_lat", 0)+"", prefs.getInt("location_lon", 0)+"", getBaseContext());
+					JsonParser.parseRegionJson(campusJson, getBaseContext());	
+					
+					cursor = db.getReadableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
+					
+					String categories = DBCommunicator.getCategories(getBaseContext());
+					JsonParser.parseCategoriesList(categories, getBaseContext());
+					
+					String buildings = DBCommunicator.getBuildings(prefs.getInt("rid", 0)+"", getBaseContext());
+					JsonParser.parseBuildingJson(buildings, getBaseContext());
+	
+					if (loggedin) {
+						myIntent.putExtra("username", loggedinstr.substring(21, loggedinstr.length()));
+					}
 				}
 				try {
 					int waited = 0;
@@ -173,7 +172,6 @@ public class FINSplash extends Activity {
 					// do nothing
 				} finally {
 					db.close();
-					cursor.close();
 					startActivity(myIntent);
 					finish();
 				}
@@ -209,6 +207,7 @@ public class FINSplash extends Activity {
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
+			setContentView(R.layout.fin_splash);
 			ImageView image = (ImageView) findViewById(R.id.splash_img);
 			image.setImageResource(splashes.get(campus));
 		}
@@ -216,9 +215,7 @@ public class FINSplash extends Activity {
 	
 	private Handler handler2 = new Handler() {
 		@Override
-		public void handleMessage(Message msg) {
-			regionDialog.dismiss();
-			
+		public void handleMessage(Message msg) {			
 			cursor = db.getReadableDatabase().query("regions", null, null, null, null, null, null);
 			cursor.moveToFirst();
 			
@@ -273,7 +270,6 @@ public class FINSplash extends Activity {
 	private Handler handler3 = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			setContentView(R.layout.fin_splash);
 			splashThread.start();
 		}
 	};
@@ -285,8 +281,6 @@ public class FINSplash extends Activity {
 				myDialog.dismiss();
 			}
 			
-			regionDialog = ProgressDialog.show(FINSplash.this, "" , "Loading list of regions...", true);
-
 			if (!connectionThread.isAlive()) {
 				connectionThread.start();
 			}

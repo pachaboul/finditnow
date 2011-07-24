@@ -37,45 +37,39 @@ public class FINHome extends TabActivity {
 
 		Bundle extras = getIntent().getExtras(); 
 		db = new FINDatabase(getBaseContext());
+		// Generate our list of categories from the database
+		if (getIntent().hasCategory("App Startup")) {
+			// Grab the list of items and put it in the map
+			// TODO: Extend this so that we make no references in the frontend to school_supplies
+			ArrayList<String> categories = getCategoriesList(false, getBaseContext());
 
-		ConnectionChecker conCheck = new ConnectionChecker(this, FINHome.this);
-		if (getIntent().hasExtra("readytostart") && !extras.getBoolean("readytostart")) {
-			conCheck.connectionError();
-		} else {
-			// Generate our list of categories from the database
-			if (getIntent().hasCategory("App Startup")) {
-				// Grab the list of items and put it in the map
-				// TODO: Extend this so that we make no references in the frontend to school_supplies
-				ArrayList<String> categories = getCategoriesList(false, getBaseContext());
+			// Store a map from categories to icons so that other modules can use it
+			iconsMap = createIconsMap(categories);
 
-				// Store a map from categories to icons so that other modules can use it
-				iconsMap = createIconsMap(categories);
-
-				loggedin = extras.getBoolean("loggedin");
-				if (isLoggedIn()) {
-					Toast.makeText(getBaseContext(), "Welcome back " + extras.getString("username"), Toast.LENGTH_LONG).show();
-				}
+			loggedin = extras.getBoolean("loggedin");
+			if (isLoggedIn()) {
+				Toast.makeText(getBaseContext(), "Welcome back " + extras.getString("username"), Toast.LENGTH_LONG).show();
 			}
-
-			Resources res = getResources();
-			TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
-			tabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
-
-			addTab(new TextView(this),
-					"Categories",
-					res.getIdentifier("@drawable/categories_tab_icon", null, getPackageName()),
-					tabHost,
-					new Intent().setClass(this, FINMenu.class));
-			addTab(new TextView(this),
-					"Buildings",
-					res.getIdentifier("@drawable/buildings_tab_icon", null, getPackageName()),
-					tabHost,
-					new Intent().setClass(this, BuildingList.class));
-			
-			// And recolor the strip.
-			View tabStrip = (View) findViewById(R.id.fronttab_strip);
-			tabStrip.setBackgroundResource(FINTheme.getBrightColor());
 		}
+
+		Resources res = getResources();
+		TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
+		tabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
+
+		addTab(new TextView(this),
+				"Categories",
+				res.getIdentifier("@drawable/categories_tab_icon", null, getPackageName()),
+				tabHost,
+				new Intent().setClass(this, FINMenu.class));
+		addTab(new TextView(this),
+				"Buildings",
+				res.getIdentifier("@drawable/buildings_tab_icon", null, getPackageName()),
+				tabHost,
+				new Intent().setClass(this, BuildingList.class));
+		
+		// And recolor the strip.
+		View tabStrip = (View) findViewById(R.id.fronttab_strip);
+		tabStrip.setBackgroundResource(FINTheme.getBrightColor());
 	}
 	
 	@Override

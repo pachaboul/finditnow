@@ -34,9 +34,10 @@ import android.util.Log;
 public class DBCommunicator {
 
 	// A Constant representing the location of FIN
-	private static final String FIN_ROOT = "https://www.project-fin.org/fin/";
-	private static final int CONNECTION_TIMEOUT = 8000;
-	private static final int SOCKET_TIMEOUT = 8000;
+	private static final String FIN_ROOT = "http://www.project-fin.org/fin/";
+	private static final String SECURE_FIN_ROOT = "https://www.project-fin.org/fin/";
+	private static final int CONNECTION_TIMEOUT = 6000;
+	private static final int SOCKET_TIMEOUT = 6000;
 
 	public static String createItem(String phone_id, String cat, String rid, String fid, String special_info, String latitude, String longitude, Context context) {
 		// Initialize the array of name value pairs
@@ -50,7 +51,7 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("latitude", latitude));
 		nameValuePairs.add(new BasicNameValuePair("longitude", longitude));
 
-		return Post("FINsert/createItem.php", nameValuePairs, context);
+		return Post(FIN_ROOT, "FINsert/createItem.php", nameValuePairs, context);
 	}
 
 	public static String delete(String phone_id, String item_id, Context context) {
@@ -60,7 +61,7 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 		nameValuePairs.add(new BasicNameValuePair("item_id", item_id));
 
-		return Post("delete.php", nameValuePairs, context);
+		return Post(FIN_ROOT, "delete.php", nameValuePairs, context);
 	}
 	
 	public static String getRegions(String lat, String lon, Context context) {
@@ -69,11 +70,11 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("lon", lon));
 
-		return Post("getRegions.php", nameValuePairs, context);
+		return Post(FIN_ROOT, "getRegions.php", nameValuePairs, context);
 	}
 
 	public static String getCategories(Context context) {
-		return Get("getCategories.php", context);
+		return Get(FIN_ROOT, "getCategories.php", context);
 	}
 
 	public static String getBuildings(String rid, Context context) {
@@ -81,7 +82,7 @@ public class DBCommunicator {
 
 		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 
-		return Post("getBuildings.php", nameValuePairs, context);
+		return Post(FIN_ROOT, "getBuildings.php", nameValuePairs, context);
 	}
 
 	public static String getLocations(String cat, String rid, String bid, Context context) {
@@ -92,7 +93,7 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 		nameValuePairs.add(new BasicNameValuePair("bid", bid));
 				
-		return Post("getLocations.php", nameValuePairs, context);
+		return Post(FIN_ROOT, "getLocations.php", nameValuePairs, context);
 	}
 
 	public static String login(String phone_id, String username, String userpass, Context context) {
@@ -103,7 +104,7 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("userpass", userpass));
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 
-		return Post("login.php", nameValuePairs, context);
+		return Post(SECURE_FIN_ROOT, "login.php", nameValuePairs, context);
 	}
 
 	public static String loggedIn(String phone_id, Context context) {
@@ -112,7 +113,7 @@ public class DBCommunicator {
 
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 
-		return Post("loggedIn.php", nameValuePairs, context);
+		return Post(FIN_ROOT, "loggedIn.php", nameValuePairs, context);
 	}
 
 	public static String logout(String phone_id, Context context) {
@@ -121,7 +122,7 @@ public class DBCommunicator {
 
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 
-		return Post("logout.php", nameValuePairs, context);
+		return Post(FIN_ROOT, "logout.php", nameValuePairs, context);
 	}
 
 	public static String searchLocations(String cat, String rid, String sString, Context context) {
@@ -132,7 +133,7 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 		nameValuePairs.add(new BasicNameValuePair("sString", sString));
 
-		return Post("searchLocations.php", nameValuePairs, context);
+		return Post(FIN_ROOT, "searchLocations.php", nameValuePairs, context);
 	}
 
 	public static String update(String phone_id, String item_id, Context context) {
@@ -142,14 +143,14 @@ public class DBCommunicator {
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 		nameValuePairs.add(new BasicNameValuePair("item_id", item_id));
 
-		return Post("update.php", nameValuePairs, context);
+		return Post(FIN_ROOT, "update.php", nameValuePairs, context);
 	}
 
-	private static String Get(String suffix, Context context) {
+	private static String Get(String root, String suffix, Context context) {
 
 		String data = "";
 
-		HttpGet httpGet = new HttpGet(FIN_ROOT + suffix);
+		HttpGet httpGet = new HttpGet(root + suffix);
 
 		// Process the response from the server
 		HttpClient httpClient = createHttpClient();		
@@ -168,14 +169,14 @@ public class DBCommunicator {
 		return data.trim();
 	}
 
-	private static String Post(String suffix, List<BasicNameValuePair> nameValuePairs, Context context) {
+	private static String Post(String root, String suffix, List<BasicNameValuePair> nameValuePairs, Context context) {
 
 		// Initialize input stream and response variables
 		InputStream iStream = null;
 		String data = "";
 
 		try {
-			HttpPost httppost = new HttpPost(FIN_ROOT + suffix);
+			HttpPost httppost = new HttpPost(root + suffix);
 
 			// Process the response from the server
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
