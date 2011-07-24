@@ -10,9 +10,8 @@ import com.google.android.maps.GeoPoint;
 
 public class ComparableGeoPoint implements Comparator<GeoPoint> {
 
-	public BigDecimal distanceTo(GeoPoint one, GeoPoint another) {
+	public double distanceTo(GeoPoint one, GeoPoint another) {
 		// Define a math context and two location variables to process
-		MathContext mc = new MathContext(2);
 		Location loc1 = new Location("");
 		Location loc2 = new Location("");
 
@@ -27,20 +26,20 @@ public class ComparableGeoPoint implements Comparator<GeoPoint> {
 			loc2.setLongitude((float)(another.getLongitudeE6()*1E-6));
 
 			// Return this value in miles rounded
-			return new BigDecimal(loc1.distanceTo(loc2) * 0.000621371192, mc);
+			return loc1.distanceTo(loc2) * 0.000621371192;
 		} else {
 
 			// Return -1 if the location was not valid
-			return new BigDecimal(-1);
+			return -1;
 		}
 	}
 
 	public int compare(GeoPoint object1, GeoPoint object2) {
 		GeoPoint point = FINMap.getLocation();
 		if (point != null) {
-			BigDecimal distance1 = distanceTo(point, object1);
-			BigDecimal distance2 = distanceTo(point, object2);
-			double diff = distance1.doubleValue() - distance2.doubleValue();
+			double distance1 = distanceTo(point, object1);
+			double distance2 = distanceTo(point, object2);
+			double diff = distance1 - distance2;
 			if (diff < 0) {
 				return -1;
 			} else {

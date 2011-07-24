@@ -12,6 +12,7 @@ public class FINDatabase extends SQLiteOpenHelper {
     private static final String CATEGORIES_TABLE_CREATE = "CREATE TABLE categories (cat_id INTEGER PRIMARY KEY, name TEXT, full_name TEXT, parent INTEGER)";
     private static final String BUILDINGS_TABLE_CREATE = "CREATE TABLE buildings (bid INTEGER PRIMARY KEY, rid INTEGER, name TEXT, latitude INTEGER, longitude INTEGER)";
     private static final String FLOORS_TABLE_CREATE = "CREATE TABLE floors (fid INTEGER PRIMARY KEY, bid INTEGER, fnum INTEGER, name TEXT)";
+    private static final String ITEMS_TABLE_CREATE = "CREATE TABLE items (item_id INTEGER PRIMARY KEY, rid INTEGER, latitude INTEGER, longitude INTEGER, special_info TEXT, fid INTEGER, not_found_count INTEGER, username TEXT, cat_id INTEGER, created TIMESTAMP)";
     
     public FINDatabase(Context context) {
         super(context, "FIN_LOCAL", null, DATABASE_VERSION);
@@ -24,6 +25,7 @@ public class FINDatabase extends SQLiteOpenHelper {
         db.execSQL(CATEGORIES_TABLE_CREATE);
         db.execSQL(BUILDINGS_TABLE_CREATE);
         db.execSQL(FLOORS_TABLE_CREATE);
+        db.execSQL(ITEMS_TABLE_CREATE);
     }
 
 	@Override

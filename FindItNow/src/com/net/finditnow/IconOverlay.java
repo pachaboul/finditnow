@@ -24,7 +24,6 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 	private ArrayList<OverlayItem> mapOverlays;
 	private Context context;
 	private String category;
-	private HashMap<GeoPoint,HashMap<String,CategoryItem>> items;
 
 	/**
 	 * A custom constructor of the UWOverlay class which accepts lots of information
@@ -32,12 +31,11 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 	 * @param defaultMarker The default icon to use on the overlay
 	 * @param context The context in which the overlay is created
 	 */
-	public IconOverlay(Drawable defaultMarker, Context context, String category, HashMap<GeoPoint,HashMap<String,CategoryItem>> items) {
+	public IconOverlay(Drawable defaultMarker, Context context, String category) {
 		super(boundCenterBottom(defaultMarker));
 		mapOverlays = new ArrayList<OverlayItem>();
 		this.context = context;
 		this.category = category;
-		this.items = items;
 	}
 	/**
 	 * This method adds the given overlay to the map and then repopulates it
@@ -75,7 +73,7 @@ public class IconOverlay extends ItemizedOverlay<OverlayItem> {
 		int walkingTime = FINMap.walkingTime(distance, 35);
 
 		// Retrieve the floors, special info, and category of the location
-		HashMap<String,CategoryItem> data = items.get(itemLocation);
+		HashMap<String,CategoryItem> data = FINMap.getItemsAtLocation(itemLocation, context);
 
 		// Assume it is an outdoor location, but if it is not, grab the building name
 		Building building = FINHome.getBuilding(itemLocation, context); 
