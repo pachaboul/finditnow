@@ -1,7 +1,5 @@
 package com.net.finditnow;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.Comparator;
 
 import android.location.Location;

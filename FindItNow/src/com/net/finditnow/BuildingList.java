@@ -28,8 +28,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.maps.GeoPoint;
-
 public class BuildingList extends FINListActivity {
 
 	private ProgressDialog myDialog;

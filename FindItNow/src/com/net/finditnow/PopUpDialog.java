@@ -36,7 +36,6 @@
 package com.net.finditnow;
 
 //Necessary for using certain methods
-import java.math.BigDecimal;
 import java.util.HashMap;
 
 import android.app.AlertDialog;
@@ -74,7 +73,6 @@ public class PopUpDialog extends Dialog{
 	private int walkTime;
 	private ProgressDialog myDialog;
 	private String category;
-	private String item;
 	private boolean isOutdoor;
 	
 	private String result;
@@ -109,7 +107,6 @@ public class PopUpDialog extends Dialog{
 		this.distance = distance;
 		this.walkTime = walkingTime;
 		this.category = category;
-		this.item = item;
 		this.isOutdoor = isOutdoor;
 	}
 

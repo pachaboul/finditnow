@@ -1,7 +1,6 @@
 package com.net.finditnow;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.AlertDialog;
