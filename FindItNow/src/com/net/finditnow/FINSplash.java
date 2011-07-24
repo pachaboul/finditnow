@@ -27,10 +27,9 @@ import android.widget.ImageView;
 public class FINSplash extends Activity {
 
 	protected boolean active = true;
-	protected int splashTime = 0; // time to display the splash screen in ms
+	protected int splashTime = 100; // time to display the splash screen in ms
 	protected Thread splashThread;
 
-	private HashMap<String, Integer> splashes;
 	private ArrayList<String> campuses;
 	private Cursor cursor;
 	
@@ -110,11 +109,6 @@ public class FINSplash extends Activity {
 			public void run() {
 
 				Intent myIntent = null;
-
-				splashes = new HashMap<String, Integer>();
-				splashes.put("University of Washington", R.drawable.splash_university_of_washington);
-				splashes.put("Western Washington University", R.drawable.splash_western_washington_university);
-				splashes.put("Washington State University", R.drawable.splash_washington_state_university);
 				
 				// Set color theme (hardcoded for now).
 				Cursor cursor = db.getReadableDatabase().query("colors", null, "rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
@@ -196,7 +190,7 @@ public class FINSplash extends Activity {
 			
 			cursor.moveToPosition(which);
 			
-			campus = cursor.getString(cursor.getColumnIndex("name"));
+			campus = cursor.getString(cursor.getColumnIndex("full_name"));
 			editor.putInt("rid", cursor.getInt(cursor.getColumnIndex("rid")));
 			editor.commit();
 
@@ -209,7 +203,8 @@ public class FINSplash extends Activity {
 		public void handleMessage(Message msg) {
 			setContentView(R.layout.fin_splash);
 			ImageView image = (ImageView) findViewById(R.id.splash_img);
-			image.setImageResource(splashes.get(campus));
+			Log.v("test", getSplash(campus) + " " + campus);
+			image.setImageResource(getSplash(campus));
 		}
 	};
 	
@@ -222,12 +217,12 @@ public class FINSplash extends Activity {
 			if (manual) {
 				selectCampus();
 			} else {
-				campus = cursor.getString(cursor.getColumnIndex("name"));
+				String region = cursor.getString(cursor.getColumnIndex("full_name"));
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(FINSplash.this);
 				builder.setTitle("Region Selection");
 				builder.setIcon(R.drawable.icon);
-				builder.setMessage("We have detected your nearest campus/region as:\n\n" + campus +"\n\nIs this correct?");
+				builder.setMessage("We have detected your nearest campus/region as:\n\n" + region +"\n\nIs this correct?");
 				builder.setCancelable(false);
 				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
@@ -256,7 +251,7 @@ public class FINSplash extends Activity {
 		
 		campuses = new ArrayList<String>();
 		while (!cursor.isAfterLast()) {
-			campuses.add(cursor.getString(cursor.getColumnIndex("name")));
+			campuses.add(cursor.getString(cursor.getColumnIndex("full_name")));
 			cursor.moveToNext();
 		}
 		
@@ -308,6 +303,10 @@ public class FINSplash extends Activity {
     		conCheck.connectionError();
 		}
 	};
+	
+	public int getSplash(String reg) {
+		return getResources().getIdentifier("com.net.finditnow:drawable/splash_" + reg, "drawable", getPackageName());
+	}
 	
 	@Override
 	public void onDestroy() {

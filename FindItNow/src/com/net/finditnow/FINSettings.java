@@ -91,7 +91,7 @@ public class FINSettings extends PreferenceActivity {
 						
 						cursor.moveToPosition(which);
 						
-						editor.putInt("rid", cursor.getInt(0));
+						editor.putInt("rid", cursor.getInt(cursor.getColumnIndex("rid")));
 						editor.commit();
 						
 						cursor.close();
@@ -107,7 +107,7 @@ public class FINSettings extends PreferenceActivity {
 				campuses = new ArrayList<String>();
 				cursor.moveToFirst();
 				while (!cursor.isAfterLast()) {
-					campuses.add(cursor.getString(1));
+					campuses.add(cursor.getString(cursor.getColumnIndex("full_name")));
 					cursor.moveToNext();
 				}
 				

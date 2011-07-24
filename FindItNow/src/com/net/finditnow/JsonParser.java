@@ -152,14 +152,15 @@ public class JsonParser {
 
 				// Grab the stuff
 				String name = ob.get("name").getAsString();
+				String full_name = ob.get("full_name").getAsString();
 				int rid = ob.get("rid").getAsInt();
 				int lat = ob.get("lat").getAsInt();
 				int lon = ob.get("lon").getAsInt();
 				String color1 = ob.get("color1").getAsString();
 				String color2 = ob.get("color2").getAsString();
 				
-				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO regions (rid, name, latitude, longitude) VALUES (" + 
-												  rid + ", '" + name + "', " + lat + ", " + lon + ")");
+				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO regions (rid, name, full_name, latitude, longitude) VALUES (" + 
+												  rid + ", '" + name + "', '" + full_name + "', " + lat + ", " + lon + ")");
 				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO colors (rid, color1, color2) VALUES (" + 
 						  rid + ", '" + color1 + "', '" + color2 + "')");
 			}
