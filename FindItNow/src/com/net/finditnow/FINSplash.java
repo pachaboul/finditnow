@@ -148,6 +148,9 @@ public class FINSplash extends Activity {
 					
 					String buildings = DBCommunicator.getBuildings(prefs.getInt("rid", 0)+"", getBaseContext());
 					JsonParser.parseBuildingJson(buildings, getBaseContext());
+					
+					String items = DBCommunicator.getItems(prefs.getInt("rid", 0)+"", getBaseContext());
+					JsonParser.parseItemJson(items, getBaseContext());
 	
 					if (loggedin) {
 						myIntent.putExtra("username", loggedinstr.substring(21, loggedinstr.length()));

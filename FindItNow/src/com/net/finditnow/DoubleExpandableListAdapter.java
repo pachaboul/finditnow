@@ -78,7 +78,6 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	{
 		ArrayList<String> temp = new ArrayList<String>();
 		for (String cate: dataMap.keySet()){
-			Log.v("Cate is", cate);
 			if (dataMap.get(cate).getFloor_names().contains(floor))
 				temp.add(cate);
 		}

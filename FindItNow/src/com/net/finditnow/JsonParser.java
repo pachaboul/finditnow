@@ -30,21 +30,6 @@ import com.google.gson.JsonStreamParser;
 public class JsonParser {
 
 	private static FINDatabase db;
-	
-	/*
-	 * Design Principle: Information Hiding
-	 * These two arrays are only visible to this class.  Other module do not
-	 * ever need to know the exact names of each data coming from the
-	 * back-end database via JSON objects.
-	 */
-	//This is a string to keep track of the names of each piece of information in the
-	//JSON array.
-	private static final String[] LOCATION_NAMES = { "lat",
-		"long",
-		"fid",
-		"info",
-		"id",
-		"cat"};
 
 	/**
 	 * parse a json string into a map of GeoPoint to Building
@@ -57,7 +42,6 @@ public class JsonParser {
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
 		if (!json.equals("")) {
-			Log.v("JSON IS", json);
 			JsonArray arr = parser.next().getAsJsonArray();
 			
 			db = new FINDatabase(context);
@@ -137,6 +121,38 @@ public class JsonParser {
 		return result;
 	}
 	
+	public static void parseItemJson(String json, Context context) {
+		//used for parsing the JSON object
+		JsonStreamParser parser = new JsonStreamParser(json);
+		JsonArray arr = parser.next().getAsJsonArray();
+		db = new FINDatabase(context);
+
+		for (int i = 0; i < arr.size(); i++)
+		{
+			if (arr.get(i).isJsonObject())
+			{
+				//Since the JsonArray contains whole bunch json array, we can get each one out
+				JsonObject ob = arr.get(i).getAsJsonObject();
+
+				// Grab the stuff
+				int item_id = ob.get("item_id").getAsInt();
+				int rid = ob.get("rid").getAsInt();
+				int latitude = ob.get("latitude").getAsInt();
+				int longitude = ob.get("longitude").getAsInt();
+				String special_info = ob.get("special_info").getAsString().replace("'", "''"); // SQLITE single quotes
+				int fid = ob.get("fid").getAsInt();
+				int not_found_count = ob.get("not_found_count").getAsInt();
+				String username = ob.get("username").getAsString();
+				int cat_id = ob.get("cat_id").getAsInt();
+				String created = ob.get("created").getAsString();
+				
+				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO items (item_id, rid, latitude, longitude, special_info, fid, not_found_count, username, cat_id, created) VALUES (" + 
+												  item_id + ", " + rid + ", " + latitude + ", " + longitude + ", '" + special_info.replace("\\n", "<br />").replace("\n", "<br />") + "', " +
+												  fid + ", " + not_found_count + ", '" + username + "', " + cat_id + ", '" + created + "')");
+			}
+		}
+	}
+
 	public static void parseRegionJson(String json, Context context) {
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
@@ -165,176 +181,5 @@ public class JsonParser {
 						  rid + ", '" + color1 + "', '" + color2 + "')");
 			}
 		}
-	}
-
-	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseCategoryJson(String json, String category, Context context){
-		if (category.equals(""))
-			return parseAllCategoryJson(json, context);
-		else{
-			HashMap<GeoPoint,HashMap<String,CategoryItem>> result = new HashMap<GeoPoint,HashMap<String,CategoryItem>>();
-
-			HashMap<GeoPoint, CategoryItem> map = parseCategoryJson(json);
-
-			for (GeoPoint key:map.keySet()){
-				HashMap<String,CategoryItem> oneMap = new HashMap<String,CategoryItem>();
-
-				oneMap.put(FINUtil.displayCategory(category, context), map.get(key));
-				result.put(key,oneMap);
-			}
-			return result;
-		}
-	}
-	/**
-	 * parses a Json Array into a map of locations and its corresponding CategoryItem for one category
-	 * 
-	 * @param jsonArray jsonArray containing information
-	 * @return HashMap<GeoPoint, CategoryItem> maps a location with its information
-	 */
-	public static HashMap<GeoPoint, CategoryItem> parseCategoryJson(String json)
-	{
-		//creates the map for information to be stored in
-		HashMap<GeoPoint,CategoryItem> map = new HashMap<GeoPoint,CategoryItem>();
-
-		if (json != null && !json.equals("")) {
-
-			//String json = jsonArray.toString();
-			//used for parsing the JSON object
-			Gson gson = new Gson();
-			JsonStreamParser parser = new JsonStreamParser(json);
-			JsonArray arr = parser.next().getAsJsonArray();
-
-
-			for (int i = 0; i < arr.size(); i++)
-			{
-				if (arr.get(i).isJsonObject())
-				{
-					//Since the JsonArray contains whole bunch json array, we can get each one out
-					JsonObject ob = arr.get(i).getAsJsonObject();
-
-					//place the information in the map with GeoPoint as key
-					GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
-					CategoryItem item = new CategoryItem();
-
-					//if the point is already in the map, get it out to add to it
-					if (map.get(point) != null)
-					{
-						item = map.get(point);
-					}
-
-
-					if (ob.has(LOCATION_NAMES[2]))
-					{
-						int fid = ob.get(LOCATION_NAMES[2]).getAsInt();
-						
-						Cursor cursor = db.getReadableDatabase().query("floors", null, "fid = " + fid, null, null, null, null);
-						cursor.moveToFirst();
-						
-						String floor_name = "";
-						if (cursor.getCount() > 0) {
-							floor_name = cursor.getString(cursor.getColumnIndex("name"));
-						}
-						
-						item.addFloor_names(floor_name);
-					}
-					if (ob.has(LOCATION_NAMES[3]))
-					{
-						String s = ob.get(LOCATION_NAMES[3]).getAsString().replace("\\n", "<br />").replace("\n", "<br />");
-						//the floor info associated with this point
-						item.addInfo(s);
-					}
-					if (ob.has(LOCATION_NAMES[4]))
-					{
-						int id = ob.get(LOCATION_NAMES[4]).getAsInt();
-						//the floor id associated with this point
-						item.addId(id);
-					}
-
-					map.put(point, item);
-				}
-			}
-		} 
-		return map;
-	}
-
-	/**
-	 * parses a Json Array into a map of locations and its corresponding CategoryItem for all category
-	 * 
-	 * @param jsonArray jsonArray containing information
-	 * @return HashMap<GeoPoint,HashMap<String,CategoryItem>> maps a location with its information
-	 */
-	public static HashMap<GeoPoint,HashMap<String,CategoryItem>> parseAllCategoryJson(String json, Context context)
-	{
-		//creates the map for information to be stored in
-		HashMap<GeoPoint,HashMap<String,CategoryItem>> map = new HashMap<GeoPoint,HashMap<String,CategoryItem>>();
-
-		if (json != null && !json.equals("")) {
-
-			//used for parsing the JSON object
-			Gson gson = new Gson();
-			JsonStreamParser parser = new JsonStreamParser(json);
-			while (parser.hasNext()){
-				JsonArray arr = parser.next().getAsJsonArray();
-
-				for (int i = 0; i < arr.size(); i++)
-				{
-					if (arr.get(i).isJsonObject())
-					{
-						//Since the JsonArray contains whole bunch json array, we can get each one out
-						JsonObject ob = arr.get(i).getAsJsonObject();					
-
-						//place the information in the map with GeoPoint as key
-						GeoPoint point = new GeoPoint( ob.get(LOCATION_NAMES[0]).getAsInt(),ob.get(LOCATION_NAMES[1]).getAsInt());
-						HashMap<String,CategoryItem> oneMap;
-
-
-						//Grab the Map of Location if it is in it or make a new one
-						if (map.get(point) != null)
-						{
-							oneMap = map.get(point);
-						}
-						else{
-							oneMap = new HashMap<String,CategoryItem>();
-							map.put(point, oneMap);
-						}
-
-						//grab the category and its corresponding CategoryItem if it is in the map
-						//else make a new one
-						String cat = FINUtil.displayCategory(ob.get(LOCATION_NAMES[5]).getAsString(), context);
-						CategoryItem item;
-						if (oneMap.get(cat) != null){
-							item = oneMap.get(cat);
-						}else{
-							item = new CategoryItem();
-							oneMap.put(cat, item);
-						}
-
-
-						if (ob.has(LOCATION_NAMES[2]))
-						{
-							int fid = ob.get(LOCATION_NAMES[2]).getAsInt();
-							
-							Cursor cursor = db.getReadableDatabase().query("floors", null, "fid = " + fid, null, null, null, null);
-							cursor.moveToFirst();
-							
-							String floor_name = cursor.getString(cursor.getColumnIndex("name"));
-							item.addFloor_names(floor_name);
-						}
-						if (ob.has("info"))
-						{
-							String s = ob.get(LOCATION_NAMES[3]).getAsString().replace("\\n", "<br />").replace("\n", "<br />");
-							//the floor info associated with this point
-							item.addInfo(s);
-						}
-						if (ob.has(LOCATION_NAMES[4]))
-						{
-							int id = ob.get(LOCATION_NAMES[4]).getAsInt();
-							//the floor id associated with this point
-							item.addId(id);
-						}
-					}
-				}
-			}
-		} 
-		return map;
 	}
 }

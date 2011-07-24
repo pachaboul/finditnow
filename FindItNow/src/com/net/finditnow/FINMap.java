@@ -9,6 +9,7 @@ package com.net.finditnow;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -56,7 +57,6 @@ public class FINMap extends FINMapActivity {
 
 	// Location and GeoPoint Variables
 	private static GeoPoint location;    
-	private static HashMap<GeoPoint,HashMap<String,CategoryItem>> geoPointItem;
 
 	public static final String PREFS_NAME = "MyPrefsFile";
 
@@ -81,22 +81,12 @@ public class FINMap extends FINMapActivity {
 		String title = (!building.equals("")? building : category);
 		setTitle(getString(R.string.app_name) + " > " + title);
 
-		// Check connection of Android
-		ConnectionChecker conCheck = new ConnectionChecker(this, FINMap.this);
+		// Create the map and the map view and detect user location
+		createMap();
+		locateUser();
 
-		// Parse retrieved locations from the database
-		if (listOfLocations.equals(getString(R.string.timeout))) {
-			conCheck.connectionError();
-		} else {
-			geoPointItem = JsonParser.parseCategoryJson(listOfLocations, category, getBaseContext());
-
-			// Create the map and the map view and detect user location
-			createMap();
-			locateUser();
-
-			// Add these locations to the map view
-			placeOverlays();
-		}
+		// Add these locations to the map view
+		placeOverlays();
 	}
 
 	/**
@@ -179,14 +169,6 @@ public class FINMap extends FINMapActivity {
 		return true;
 	}
 
-	public static CategoryItem getCategoryItem(GeoPoint point, String category) {
-		if (geoPointItem != null && geoPointItem.get(point) != null) {
-			return geoPointItem.get(point).get(category);
-		} else {
-			return null;
-		}
-	}
-
 	/**
 	 * This method computes the walking time for a given distance based on the mile time
 	 * 
@@ -222,7 +204,7 @@ public class FINMap extends FINMapActivity {
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
 		drawable = getResources().getDrawable(building.equals("")? FINHome.getIcon(category, getBaseContext()) : R.drawable.buildings);
-		itemizedOverlay = new IconOverlay(drawable, this, category, geoPointItem);
+		itemizedOverlay = new IconOverlay(drawable, this, category);
 
 		// Setup the ImageButtons
 		ImageButton list = (ImageButton) findViewById(R.id.list_button);
@@ -313,7 +295,7 @@ public class FINMap extends FINMapActivity {
 
 			// Otherwise, we must loop over all the overlays
 		} else {
-			for (GeoPoint point : geoPointItem.keySet()) {
+			for (GeoPoint point : getItemsOfCategory(category, getBaseContext())) {
 				OverlayItem overlayItem = new OverlayItem(point, "", "");
 				itemizedOverlay.addOverlay(overlayItem);
 			}
@@ -385,7 +367,7 @@ public class FINMap extends FINMapActivity {
 		int rid = prefs.getInt("rid", 0);
 		
 		FINDatabase db = new FINDatabase(context);
-		Cursor cursor = db.getWritableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
+		Cursor cursor = db.getReadableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
 		cursor.moveToFirst();
 		
 		int latitude = cursor.getInt(cursor.getColumnIndex("latitude"));
@@ -395,5 +377,74 @@ public class FINMap extends FINMapActivity {
 		db.close();
 		
 		return new GeoPoint(latitude, longitude);
+	}
+	
+	public static ArrayList<GeoPoint> getItemsOfCategory(String category, Context context) {
+		ArrayList<GeoPoint> items = new ArrayList<GeoPoint>();
+		
+		FINDatabase db = new FINDatabase(context);
+		Cursor catCursor = db.getReadableDatabase().query("categories", null, "full_name = '" + category + "'", null, null, null, null);
+		catCursor.moveToFirst();
+		int cat_id = catCursor.getInt(catCursor.getColumnIndex("cat_id"));
+		Log.v("Cat_id is", cat_id+"");
+		
+		Cursor cursor = db.getReadableDatabase().query("items", null, "cat_id = " + cat_id, null, null, null, null);
+		cursor.moveToFirst();
+		Log.v("Cursor count is", cursor.getCount()+"");
+		
+		while (!cursor.isAfterLast()) {
+			int latitude = cursor.getInt(cursor.getColumnIndex("latitude"));
+			int longitude = cursor.getInt(cursor.getColumnIndex("longitude"));
+			
+			items.add(new GeoPoint(latitude, longitude));
+			
+			cursor.moveToNext();
+		}
+		
+		return items;
+	}
+	
+	public static CategoryItem getCategoryItem(GeoPoint point, String category, Context context) {
+		return getItemsAtLocation(point, context).get(category);
+	}
+	
+	public static HashMap<String, CategoryItem> getItemsAtLocation(GeoPoint GeoPoint, Context context) {
+		HashMap<String, CategoryItem> itemsAtLocation = new HashMap<String, CategoryItem>();
+		int latitude = GeoPoint.getLatitudeE6();
+		int longitude = GeoPoint.getLongitudeE6();
+		
+		FINDatabase db = new FINDatabase(context);
+		Cursor catCursor = db.getReadableDatabase().query("categories", null, null, null, null, null, null);
+		catCursor.moveToFirst();
+		while (!catCursor.isAfterLast()) {
+			CategoryItem item = new CategoryItem();
+			int cat_id = catCursor.getInt(catCursor.getColumnIndex("cat_id"));
+			String name = catCursor.getString(catCursor.getColumnIndex("full_name"));
+			
+			Cursor cursor = db.getReadableDatabase().query("items", null, "cat_id = " + cat_id + " AND latitude = " + latitude + " AND longitude = " + longitude, null, null, null, "cat_id ASC");
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				cursor.getInt(cursor.getColumnIndex("cat_id"));
+				int fid = cursor.getInt(cursor.getColumnIndex("fid"));
+				
+				Cursor cursor2 = db.getReadableDatabase().query("floors", null, "fid = " + fid, null, null, null, null);
+				cursor2.moveToFirst();
+				String fname = cursor2.getString(cursor2.getColumnIndex("name"));
+				
+				String info = cursor.getString(cursor.getColumnIndex("special_info"));
+				
+				item.addId(fid);
+				item.addFloor_names(fname);
+				item.addInfo(info);
+				
+				cursor.moveToNext();
+			}
+			itemsAtLocation.put(name, item);
+			catCursor.moveToNext();
+		}
+
+		db.close();
+		
+		return itemsAtLocation;
 	}
 }

@@ -95,6 +95,15 @@ public class DBCommunicator {
 				
 		return Post(FIN_ROOT, "getLocations.php", nameValuePairs, context);
 	}
+	
+	public static String getItems(String rid, Context context) {
+		// Initialize the array of name value pairs
+		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+
+		nameValuePairs.add(new BasicNameValuePair("rid", rid));
+				
+		return Post(FIN_ROOT, "getItems.php", nameValuePairs, context);
+	}
 
 	public static String login(String phone_id, String username, String userpass, Context context) {
 		// Initialize the array of name value pairs

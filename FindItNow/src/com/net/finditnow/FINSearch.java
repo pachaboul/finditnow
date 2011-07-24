@@ -95,7 +95,7 @@ public class FINSearch extends FINListActivity {
 					
 					building_names.add(build == null? "Outdoor Location" : build.getName());
 
-					CategoryItem item = FINMap.getCategoryItem(point, category);
+					CategoryItem item = FINMap.getCategoryItem(point, category, getBaseContext());
 					special_info.add(item == null? "" : item.getInfo().get(0).replace("<br />", "\n"));
 				}
 
