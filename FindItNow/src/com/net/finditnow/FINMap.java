@@ -133,10 +133,9 @@ public class FINMap extends FINMapActivity {
 	 * 
 	 * @return A BigDecimal representing the distance to this point in miles
 	 */
-	public static BigDecimal distanceBetween(GeoPoint point1, GeoPoint point2) {
+	public static double distanceBetween(GeoPoint point1, GeoPoint point2) {
 
-		// Define a math context and two location variables to process
-		MathContext mc = new MathContext(2);
+		// Define two location variables to process
 		Location loc1 = new Location("");
 		Location loc2 = new Location("");
 
@@ -151,11 +150,11 @@ public class FINMap extends FINMapActivity {
 			loc2.setLongitude((float)(point2.getLongitudeE6()*1E-6));
 
 			// Return this value in miles rounded
-			return new BigDecimal(loc1.distanceTo(loc2) * 0.000621371192, mc);
+			return(loc1.distanceTo(loc2) * 0.000621371192);
 		} else {
 
 			// Return -1 if the location was not valid
-			return new BigDecimal(-1);
+			return -1;
 		}
 	}
 
@@ -196,9 +195,8 @@ public class FINMap extends FINMapActivity {
 	 * 
 	 * @return The walking time in minutes that it takes to walk the given distance rounded
 	 */
-	public static int walkingTime(BigDecimal distance, int mile_time) {
-		BigDecimal dec = new BigDecimal(mile_time * distance.doubleValue(), new MathContext(2));
-		return dec.intValue();
+	public static int walkingTime(double distance, int mile_time) {
+		return (int)Math.round(mile_time * distance);
 	}
 
 	/**

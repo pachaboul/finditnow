@@ -70,7 +70,7 @@ public class PopUpDialog extends Dialog{
 
 	//Local variable for displaying
 	private Building building;
-	private BigDecimal distance;
+	private double distance;
 	private int walkTime;
 	private ProgressDialog myDialog;
 	private String category;
@@ -99,7 +99,7 @@ public class PopUpDialog extends Dialog{
 	 * 
 	 */
 	public PopUpDialog(Context context,
-			Building building, String category, String item, HashMap<String,CategoryItem> dataMap, BigDecimal distance, int walkingTime,
+			Building building, String category, String item, HashMap<String,CategoryItem> dataMap, double distance, int walkingTime,
 			boolean isOutdoor)
 	{
 		super(context);
@@ -329,7 +329,7 @@ public class PopUpDialog extends Dialog{
 		//sets the text for displaying the distance and walkingTime
 		TextView distText = (TextView) findViewById(R.id.distanceText);
 		TextView timeToText = (TextView) findViewById(R.id.timeReachText);
-		if (distance.equals(new BigDecimal(-1)))
+		if (distance == -1)
 		{
 			//if location of the user is not known, indicated by -1
 			//then show that it cannot be calculated.
@@ -338,7 +338,8 @@ public class PopUpDialog extends Dialog{
 		}
 		else
 		{
-			distText.setText(Html.fromHtml("<b>Distance to here:</b> " + distance + " mi."));
+			String dist = String.format("%.1f", distance);
+			distText.setText(Html.fromHtml("<b>Distance to here:</b> " + dist + " mi."));
 			timeToText.setText(Html.fromHtml("<b>Walking Time:</b> " + walkTime + " " + FINUtil.pluralize("minute", walkTime)));
 		}
 	}

@@ -85,10 +85,14 @@ public class FINSearch extends FINListActivity {
 
 				for (GeoPoint point : points) {
 					Building build = FINHome.getBuilding(point, getBaseContext());
-					BigDecimal dist = FINMap.distanceBetween(FINMap.getLocation(), point);
-					distances.add((dist.equals(new BigDecimal(-1))? "N/A" : dist) + "\nmiles");
-					int walking_time = dist != null? FINMap.walkingTime(dist, 35) : -1;
-					walking_times.add((dist.equals(new BigDecimal(-1))? "N/A" : walking_time) + " minute" + (walking_time != 1? "s" : ""));
+					
+					double dist = FINMap.distanceBetween(FINMap.getLocation(), point);
+					String distance = String.format("%.1f", dist);
+					distances.add((dist == -1? "N/A" : distance) + "\nmiles");
+					
+					int walking_time = FINMap.walkingTime(dist, 35);
+					walking_times.add((dist == -1? "N/A" : walking_time) + " minute" + (walking_time != 1? "s" : ""));
+					
 					building_names.add(build == null? "Outdoor Location" : build.getName());
 
 					CategoryItem item = FINMap.getCategoryItem(point, category);
