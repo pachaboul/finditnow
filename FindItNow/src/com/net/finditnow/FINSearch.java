@@ -161,6 +161,7 @@ public class FINSearch extends FINListActivity {
 			 */
 			TextView dist = (TextView) myView.findViewById(R.id.walking_distance);
 			dist.setText(distances.get(position));
+			dist.setTextColor(FINTheme.getFontColor());
 
 			TextView time = (TextView) myView.findViewById(R.id.walking_time);
 			time.setText(walking_times.get(position));
