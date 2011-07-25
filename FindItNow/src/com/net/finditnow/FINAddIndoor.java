@@ -107,8 +107,8 @@ public class FINAddIndoor extends FINActivity {
 					myIntent.putExtra("centerLat", FINHome.getGeoPointFromBuilding(selectedBuilding.getName(), getBaseContext()).getLatitudeE6());
 					myIntent.putExtra("centerLon", FINHome.getGeoPointFromBuilding(selectedBuilding.getName(), getBaseContext()).getLongitudeE6());
 
-					String locations = DBCommunicator.getLocations(selectedCategory, rid, 0+"", getBaseContext());
-					myIntent.putExtra("locations", locations);
+					String locations = DBCommunicator.getItems(rid, getBaseContext());
+					JsonParser.parseItemJson(locations, getBaseContext());
 
 					startActivity(myIntent);
 

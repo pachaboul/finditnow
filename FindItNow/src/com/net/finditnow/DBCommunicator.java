@@ -151,6 +151,8 @@ public class DBCommunicator {
 
 		nameValuePairs.add(new BasicNameValuePair("phone_id", phone_id));
 		nameValuePairs.add(new BasicNameValuePair("item_id", item_id));
+		
+		Log.v("UH OH", "Sending item id " + item_id);
 
 		return Post(FIN_ROOT, "update.php", nameValuePairs, context);
 	}

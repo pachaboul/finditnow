@@ -424,14 +424,18 @@ public class FINMap extends FINMapActivity {
 			while (!cursor.isAfterLast()) {
 				cursor.getInt(cursor.getColumnIndex("cat_id"));
 				int fid = cursor.getInt(cursor.getColumnIndex("fid"));
+				int item_id = cursor.getInt(cursor.getColumnIndex("item_id"));
 				
 				Cursor cursor2 = db.getReadableDatabase().query("floors", null, "fid = " + fid, null, null, null, null);
-				cursor2.moveToFirst();
-				String fname = cursor2.getString(cursor2.getColumnIndex("name"));
+				String fname = "";
+				if (cursor2.getCount() > 0) {
+					cursor2.moveToFirst();
+					fname = cursor2.getString(cursor2.getColumnIndex("name"));
+				}
 				
 				String info = cursor.getString(cursor.getColumnIndex("special_info"));
 				
-				item.addId(fid);
+				item.addId(item_id);
 				item.addFloor_names(fname);
 				item.addInfo(info);
 				

@@ -285,19 +285,18 @@ public class PopUpDialog extends Dialog{
 								Thread thread = new Thread() {
 									@Override
 									public void run() {
+										int item_id = dataMap.get(category).getId().get(0);
+										
+										FINDatabase db = new FINDatabase(getContext());
+										db.getWritableDatabase().execSQL("DELETE FROM items WHERE item_id = " + item_id);
+										
 										final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-										String result = DBCommunicator.delete(phone_id, dataMap.get(category).getId().get(0)+"", getContext());
+										String result = DBCommunicator.delete(phone_id, item_id+"", getContext());
 
 										Intent myIntent = new Intent(getContext(), FINMap.class);
 										myIntent.putExtra("result", result);
 										myIntent.putExtra("category", category);
 										myIntent.putExtra("building", "");
-										
-										SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-										String rid = prefs.getInt("rid", 0)+"";
-
-										String locations = DBCommunicator.getLocations(category, rid, 0+"", getContext());
-										myIntent.putExtra("locations", locations);
 
 										getContext().startActivity(myIntent);
 
