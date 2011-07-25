@@ -20,7 +20,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -380,15 +379,16 @@ public class FINMap extends FINMapActivity {
 	public static ArrayList<GeoPoint> getItemsOfCategory(String category, Context context) {
 		ArrayList<GeoPoint> items = new ArrayList<GeoPoint>();
 		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		int rid = prefs.getInt("rid", 0);
+		
 		FINDatabase db = new FINDatabase(context);
 		Cursor catCursor = db.getReadableDatabase().query("categories", null, "full_name = '" + category + "'", null, null, null, null);
 		catCursor.moveToFirst();
 		int cat_id = catCursor.getInt(catCursor.getColumnIndex("cat_id"));
-		Log.v("Cat_id is", cat_id+"");
 		
-		Cursor cursor = db.getReadableDatabase().query("items", null, "cat_id = " + cat_id, null, null, null, null);
+		Cursor cursor = db.getReadableDatabase().query("items", null, "rid = " + rid + " AND cat_id = " + cat_id, null, null, null, null);
 		cursor.moveToFirst();
-		Log.v("Cursor count is", cursor.getCount()+"");
 		
 		while (!cursor.isAfterLast()) {
 			int latitude = cursor.getInt(cursor.getColumnIndex("latitude"));
