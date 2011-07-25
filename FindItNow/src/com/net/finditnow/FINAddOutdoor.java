@@ -113,8 +113,8 @@ public class FINAddOutdoor extends FINMapActivity {
 							myIntent.putExtra("centerLat", tappedPoint.getLatitudeE6());
 							myIntent.putExtra("centerLon", tappedPoint.getLongitudeE6());
 
-							String locations = DBCommunicator.getLocations(selectedCategory, rid, 0+"", getBaseContext());
-							myIntent.putExtra("locations", locations);
+							String locations = DBCommunicator.getItems(rid, getBaseContext());
+							JsonParser.parseItemJson(locations, getBaseContext());
 
 							startActivity(myIntent);
 
