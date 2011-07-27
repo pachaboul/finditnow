@@ -15,17 +15,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -199,14 +197,6 @@ public class FINMenu extends FINActivity {
 
 								myIntent.putExtra("category", category);
 								myIntent.putExtra("building", "");
-								
-								if (nextClass == FINMap.class) {
-									SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-									String rid = prefs.getInt("rid", 0)+"";
-									
-									String locations = DBCommunicator.getLocations(category, rid, 0+"", getBaseContext());
-									myIntent.putExtra("locations", locations);
-								}
 
 								startActivity(myIntent);
 								if (nextClass == FINMap.class) {
