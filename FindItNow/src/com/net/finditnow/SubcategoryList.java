@@ -37,7 +37,7 @@ public class SubcategoryList extends FINListActivity {
 		setTitle(getString(R.string.app_name) + " > " + category);
 		
 		FINDatabase db = new FINDatabase(getBaseContext());
-		Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + category+ "'", null, null, null, null);
+		Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + category + "'", null, null, null, null);
 		cursor.moveToFirst();
 		int cat_id = cursor.getInt(cursor.getColumnIndex("cat_id"));
 		
@@ -68,12 +68,6 @@ public class SubcategoryList extends FINListActivity {
 
 						myIntent.putExtra("category", subcategory);
 						myIntent.putExtra("building", "");
-						
-						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-						String rid = prefs.getInt("rid", 0)+"";
-
-						String locations = DBCommunicator.getLocations(subcategory, rid, 0+"", getBaseContext());
-						myIntent.putExtra("locations", locations);
 
 						startActivity(myIntent);
 						myDialog.dismiss();
