@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,7 +20,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -34,7 +34,7 @@ public class FINSplash extends Activity {
 	
 	private boolean manual;
 	
-	private FINDatabase db;
+	private SQLiteDatabase db;
 
 	private String campus;
 	private int rid;
@@ -47,7 +47,7 @@ public class FINSplash extends Activity {
 		setContentView(R.layout.fin_splash);
 		manual = false;
 		
-		db = new FINDatabase(this);
+		db = new FINDatabase(this).getReadableDatabase();
 
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
@@ -110,13 +110,13 @@ public class FINSplash extends Activity {
 				Intent myIntent = null;
 				
 				// Set color theme (hardcoded for now).
-				Cursor cursor = db.getReadableDatabase().query("colors", null, "rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
+				Cursor cursor = db.query("colors", null, "rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
 				cursor.moveToFirst();
 				String color = cursor.getString(cursor.getColumnIndex("color1"));
 								
 				FINTheme.setTheme(color, getBaseContext());
 				
-				cursor = db.getReadableDatabase().query("regions", null, "rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
+				cursor = db.query("regions", null, "rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
 				cursor.moveToFirst();
 				campus = cursor.getString(cursor.getColumnIndex("name"));
 				
@@ -140,7 +140,7 @@ public class FINSplash extends Activity {
 					campusJson = DBCommunicator.getRegions(prefs.getInt("location_lat", 0)+"", prefs.getInt("location_lon", 0)+"", getBaseContext());
 					JsonParser.parseRegionJson(campusJson, getBaseContext());	
 					
-					cursor = db.getReadableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
+					cursor = db.query("regions", null, "regions.rid = " + rid, null, null, null, null);
 					
 					String categories = DBCommunicator.getCategories(getBaseContext());
 					JsonParser.parseCategoriesList(categories, getBaseContext());
@@ -167,12 +167,24 @@ public class FINSplash extends Activity {
 				} catch (InterruptedException e) {
 					// do nothing
 				} finally {
-					db.close();
+					cursor.close();
+					
 					startActivity(myIntent);
 					finish();
 				}
 			}
 		};
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		if (cursor != null) {
+			cursor.close();
+		}
+		
+		db.close();
 	}
 
 	@Override
@@ -204,8 +216,8 @@ public class FINSplash extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			setContentView(R.layout.fin_splash);
+			
 			ImageView image = (ImageView) findViewById(R.id.splash_img);
-			Log.v("test", getSplash(campus) + " " + campus);
 			image.setImageResource(getSplash(campus));
 		}
 	};
@@ -213,7 +225,7 @@ public class FINSplash extends Activity {
 	private Handler handler2 = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {			
-			cursor = db.getReadableDatabase().query("regions", null, null, null, null, null, null);
+			cursor = db.query("regions", null, null, null, null, null, null);
 			cursor.moveToFirst();
 			
 			if (manual) {
@@ -308,12 +320,5 @@ public class FINSplash extends Activity {
 	
 	public int getSplash(String reg) {
 		return getResources().getIdentifier("com.net.finditnow:drawable/splash_" + reg, "drawable", getPackageName());
-	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		
-		db.close();
 	}
 }

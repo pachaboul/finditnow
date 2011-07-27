@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 
 import com.google.android.maps.GeoPoint;
@@ -23,8 +24,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonStreamParser;
 
 public class JsonParser {
-
-	private static FINDatabase db;
 
 	/**
 	 * parse a json string into a map of GeoPoint to Building
@@ -39,7 +38,7 @@ public class JsonParser {
 		if (!json.equals("")) {
 			JsonArray arr = parser.next().getAsJsonArray();
 			
-			db = new FINDatabase(context);
+			SQLiteDatabase db = new FINDatabase(context).getWritableDatabase();
 	
 			for (int i = 0; i < arr.size(); i++)
 			{
@@ -58,20 +57,21 @@ public class JsonParser {
 					JsonArray fnames = ob.get("floor_names").getAsJsonArray();
 									
 					for (int j = 0; j < fids.size(); j++) {
-						db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO floors (fid, bid, fnum, name) VALUES (" + 
+						db.execSQL("INSERT OR REPLACE INTO floors (fid, bid, fnum, name) VALUES (" + 
 								  fids.get(j).getAsInt() + ", " + bid + ", " + fnums.get(j).getAsInt() + ", '" + fnames.get(j).getAsString() + "')");
 					}
 					
 					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 					String rid = prefs.getInt("rid", 0)+"";
 	
-					db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO buildings (bid, rid, name, latitude, longitude) VALUES (" + 
+					db.execSQL("INSERT OR REPLACE INTO buildings (bid, rid, name, latitude, longitude) VALUES (" + 
 							  bid + ", " + rid + ", '" + name + "', " + latitude + ", " + longitude + ")");
 				}
 			}
+			
+			db.close();
 		}
-		
-		db.close();
+
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class JsonParser {
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
 		JsonArray arr = parser.next().getAsJsonArray();
-		db = new FINDatabase(context);
+		SQLiteDatabase db = new FINDatabase(context).getWritableDatabase();
 
 		for (int i = 0; i < arr.size(); i++)
 		{
@@ -99,10 +99,12 @@ public class JsonParser {
 				String full_name = ob.get("full_name").getAsString();
 				int parent = ob.get("parent").getAsInt();
 				
-				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO categories (cat_id, name, full_name, parent) VALUES (" + 
+				db.execSQL("INSERT OR REPLACE INTO categories (cat_id, name, full_name, parent) VALUES (" + 
 												  cat_id + ", '" + name + "', '" + full_name + "', " + parent + ")");
 			}
 		}
+		
+		db.close();
 	}
 
 	public static HashMap<Integer, GeoPoint> parseSearchJson(String json) {
@@ -120,7 +122,7 @@ public class JsonParser {
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
 		JsonArray arr = parser.next().getAsJsonArray();
-		db = new FINDatabase(context);
+		SQLiteDatabase db = new FINDatabase(context).getWritableDatabase();
 
 		for (int i = 0; i < arr.size(); i++)
 		{
@@ -141,18 +143,20 @@ public class JsonParser {
 				int cat_id = ob.get("cat_id").getAsInt();
 				String created = ob.get("created").getAsString();
 				
-				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO items (item_id, rid, latitude, longitude, special_info, fid, not_found_count, username, cat_id, created) VALUES (" + 
+				db.execSQL("INSERT OR REPLACE INTO items (item_id, rid, latitude, longitude, special_info, fid, not_found_count, username, cat_id, created) VALUES (" + 
 												  item_id + ", " + rid + ", " + latitude + ", " + longitude + ", '" + special_info.replace("\\n", "<br />").replace("\n", "<br />") + "', " +
 												  fid + ", " + not_found_count + ", '" + username + "', " + cat_id + ", '" + created + "')");
 			}
 		}
+		
+		db.close();
 	}
 
 	public static void parseRegionJson(String json, Context context) {
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
 		JsonArray arr = parser.next().getAsJsonArray();
-		db = new FINDatabase(context);
+		SQLiteDatabase db = new FINDatabase(context).getWritableDatabase();
 
 		for (int i = 0; i < arr.size(); i++)
 		{
@@ -170,11 +174,13 @@ public class JsonParser {
 				String color1 = ob.get("color1").getAsString();
 				String color2 = ob.get("color2").getAsString();
 				
-				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO regions (rid, name, full_name, latitude, longitude) VALUES (" + 
+				db.execSQL("INSERT OR REPLACE INTO regions (rid, name, full_name, latitude, longitude) VALUES (" + 
 												  rid + ", '" + name + "', '" + full_name + "', " + lat + ", " + lon + ")");
-				db.getWritableDatabase().execSQL("INSERT OR REPLACE INTO colors (rid, color1, color2) VALUES (" + 
+				db.execSQL("INSERT OR REPLACE INTO colors (rid, color1, color2) VALUES (" + 
 						  rid + ", '" + color1 + "', '" + color2 + "')");
 			}
 		}
+		
+		db.close();
 	}
 }
