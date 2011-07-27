@@ -8,39 +8,31 @@
 
 package com.net.finditnow;
 
-import java.util.ArrayList;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class BuildingList extends FINListActivity {
 
 	private ProgressDialog myDialog;
 	private EditText filterText;
 	private ArrayAdapter<String> adapter;
-	private static FINDatabase db;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_bg_with_filter);
 		
-		db = new FINDatabase(getBaseContext());
 		adapter = new ArrayAdapter<String>(this, R.layout.list_item, FINHome.getBuildingsList(getBaseContext()));
 		
 		filterText = (EditText) findViewById(R.id.search_box);
@@ -64,22 +56,6 @@ public class BuildingList extends FINListActivity {
 						myIntent.putExtra("building", selectedBuilding);
 						myIntent.putExtra("category", "");
 						
-						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-						String rid = prefs.getInt("rid", 0)+"";
-						
-						FINDatabase db = new FINDatabase(getBaseContext());
-						Cursor cursor = db.getReadableDatabase().query("buildings", null, "name = '" + selectedBuilding + "'", null, null, null, null);
-						cursor.moveToFirst();
-						String bid = cursor.getInt(cursor.getColumnIndex("bid"))+"";
-						
-						ArrayList<String> allCategories = FINHome.getCategoriesList(true, getBaseContext());
-						String separated = FINUtil.allCategories(allCategories, getBaseContext());
-						
-						Log.v("Here we go...", separated);
-						
-						String locations = DBCommunicator.getLocations(separated, rid, bid, getBaseContext());
-						myIntent.putExtra("locations", locations);
-
 						startActivity(myIntent);
 						myDialog.dismiss();
 					}
@@ -116,7 +92,6 @@ public class BuildingList extends FINListActivity {
 	@Override
 	protected void onDestroy() {
 	    super.onDestroy();
-	    db.close();
 	    
 	    filterText.removeTextChangedListener(filterTextWatcher);
 	}

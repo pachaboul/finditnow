@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -50,10 +51,11 @@ public class FINMap extends FINMapActivity {
 	// Shared static variables that the other modules can access
 	private String category;    
 	private String building;
-	private String listOfLocations;
 
 	// Location and GeoPoint Variables
-	private static GeoPoint location;    
+	private static GeoPoint location;
+	
+	private static SQLiteDatabase db;
 
 	public static final String PREFS_NAME = "MyPrefsFile";
 
@@ -66,14 +68,14 @@ public class FINMap extends FINMapActivity {
 		// Restore the saved instance and generate the primary (main) layout
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
+		
+		db = new FINDatabase(getBaseContext()).getReadableDatabase();
 
 		// Get the category, building, and potentially item name
 		Bundle extras = getIntent().getExtras(); 
 		category = extras.getString("category");
 		building = extras.getString("building");
-
-		listOfLocations = extras.getString("locations");	
-
+		
 		// Set the Breadcrumb in the titlebar
 		String title = (!building.equals("")? building : category);
 		setTitle(getString(R.string.app_name) + " > " + title);
@@ -110,6 +112,13 @@ public class FINMap extends FINMapActivity {
 		locOverlay.enableCompass();
 
 		mapOverlays.add(locOverlay);
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		db.close();
 	}
 
 	/**
@@ -159,8 +168,7 @@ public class FINMap extends FINMapActivity {
 			Bundle appData = new Bundle();
 
 			appData.putString("category", category);			
-			appData.putString("locations", listOfLocations);
-			
+
 			startSearch(null, false, appData, false);
 		}
 		return true;
@@ -211,12 +219,9 @@ public class FINMap extends FINMapActivity {
 			list.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					Intent myIntent = new Intent(getBaseContext(), FINSearch.class);
-
 					Bundle appData = new Bundle();
 
 					appData.putString("category", category);
-					appData.putString("locations", listOfLocations);
-
 					myIntent.putExtra("appData", appData);
 
 					startActivity(myIntent);
@@ -363,15 +368,13 @@ public class FINMap extends FINMapActivity {
 		
 		int rid = prefs.getInt("rid", 0);
 		
-		FINDatabase db = new FINDatabase(context);
-		Cursor cursor = db.getReadableDatabase().query("regions", null, "regions.rid = " + rid, null, null, null, null);
+		Cursor cursor = db.query("regions", null, "regions.rid = " + rid, null, null, null, null);
 		cursor.moveToFirst();
 		
 		int latitude = cursor.getInt(cursor.getColumnIndex("latitude"));
 		int longitude = cursor.getInt(cursor.getColumnIndex("longitude"));
 		
 		cursor.close();
-		db.close();
 		
 		return new GeoPoint(latitude, longitude);
 	}
@@ -382,12 +385,12 @@ public class FINMap extends FINMapActivity {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		int rid = prefs.getInt("rid", 0);
 		
-		FINDatabase db = new FINDatabase(context);
-		Cursor catCursor = db.getReadableDatabase().query("categories", null, "full_name = '" + category + "'", null, null, null, null);
+
+		Cursor catCursor = db.query("categories", null, "full_name = '" + category + "'", null, null, null, null);
 		catCursor.moveToFirst();
 		int cat_id = catCursor.getInt(catCursor.getColumnIndex("cat_id"));
 		
-		Cursor cursor = db.getReadableDatabase().query("items", null, "rid = " + rid + " AND cat_id = " + cat_id, null, null, null, null);
+		Cursor cursor = db.query("items", null, "rid = " + rid + " AND cat_id = " + cat_id, null, null, null, null);
 		cursor.moveToFirst();
 		
 		while (!cursor.isAfterLast()) {
@@ -398,6 +401,9 @@ public class FINMap extends FINMapActivity {
 			
 			cursor.moveToNext();
 		}
+		
+		cursor.close();
+		catCursor.close();
 		
 		return items;
 	}
@@ -411,22 +417,21 @@ public class FINMap extends FINMapActivity {
 		int latitude = GeoPoint.getLatitudeE6();
 		int longitude = GeoPoint.getLongitudeE6();
 		
-		FINDatabase db = new FINDatabase(context);
-		Cursor catCursor = db.getReadableDatabase().query("categories", null, null, null, null, null, null);
+		Cursor catCursor = db.query("categories", null, null, null, null, null, null);
 		catCursor.moveToFirst();
 		while (!catCursor.isAfterLast()) {
 			CategoryItem item = new CategoryItem();
 			int cat_id = catCursor.getInt(catCursor.getColumnIndex("cat_id"));
 			String name = catCursor.getString(catCursor.getColumnIndex("full_name"));
 			
-			Cursor cursor = db.getReadableDatabase().query("items", null, "cat_id = " + cat_id + " AND latitude = " + latitude + " AND longitude = " + longitude, null, null, null, "cat_id ASC");
+			Cursor cursor = db.query("items", null, "cat_id = " + cat_id + " AND latitude = " + latitude + " AND longitude = " + longitude, null, null, null, "cat_id ASC");
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) {
 				cursor.getInt(cursor.getColumnIndex("cat_id"));
 				int fid = cursor.getInt(cursor.getColumnIndex("fid"));
 				int item_id = cursor.getInt(cursor.getColumnIndex("item_id"));
 				
-				Cursor cursor2 = db.getReadableDatabase().query("floors", null, "fid = " + fid, null, null, null, null);
+				Cursor cursor2 = db.query("floors", null, "fid = " + fid, null, null, null, null);
 				String fname = "";
 				if (cursor2.getCount() > 0) {
 					cursor2.moveToFirst();
@@ -439,13 +444,15 @@ public class FINMap extends FINMapActivity {
 				item.addFloor_names(fname);
 				item.addInfo(info);
 				
+				cursor2.close();
 				cursor.moveToNext();
 			}
+			cursor.close();
 			itemsAtLocation.put(name, item);
 			catCursor.moveToNext();
 		}
-
-		db.close();
+		
+		catCursor.close();
 		
 		return itemsAtLocation;
 	}
