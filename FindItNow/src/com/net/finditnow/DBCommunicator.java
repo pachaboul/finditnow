@@ -3,6 +3,7 @@ package com.net.finditnow;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class DBCommunicator {
@@ -66,7 +69,11 @@ public class DBCommunicator {
 	
 	public static String getRegions(String lat, String lon, Context context) {
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String timestamp = prefs.getString("lastOpened", "0");
 
+		nameValuePairs.add(new BasicNameValuePair("timestamp", timestamp));
 		nameValuePairs.add(new BasicNameValuePair("lat", lat));
 		nameValuePairs.add(new BasicNameValuePair("lon", lon));
 
@@ -74,13 +81,24 @@ public class DBCommunicator {
 	}
 
 	public static String getCategories(Context context) {
-		return Get(FIN_ROOT, "getCategories.php", context);
+		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String timestamp = prefs.getString("lastOpened", "0");
+
+		nameValuePairs.add(new BasicNameValuePair("timestamp", timestamp));
+		
+		return Post(FIN_ROOT, "getCategories.php", nameValuePairs, context);
 	}
 
 	public static String getBuildings(String rid, Context context) {
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String timestamp = prefs.getString("lastOpened", "0");
 
 		nameValuePairs.add(new BasicNameValuePair("rid", rid));
+		nameValuePairs.add(new BasicNameValuePair("timestamp", timestamp));
 
 		return Post(FIN_ROOT, "getBuildings.php", nameValuePairs, context);
 	}
@@ -99,7 +117,11 @@ public class DBCommunicator {
 	public static String getItems(String rid, Context context) {
 		// Initialize the array of name value pairs
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String timestamp = prefs.getString("lastOpened", "0");
+		
+		nameValuePairs.add(new BasicNameValuePair("timestamp", timestamp));
 		nameValuePairs.add(new BasicNameValuePair("rid", rid));
 				
 		return Post(FIN_ROOT, "getItems.php", nameValuePairs, context);
