@@ -1,6 +1,8 @@
 package com.net.finditnow;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,6 +22,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -128,33 +131,31 @@ public class FINSplash extends Activity {
 
 				// Check logged in status
 				final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-				boolean connected = true;
 				
 				String loggedinstr = DBCommunicator.loggedIn(phone_id, getBaseContext());
-				if (loggedinstr.equals(getString(R.string.timeout))) {
-					connected = false;
-				}
 				boolean loggedin = loggedinstr.contains(getString(R.string.login_already));
 				myIntent.putExtra("loggedin", loggedin);
-				if (connected) {
-					campusJson = DBCommunicator.getRegions(prefs.getInt("location_lat", 0)+"", prefs.getInt("location_lon", 0)+"", getBaseContext());
-					JsonParser.parseRegionJson(campusJson, getBaseContext());	
-					
-					cursor = db.query("regions", null, "regions.rid = " + rid, null, null, null, null);
-					
-					String categories = DBCommunicator.getCategories(getBaseContext());
-					JsonParser.parseCategoriesList(categories, getBaseContext());
-					
-					String buildings = DBCommunicator.getBuildings(prefs.getInt("rid", 0)+"", getBaseContext());
-					JsonParser.parseBuildingJson(buildings, getBaseContext());
-					
-					String items = DBCommunicator.getItems(prefs.getInt("rid", 0)+"", getBaseContext());
-					JsonParser.parseItemJson(items, getBaseContext());
-	
-					if (loggedin) {
-						myIntent.putExtra("username", loggedinstr.substring(21, loggedinstr.length()));
-					}
+				
+				campusJson = DBCommunicator.getRegions(prefs.getInt("location_lat", 0)+"", prefs.getInt("location_lon", 0)+"", getBaseContext());
+				if (!campusJson.equals(getString(R.string.timeout))) JsonParser.parseRegionJson(campusJson, getBaseContext());	
+								
+				String categories = DBCommunicator.getCategories(getBaseContext());
+				if (!categories.equals(getString(R.string.timeout))) JsonParser.parseCategoriesList(categories, getBaseContext());
+				
+				String buildings = DBCommunicator.getBuildings(prefs.getInt("rid", 0)+"", getBaseContext());
+				if (!buildings.equals(getString(R.string.timeout)))JsonParser.parseBuildingJson(buildings, getBaseContext());
+				
+				String items = DBCommunicator.getItems(prefs.getInt("rid", 0)+"", getBaseContext());
+				if (!items.equals(getString(R.string.timeout)))JsonParser.parseItemJson(items, getBaseContext());
+				
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putString("lastOpened", System.currentTimeMillis() / 1000 + "");
+				editor.commit();
+				
+				if (loggedin) {
+					myIntent.putExtra("username", loggedinstr.substring(21, loggedinstr.length()));
 				}
+
 				try {
 					int waited = 0;
 

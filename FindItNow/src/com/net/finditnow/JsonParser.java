@@ -83,28 +83,30 @@ public class JsonParser {
 	public static void parseCategoriesList(String json, Context context) {
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
-		JsonArray arr = parser.next().getAsJsonArray();
-		SQLiteDatabase db = new FINDatabase(context).getWritableDatabase();
-
-		for (int i = 0; i < arr.size(); i++)
-		{
-			if (arr.get(i).isJsonObject())
+		if (!json.equals("null")) {
+			JsonArray arr = parser.next().getAsJsonArray();
+			SQLiteDatabase db = new FINDatabase(context).getWritableDatabase();
+	
+			for (int i = 0; i < arr.size(); i++)
 			{
-				//Since the JsonArray contains whole bunch json array, we can get each one out
-				JsonObject ob = arr.get(i).getAsJsonObject();
-
-				// Grab the stuff
-				int cat_id = ob.get("cat_id").getAsInt();
-				String name = ob.get("name").getAsString();
-				String full_name = ob.get("full_name").getAsString();
-				int parent = ob.get("parent").getAsInt();
-				
-				db.execSQL("INSERT OR REPLACE INTO categories (cat_id, name, full_name, parent) VALUES (" + 
-												  cat_id + ", '" + name + "', '" + full_name + "', " + parent + ")");
+				if (arr.get(i).isJsonObject())
+				{
+					//Since the JsonArray contains whole bunch json array, we can get each one out
+					JsonObject ob = arr.get(i).getAsJsonObject();
+	
+					// Grab the stuff
+					int cat_id = ob.get("cat_id").getAsInt();
+					String name = ob.get("name").getAsString();
+					String full_name = ob.get("full_name").getAsString();
+					int parent = ob.get("parent").getAsInt();
+					
+					db.execSQL("INSERT OR REPLACE INTO categories (cat_id, name, full_name, parent) VALUES (" + 
+													  cat_id + ", '" + name + "', '" + full_name + "', " + parent + ")");
+				}
 			}
+			
+			db.close();
 		}
-		
-		db.close();
 	}
 
 	public static HashMap<Integer, GeoPoint> parseSearchJson(String json) {
@@ -121,66 +123,69 @@ public class JsonParser {
 	public static void parseItemJson(String json, Context context) {
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
-		JsonArray arr = parser.next().getAsJsonArray();
-		SQLiteDatabase db = new FINDatabase(context).getWritableDatabase();
-
-		for (int i = 0; i < arr.size(); i++)
-		{
-			if (arr.get(i).isJsonObject())
+		if (!json.equals("[]")) {
+			JsonArray arr = parser.next().getAsJsonArray();
+			SQLiteDatabase db = new FINDatabase(context).getWritableDatabase();
+	
+			for (int i = 0; i < arr.size(); i++)
 			{
-				//Since the JsonArray contains whole bunch json array, we can get each one out
-				JsonObject ob = arr.get(i).getAsJsonObject();
-
-				// Grab the stuff
-				int item_id = ob.get("item_id").getAsInt();
-				int rid = ob.get("rid").getAsInt();
-				int latitude = ob.get("latitude").getAsInt();
-				int longitude = ob.get("longitude").getAsInt();
-				String special_info = ob.get("special_info").getAsString().replace("'", "''"); // SQLITE single quotes
-				int fid = ob.get("fid").getAsInt();
-				int not_found_count = ob.get("not_found_count").getAsInt();
-				String username = ob.get("username").getAsString();
-				int cat_id = ob.get("cat_id").getAsInt();
-				String created = ob.get("created").getAsString();
-				
-				db.execSQL("INSERT OR REPLACE INTO items (item_id, rid, latitude, longitude, special_info, fid, not_found_count, username, cat_id, created) VALUES (" + 
-												  item_id + ", " + rid + ", " + latitude + ", " + longitude + ", '" + special_info.replace("\\n", "<br />").replace("\n", "<br />") + "', " +
-												  fid + ", " + not_found_count + ", '" + username + "', " + cat_id + ", '" + created + "')");
+				if (arr.get(i).isJsonObject())
+				{
+					//Since the JsonArray contains whole bunch json array, we can get each one out
+					JsonObject ob = arr.get(i).getAsJsonObject();
+	
+					// Grab the stuff
+					int item_id = ob.get("item_id").getAsInt();
+					int rid = ob.get("rid").getAsInt();
+					int latitude = ob.get("latitude").getAsInt();
+					int longitude = ob.get("longitude").getAsInt();
+					String special_info = ob.get("special_info").getAsString().replace("'", "''"); // SQLITE single quotes
+					int fid = ob.get("fid").getAsInt();
+					int not_found_count = ob.get("not_found_count").getAsInt();
+					String username = ob.get("username").getAsString();
+					int cat_id = ob.get("cat_id").getAsInt();
+					
+					db.execSQL("INSERT OR REPLACE INTO items (item_id, rid, latitude, longitude, special_info, fid, not_found_count, username, cat_id) VALUES (" + 
+													  item_id + ", " + rid + ", " + latitude + ", " + longitude + ", '" + special_info.replace("\\n", "<br />").replace("\n", "<br />") + "', " +
+													  fid + ", " + not_found_count + ", '" + username + "', " + cat_id + ")");
+				}
 			}
+			
+			db.close();
 		}
-		
-		db.close();
 	}
 
 	public static void parseRegionJson(String json, Context context) {
 		//used for parsing the JSON object
 		JsonStreamParser parser = new JsonStreamParser(json);
-		JsonArray arr = parser.next().getAsJsonArray();
-		SQLiteDatabase db = new FINDatabase(context).getWritableDatabase();
-
-		for (int i = 0; i < arr.size(); i++)
-		{
-			if (arr.get(i).isJsonObject())
+		if (!json.equals("null")) {
+			JsonArray arr = parser.next().getAsJsonArray();
+			SQLiteDatabase db = new FINDatabase(context).getWritableDatabase();
+	
+			for (int i = 0; i < arr.size(); i++)
 			{
-				//Since the JsonArray contains whole bunch json array, we can get each one out
-				JsonObject ob = arr.get(i).getAsJsonObject();
-
-				// Grab the stuff
-				String name = ob.get("name").getAsString();
-				String full_name = ob.get("full_name").getAsString();
-				int rid = ob.get("rid").getAsInt();
-				int lat = ob.get("lat").getAsInt();
-				int lon = ob.get("lon").getAsInt();
-				String color1 = ob.get("color1").getAsString();
-				String color2 = ob.get("color2").getAsString();
-				
-				db.execSQL("INSERT OR REPLACE INTO regions (rid, name, full_name, latitude, longitude) VALUES (" + 
-												  rid + ", '" + name + "', '" + full_name + "', " + lat + ", " + lon + ")");
-				db.execSQL("INSERT OR REPLACE INTO colors (rid, color1, color2) VALUES (" + 
-						  rid + ", '" + color1 + "', '" + color2 + "')");
+				if (arr.get(i).isJsonObject())
+				{
+					//Since the JsonArray contains whole bunch json array, we can get each one out
+					JsonObject ob = arr.get(i).getAsJsonObject();
+	
+					// Grab the stuff
+					String name = ob.get("name").getAsString();
+					String full_name = ob.get("full_name").getAsString();
+					int rid = ob.get("rid").getAsInt();
+					int lat = ob.get("lat").getAsInt();
+					int lon = ob.get("lon").getAsInt();
+					String color1 = ob.get("color1").getAsString();
+					String color2 = ob.get("color2").getAsString();
+					
+					db.execSQL("INSERT OR REPLACE INTO regions (rid, name, full_name, latitude, longitude) VALUES (" + 
+													  rid + ", '" + name + "', '" + full_name + "', " + lat + ", " + lon + ")");
+					db.execSQL("INSERT OR REPLACE INTO colors (rid, color1, color2) VALUES (" + 
+							  rid + ", '" + color1 + "', '" + color2 + "')");
+				}
 			}
+			
+			db.close();
 		}
-		
-		db.close();
 	}
 }
