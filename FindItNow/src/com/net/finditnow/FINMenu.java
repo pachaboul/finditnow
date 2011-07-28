@@ -34,7 +34,6 @@ public class FINMenu extends FINActivity {
 
 	private int cellSize = -1;
 	private Context mContext;
-	private ProgressDialog myDialog;
 
 	/**
 	 * Check for a connection, generate our categories and buildings list
@@ -175,6 +174,7 @@ public class FINMenu extends FINActivity {
 				ib.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
 						FINDatabase db = new FINDatabase(getBaseContext());
+						
 						Cursor cursor = db.getReadableDatabase().query("categories", null, "full_name = '" + category+ "'", null, null, null, null);
 						cursor.moveToFirst();
 						int cat_id = cursor.getInt(cursor.getColumnIndex("cat_id"));
@@ -182,9 +182,7 @@ public class FINMenu extends FINActivity {
 						cursor = db.getReadableDatabase().query("categories", null, "parent = " + cat_id, null, null, null, null);
 						final Class<? extends Activity> nextClass = (cursor.moveToFirst()? SubcategoryList.class: FINMap.class);
 						
-						if (nextClass == FINMap.class) {
-							myDialog = ProgressDialog.show(FINMenu.this, "" , "Loading " + category + "...", true);
-						}
+						final ProgressDialog myDialog = ProgressDialog.show(FINMenu.this, "" , "Loading " + category + "...", true);
 						
 						cursor.close();
 						db.close();
@@ -199,9 +197,7 @@ public class FINMenu extends FINActivity {
 								myIntent.putExtra("building", "");
 
 								startActivity(myIntent);
-								if (nextClass == FINMap.class) {
-									myDialog.dismiss();
-								}
+								myDialog.dismiss();
 							}
 
 						};

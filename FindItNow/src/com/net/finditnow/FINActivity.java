@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 public class FINActivity extends Activity {
 
-	private ProgressDialog myDialog;
 	private String result;
 
 	/** 
@@ -57,7 +56,7 @@ public class FINActivity extends Activity {
 			startActivity(new Intent(this, FINLogin.class));
 			return true;
 		case R.id.logout_button:
-			myDialog = ProgressDialog.show(FINActivity.this, "" , "Logging out...", true);
+			final ProgressDialog myDialog = ProgressDialog.show(FINActivity.this, "" , "Logging out...", true);
 			Thread thread = new Thread() {
 				@Override
 				public void run() {
