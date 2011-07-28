@@ -207,6 +207,7 @@ public class FINSettings extends PreferenceActivity {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString("lastOpened", "0");
+		editor.commit();
 		
 		Intent i = new Intent(getBaseContext(), FINSplash.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
