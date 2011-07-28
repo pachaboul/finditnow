@@ -54,7 +54,7 @@ public class FINSearch extends FINListActivity {
 		boolean search = Intent.ACTION_SEARCH.equals(intent.getAction()) && appData != null;
 		
 		final String category = appData.getString("category");
-		final String query = search? " AND special_info MATCH '"  + intent.getStringExtra(SearchManager.QUERY) + "'" : "";
+		final String query = search? " AND special_info LIKE '%"  + intent.getStringExtra(SearchManager.QUERY) + "%'" : "";
 		final ProgressDialog myDialog = ProgressDialog.show(FINSearch.this, "" , !search? "Loading " + category + "..." : "Searching for " + intent.getStringExtra(SearchManager.QUERY) + "...", true);
 	
 		setTitle(getString(R.string.app_name) + " > " + category + " > " + "Search");
