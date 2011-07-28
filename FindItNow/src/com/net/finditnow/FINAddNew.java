@@ -30,7 +30,7 @@ public class FINAddNew extends FINActivity {
 		// Restore the saved instance and generate the primary (main) layout
 		super.onCreate(savedInstanceState);
 
-		if (!FINHome.isLoggedIn()) {
+		if (!FINHome.isLoggedIn(getBaseContext())) {
 			Intent myIntent = new Intent(this, FINLogin.class);
 			myIntent.putExtra("result", getString(R.string.must_login));
 

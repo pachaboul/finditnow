@@ -154,7 +154,7 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 						}
 					});
 
-					if (FINHome.isLoggedIn()) {
+					if (FINHome.isLoggedIn(context)) {
 						builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
 							public void onClick(DialogInterface dialog, int id) {
 								myDialog = ProgressDialog.show(context, "" , "Deleting " + category + "...", true);

@@ -3,7 +3,6 @@ package com.net.finditnow;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
@@ -27,7 +25,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,10 +34,10 @@ import android.util.Log;
 public class DBCommunicator {
 
 	// A Constant representing the location of FIN
-	private static final String FIN_ROOT = "http://www.project-fin.org/fin/";
+	private static final String FIN_ROOT = "http://www.fincdn.org/";
 	private static final String SECURE_FIN_ROOT = "https://www.project-fin.org/fin/";
-	private static final int CONNECTION_TIMEOUT = 6000;
-	private static final int SOCKET_TIMEOUT = 6000;
+	private static final int CONNECTION_TIMEOUT = 5000;
+	private static final int SOCKET_TIMEOUT = 5000;
 
 	public static String createItem(String phone_id, String cat, String rid, String fid, String special_info, String latitude, String longitude, Context context) {
 		// Initialize the array of name value pairs
@@ -179,29 +176,6 @@ public class DBCommunicator {
 		return Post(FIN_ROOT, "update.php", nameValuePairs, context);
 	}
 
-	private static String Get(String root, String suffix, Context context) {
-
-		String data = "";
-
-		HttpGet httpGet = new HttpGet(root + suffix);
-
-		// Process the response from the server
-		HttpClient httpClient = createHttpClient();		
-		HttpResponse httpResponse = null;
-
-		try {
-			httpResponse = httpClient.execute(httpGet);  
-			data = EntityUtils.toString(httpResponse.getEntity());
-		} catch (Exception e) {
-			if (e != null) {
-				Log.e("log_tag", e.getMessage());
-			}
-			return context.getString(R.string.timeout);
-		}
-
-		return data.trim();
-	}
-
 	private static String Post(String root, String suffix, List<BasicNameValuePair> nameValuePairs, Context context) {
 
 		// Initialize input stream and response variables
@@ -243,7 +217,7 @@ public class DBCommunicator {
 		}
 
 		if (data.trim().equals(context.getString(R.string.not_logged_in))) {
-			FINHome.setLoggedIn(false);
+			FINHome.setLoggedIn(false, context);
 		}
 
 		return data.trim();

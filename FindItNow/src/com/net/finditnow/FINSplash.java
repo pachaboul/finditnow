@@ -1,8 +1,6 @@
 package com.net.finditnow;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,7 +20,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -134,7 +131,6 @@ public class FINSplash extends Activity {
 				
 				String loggedinstr = DBCommunicator.loggedIn(phone_id, getBaseContext());
 				boolean loggedin = loggedinstr.contains(getString(R.string.login_already));
-				myIntent.putExtra("loggedin", loggedin);
 				
 				campusJson = DBCommunicator.getRegions(prefs.getInt("location_lat", 0)+"", prefs.getInt("location_lon", 0)+"", getBaseContext());
 				if (!campusJson.equals(getString(R.string.timeout))) JsonParser.parseRegionJson(campusJson, getBaseContext());	
@@ -149,6 +145,7 @@ public class FINSplash extends Activity {
 				if (!items.equals(getString(R.string.timeout)))JsonParser.parseItemJson(items, getBaseContext());
 				
 				SharedPreferences.Editor editor = prefs.edit();
+				editor.putBoolean("loggedin", loggedin);
 				editor.putString("lastOpened", System.currentTimeMillis() / 1000 + "");
 				editor.commit();
 				

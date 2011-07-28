@@ -332,7 +332,7 @@ public class FINMap extends FINMapActivity {
 
 			String result = DBCommunicator.logout(phone_id, getBaseContext());
 			if (result.equals(getString(R.string.logged_out))) {
-				FINHome.setLoggedIn(false);
+				FINHome.setLoggedIn(false, getBaseContext());
 			}
 
 			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
