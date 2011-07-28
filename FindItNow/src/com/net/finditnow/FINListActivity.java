@@ -66,7 +66,7 @@ public class FINListActivity extends ListActivity {
 
 					result = DBCommunicator.logout(phone_id, getBaseContext());
 					if (result.equals(getString(R.string.logged_out))) {
-						FINHome.setLoggedIn(false);
+						FINHome.setLoggedIn(false, getBaseContext());
 					}
 
 					myDialog.dismiss();      	
@@ -96,7 +96,7 @@ public class FINListActivity extends ListActivity {
 
 		menu.findItem(R.id.search_button).setVisible(false);
 
-		if (FINHome.isLoggedIn()) {
+		if (FINHome.isLoggedIn(getBaseContext())) {
 			menu.findItem(R.id.login_button).setVisible(false);
 			menu.findItem(R.id.logout_button).setVisible(true);
 		} else {

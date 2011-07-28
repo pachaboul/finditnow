@@ -60,13 +60,10 @@ public class FINLogin extends FINActivity {
 						String userPass = passwordEditText.getText().toString();
 						final String phone_id = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID); 
 
-						// Check connection of Android
-						ConnectionChecker conCheck = new ConnectionChecker(getBaseContext(), FINLogin.this);
-
 						result = DBCommunicator.login(phone_id, userName, userPass, getBaseContext());
 						myDialog.dismiss();
 						if (result.equals(getString(R.string.timeout))) {
-							conCheck.connectionError();
+							errorHandler.sendEmptyMessage(0);
 						} else {
 							handler.sendEmptyMessage(0);
 						}
@@ -90,15 +87,22 @@ public class FINLogin extends FINActivity {
 
 	private Handler handler = new Handler() {
 		@Override
-		public void  handleMessage(Message msg) {
+		public void handleMessage(Message msg) {
 			Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
 
 			if (result.equals(getString(R.string.login_success)) || result.contains(getString(R.string.login_already))) {
-				FINHome.setLoggedIn(true);
+				FINHome.setLoggedIn(true, getBaseContext());
 
 				setResult(RESULT_OK);
 				finish();
 			} 
+		}
+	};
+	
+	private Handler errorHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.timeout), Toast.LENGTH_LONG).show();
 		}
 	};
 }

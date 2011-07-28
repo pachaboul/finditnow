@@ -25,29 +25,16 @@ import com.google.android.maps.GeoPoint;
 
 public class FINHome extends TabActivity {
 
-	private static HashMap<String, Integer> iconsMap;
-	private static SQLiteDatabase db;
-
-	private static boolean loggedin;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
 
 		Bundle extras = getIntent().getExtras(); 
-		db = new FINDatabase(getBaseContext()).getReadableDatabase();
 		// Generate our list of categories from the database
 		if (getIntent().hasCategory("App Startup")) {
-			// Grab the list of items and put it in the map
-			// TODO: Extend this so that we make no references in the frontend to school_supplies
-			ArrayList<String> categories = getCategoriesList(false, getBaseContext());
-
-			// Store a map from categories to icons so that other modules can use it
-			iconsMap = createIconsMap(categories);
-
-			loggedin = extras.getBoolean("loggedin");
-			if (isLoggedIn()) {
+			
+			if (isLoggedIn(getBaseContext())) {
 				Toast.makeText(getBaseContext(), "Welcome back " + extras.getString("username"), Toast.LENGTH_LONG).show();
 			}
 		}
@@ -71,13 +58,7 @@ public class FINHome extends TabActivity {
 		View tabStrip = (View) findViewById(R.id.fronttab_strip);
 		tabStrip.setBackgroundResource(FINTheme.getBrightColor());
 	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		
-		db.close();
-	}
+
 
 	private void addTab(final View view, final String tag, final Integer id, TabHost host, Intent intent) {
 		View tabview = createTabView(host.getContext(), tag, id);
@@ -126,7 +107,9 @@ public class FINHome extends TabActivity {
 	 * Otherwise, return the appropriate category icon.
 	 */
 	public static Integer getBigIcon(String category, Context context) {
-		Cursor cursor = db.query("categories", null, "full_name = '" + category+ "'", null, null, null, null);
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
+		
+		Cursor cursor = db.query("categories", null, "full_name = '" + category + "'", null, null, null, null);
 		cursor.moveToFirst();
 		
 		int parent = cursor.getInt(cursor.getColumnIndex("parent"));
@@ -136,14 +119,15 @@ public class FINHome extends TabActivity {
 			category = cursor.getString(cursor.getColumnIndex("full_name"));
 		}
 		
+		cursor.close();
+		db.close();
+		
 		if (!category.equals("")) {
-			int bigIcon = iconsMap.get(category + "-big");
+			int bigIcon = context.getResources().getIdentifier("drawable/" + FINUtil.sendCategory(category, context) + "_big", null, context.getPackageName());
 			if (bigIcon != 0) {
 				return bigIcon;
 			}
 		}
-		
-		cursor.close();
 		
 		return R.drawable.android;
 	}
@@ -154,6 +138,7 @@ public class FINHome extends TabActivity {
 	public static Building getBuilding(GeoPoint point, Context context) {
 		Building build = null;
 		
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
 		Cursor cursor = db.query("buildings", null, "latitude = '" + point.getLatitudeE6() + "' AND longitude = '" + point.getLongitudeE6() + "'", null, null, null, null);
 		
 		if (cursor.getCount() > 0) {
@@ -180,6 +165,7 @@ public class FINHome extends TabActivity {
 		}
 		
 		cursor.close();
+		db.close();
 		
 		return build;
 	}
@@ -190,6 +176,8 @@ public class FINHome extends TabActivity {
 	public static ArrayList<String> getBuildingsList(Context context) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		int rid = prefs.getInt("rid", 0);
+		
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
 				
 		ArrayList<String> buildings = new ArrayList<String>();
 		Cursor cursor = db.query("buildings", null, "rid = " + rid, null, null, null, null);
@@ -202,6 +190,7 @@ public class FINHome extends TabActivity {
 		Collections.sort(buildings);
 		
 		cursor.close();
+		db.close();
 		
 		return buildings;
 	}
@@ -213,6 +202,8 @@ public class FINHome extends TabActivity {
 	public static ArrayList<String> getCategoriesList(boolean subcategories, Context context) {
 		ArrayList<String> categories = new ArrayList<String>();
 		
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
+		
 		Cursor cursor = db.query("categories", null, subcategories? null : "parent = 0", null, null, null, null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -223,12 +214,15 @@ public class FINHome extends TabActivity {
 		Collections.sort(categories);
 		
 		cursor.close();
+		db.close();
 		
 		return categories;
 	}
 	
 	public static ArrayList<String> getSubcategories(String cat, Context context) {
 		ArrayList<String> subcategories = new ArrayList<String>();
+		
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
 		
 		Cursor cursor = db.query("categories", null, "full_name = '" + cat + "'", null, null, null, null);
 		cursor.moveToFirst();
@@ -243,6 +237,7 @@ public class FINHome extends TabActivity {
 		Collections.sort(subcategories);
 		
 		cursor.close();
+		db.close();
 		
 		return subcategories;
 	}
@@ -256,6 +251,8 @@ public class FINHome extends TabActivity {
 	 * @return GeoPoint representing the 'center' of the building.
 	 */
 	public static GeoPoint getGeoPointFromBuilding(String buildingName, Context context) {
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
+		
 		Cursor cursor = db.query("buildings", null, "name = '" + buildingName + "'", null, null, null, null);
 		cursor.moveToFirst();
 		
@@ -263,6 +260,7 @@ public class FINHome extends TabActivity {
 		int longitude = cursor.getInt(cursor.getColumnIndex("longitude"));
 		
 		cursor.close();
+		db.close();
 		
 		return new GeoPoint(latitude, longitude);
 	}
@@ -276,6 +274,7 @@ public class FINHome extends TabActivity {
 	 * otherwise, return the appropriate category icon.
 	 */
 	public static Integer getIcon(String category, Context context) {
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
 		
 		Cursor cursor = db.query("categories", null, "full_name = '" + category+ "'", null, null, null, null);
 		cursor.moveToFirst();
@@ -288,22 +287,29 @@ public class FINHome extends TabActivity {
 		}
 		
 		if (!category.equals("")) {
-			int icon = iconsMap.get(category);
+			int icon = context.getResources().getIdentifier("drawable/" + FINUtil.sendCategory(category, context), null, context.getPackageName());
 			if (icon != 0) {
 				return icon;
 			}
 		}
 		
 		cursor.close();
+		db.close();
 		
 		return R.drawable.android;
 	}
 
-	public static void setLoggedIn(boolean loggedin) {
-		FINHome.loggedin = loggedin;
+	public static void setLoggedIn(boolean loggedin, Context context) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		SharedPreferences.Editor editor = prefs.edit();
+		
+		editor.putBoolean("loggedin", loggedin);
+		editor.commit();
 	}
 
-	public static boolean isLoggedIn() {
-		return loggedin;
+	public static boolean isLoggedIn(Context context) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		
+		return prefs.getBoolean("loggedin", false);
 	}
 }

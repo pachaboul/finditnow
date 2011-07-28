@@ -142,7 +142,7 @@ public class PopUpDialog extends Dialog{
 			category.getLayoutParams().height = 0;
 
 			// If we're logged in, show the extra "Add Item" button.
-			if (FINHome.isLoggedIn()) {
+			if (FINHome.isLoggedIn(getContext())) {
 				TextView addItem = (TextView) findViewById(R.id.add_item_button);
 				addItem.setVisibility(View.VISIBLE);
 				addItem.setOnClickListener(new View.OnClickListener() {
@@ -276,7 +276,7 @@ public class PopUpDialog extends Dialog{
 							dialog.cancel();
 						}
 					});
-					if (FINHome.isLoggedIn()) {
+					if (FINHome.isLoggedIn(getContext())) {
 						builder.setNeutralButton("Delete", new DialogInterface.OnClickListener(){
 							public void onClick(DialogInterface dialog, int id) {
 								myDialog = ProgressDialog.show(getContext(), "" , "Deleting " + category + "...", true);

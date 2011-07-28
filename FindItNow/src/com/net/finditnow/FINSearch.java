@@ -6,13 +6,17 @@ import java.util.HashMap;
 
 import android.app.ProgressDialog;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.SearchRecentSuggestions;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,20 +67,16 @@ public class FINSearch extends FINListActivity {
 
 			@Override
 			public void run() {
+				HashMap<Integer, GeoPoint> map = search(category, query, getBaseContext());
 				
-				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-				String rid = prefs.getInt("rid", 0)+"";
-
-				String result = DBCommunicator.searchLocations(category, rid, query, getBaseContext());
-
-				HashMap<Integer, GeoPoint> unsortedSearchMap = JsonParser.parseSearchJson(result);
 				ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
-				for (Integer id : unsortedSearchMap.keySet()) {
-					if (!points.contains(unsortedSearchMap.get(id))) {
-						points.add(unsortedSearchMap.get(id));
+				for (Integer id : map.keySet()) {
+					if (!points.contains(map.get(id))) {
+						points.add(map.get(id));
 					}
 				}
 				Collections.sort(points, new ComparableGeoPoint());
+				
 				searchMap = new HashMap<Integer, GeoPoint>();
 				for (int i = 0; i < points.size(); i++) {
 					searchMap.put(i, points.get(i));
@@ -109,11 +109,11 @@ public class FINSearch extends FINListActivity {
 		};
 
 		if (Intent.ACTION_SEARCH.equals(intent.getAction()) && appData != null) {
-			query = intent.getStringExtra(SearchManager.QUERY);
+			query = " AND special_info MATCH '"  + intent.getStringExtra(SearchManager.QUERY) + "'";
 
 			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getBaseContext(), SearchSuggestions.AUTHORITY, SearchSuggestions.MODE);
-			suggestions.saveRecentQuery(query, null);
-			myDialog = ProgressDialog.show(FINSearch.this, "" , "Searching for " + query + "...", true);
+			suggestions.saveRecentQuery(intent.getStringExtra(SearchManager.QUERY), null);
+			myDialog = ProgressDialog.show(FINSearch.this, "" , "Searching for " + intent.getStringExtra(SearchManager.QUERY) + "...", true);
 
 			searchThread.start();
 		} else {
@@ -212,5 +212,37 @@ public class FINSearch extends FINListActivity {
 		public long getItemId(int position) {
 			return 0;
 		}
+	}
+	
+	public HashMap<Integer, GeoPoint> search(String cat, String sString, Context context) {
+		HashMap<Integer, GeoPoint> map = new HashMap<Integer, GeoPoint>();
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
+				
+		int rid = prefs.getInt("rid", 0);
+		
+		Cursor cursor = db.query("categories", null, "full_name = '" + cat + "'", null, null, null, null);
+		cursor.moveToFirst();
+		int cat_id = cursor.getInt(cursor.getColumnIndex("cat_id"));
+		
+		cursor = db.query("items", null, "rid = " + rid + " AND cat_id = " + cat_id + sString, null, null, null, null);
+		cursor.moveToFirst();
+		
+		while (!cursor.isAfterLast()) {
+			int latitude = cursor.getInt(cursor.getColumnIndex("latitude"));
+			int longitude = cursor.getInt(cursor.getColumnIndex("longitude"));
+			
+			int item_id = cursor.getInt(cursor.getColumnIndex("item_id"));
+			
+			map.put(item_id, new GeoPoint(latitude, longitude));
+		
+			cursor.moveToNext();
+		}
+		
+		cursor.close();
+		db.close();
+		
+		return map;
 	}
 }
