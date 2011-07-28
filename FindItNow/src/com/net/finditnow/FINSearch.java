@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.SearchRecentSuggestions;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,14 +35,6 @@ public class FINSearch extends FINListActivity {
 	ArrayList<String> special_info;
 	HashMap<Integer, GeoPoint> searchMap;
 
-	private Bundle appData;
-	private String query;
-	private String category;
-
-	protected Thread searchThread;
-	protected ProgressDialog myDialog;
-
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,15 +46,25 @@ public class FINSearch extends FINListActivity {
 
 		// Get the intent, verify the action and get the query
 		Intent intent = getIntent();
-		appData = intent.getBundleExtra(SearchManager.APP_DATA);
+		Bundle appData = intent.getBundleExtra(SearchManager.APP_DATA);
 		if (appData == null) {
 			appData = getIntent().getBundleExtra("appData");
 		}
-		category = appData.getString("category");
-
+		
+		boolean search = Intent.ACTION_SEARCH.equals(intent.getAction()) && appData != null;
+		
+		final String category = appData.getString("category");
+		final String query = search? " AND special_info MATCH '"  + intent.getStringExtra(SearchManager.QUERY) + "'" : "";
+		final ProgressDialog myDialog = ProgressDialog.show(FINSearch.this, "" , !search? "Loading " + category + "..." : "Searching for " + intent.getStringExtra(SearchManager.QUERY) + "...", true);
+	
 		setTitle(getString(R.string.app_name) + " > " + category + " > " + "Search");
-
-		searchThread = new Thread() {
+		
+		if (search) {
+			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getBaseContext(), SearchSuggestions.AUTHORITY, SearchSuggestions.MODE);
+			suggestions.saveRecentQuery(intent.getStringExtra(SearchManager.QUERY), null);
+		}
+		
+		Thread searchThread = new Thread() {
 
 			@Override
 			public void run() {
@@ -97,7 +98,7 @@ public class FINSearch extends FINListActivity {
 					CategoryItem item = FINMap.getCategoryItem(point, category, getBaseContext());
 					special_info.add(item == null? "" : item.getInfo().get(0).replace("<br />", "\n"));
 				}
-
+				
 				myDialog.dismiss();
 
 				if (!points.isEmpty()) {
@@ -107,22 +108,8 @@ public class FINSearch extends FINListActivity {
 				}
 			}
 		};
-
-		if (Intent.ACTION_SEARCH.equals(intent.getAction()) && appData != null) {
-			query = " AND special_info MATCH '"  + intent.getStringExtra(SearchManager.QUERY) + "'";
-
-			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getBaseContext(), SearchSuggestions.AUTHORITY, SearchSuggestions.MODE);
-			suggestions.saveRecentQuery(intent.getStringExtra(SearchManager.QUERY), null);
-			myDialog = ProgressDialog.show(FINSearch.this, "" , "Searching for " + intent.getStringExtra(SearchManager.QUERY) + "...", true);
-
-			searchThread.start();
-		} else {
-			query = "";
-
-			myDialog = ProgressDialog.show(FINSearch.this, "" , "Loading " + category + "...", true);
-
-			searchThread.start();
-		}
+		
+		searchThread.start();
 	}
 
 
@@ -185,9 +172,15 @@ public class FINSearch extends FINListActivity {
 					GeoPoint selectedLoc = searchMap.get(position);
 
 					Intent myIntent = new Intent(v.getContext(), FINMap.class);
+					
+					// Get the intent, verify the action and get the query
+					Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
+					if (appData == null) {
+						appData = getIntent().getBundleExtra("appData");
+					}
 
 					myIntent.putExtra("building", "");
-					myIntent.putExtra("category", category);
+					myIntent.putExtra("category", appData.getString("category"));
 					myIntent.putExtra("centerLat", selectedLoc.getLatitudeE6());
 					myIntent.putExtra("centerLon", selectedLoc.getLongitudeE6());
 					myIntent.putExtra("locations", appData.getString("locations"));

@@ -22,6 +22,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.view.MotionEvent;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class FINSplash extends Activity {
 
@@ -311,8 +312,8 @@ public class FINSplash extends Activity {
 	private Handler failureHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-    		ConnectionChecker conCheck = new ConnectionChecker(getBaseContext(), FINSplash.this);
-    		conCheck.connectionError();
+			Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.timeout), Toast.LENGTH_LONG).show();
+			finish();
 		}
 	};
 	

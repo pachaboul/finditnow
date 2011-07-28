@@ -41,23 +41,10 @@ public class FINMap extends FINMapActivity {
 	// Map and Location Variables
 	private FINMapView mapView;
 	private MapController mapController;
-	private MyLocationOverlay locOverlay;
+	private static MyLocationOverlay locOverlay;
 
-	// Overlay Variables
+	// Overlay Variable
 	private List<Overlay> mapOverlays;
-	private Drawable drawable;
-	private IconOverlay itemizedOverlay;
-
-	// Shared static variables that the other modules can access
-	private String category;    
-	private String building;
-
-	// Location and GeoPoint Variables
-	private static GeoPoint location;
-	
-	private static SQLiteDatabase db;
-
-	public static final String PREFS_NAME = "MyPrefsFile";
 
 	/** 
 	 * Called when the activity is first created.
@@ -68,13 +55,11 @@ public class FINMap extends FINMapActivity {
 		// Restore the saved instance and generate the primary (main) layout
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
-		
-		db = new FINDatabase(getBaseContext()).getReadableDatabase();
 
 		// Get the category, building, and potentially item name
 		Bundle extras = getIntent().getExtras(); 
-		category = extras.getString("category");
-		building = extras.getString("building");
+		String category = extras.getString("category");
+		String building = extras.getString("building");
 		
 		// Set the Breadcrumb in the titlebar
 		String title = (!building.equals("")? building : category);
@@ -112,13 +97,6 @@ public class FINMap extends FINMapActivity {
 		locOverlay.enableCompass();
 
 		mapOverlays.add(locOverlay);
-	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		
-		db.close();
 	}
 
 	/**
@@ -159,11 +137,17 @@ public class FINMap extends FINMapActivity {
 	 * @return GeoPoint representing the user's location
 	 */
 	public static GeoPoint getLocation() {
-		return location;
+		if (locOverlay != null) {
+			return locOverlay.getMyLocation();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public boolean onSearchRequested() {
+		String building = getIntent().getExtras().getString("building");
+		String category = getIntent().getExtras().getString("category");
 		if (building.equals("")) {
 			Bundle appData = new Bundle();
 
@@ -208,9 +192,10 @@ public class FINMap extends FINMapActivity {
 
 		// Build up our overlays and initialize our "UWOverlay" class
 		mapOverlays = mapView.getOverlays();
-		drawable = getResources().getDrawable(building.equals("")? FINHome.getIcon(category, getBaseContext()) : R.drawable.buildings);
-		itemizedOverlay = new IconOverlay(drawable, this, category);
-
+		
+		final String building = getIntent().getExtras().getString("building");
+		final String category = getIntent().getExtras().getString("category");
+		
 		// Setup the ImageButtons
 		ImageButton list = (ImageButton) findViewById(R.id.list_button);
 		ImageButton myLocation = (ImageButton) findViewById(R.id.my_location_button);
@@ -232,8 +217,8 @@ public class FINMap extends FINMapActivity {
 		}
 		myLocation.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (location != null) {
-					mapController.animateTo(location);
+				if (getLocation() != null) {
+					mapController.animateTo(getLocation());
 					Toast.makeText(getBaseContext(), "Centering on your location...", Toast.LENGTH_SHORT).show();
 				} else {
 					Toast.makeText(getBaseContext(), "Error: Could not detect your location", Toast.LENGTH_SHORT).show();
@@ -263,21 +248,15 @@ public class FINMap extends FINMapActivity {
 	private void locateUser() {
 
 		// Define a new LocationOverlay and enable it
-		locOverlay = new MyLocationOverlay(this, mapView) {
-
-			// Extend onLocationChanged() to add the result to the location variable
-			@Override
-			public void onLocationChanged(Location loc) {
-				super.onLocationChanged(loc);
-				location = new GeoPoint((int)(loc.getLatitude()*1E6), (int)(loc.getLongitude()*1E6));
-			}
-		};
+		locOverlay = new MyLocationOverlay(this, mapView);
 		
 		Runnable runnable = new Runnable() {
 			public void run() {
-				mapController.animateTo(location);
+				mapController.animateTo(getLocation());
 			}
 		};
+		
+		String building = getIntent().getExtras().getString("building");
 		
 		if (!getIntent().hasExtra("centerLat") && !getIntent().hasExtra("centerLon") && building.equals("")) {
 			locOverlay.runOnFirstFix(runnable);
@@ -288,6 +267,12 @@ public class FINMap extends FINMapActivity {
 	 * This method places the locations retrieved from the database onto the map
 	 */
 	private void placeOverlays() {
+		
+		String building = getIntent().getExtras().getString("building");
+		String category = getIntent().getExtras().getString("category");
+		
+		Drawable drawable = getResources().getDrawable(building.equals("")? FINHome.getIcon(category, getBaseContext()) : R.drawable.buildings);
+		IconOverlay itemizedOverlay = new IconOverlay(drawable, this, category);
 
 		// If the category is buildings, then we only put the single point on the map
 		if (!building.equals("")) {
@@ -355,6 +340,8 @@ public class FINMap extends FINMapActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
+		
+		String building = getIntent().getExtras().getString("building");
 		if (building.equals("")) {
 			menu.findItem(R.id.search_button).setVisible(true);
 		}
@@ -365,8 +352,9 @@ public class FINMap extends FINMapActivity {
 	public static GeoPoint getRegionCenter(Context context) {
 		// Restore preferences
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		
 		int rid = prefs.getInt("rid", 0);
+		
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
 		
 		Cursor cursor = db.query("regions", null, "regions.rid = " + rid, null, null, null, null);
 		cursor.moveToFirst();
@@ -375,6 +363,7 @@ public class FINMap extends FINMapActivity {
 		int longitude = cursor.getInt(cursor.getColumnIndex("longitude"));
 		
 		cursor.close();
+		db.close();
 		
 		return new GeoPoint(latitude, longitude);
 	}
@@ -385,6 +374,7 @@ public class FINMap extends FINMapActivity {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		int rid = prefs.getInt("rid", 0);
 		
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
 
 		Cursor catCursor = db.query("categories", null, "full_name = '" + category + "'", null, null, null, null);
 		catCursor.moveToFirst();
@@ -404,6 +394,7 @@ public class FINMap extends FINMapActivity {
 		
 		cursor.close();
 		catCursor.close();
+		db.close();
 		
 		return items;
 	}
@@ -416,6 +407,8 @@ public class FINMap extends FINMapActivity {
 		HashMap<String, CategoryItem> itemsAtLocation = new HashMap<String, CategoryItem>();
 		int latitude = GeoPoint.getLatitudeE6();
 		int longitude = GeoPoint.getLongitudeE6();
+		
+		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
 		
 		Cursor catCursor = db.query("categories", null, null, null, null, null, null);
 		catCursor.moveToFirst();
@@ -453,6 +446,7 @@ public class FINMap extends FINMapActivity {
 		}
 		
 		catCursor.close();
+		db.close();
 		
 		return itemsAtLocation;
 	}
