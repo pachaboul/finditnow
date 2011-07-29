@@ -292,15 +292,15 @@ public class FINHome extends TabActivity {
 			category = cursor.getString(cursor.getColumnIndex("full_name"));
 		}
 		
+		cursor.close();
+		db.close();
+		
 		if (!category.equals("")) {
 			int icon = context.getResources().getIdentifier("drawable/" + FINUtil.sendCategory(category, context), null, context.getPackageName());
 			if (icon != 0) {
 				return icon;
 			}
 		}
-		
-		cursor.close();
-		db.close();
 		
 		return R.drawable.android;
 	}
