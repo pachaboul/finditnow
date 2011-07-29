@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<!-- defaults (green) -->
+	<color name="FIN_dark">#32A31C</color>
+	<color name="FIN_bright">#59E01B</color>
+	<color name="FIN_light">#B9F56C</color>
+	<color name="FIN_secondary">#666666</color>
+	<color name="FIN_highlight">#DDDDDD</color>
+	
+	<!-- red -->
+	<color name="main_red">#911100</color>
+	<color name="bright_red">#BA1100</color>
+	<color name="light_red">#FFD1CF</color>
+	
+	<!-- orange -->
+	<color name="main_orange">#BF3D00</color>
+	<color name="bright_orange">#FF5200</color>
+	<color name="light_orange">#F2AF83</color>
+	
+	<!-- green -->
+	<color name="main_green">#32A31C</color>
+	<color name="bright_green">#59E01B</color>
+	<color name="light_green">#B9F56C</color>
+	
+	<!-- blue -->
+	<color name="main_blue">#0C3475</color>
+	<color name="bright_blue">#008CE1</color>
+	<color name="light_blue">#BACFE0</color>
+	
+	<!-- purple -->
+	<color name="main_purple">#59196E</color>
+	<color name="bright_purple">#8737A1</color>
+	<color name="light_purple">#DEBEFF</color>
+</resources>
