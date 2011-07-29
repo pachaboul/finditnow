@@ -39,7 +39,6 @@ public class FINSplash extends Activity {
 
 	private String campus;
 	private int rid;
-	private String color;
 	private String campusJson;
 	private ProgressDialog myDialog;
 
@@ -49,16 +48,13 @@ public class FINSplash extends Activity {
 		setContentView(R.layout.fin_splash);
 		manual = false;
 		
+		db = new FINDatabase(this).getReadableDatabase();
+
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		rid = prefs.getInt("rid", 0);
-		color = prefs.getString("color", "");
 
-		if (rid == 0 || color.equals("")) {
-			this.deleteDatabase("FIN_LOCAL");
-			
-			db = new FINDatabase(this).getReadableDatabase();
-
+		if (rid == 0) {
 			// Acquire a reference to the system Location Manager
 			final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 			
@@ -102,9 +98,7 @@ public class FINSplash extends Activity {
 	            }
 	         });
 			myDialog.show();
-		} else {
-			db = new FINDatabase(this).getReadableDatabase();
-
+		} else {		
 			handler3.sendEmptyMessage(0);
 		}
 
