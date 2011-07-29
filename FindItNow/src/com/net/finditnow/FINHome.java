@@ -153,7 +153,7 @@ public class FINHome extends TabActivity {
 			int bid = cursor.getInt(cursor.getColumnIndex("bid"));
 			String name = cursor.getString(cursor.getColumnIndex("name"));
 			
-			cursor = db.query("floors", null, "bid = " + bid, null, null, null, null);
+			cursor = db.query("floors", null, "bid = " + bid, null, null, null, "fnum DESC");
 			cursor.moveToFirst();
 			
 			int count = cursor.getCount();
