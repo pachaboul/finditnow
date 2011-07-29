@@ -223,7 +223,7 @@ public class FINSearch extends FINListActivity {
 		cursor.moveToFirst();
 		int cat_id = cursor.getInt(cursor.getColumnIndex("cat_id"));
 		
-		cursor = db.query("items", null, "rid = " + rid + " AND cat_id = " + cat_id + sString, null, null, null, null);
+		cursor = db.query("items", null, "rid = " + rid + " AND cat_id = " + cat_id + sString + " AND deleted = 0", null, null, null, null);
 		cursor.moveToFirst();
 		
 		while (!cursor.isAfterLast()) {

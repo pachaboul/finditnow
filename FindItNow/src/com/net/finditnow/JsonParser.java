@@ -55,11 +55,12 @@ public class JsonParser {
 					JsonArray fids = ob.get("fid").getAsJsonArray();
 					JsonArray fnums = ob.get("fnum").getAsJsonArray();
 					JsonArray fnames = ob.get("floor_names").getAsJsonArray();
+					JsonArray deletedFloors = ob.get("deletedFloors").getAsJsonArray();
 					int deleted = ob.get("deleted").getAsInt();
 									
 					for (int j = 0; j < fids.size(); j++) {
-						db.execSQL("INSERT OR REPLACE INTO floors (fid, bid, fnum, name) VALUES (" + 
-								  fids.get(j).getAsInt() + ", " + bid + ", " + fnums.get(j).getAsInt() + ", '" + fnames.get(j).getAsString() + "')");
+						db.execSQL("INSERT OR REPLACE INTO floors (fid, bid, fnum, name, deleted) VALUES (" + 
+								  fids.get(j).getAsInt() + ", " + bid + ", " + fnums.get(j).getAsInt() + ", '" + fnames.get(j).getAsString() + "', " + deletedFloors.get(j).getAsInt() + ")");
 					}
 					
 					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -100,9 +101,10 @@ public class JsonParser {
 					String name = ob.get("name").getAsString();
 					String full_name = ob.get("full_name").getAsString();
 					int parent = ob.get("parent").getAsInt();
+					int deleted = ob.get("deleted").getAsInt();
 					
-					db.execSQL("INSERT OR REPLACE INTO categories (cat_id, name, full_name, parent) VALUES (" + 
-													  cat_id + ", '" + name + "', '" + full_name + "', " + parent + ")");
+					db.execSQL("INSERT OR REPLACE INTO categories (cat_id, name, full_name, parent, deleted) VALUES (" + 
+													  cat_id + ", '" + name + "', '" + full_name + "', " + parent + ", " + deleted + ")");
 				}
 			}
 			
@@ -145,10 +147,11 @@ public class JsonParser {
 					int not_found_count = ob.get("not_found_count").getAsInt();
 					String username = ob.get("username").getAsString();
 					int cat_id = ob.get("cat_id").getAsInt();
+					int deleted = ob.get("deleted").getAsInt();
 					
-					db.execSQL("INSERT OR REPLACE INTO items (item_id, rid, latitude, longitude, special_info, fid, not_found_count, username, cat_id) VALUES (" + 
+					db.execSQL("INSERT OR REPLACE INTO items (item_id, rid, latitude, longitude, special_info, fid, not_found_count, username, cat_id, deleted) VALUES (" + 
 													  item_id + ", " + rid + ", " + latitude + ", " + longitude + ", '" + special_info.replace("\\n", "<br />").replace("\n", "<br />") + "', " +
-													  fid + ", " + not_found_count + ", '" + username + "', " + cat_id + ")");
+													  fid + ", " + not_found_count + ", '" + username + "', " + cat_id + ", " + deleted + ")");
 				}
 			}
 			
