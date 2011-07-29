@@ -55,6 +55,7 @@ public class JsonParser {
 					JsonArray fids = ob.get("fid").getAsJsonArray();
 					JsonArray fnums = ob.get("fnum").getAsJsonArray();
 					JsonArray fnames = ob.get("floor_names").getAsJsonArray();
+					int deleted = ob.get("deleted").getAsInt();
 									
 					for (int j = 0; j < fids.size(); j++) {
 						db.execSQL("INSERT OR REPLACE INTO floors (fid, bid, fnum, name) VALUES (" + 
@@ -64,8 +65,8 @@ public class JsonParser {
 					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 					String rid = prefs.getInt("rid", 0)+"";
 	
-					db.execSQL("INSERT OR REPLACE INTO buildings (bid, rid, name, latitude, longitude) VALUES (" + 
-							  bid + ", " + rid + ", '" + name + "', " + latitude + ", " + longitude + ")");
+					db.execSQL("INSERT OR REPLACE INTO buildings (bid, rid, name, latitude, longitude, deleted) VALUES (" + 
+							  bid + ", " + rid + ", '" + name + "', " + latitude + ", " + longitude + ", " + deleted + ")");
 				}
 			}
 			
@@ -177,9 +178,10 @@ public class JsonParser {
 					int lon = ob.get("lon").getAsInt();
 					String color1 = ob.get("color1").getAsString();
 					String color2 = ob.get("color2").getAsString();
+					int deleted = ob.get("deleted").getAsInt();
 					
-					db.execSQL("INSERT OR REPLACE INTO regions (rid, name, full_name, latitude, longitude) VALUES (" + 
-													  rid + ", '" + name + "', '" + full_name + "', " + lat + ", " + lon + ")");
+					db.execSQL("INSERT OR REPLACE INTO regions (rid, name, full_name, latitude, longitude, deleted) VALUES (" + 
+													  rid + ", '" + name + "', '" + full_name + "', " + lat + ", " + lon + ", " + deleted + ")");
 					db.execSQL("INSERT OR REPLACE INTO colors (rid, color1, color2) VALUES (" + 
 							  rid + ", '" + color1 + "', '" + color2 + "')");
 				}

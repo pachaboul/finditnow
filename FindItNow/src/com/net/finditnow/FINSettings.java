@@ -76,7 +76,7 @@ public class FINSettings extends PreferenceActivity {
 				
 				final FINDatabase db = new FINDatabase(getBaseContext());
 				
-				final Cursor cursor = db.getReadableDatabase().query("regions", null, null, null, null, null, null);
+				final Cursor cursor = db.getReadableDatabase().query("regions", null, "deleted = 0", null, null, null, null);
 				cursor.moveToFirst();
 				
 				OnClickListener campus_listener = new OnClickListener() {
