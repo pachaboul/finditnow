@@ -12,8 +12,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -271,15 +273,21 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 	};
 	
 	private void setItemThemeColors(View parent) {
-		parent.setBackgroundResource(FINTheme.getBrightColor());
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String color = prefs.getString("color", "green");
+		
+		parent.setBackgroundResource(FINTheme.getBrightColor(color, context));
 	}
 	
 	private void setChildThemeColors(View parent) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String color = prefs.getString("color", "green");
+		
 		View bg = (View) parent.findViewById(R.id.layout_rootflr);
-		bg.setBackgroundResource(FINTheme.getLightColor());
+		bg.setBackgroundResource(FINTheme.getLightColor(color, context));
 		
 		TextView button = (TextView) parent.findViewById(R.id.flrDetailButton);
-		button.setTextColor(FINTheme.getFontColor());
-		button.setBackgroundDrawable(context.getResources().getDrawable(FINTheme.getButtonSelector()));
+		button.setTextColor(FINTheme.getFontColor(color, context));
+		button.setBackgroundDrawable(context.getResources().getDrawable(FINTheme.getButtonSelector(color, context)));
 	}
 }

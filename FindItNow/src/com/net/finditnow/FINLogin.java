@@ -1,9 +1,11 @@
 package com.net.finditnow;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -27,10 +29,14 @@ public class FINLogin extends FINActivity {
 
 		// load up the layout, theme colors.
 		setContentView(R.layout.login);
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String color = prefs.getString("color", "green");
+		
 		View header = (View) findViewById(R.id.welcome_text);
-		header.setBackgroundResource(FINTheme.getMainColor());
+		header.setBackgroundResource(FINTheme.getMainColor(color, getBaseContext()));
 		View container = (View) findViewById(R.id.login_fields_container);
-		container.setBackgroundResource(FINTheme.getLightColor());
+		container.setBackgroundResource(FINTheme.getLightColor(color, getBaseContext()));
 
 		// Add link to help info:
 		TextView link = (TextView) findViewById(R.id.superuser_link);

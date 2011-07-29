@@ -151,7 +151,11 @@ public class FINSearch extends FINListActivity {
 			 */
 			TextView dist = (TextView) myView.findViewById(R.id.walking_distance);
 			dist.setText(distances.get(position));
-			dist.setTextColor(FINTheme.getFontColor());
+			
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+			String color = prefs.getString("color", "green");
+			
+			dist.setTextColor(FINTheme.getFontColor(color, getBaseContext()));
 
 			TextView time = (TextView) myView.findViewById(R.id.walking_time);
 			time.setText(walking_times.get(position));

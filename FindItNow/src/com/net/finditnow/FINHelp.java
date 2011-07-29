@@ -6,7 +6,9 @@
 
 package com.net.finditnow;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -23,8 +25,11 @@ public class FINHelp extends FINActivity {
 		setContentView(R.layout.help);
 		setTitle(getString(R.string.app_name) + " > Help Guide");
 		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String color = prefs.getString("color", "green");
+		
 		View v = (View) findViewById(R.id.help_title_bar);
-		v.setBackgroundResource(FINTheme.getMainColor());
+		v.setBackgroundResource(FINTheme.getMainColor(color, getBaseContext()));
 
 		LinearLayout helpBody = (LinearLayout) findViewById(R.id.help_contents);
 
@@ -57,10 +62,13 @@ public class FINHelp extends FINActivity {
 	private View addTextHelpSection(String title, String info) {
 		LayoutInflater li = getLayoutInflater();
 		View section = li.inflate(R.layout.help_item, null);
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String color = prefs.getString("color", "green");
 
 		TextView banner = (TextView) section.findViewById(R.id.help_section_header);
 		banner.setText(title);
-		banner.setBackgroundResource(FINTheme.getLightColor());
+		banner.setBackgroundResource(FINTheme.getLightColor(color, getBaseContext()));
 
 		TextView body = (TextView) section.findViewById(R.id.help_section_body);
 		body.setText(Html.fromHtml(info));

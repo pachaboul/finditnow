@@ -44,10 +44,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Region;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.text.Html;
 import android.view.MotionEvent;
@@ -369,15 +371,18 @@ public class PopUpDialog extends Dialog{
 	};
 	
 	private void setThemeColors() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+		String color = prefs.getString("color", "green");
+		
 		TextView title = (TextView) findViewById(R.id.dialogTitle);
-		title.setTextColor(FINTheme.getFontColor());
+		title.setTextColor(FINTheme.getFontColor(color, getContext()));
 		
 		TextView button = (TextView) findViewById(R.id.showFlrButt);
-		button.setTextColor(FINTheme.getFontColor());
-		button.setBackgroundDrawable(getContext().getResources().getDrawable(FINTheme.getButtonSelector()));
+		button.setTextColor(FINTheme.getFontColor(color, getContext()));
+		button.setBackgroundDrawable(getContext().getResources().getDrawable(FINTheme.getButtonSelector(color, getContext())));
 		
 		button = (TextView) findViewById(R.id.add_item_button);
-		button.setTextColor(FINTheme.getFontColor());
-		button.setBackgroundDrawable(getContext().getResources().getDrawable(FINTheme.getButtonSelector()));
+		button.setTextColor(FINTheme.getFontColor(color, getContext()));
+		button.setBackgroundDrawable(getContext().getResources().getDrawable(FINTheme.getButtonSelector(color, getContext())));
 	}
 }  

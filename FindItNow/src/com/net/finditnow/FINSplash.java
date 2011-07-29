@@ -114,8 +114,6 @@ public class FINSplash extends Activity {
 				Cursor cursor = db.query("colors", null, "rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
 				cursor.moveToFirst();
 				String color = cursor.getString(cursor.getColumnIndex("color1"));
-								
-				FINTheme.setTheme(color, getBaseContext());
 				
 				cursor = db.query("regions", null, "rid = " + prefs.getInt("rid", 0)+"", null, null, null, null);
 				cursor.moveToFirst();
@@ -148,6 +146,7 @@ public class FINSplash extends Activity {
 				SharedPreferences.Editor editor = prefs.edit();
 				editor.putBoolean("loggedin", loggedin);
 				editor.putString("lastOpened", System.currentTimeMillis() / 1000 + "");
+				editor.putString("color", color);
 				editor.commit();
 				
 				if (loggedin) {

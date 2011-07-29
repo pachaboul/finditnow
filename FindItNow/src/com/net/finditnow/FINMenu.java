@@ -15,8 +15,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -134,10 +136,13 @@ public class FINMenu extends FINActivity {
 			View myView;
 
 			// If not created yet, initialize it.
-			if (convertView == null) {	
+			if (convertView == null) {
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+				String color = prefs.getString("color", "green");
+				
 				LayoutInflater li = getLayoutInflater();
 				myView = li.inflate(R.layout.grid_item, null);
-				myView.setBackgroundResource(FINTheme.getLightColor());
+				myView.setBackgroundResource(FINTheme.getLightColor(color, getBaseContext()));
 			} else {
 				myView = convertView;
 			}

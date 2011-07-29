@@ -55,8 +55,11 @@ public class FINHome extends TabActivity {
 				new Intent().setClass(this, BuildingList.class));
 		
 		// And recolor the strip.
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String color = prefs.getString("color", "green");
+		
 		View tabStrip = (View) findViewById(R.id.fronttab_strip);
-		tabStrip.setBackgroundResource(FINTheme.getBrightColor());
+		tabStrip.setBackgroundResource(FINTheme.getBrightColor(color, getBaseContext()));
 	}
 
 
@@ -67,8 +70,11 @@ public class FINHome extends TabActivity {
 	}
 
 	private View createTabView(final Context context, final String text, Integer imageID) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String color = prefs.getString("color", "green");
+		
 		View view = LayoutInflater.from(context).inflate(R.layout.tab_background, null);
-		view.setBackgroundDrawable(getResources().getDrawable(FINTheme.getTabSelector()));        
+		view.setBackgroundDrawable(getResources().getDrawable(FINTheme.getTabSelector(color, getBaseContext())));        
 
 		// Set up icon 
 		ImageView iv = (ImageView) view.findViewById(R.id.tabIcon);

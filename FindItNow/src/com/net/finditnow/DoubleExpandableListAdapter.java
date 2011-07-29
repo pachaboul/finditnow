@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -221,14 +223,20 @@ public class DoubleExpandableListAdapter extends BaseExpandableListAdapter {
 	}
 	
 	private void setItemThemeColors(View parent) {
-		parent.setBackgroundResource(FINTheme.getBrightColor());
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String color = prefs.getString("color", "green");
+		
+		parent.setBackgroundResource(FINTheme.getBrightColor(color, context));
 	}
 	
 	private void setChildThemeColors(View parent) {
-		parent.setBackgroundResource(FINTheme.getLightColor());
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String color = prefs.getString("color", "green");
+		
+		parent.setBackgroundResource(FINTheme.getLightColor(color, context));
 		
 		TextView button = (TextView) parent.findViewById(R.id.flrDetailButton);
-		button.setTextColor(FINTheme.getFontColor());
+		button.setTextColor(FINTheme.getFontColor(color, context));
 	}
 	
 	private class DoubleOnCollapseListener implements ExpandableListView.OnGroupCollapseListener{

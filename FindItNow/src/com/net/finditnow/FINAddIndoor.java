@@ -153,13 +153,16 @@ public class FINAddIndoor extends FINActivity {
 	}
 	
 	private void setThemeColors() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String color = prefs.getString("color", "green");
+		
 		View header = (View) findViewById(R.id.addnew_inheader);
-		header.setBackgroundResource(FINTheme.getMainColor());
+		header.setBackgroundResource(FINTheme.getMainColor(color, getBaseContext()));
 		
 		View container = (View) findViewById(R.id.addnew_building_container);
-		container.setBackgroundResource(FINTheme.getLightColor());
+		container.setBackgroundResource(FINTheme.getLightColor(color, getBaseContext()));
 		
 		container = (View) findViewById(R.id.addnew_floor_container);
-		container.setBackgroundResource(FINTheme.getLightColor());
+		container.setBackgroundResource(FINTheme.getLightColor(color, getBaseContext()));
 	}
 }
