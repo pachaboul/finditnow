@@ -1,10 +1,8 @@
 package com.net.finditnow;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.preference.PreferenceManager;
 	
 public class FINDatabase extends SQLiteOpenHelper {
 

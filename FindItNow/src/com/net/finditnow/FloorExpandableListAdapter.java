@@ -165,12 +165,14 @@ public class FloorExpandableListAdapter extends BaseExpandableListAdapter {
 									public void run() {
 										int item_id = catItem.getId().get(pos);
 										
-										FINDatabase db = new FINDatabase(context);
-										db.getWritableDatabase().execSQL("DELETE FROM items WHERE item_id = " + item_id);
-										
 										final String phone_id = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
 										String result = DBCommunicator.delete(phone_id, item_id+"", context);
-
+										
+										if (!result.equals(context.getString(R.string.timeout))) {
+											FINDatabase db = new FINDatabase(context);
+											db.getWritableDatabase().execSQL("UPDATE items SET deleted = 1 WHERE item_id = " + item_id);
+										}
+										
 										Intent myIntent = new Intent(context, FINMap.class);
 										myIntent.putExtra("result", result);
 										myIntent.putExtra("category", category);

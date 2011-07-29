@@ -54,8 +54,8 @@ import android.provider.Settings.Secure;
 import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -287,11 +287,13 @@ public class PopUpDialog extends Dialog{
 									public void run() {
 										int item_id = dataMap.get(category).getId().get(0);
 										
-										FINDatabase db = new FINDatabase(getContext());
-										db.getWritableDatabase().execSQL("DELETE FROM items WHERE item_id = " + item_id);
-										
 										final String phone_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
 										String result = DBCommunicator.delete(phone_id, item_id+"", getContext());
+										
+										if (!result.equals(getContext().getString(R.string.timeout))) {
+											FINDatabase db = new FINDatabase(getContext());
+											db.getWritableDatabase().execSQL("UPDATE items SET deleted = 1 WHERE item_id = " + item_id);
+										}
 
 										Intent myIntent = new Intent(getContext(), FINMap.class);
 										myIntent.putExtra("result", result);
