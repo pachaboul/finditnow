@@ -1,16 +1,18 @@
 package com.net.finditnow;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 	
 public class FINDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
-    private static final String REGION_TABLE_CREATE = "CREATE TABLE regions (rid INTEGER PRIMARY KEY, name TEXT, full_name TEXT, latitude INTEGER, longitude INTEGER)";
+    private static final int DATABASE_VERSION = 3;
+    private static final String REGIONS_TABLE_CREATE = "CREATE TABLE regions (rid INTEGER PRIMARY KEY, name TEXT, full_name TEXT, latitude INTEGER, longitude INTEGER, deleted INTEGER)";
     private static final String COLOR_TABLE_CREATE = "CREATE TABLE colors (rid INTEGER PRIMARY KEY, color1 TEXT, color2 TEXT)";
     private static final String CATEGORIES_TABLE_CREATE = "CREATE TABLE categories (cat_id INTEGER PRIMARY KEY, name TEXT, full_name TEXT, parent INTEGER)";
-    private static final String BUILDINGS_TABLE_CREATE = "CREATE TABLE buildings (bid INTEGER PRIMARY KEY, rid INTEGER, name TEXT, latitude INTEGER, longitude INTEGER)";
+    private static final String BUILDINGS_TABLE_CREATE = "CREATE TABLE buildings (bid INTEGER PRIMARY KEY, rid INTEGER, name TEXT, latitude INTEGER, longitude INTEGER, deleted INTEGER)";
     private static final String FLOORS_TABLE_CREATE = "CREATE TABLE floors (fid INTEGER PRIMARY KEY, bid INTEGER, fnum INTEGER, name TEXT)";
     private static final String ITEMS_TABLE_CREATE = "CREATE TABLE items (item_id INTEGER PRIMARY KEY, rid INTEGER, latitude INTEGER, longitude INTEGER, special_info TEXT, fid INTEGER, not_found_count INTEGER, username TEXT, cat_id INTEGER)";
     
@@ -20,7 +22,7 @@ public class FINDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(REGION_TABLE_CREATE);
+        db.execSQL(REGIONS_TABLE_CREATE);
         db.execSQL(COLOR_TABLE_CREATE);
         db.execSQL(CATEGORIES_TABLE_CREATE);
         db.execSQL(BUILDINGS_TABLE_CREATE);
@@ -30,9 +32,16 @@ public class FINDatabase extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if (oldVersion == 1 && newVersion == 2) {
+		if (newVersion == 2) {
 			db.execSQL("DROP TABLE items");
 			db.execSQL(ITEMS_TABLE_CREATE);
+		}
+		if (newVersion == 3) {
+			db.execSQL("ALTER TABLE regions ADD deleted INTEGER");
+			db.execSQL("UPDATE regions SET deleted = 0");
+			
+			db.execSQL("ALTER TABLE buildings ADD deleted INTEGER");
+			db.execSQL("UPDATE buildings SET deleted = 0");
 		}
 	}
 }
