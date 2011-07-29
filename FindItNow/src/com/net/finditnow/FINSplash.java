@@ -223,7 +223,7 @@ public class FINSplash extends Activity {
 	private Handler handler2 = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {			
-			cursor = db.query("regions", null, null, null, null, null, null);
+			cursor = db.query("regions", null, "deleted = 0", null, null, null, null);
 			cursor.moveToFirst();
 			
 			if (manual) {

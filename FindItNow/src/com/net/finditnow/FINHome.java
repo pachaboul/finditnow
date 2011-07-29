@@ -145,7 +145,7 @@ public class FINHome extends TabActivity {
 		Building build = null;
 		
 		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
-		Cursor cursor = db.query("buildings", null, "latitude = '" + point.getLatitudeE6() + "' AND longitude = '" + point.getLongitudeE6() + "'", null, null, null, null);
+		Cursor cursor = db.query("buildings", null, "latitude = '" + point.getLatitudeE6() + "' AND longitude = '" + point.getLongitudeE6() + "' AND deleted = 0", null, null, null, null);
 		
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -153,7 +153,7 @@ public class FINHome extends TabActivity {
 			int bid = cursor.getInt(cursor.getColumnIndex("bid"));
 			String name = cursor.getString(cursor.getColumnIndex("name"));
 			
-			cursor = db.query("floors", null, "bid = " + bid, null, null, null, "fnum DESC");
+			cursor = db.query("floors", null, "bid = " + bid + " AND deleted = 0", null, null, null, "fnum DESC");
 			cursor.moveToFirst();
 			
 			int count = cursor.getCount();
@@ -186,7 +186,7 @@ public class FINHome extends TabActivity {
 		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
 				
 		ArrayList<String> buildings = new ArrayList<String>();
-		Cursor cursor = db.query("buildings", null, "rid = " + rid, null, null, null, null);
+		Cursor cursor = db.query("buildings", null, "rid = " + rid + " AND deleted = 0", null, null, null, null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			buildings.add(cursor.getString(cursor.getColumnIndex("name")));
@@ -210,7 +210,7 @@ public class FINHome extends TabActivity {
 		
 		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
 		
-		Cursor cursor = db.query("categories", null, subcategories? null : "parent = 0", null, null, null, null);
+		Cursor cursor = db.query("categories", null, "deleted = 0" + (subcategories?  "" : " AND parent = 0"), null, null, null, null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			categories.add(cursor.getString(cursor.getColumnIndex("full_name")));
@@ -259,7 +259,7 @@ public class FINHome extends TabActivity {
 	public static GeoPoint getGeoPointFromBuilding(String buildingName, Context context) {
 		SQLiteDatabase db = new FINDatabase(context).getReadableDatabase();
 		
-		Cursor cursor = db.query("buildings", null, "name = '" + buildingName + "'", null, null, null, null);
+		Cursor cursor = db.query("buildings", null, "name = '" + buildingName + "' AND deleted = 0", null, null, null, null);
 		cursor.moveToFirst();
 		
 		int latitude = cursor.getInt(cursor.getColumnIndex("latitude"));

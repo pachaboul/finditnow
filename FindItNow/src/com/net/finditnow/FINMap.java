@@ -380,7 +380,7 @@ public class FINMap extends FINMapActivity {
 		catCursor.moveToFirst();
 		int cat_id = catCursor.getInt(catCursor.getColumnIndex("cat_id"));
 		
-		Cursor cursor = db.query("items", null, "rid = " + rid + " AND cat_id = " + cat_id, null, null, null, null);
+		Cursor cursor = db.query("items", null, "rid = " + rid + " AND cat_id = " + cat_id + " AND deleted = 0", null, null, null, null);
 		cursor.moveToFirst();
 		
 		while (!cursor.isAfterLast()) {
@@ -417,7 +417,7 @@ public class FINMap extends FINMapActivity {
 			int cat_id = catCursor.getInt(catCursor.getColumnIndex("cat_id"));
 			String name = catCursor.getString(catCursor.getColumnIndex("full_name"));
 			
-			Cursor cursor = db.query("items", null, "cat_id = " + cat_id + " AND latitude = " + latitude + " AND longitude = " + longitude, null, null, null, "cat_id ASC");
+			Cursor cursor = db.query("items", null, "cat_id = " + cat_id + " AND latitude = " + latitude + " AND longitude = " + longitude + " AND deleted = 0", null, null, null, "cat_id ASC");
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) {
 				cursor.getInt(cursor.getColumnIndex("cat_id"));
