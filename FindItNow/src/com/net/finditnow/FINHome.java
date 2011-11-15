@@ -31,7 +31,11 @@ public class FINHome extends TabActivity {
 		setContentView(R.layout.home);
 
 		Bundle extras = getIntent().getExtras();
-		String username = extras.getString("username");
+		
+		String username = "";
+		if (extras != null) {
+			username = extras.getString("username");
+		}
 		// Generate our list of categories from the database
 		if (getIntent().hasCategory("App Startup")) {
 			
